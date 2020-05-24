@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %} {% block body %}
+
+<!-- Content -->
+
+<div class="background-img"></div>
+<div class="body-page">
+    <div class="container text-center body-content">
+        <img width="88px" src="assets/images/logo2.png" alt="logo" id="logo">
+        <h3 class="main-title">Se connecter</h3>
+        <form role="form" class="form-horizontal">
+            <div class="form-group">
+                <label for="input-id">
+                    Identifiant
+                </label>
+                <input id="input-id" type='text' class="form-control">
+            </div>
+            <button type="submit" class="btn btn-info button-login">
+                Se connecter
+            </button>
+            <div class="form-check ml-3">
+                <div>
+                    <div class="checkbox-container">
+                        <label class="checkbox-label">
+                                <input type="checkbox">
+                                <span class="checkbox-custom rectangular"></span>
+                            </label>
+                        <div class="input-title">rester connecter</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="col-sm-12">
+            <div class="col-sm-12 aide">
+                <a href="#"><u>id ou mot de passe oublier</u></a>
+            </div>
+            ou
+            <div class="col-sm-12 qr-code-img">
+                <img src="assets/images/frame.png" alt="qrcode" id="qrcode">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End Content -->
+
+<!-- Footer -->
+
+<footer class="footer">
+    <div class="container mention-legal mt-5">
+        Copyright © 2020 Olivier RTs
+    </div>
+</footer>
+
+<!-- End Footer -->
+
+{% endblock %}

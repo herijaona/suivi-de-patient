@@ -1,0 +1,72 @@
+h1 {
+    font-family: "roboto-medium";
+    letter-spacing: 4px;
+}
+
+.paragraph {
+    font-family: "roboto-regular";
+    letter-spacing: 0.5px;
+    font-size: 17px;
+    width: 53%;
+    margin: 0 auto;
+    margin-top: 26px;
+    margin-bottom: 45px;
+}
+
+.navbar-one {
+    background: #ffffff;
+}
+
+.bg-home-h1 {
+    background: url(../images/img.jpg);
+    height: 100%;
+    position: absolute;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.bg-home-h1:after {
+    content: "";
+    width: 100%;
+    position: absolute;
+    top: 0;
+    opacity: 0.8;
+    height: 100%;
+    background: #352038;
+}
+
+.btn-login {
+    color: white;
+    background: transparent;
+    width: 200px;
+    padding: 9px;
+    border: 2px solid white;
+}
+
+.btn-register {
+    font-family: "roboto-medium";
+    border: 0;
+    color: #b30233;
+    background: #ffffff;
+    width: 200px;
+    height: 44px;
+}
+
+.bg-content-h1 {
+    width: 100%;
+    z-index: 9;
+    position: absolute;
+    color: white;
+    text-align: center;
+    margin-top: 17%;
+}
+
+.bg-content-h1 h3 {
+    font-size: 17px;
+    width: 53%;
+    margin: 0 auto;
+    margin-top: 26px;
+    margin-bottom: 45px;
+}

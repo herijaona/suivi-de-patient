@@ -1,0 +1,123 @@
+/* Fonts speciaux */
+
+@font-face {
+    font-family: "marvel-bold";
+    src: url("../fonts/marvel/Marvel-Bold.ttf");
+}
+
+@font-face {
+    font-family: "marvel-bolditalic";
+    src: url("../fonts/marvel/Marvel-BoldItalic.ttf");
+}
+
+@font-face {
+    font-family: "marvel-itlic";
+    src: url("../fonts/marvel/Marvel-Italic.ttf");
+}
+
+@font-face {
+    font-family: "marvel-regular";
+    src: url("../fonts/marvel/Marvel-Regular.ttf");
+}
+
+@font-face {
+    font-family: "roboto-bold";
+    src: url("../fonts/roboto/Roboto-Bold.ttf");
+}
+
+@font-face {
+    font-family: "roboto-medium";
+    src: url("../fonts/roboto/Roboto-Medium.ttf");
+}
+
+@font-face {
+    font-family: "roboto-regular";
+    src: url("../fonts/roboto/Roboto-Regular.ttf");
+}
+
+@font-face {
+    font-family: "roboto-thin";
+    src: url("../fonts/roboto/Roboto-Thin.ttf");
+}
+
+@font-face {
+    font-family: "roboto-thinitalic";
+    src: url("../fonts/roboto/Roboto-ThinItalic.ttf");
+}
+
+
+/* Fonts speciaux */
+
+
+/* Login */
+
+a:hover {
+    color: inherit;
+}
+
+.register .body-content {
+    width: 534px;
+}
+
+.body-content {
+    padding-top: 20px;
+    width: 360px;
+    background: white;
+    margin: 0 auto;
+    margin-top: 24px;
+    border-radius: 7px;
+    padding-bottom: 8px;
+}
+
+h3.main-title {
+    font-family: "marvel-bold";
+    font-size: 30px;
+    padding-top: 18px;
+}
+
+#input-id {
+    width: 70%;
+    margin: 0 auto;
+}
+
+input#Check1 {
+    margin-top: 8px;
+}
+
+.form-check {
+    padding: 18px 0 10px 0;
+}
+
+img#qrcode {
+    width: 100px;
+}
+
+.mention-legal {
+    font-size: 11px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.background-img {
+    z-index: -1;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    background: url(../images/img.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    background-position: center;
+    filter: blur(0px);
+}
+
+.button-login {
+    color: #fff;
+    border: 0;
+    background: linear-gradient(163deg, #e90eec 10%, #5907bf 57%);
+    width: 45%;
+}
+
+.aide a {
+    font-size: 12px;
+}

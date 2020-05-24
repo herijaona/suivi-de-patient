@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}" />
+            <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+            <link rel="stylesheet" href="{{ asset('assets/css/homepage.css') }}" />
+        {% endblock %}
+    </head>
+    <body>
+        <div class="bg-home-h1">
+            <div class="bg-content-h1">
+            <h1>Suivi de patient</h1>
+            <p class="paragraph">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Dignissimos atque maxime quidem rerum, iste magnam eius repudiandae 
+                similique sint dolore deserunt veniam veritatis natus
+                sequi error debitis dolor autem! Doloremque.
+            </p>
+            <a href="{{ path('login') }}" class="btn btn-login" type="submit">Se connecter</a>
+                <button class="btn btn-register ml-2" type="submit">S'inscrire</button>
+            </div>
+        </div>
+    </body>
+</html>
