@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthenticationController extends AbstractController
 {
     /**
-     * @Route("/login", name="login")
+     * @Route("/login_user", name="login_user")
      */
     public function login()
     {
@@ -18,7 +18,7 @@ class AuthenticationController extends AbstractController
     }
 
     /**
-     * @Route("/register", name="register")
+     * @Route("/register_user", name="register_user")
      */
     public function register()
     {

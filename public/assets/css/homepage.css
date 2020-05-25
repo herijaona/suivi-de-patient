@@ -51,7 +51,12 @@ h1 {
     color: #b30233;
     background: #ffffff;
     width: 200px;
-    height: 44px;
+    padding: 9px;
+}
+
+.btn-register:hover {
+    color: #b30233;
+    background: #ffffff;
 }
 
 .bg-content-h1 {

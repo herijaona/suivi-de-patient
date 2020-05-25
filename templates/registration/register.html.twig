@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+
+    {{ form_start(registrationForm) }}
+        
+    <div class="background-img"></div>
+<div class="body-page register">
+    <div class="container text-center body-content">
+        <img width="88px" src="assets/images/logo2.png" alt="logo" id="logo">
+        <h3 class="main-title mb-4">S'inscrire</h3>
+        <form role="form" class="form-horizontal">
+            <div class="row form-group">
+                <div class="col-lg-6">
+                {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Nom'}}) }}
+                </div>
+                <div class="col-lg-6">
+                {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Prénom(s)'}}) }}
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-6">
+                {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date de Naissance'}}) }}
+                </div>
+                <div class="col-lg-6">
+                {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Lieu de Naissance'}}) }}
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-6">
+                {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Téléphone'}}) }}
+                </div>
+                <div class="col-lg-6">
+                {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Adresse'}}) }}
+                </div>
+            </div>
+             <div class="row form-group">
+                <div class="col-lg-6">
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Adresse email'}}) }}
+                </div>
+                <div class="col-lg-6">
+                {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-6">
+                    <select class="form-control">
+                        <option value="active">Type</option>
+                        <option>Adulte</option>
+                        <option>Femme enceinte</option>
+                        <option>Enfant</option>
+                    </select>
+                </div>
+                <div class="col-lg-6">
+                    <select class="form-control">
+                        <option value="active">Sexe</option>
+                        <option>Feminin</option>
+                        <option>Masculin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12">
+                	{{ form_widget(registrationForm.namedaddy, {'attr': {'class': 'form-control mb-3', 'placeholder': 'nom de père'}}) }}
+                </div>
+                <div class="col-md-12">
+                	{{ form_widget(registrationForm.namemonther, {'attr': {'class': 'form-control mb-3', 'placeholder': 'nom de mère'}}) }}
+                </div>
+            </div>
+            <button type="submit " class="btn btn-info button-login mb-3">
+                S'inscrire
+            </button>
+        
+    {{ form_end(registrationForm) }}
+    </div>
+</div>
+{% endblock %}

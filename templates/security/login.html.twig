@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+<form method="post">
+
+<div class="background-img"></div>
+<div class="body-page">
+    <div class="container text-center body-content">
+        <img width="88px" src="assets/images/logo2.png" alt="logo" id="logo">
+        <h3 class="main-title">Se connecter</h3>
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+        <form role="form" class="form-horizontal">
+            <div class="form-group">
+                <label for="input-id">
+                    Identifiant
+                </label>
+                <input id="input-id" type='email' name="email" value="{{ last_username }}" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="input-id">
+                    Mot de passe
+                </label>
+                <input id="input-id" type='password' name="password" class="form-control">
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button type="submit" class="btn btn-info button-login">
+                Se connecter
+            </button>
+            <div class="form-check ml-3">
+                <div>
+                    <div class="checkbox-container">
+                        <label class="checkbox-label">
+                                <input type="checkbox">
+                                <span class="checkbox-custom rectangular"></span>
+                            </label>
+                        <div class="input-title">rester connecter</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="col-sm-12">
+            <div class="col-sm-12 aide">
+                <a href="#"><u>id ou mot de passe oublier</u></a>
+            </div>
+            ou
+            <div class="col-sm-12 qr-code-img">
+                <img src="assets/images/frame.png" alt="qrcode" id="qrcode">
+            </div>
+        </div>
+    </div>
+</div>
+   
+</form>
+<!-- Footer -->
+
+<footer class="footer">
+    <div class="container mention-legal mt-5">
+        Copyright © 2020 Olivier RTs
+    </div>
+</footer>
+{% endblock %}
+
+
+
+
+
