@@ -55,6 +55,147 @@ a:hover {
     color: inherit;
 }
 
+body {
+    background: #f5f5f5;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.col_exc_1 {
+    background: linear-gradient(163deg, #3c023c 10%, #1c053a 57%);
+    min-height: 97.5vh;
+    width: 18%;
+    position: relative;
+}
+
+.col_exc_2 {
+    width: 82%;
+}
+
+.h4_patient {
+    font-family: "roboto-medium";
+    font-size: 15px;
+    color: #eae9e9;
+    text-align: center;
+    border-bottom: 2px solid #461f50;
+    padding: 12px;
+}
+
+.img_profile {
+    text-align: center;
+    border-bottom: 1px solid rgba(125, 122, 122, 0.11);
+    z-index: 9;
+}
+
+.img_profile h5 {
+    font-family: "roboto-medium";
+    color: white;
+    font-size: 13px;
+    margin-top: 9px;
+    margin-bottom: -4px;
+}
+
+.img_profile img {
+    width: 80px;
+    border-radius: 49%;
+    text-align: center;
+}
+
+.img_profile label {
+    font-family: "roboto-medium";
+    color: #7d7a7a;
+    font-size: 13px;
+    margin-top: -15px;
+}
+
+.menu_suivi {
+    list-style: none;
+    font-family: "roboto-regular";
+    font-size: 13px;
+    line-height: 38px;
+    margin-top: 20px;
+    padding: 0;
+}
+
+.menu_suivi li {
+    padding-left: 40px;
+}
+
+.menu_suivi .active {
+    border-right: 3px solid #54b3c9;
+    background: rgba(234, 234, 234, 0.031);
+}
+
+.menu_suivi a {
+    color: #b7b2b2;
+}
+
+.logout_footer {
+    text-align: center;
+    border-top: 1px solid;
+    margin: 0;
+    padding: 6px 40px;
+    font-family: "roboto-regular";
+    font-size: 13px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.logout_footer a {
+    color: #b7b2b2;
+}
+
+.menu_up {
+    background: white;
+    width: 100%;
+    float: right;
+}
+
+.menu_up .menu_bar {
+    float: left;
+    position: relative;
+    top: 9px;
+    left: 12px;
+}
+
+.menu_up .menu_bar i {
+    color: #d6d5d5;
+    font-size: 17px;
+}
+
+.menu_up .menu_right {
+    display: flex;
+    float: right;
+    position: relative;
+    top: 9px;
+    margin-right: 19px;
+}
+
+.menu_up .menu_right i {
+    position: relative;
+    color: #6b6b6b;
+    margin-left: 14px;
+}
+
+.menu_up .menu_right i span {
+    position: absolute;
+    top: -6px;
+    font-size: 9px;
+    color: white;
+    font-family: "roboto-medium";
+    background: #5d9e07;
+    padding: 2px;
+    border-radius: 50%;
+    width: 13px;
+    height: 13px;
+    text-align: center;
+    left: 9px;
+}
+
 .register .body-content {
     width: 534px;
 }

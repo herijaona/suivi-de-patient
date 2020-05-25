@@ -151,3 +151,119 @@
 .checkbox-label input:checked~.checkbox-custom.circular::before {
     border-radius: 50%;
 }
+
+
+/* Table */
+
+.row.head-table {
+    margin: 20px 0 20px 0;
+}
+
+.row.head-table .grid-title-table {
+    padding-left: 0;
+}
+
+table thead tr th {
+    background: white;
+    font-size: 13px;
+    font-family: "roboto-bold";
+}
+
+table tbody tr td {
+    font-size: 13px;
+    font-family: "roboto-regular";
+}
+
+table tbody tr td i {
+    padding-left: 7px;
+    cursor: pointer;
+}
+
+.row-table {
+    width: 98%;
+    margin: 0 auto;
+}
+
+.row-table table.table-striped {
+    box-shadow: 0px 1px 2px 1px #d8d8d8;
+}
+
+.row-table tbody {
+    font-size: 14px;
+}
+
+
+/* End Table */
+
+
+/* Navigation */
+
+.navigation nav {
+    width: 20%;
+    margin: 0 auto;
+}
+
+.navigation li#prev {
+    margin: 0 5px 0 5px;
+    font-size: 10px;
+    padding-top: 4px;
+}
+
+.navigation li#next {
+    margin: 0 5px 0 5px;
+    font-size: 10px;
+    padding-top: 4px;
+}
+
+.navigation li.page-item {
+    margin: 0 3px 0 3px;
+}
+
+
+/* End navigation */
+
+.h4-content {
+    font-family: "roboto-bold";
+    font-weight: initial;
+    font-size: 13px;
+    color: #6c757d;
+    letter-spacing: 1px;
+}
+
+.grid-edit-btn {
+    padding: 0;
+    text-align: right;
+}
+
+.grid-edit-btn .btn {
+    font-size: 13px;
+    padding: 5px 6px;
+}
+
+.select1 {
+    padding: 3px;
+    height: 30px !important;
+    position: relative;
+    top: -6px;
+}
+
+.table-input-up label {
+    font-family: "roboto-bold";
+    font-weight: initial;
+    font-size: 13px;
+    color: #101010;
+    letter-spacing: 1px;
+    width: 72px;
+}
+
+.table-input-up .form-control {
+    width: auto;
+}
+
+select {
+    font-family: "roboto-medium";
+    font-weight: initial;
+    font-size: 13px !important;
+    color: rgba(108, 117, 125, 0.58) !important;
+    letter-spacing: 1px;
+}
