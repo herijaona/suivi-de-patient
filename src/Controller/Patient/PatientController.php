@@ -12,6 +12,9 @@ class PatientController extends AbstractController
      */
     public function patient()
     {
+        if (!$this->isGranted('ROLE_PATIENT')) {
+            return $this->redirectToRoute('homepage');
+        }
         return $this->render('patient/patient.html.twig', [
             'controller_name' => 'PatientController',
         ]);

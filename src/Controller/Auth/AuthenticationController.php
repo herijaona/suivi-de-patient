@@ -26,4 +26,5 @@ class AuthenticationController extends AbstractController
             'controller_name' => 'AuthenticationController',
         ]);
     }
+
 }

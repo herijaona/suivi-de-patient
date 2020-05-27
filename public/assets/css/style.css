@@ -262,3 +262,6 @@ img#qrcode {
 .aide a {
     font-size: 12px;
 }
+img.qrCode {
+    margin: 0 35px;
+}

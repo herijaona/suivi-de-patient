@@ -25,7 +25,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
-     public const DASH_ROUTE_PATIENT = 'patient';
+    public const DASH_ROUTE_PATIENT = 'patient';
+    public const DASH_ROUTE_PRATICIEN = 'praticien';
+    public const DASH_ROUTE_ADMIN = 'admin';
 
     private $entityManager;
     private $urlGenerator;
@@ -93,14 +95,21 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        
+        $role = $token->getRoleNames()[0];
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-
+        if($role=='ROLE_PATIENT'){
+            return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PATIENT));
+        }elseif($role=='ROLE_PRATICIEN'){
+            return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PRATICIEN));
+        }elseif($role=='ROLE_ADMIN'){
+            return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_ADMIN));
+        }
+        return new RedirectResponse($this->urlGenerator->generate(self::LOGIN_ROUTE));
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
-         return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PATIENT));
+
     }
 
     protected function getLoginUrl()

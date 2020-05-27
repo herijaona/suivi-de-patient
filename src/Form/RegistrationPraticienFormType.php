@@ -3,13 +3,12 @@
 namespace App\Form;
 
 use App\Entity\City;
-use App\Entity\TypePatient;
 use App\Entity\User;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,7 +17,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class RegistrationFormType extends AbstractType
+class RegistrationPraticienFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -41,6 +40,7 @@ class RegistrationFormType extends AbstractType
                 'placeholder' => 'Lieu de naissance',
             ])
             ->add('phone')
+            ->add('phone_professional')
             ->add('address',EntityType::class ,[
                 'class'=>City::class,
                 'query_builder'=>function(EntityRepository $entityRepository){
@@ -52,28 +52,7 @@ class RegistrationFormType extends AbstractType
                 },
                 'placeholder' => 'Votre adresse',
             ])
-            ->add('type_patient',EntityType::class ,[
-                'class'=>TypePatient::class,
-                'query_builder'=>function(EntityRepository $entityRepository){
-                    return $entityRepository->createQueryBuilder('t');
-                },
-                'choice_value' => 'id',
-                'choice_label' => function(?TypePatient $typePatient) {
-                    return $typePatient ? strtoupper($typePatient->getTypePatientName()) : '';
-                },
-                'placeholder' => 'Type de patient',
-            ])
-            ->add('namedaddy', null, [
-                'required'   => false])
-            ->add('namemonther', null, [
-                'required'   => false])
-            ->add('sexe', ChoiceType::class, array(
-                'choices' => array(
-                    'Feminin' => 'Feminin',
-                    'Masculin' => 'Masculin'
-                ),
-                'placeholder' => 'Sexe',
-            ))
+            ->add('fonction')
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
