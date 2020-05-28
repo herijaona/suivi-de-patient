@@ -76,6 +76,16 @@ class User implements UserInterface
      */
     private $namemonther;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $etat;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $activator_id;
+
     public function __construct()
     {
         $this->date_naissance = new \DateTime('now');
@@ -251,6 +261,30 @@ class User implements UserInterface
     public function setNamemonther(?string $namemonther): self
     {
         $this->namemonther = $namemonther;
+
+        return $this;
+    }
+
+    public function getEtat(): ?int
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(int $etat): self
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getActivatorId(): ?int
+    {
+        return $this->activator_id;
+    }
+
+    public function setActivatorId(?int $activator_id): self
+    {
+        $this->activator_id = $activator_id;
 
         return $this;
     }
