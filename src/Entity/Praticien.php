@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PraticienRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -72,9 +74,15 @@ class Praticien
      */
     private $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="praticien")
+     */
+    private $rendezVous;
+
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime('now'));
+        $this->rendezVous = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -209,6 +217,37 @@ class Praticien
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RendezVous[]
+     */
+    public function getRendezVous(): Collection
+    {
+        return $this->rendezVous;
+    }
+
+    public function addRendezVou(RendezVous $rendezVou): self
+    {
+        if (!$this->rendezVous->contains($rendezVou)) {
+            $this->rendezVous[] = $rendezVou;
+            $rendezVou->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRendezVou(RendezVous $rendezVou): self
+    {
+        if ($this->rendezVous->contains($rendezVou)) {
+            $this->rendezVous->removeElement($rendezVou);
+            // set the owning side to null (unless already changed)
+            if ($rendezVou->getPraticien() === $this) {
+                $rendezVou->setPraticien(null);
+            }
+        }
 
         return $this;
     }

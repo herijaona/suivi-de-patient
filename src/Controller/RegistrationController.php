@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Patient;
 use App\Entity\Praticien;
 use App\Entity\User;
+use App\Form\ActivatorFormType;
 use App\Form\RegistrationFormType;
 use App\Form\RegistrationPraticienFormType;
+use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,13 +19,19 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class RegistrationController extends AbstractController
 {
+    protected $user;
+    function __construct(UserRepository $userRepository)
+    {
+        $this->user = $userRepository;
+    }
+
     /**
      * @Route("/register", name="app_register")
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
         if($this->checkConnected()){
-            return $this->redirectToRoute('_login_redirect');
+            return $this->redirectToRoute($this->checkConnected());
         }
         $user = [];
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -31,6 +39,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $code = $this->generate_code();
             // encode the plain password
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
@@ -39,6 +48,8 @@ class RegistrationController extends AbstractController
             $user->setFirstName($first_name);
             $user->setEmail($form->get('email')->getData());
             $user->setRoles(['ROLE_PATIENT']);
+            $user->setActivatorId($code);
+            $user->setEtat(0);
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -66,7 +77,7 @@ class RegistrationController extends AbstractController
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_register_activate',['id'=>$user->getId()]);
         } 
 
         return $this->render('registration/register.html.twig', [
@@ -80,7 +91,7 @@ class RegistrationController extends AbstractController
     public function register_praticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
     {
         if($this->checkConnected()){
-            return $this->redirectToRoute('_login_redirect');
+            return $this->redirectToRoute($this->checkConnected());
         }
         $user = [];
         $form = $this->createForm(RegistrationPraticienFormType::class, $user);
@@ -88,7 +99,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            $code = $this->generate_code();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
             $user = new User();
@@ -96,6 +107,8 @@ class RegistrationController extends AbstractController
             $user->setFirstName($first_name);
             $user->setEmail($form->get('email')->getData());
             $user->setRoles(['ROLE_PRATICIEN']);
+            $user->setActivatorId($code);
+            $user->setEtat(0);
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -121,7 +134,7 @@ class RegistrationController extends AbstractController
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_register_activate',['id'=>$user->getId()]);
         }
 
         return $this->render('registration/register_praticien.html.twig', [
@@ -131,12 +144,65 @@ class RegistrationController extends AbstractController
     public function checkConnected(){
         $securityContext = $this->container->get('security.authorization_checker');
         if ($securityContext->isGranted('ROLE_PATIENT')) {
-            return true;
+            return 'patient';
         }elseif($securityContext->isGranted('ROLE_PRATICIEN')){
-            return true;
+            return 'praticien';
         }elseif($securityContext->isGranted('ROLE_ADMIN')){
-            return true;
+            return 'admin';
         }
         return false;
+    }
+
+    private function generate_code($length = 6) {
+        $dico[0] = Array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+        $dico[1] = Array(1,2,3,4,5,6,7,8,9,0);
+        $text = "";
+        for($i = 0; $i<$length; $i++) {
+            $option = mt_rand(0, 1);
+            $case = mt_rand(0,count($dico[$option])-1);
+            $text .= $dico[$option][$case];
+        }
+        $user = $this->user->findBy(['activator_id'=>$text]);
+        if($user) {
+            return $this->generate_code();
+        }
+        return $text;
+    }
+
+    /**
+     * @Route("/register/activate", name="app_register_activate")
+     */
+    public function activeCompte(Request $request,UserRepository $userRepository)
+    {
+        if($this->checkConnected()){
+            return $this->redirectToRoute($this->checkConnected());
+        }
+
+        $form = $this->createForm(ActivatorFormType::class, []);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $add_code = $form->get('code')->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $auser = $userRepository->findOneBy(['activator_id'=>$add_code]);
+            if($auser){
+                if($auser->getEtat()!=1){
+                    $auser->setEtat(1);
+                    $entityManager->persist($auser);
+                }
+                return $this->redirectToRoute('app_login');
+            }else{
+                $this->addFlash('error', 'Code non valide');
+            }
+        }
+        $user = $userRepository->find($request->get('id'));
+        $code =null;
+        if($user){
+            $code = $user->getActivatorId();
+        }
+        return $this->render('authentication/activator.html.twig', [
+            'code' => $code,
+            'activationForm' => $form->createView(),
+        ]);
     }
 }

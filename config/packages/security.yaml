@@ -28,4 +28,8 @@ security:
     access_control:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/patient, roles: ROLE_PATIENT }
-         - { path: ^/praticien, roles: ROLE_PRATICIEN }
+         - { path: ^/praticien, roles: [ROLE_PRATICIEN, ROLE_ADMIN] }
+
+    role_hierarchy:
+        ROLE_PATIENT: [ROLE_ADMIN]
+        ROLE_PRATICIEN: [ROLE_ADMIN]

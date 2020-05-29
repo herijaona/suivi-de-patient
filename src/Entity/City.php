@@ -49,12 +49,18 @@ class City
      */
     private $city_born;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CentreHealth::class, mappedBy="centre_city")
+     */
+    private $centreHealths;
+
     public function __construct()
     {
         $this->type_patient = new ArrayCollection();
         $this->patients = new ArrayCollection();
         $this->praticiens = new ArrayCollection();
         $this->city_born = new ArrayCollection();
+        $this->centreHealths = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -204,6 +210,37 @@ class City
             // set the owning side to null (unless already changed)
             if ($cityBorn->getAdressBorn() === $this) {
                 $cityBorn->setAdressBorn(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CentreHealth[]
+     */
+    public function getCentreHealths(): Collection
+    {
+        return $this->centreHealths;
+    }
+
+    public function addCentreHealth(CentreHealth $centreHealth): self
+    {
+        if (!$this->centreHealths->contains($centreHealth)) {
+            $this->centreHealths[] = $centreHealth;
+            $centreHealth->setCentreCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCentreHealth(CentreHealth $centreHealth): self
+    {
+        if ($this->centreHealths->contains($centreHealth)) {
+            $this->centreHealths->removeElement($centreHealth);
+            // set the owning side to null (unless already changed)
+            if ($centreHealth->getCentreCity() === $this) {
+                $centreHealth->setCentreCity(null);
             }
         }
 

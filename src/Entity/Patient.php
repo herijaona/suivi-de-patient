@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PatientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -85,9 +87,32 @@ class Patient
      */
     private $phone;
 
+    /**
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="patient")
+     */
+    private $rendeVous;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="patient_parent")
+     */
+    private $families;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="patient_child")
+     */
+    private $family_child;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $is_enceinte;
+
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime('now'));
+        $this->rendeVous = new ArrayCollection();
+        $this->families = new ArrayCollection();
+        $this->family_child = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -249,6 +274,111 @@ class Patient
     public function setPhone(?string $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RendezVous[]
+     */
+    public function getRendeVous(): Collection
+    {
+        return $this->rendeVous;
+    }
+
+    public function addRendeVou(RendezVous $rendeVou): self
+    {
+        if (!$this->rendeVous->contains($rendeVou)) {
+            $this->rendeVous[] = $rendeVou;
+            $rendeVou->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRendeVou(RendezVous $rendeVou): self
+    {
+        if ($this->rendeVous->contains($rendeVou)) {
+            $this->rendeVous->removeElement($rendeVou);
+            // set the owning side to null (unless already changed)
+            if ($rendeVou->getPatient() === $this) {
+                $rendeVou->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Family[]
+     */
+    public function getFamilies(): Collection
+    {
+        return $this->families;
+    }
+
+    public function addFamily(Family $family): self
+    {
+        if (!$this->families->contains($family)) {
+            $this->families[] = $family;
+            $family->setPatientParent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFamily(Family $family): self
+    {
+        if ($this->families->contains($family)) {
+            $this->families->removeElement($family);
+            // set the owning side to null (unless already changed)
+            if ($family->getPatientParent() === $this) {
+                $family->setPatientParent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Family[]
+     */
+    public function getFamilyChild(): Collection
+    {
+        return $this->family_child;
+    }
+
+    public function addFamilyChild(Family $familyChild): self
+    {
+        if (!$this->family_child->contains($familyChild)) {
+            $this->family_child[] = $familyChild;
+            $familyChild->setPatientChild($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFamilyChild(Family $familyChild): self
+    {
+        if ($this->family_child->contains($familyChild)) {
+            $this->family_child->removeElement($familyChild);
+            // set the owning side to null (unless already changed)
+            if ($familyChild->getPatientChild() === $this) {
+                $familyChild->setPatientChild(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getIsEnceinte(): ?bool
+    {
+        return $this->is_enceinte;
+    }
+
+    public function setIsEnceinte(?bool $is_enceinte): self
+    {
+        $this->is_enceinte = $is_enceinte;
 
         return $this;
     }

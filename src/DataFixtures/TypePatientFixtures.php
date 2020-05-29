@@ -17,10 +17,11 @@ class TypePatientFixtures extends Fixture
         $type_FEMMEENCEINTE = new TypePatient();
         $type_FEMMEENCEINTE->setTypePatientName('FEMME ENCEINTE');
         $manager->persist($type_FEMMEENCEINTE);
-        $type_ENFANT = new TypePatient();
 
+        $type_ENFANT = new TypePatient();
         $type_ENFANT->setTypePatientName('ENFANT');
         $manager->persist($type_ENFANT);
+
         $manager->flush();
     }
 }

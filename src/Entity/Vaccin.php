@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\VaccinRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +38,22 @@ class Vaccin
      * @ORM\ManyToOne(targetEntity=State::class, inversedBy="vaccins")
      */
     private $state;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $etat;
+
+    /**
+     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="vaccin")
+     */
+    private $rendezVous;
+
+    function __construct()
+    {
+        $this->etat = true;
+        $this->rendezVous = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -86,6 +104,49 @@ class Vaccin
     public function setState(?State $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getEtat(): ?bool
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(bool $etat): self
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|RendezVous[]
+     */
+    public function getRendezVous(): Collection
+    {
+        return $this->rendezVous;
+    }
+
+    public function addRendezVou(RendezVous $rendezVou): self
+    {
+        if (!$this->rendezVous->contains($rendezVou)) {
+            $this->rendezVous[] = $rendezVou;
+            $rendezVou->setVaccin($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRendezVou(RendezVous $rendezVou): self
+    {
+        if ($this->rendezVous->contains($rendezVou)) {
+            $this->rendezVous->removeElement($rendezVou);
+            // set the owning side to null (unless already changed)
+            if ($rendezVou->getVaccin() === $this) {
+                $rendezVou->setVaccin(null);
+            }
+        }
 
         return $this;
     }

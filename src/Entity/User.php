@@ -82,7 +82,7 @@ class User implements UserInterface
     private $etat;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $activator_id;
 
@@ -277,12 +277,12 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getActivatorId(): ?int
+    public function getActivatorId(): ?string
     {
         return $this->activator_id;
     }
 
-    public function setActivatorId(?int $activator_id): self
+    public function setActivatorId(?string $activator_id): self
     {
         $this->activator_id = $activator_id;
 

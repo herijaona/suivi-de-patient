@@ -12,9 +12,9 @@ class PraticienController extends AbstractController
      */
     public function praticien()
     {
-        if (!$this->isGranted('ROLE_PRATICIEN')) {
+        /*if (!$this->isGranted('ROLE_PRATICIEN')) {
             return $this->redirectToRoute('homepage');
-        }
+        }*/
         return $this->render('praticien/praticien.html.twig', [
             'controller_name' => 'PraticienController',
         ]);
