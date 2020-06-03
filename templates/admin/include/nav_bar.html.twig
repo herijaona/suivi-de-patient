@@ -1,0 +1,23 @@
+<div class="col_exc_1">
+    <h4 class="h4_patient">Espace Admin</h4>
+    <div class="mt-4">
+        <div class="img_profile">
+            <img width="88px" src="{{ asset('assets/images/praticien.jpg') }}" alt="logo" id="logo">
+            <h5>Maria Eudw</h5>
+            <label>Administrator</label>
+        </div>
+        <ul class="menu_suivi">
+            <li class="active"><a href="{{ path('admin') }}">Dashboard</a></li>
+            <li><a href="{{ path('vaccin_admin') }}">Calendrier Vaccination</a></li>
+            <li><a href="{{ path('praticiens_admin') }}">Liste des praticiens</a></li>
+            <li><a href="{{ path('patients_admin') }}">Liste des patients</a></li>
+        </ul>
+        <ul class="logout_footer">
+            <li>
+                <a href="{{ path('app_logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Deconnexion
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
