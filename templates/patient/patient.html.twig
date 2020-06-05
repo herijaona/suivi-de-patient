@@ -1,136 +1,69 @@
-{% extends 'base.html.twig' %} {% block body %}
+{% extends 'patient/include/base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .fc-dayGrid-view .fc-body .fc-row {
+            min-height: 7em;
+        }
+        .fc-header-toolbar {
+            padding-top: 1em;
+            padding-left: 1em;
+            padding-right: 1em;
+        }
+    </style>
+{% endblock %}
 
-    <!-- Content -->
-
-    <div class="body-page">
-        <div class="d-flex">
-            <div class="col_exc_1">
-                <h4 class="h4_patient">Espace patient</h4>
-                <div class="mt-4">
-                    <div class="img_profile">
-                        <img width="88px" src="{{asset("assets/images/praticien.jpg")}}" alt="logo" id="logo">
-                        <h5>Maria Gomez</h5>
-                    </div>
-
-                    <ul class="logout_footer">
-                        <li>
-                            <a href="{{ path('app_logout') }}">
-                                <i class="fas fa-sign-out-alt"></i> Deconnexion
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <div class="col_exc_2">
-                <div class="menu_up">
-                    <ul class="menu_bar">
-                        <li>
-                            <a href="">
-                                <i class="fa fa-bars" aria-hidden="true"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="menu_right">
-                        <li>
-                            <a href="">
-                                <i class="far fa-envelope"></i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <i class="far fa-bell">
-
-                                    <span>1</span>
-                                </i>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <i class="fas fa-user-circle"></i>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Container -->
-
-                <!--div class="container">
-                    <div class="row head-table col-md-12">
-                        <div class="grid-title-table col-md-9 mt-4">
-                            <h4 class="h4-content">Liste des patients</h4>
-                        </div>
-                        <div class="grid-edit-btn col-md-3 mt-3">
-                            <button class="btn btn-info">+ Add membres</button>
-                            <button class="btn btn-danger">+ Creer patient</button>
-                        </div>
-                    </div>
-                    <div class="d-flex table-input-up">
-                        <div class="form-group d-flex pr-4">
-                            <label for="exampleFormControlSelect1">Afficher :</label>
-                            <select class="form-control select1" id="exampleFormControlSelect1">
-                                <option>1</option>
-                                <option>5</option>
-                                <option>10</option>
-                            </select>
-                        </div>
-                        <div class="form-group d-flex">
-                            <label for="exampleFormControlSelect1">Trier par :</label>
-                            <select class="form-control select1" id="exampleFormControlSelect1">
-                                <option>Femme enceinte</option>
-                                <option>Nouveaux-nees</option>
-                                <option>Homme</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row-table table-content">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>Nom et prenom</th>
-                                <th>Telephone</th>
-                                <th>Type</th>
-                                <th>Sexe</th>
-                                <th>Date de naissance</th>
-                                <th>Calendrier vaccinal</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td><a href="#">Gomez Maria</a></td>
-                                <td>Maria</td>
-                                <td>Maria@gmail.com</td>
-                                <td>Femme</td>
-                                <td>05/04/2020</td>
-                                <td>05/04/2020</td>
-                                <td>
-                                    <i class="fas fa-eye"></i>
-                                    <i class="fa fa-edit"></i>
-                                    <i class="fa fa-ellipsis-v"></i>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="navigation">
-                        <nav aria-label="Page">
-                            <ul class="pagination">
-                                <li class="page-item" id="prev"><a class="page-link" href="#"><i class="fa fa-chevron-left"></i></a></li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item" id="next"><a class="page-link" href="#"><i class="fa fa-chevron-right"></i></a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-
-                < End Container  -->
-
-            </div>
-        </div>
+{% block body %}
+<button id="generate">generate</button>
+    <div id='calendar-container'>
+        <div id='calendar'></div>
     </div>
+{% endblock %}
 
-    <!-- End Content -->
+{% block javascripts %}
+<script>
+    var url = "{{ path('generate_vaccin_patient') }}";
+    $("#generate").click(function () {
+        console.log(this);
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: (data) => {
+                console.log(data);
+            },
+            error: (e) => {
+                console.log(error);
+            }
+        }).done(() => {
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+            height: 'parent',
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'timeGridDay,timeGridWeek,dayGridMonth'
+            },
+            defaultView: 'dayGridMonth',
+            defaultDate: new Date(),
+            locale:'fr',
+            navLinks: true, // can click day/week names to navigate views
+            editable: false,
+            eventClick(arg) {
+                console.log(arg)
+            },
+            eventLimit: true, // allow "more" link when too many events
+            events: {{ Events|json_encode()|raw }}
+        });
+
+        calendar.render();
+    });
+</script>
+
 
 {% endblock %}

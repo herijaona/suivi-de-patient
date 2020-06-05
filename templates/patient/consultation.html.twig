@@ -1,0 +1,132 @@
+{% extends 'patient/include/base.html.twig' %}
+{%  block title %}
+    Consultations
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Tous les consultation</h4>
+        </div>
+        <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-danger" data-toggle="modal" data-target="#orangeModalSubscription">+ Creer consultation</button>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Date consultation</th>
+                <th>Déscription</th>
+                <th>Docteur</th>
+                <th>Validation</th>
+                <th>Status</th>
+                <th>Action</th>
+                {# <th>More</th> #}
+            </tr>
+            </thead>
+            <tbody>
+            {% for rdv in Consultations  %}
+                <tr>
+                    <td>
+                        {{ rdv.dateRdv }}
+                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                    </td>
+                    <td>
+                        {{ rdv.detail }}
+                    </td>
+                    <td>
+                        {{ rdv.nom }} <br>
+                        {{ rdv.phone }}
+                    </td>
+                    <td>
+                        {% if rdv.etat==0 %}
+                            Non valide
+                        {% else %}
+                            Validé
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rdv.status==1 %}
+                            Fait
+                        {% else %}
+                            Pas Fait
+                        {% endif %}
+                    </td>
+                    <td>
+                        <i class="fas fa-eye"></i>
+                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-ellipsis-v"></i>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="orangeModalSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-notify modal-primary" role="document">
+            <!--Content-->
+            <form action="" method="post">
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header text-center">
+                    <h4 class="modal-title white-text w-100 font-weight-bold py-2">Consultation</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">&times;</span>
+                    </button>
+                </div>
+
+                <!--Body-->
+
+                <div class="modal-body">
+                    <div class="md-form mb-5">
+                        <label class="active">Docteur</label>
+                        <select class="mdb-select md-form" editable="true" searchable="Rechercher le nom du docteur..." required>
+                            <option value="" disabled selected>Choisissez votre médecin</option>
+                            {% for doc in Doctors %}
+                                <option value="{{ doc.id }}">{{doc.firstName}} {{doc.lastName}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="md-form mb-5">
+                        <input type="datetime-local" id="form1" class="form-control" required>
+                        <label class="active" for="form1">Date consultation</label>
+                    </div>
+                    <div class="md-form">
+                        <textarea id="form103" class="md-textarea form-control" rows="2" required></textarea>
+                        <label for="form103" class="">Déscription</label>
+                    </div>
+                </div>
+
+                <!--Footer-->
+                <div class="modal-footer justify-content-center">
+                    <button type="submit" class="btn btn-outline-primary waves-effect">Enregistrer <i class="fas fa-paper-plane-o ml-1"></i></button>
+                </div>
+            </div>
+            </form>
+            <!--/.Content-->
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $("#example1").DataTable({
+            language: {
+                url: "{{ asset('vendor/datatables/lang.json') }}"
+            }
+        });
+        $('.mdb-select').materialSelect();
+
+
+    </script>
+{% endblock %}

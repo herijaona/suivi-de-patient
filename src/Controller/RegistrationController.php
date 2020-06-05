@@ -189,6 +189,7 @@ class RegistrationController extends AbstractController
                 if($auser->getEtat()!=1){
                     $auser->setEtat(1);
                     $entityManager->persist($auser);
+                    $entityManager->flush();
                 }
                 return $this->redirectToRoute('app_login');
             }else{

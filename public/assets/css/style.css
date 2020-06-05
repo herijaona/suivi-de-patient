@@ -265,3 +265,10 @@ img#qrcode {
 img.qrCode {
     margin: 0 35px;
 }
+footer {
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+}
+select.mdb-select.initialized {
+    display: none;
+}

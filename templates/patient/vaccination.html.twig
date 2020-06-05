@@ -1,0 +1,73 @@
+{% extends 'patient/include/base.html.twig' %}
+{%  block title %}
+    Vaccination
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Tous les vaccinations</h4>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Date vaccination</th>
+                <th>Détail</th>
+                <th>Docteur</th>
+                <th>Validation</th>
+                <th>Status</th>
+                {# <th>More</th> #}
+            </tr>
+            </thead>
+            <tbody>
+            {% for rdv in Vaccinations  %}
+                <tr>
+                    <td>
+                        {{ rdv.dateRdv }}
+                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                    </td>
+                    <td>
+                        {{ rdv.detail }}
+                    </td>
+                    <td>
+                        {{ rdv.nom }} <br> {{ rdv.phone }}
+                    </td>
+                    <td>
+                        {% if rdv.etat==0 %}
+                            Non valide
+                        {% else %}
+                            Validé
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rdv.status==1 %}
+                            Fait
+                        {% else %}
+                            Pas Fait
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $("#example1").DataTable({
+            language: {
+                url: "{{ asset('vendor/datatables/lang.json') }}"
+            }
+        });
+    </script>
+{% endblock %}

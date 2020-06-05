@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}" />
+            <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}" />
+            <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+            <link rel="stylesheet" href="{{ asset('assets/css/component.css') }}" />
+        {% endblock %}
+    </head>
+    <body>
+        
+
+
+<!-- Content -->
+
+        <div class="body-page">
+            <div class="d-flex">
+                <!--nav-->
+                {% block nav %}
+                    {{ include('admin/include/nav_bar.html.twig') }}
+                {% endblock %}
+                <!--nav-->
+                <div class="col_exc_2">
+                    <!---header-->
+                    {% block header %}
+                        {{ include('admin/include/header.html.twig') }}
+                    {% endblock %}
+
+                    <!---header-->
+
+                    <!-- Container -->
+
+                    <div class="container">
+                        {% block body %}
+
+                        {% endblock %}
+                    </div>
+
+                    <!-- End Container  -->
+
+                </div>
+            </div>
+        </div>
+
+<!-- End Content -->
+
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
