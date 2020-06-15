@@ -96,9 +96,9 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         $role = $token->getRoleNames()[0];
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+        /*if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
-        }
+        }*/
         if($role=='ROLE_PATIENT'){
             return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PATIENT));
         }elseif($role=='ROLE_PRATICIEN'){

@@ -92,20 +92,21 @@ class Patient
      */
     private $rendeVous;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="patient_parent")
-     */
-    private $families;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="patient_child")
-     */
-    private $family_child;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $is_enceinte;
+
+    /**
+     * @ORM\OneToMany(targetEntity=GroupFamily::class, mappedBy="groupFamily")
+     */
+    private $groupFamily;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="family_child")
+     */
+    private $family_child;
 
     public function __construct()
     {
@@ -113,6 +114,7 @@ class Patient
         $this->rendeVous = new ArrayCollection();
         $this->families = new ArrayCollection();
         $this->family_child = new ArrayCollection();
+        $this->groupFamily = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -309,36 +311,6 @@ class Patient
         return $this;
     }
 
-    /**
-     * @return Collection|Family[]
-     */
-    public function getFamilies(): Collection
-    {
-        return $this->families;
-    }
-
-    public function addFamily(Family $family): self
-    {
-        if (!$this->families->contains($family)) {
-            $this->families[] = $family;
-            $family->setPatientParent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFamily(Family $family): self
-    {
-        if ($this->families->contains($family)) {
-            $this->families->removeElement($family);
-            // set the owning side to null (unless already changed)
-            if ($family->getPatientParent() === $this) {
-                $family->setPatientParent(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|Family[]
@@ -382,4 +354,36 @@ class Patient
 
         return $this;
     }
+
+    /**
+     * @return Collection|GroupFamily[]
+     */
+    public function getGroupFamily(): Collection
+    {
+        return $this->groupFamily;
+    }
+
+    public function addGroupFamily(GroupFamily $groupFamily): self
+    {
+        if (!$this->groupFamily->contains($groupFamily)) {
+            $this->groupFamily[] = $groupFamily;
+            $groupFamily->setGroupFamily($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroupFamily(GroupFamily $groupFamily): self
+    {
+        if ($this->groupFamily->contains($groupFamily)) {
+            $this->groupFamily->removeElement($groupFamily);
+            // set the owning side to null (unless already changed)
+            if ($groupFamily->getPatient() === $this) {
+                $groupFamily->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

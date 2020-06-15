@@ -47,4 +47,13 @@ class PraticienRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByPraticien()
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.user', 'u')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
 }

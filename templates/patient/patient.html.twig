@@ -24,12 +24,14 @@
 <script>
     var url = "{{ path('generate_vaccin_patient') }}";
     $("#generate").click(function () {
-        console.log(this);
+
         $.ajax({
             url: url,
             type: 'GET',
             success: (data) => {
-                console.log(data);
+                if(data == 'ok'){
+                    location.reload()
+                }
             },
             error: (e) => {
                 console.log(error);

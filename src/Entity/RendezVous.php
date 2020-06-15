@@ -40,7 +40,7 @@ class RendezVous
 
     /**
      * @ORM\ManyToOne(targetEntity=Vaccin::class, inversedBy="rendezVous")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $vaccin;
 

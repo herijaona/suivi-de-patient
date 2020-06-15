@@ -251,4 +251,5 @@ class Praticien
 
         return $this;
     }
+
 }

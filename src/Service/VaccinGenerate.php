@@ -20,11 +20,11 @@ class VaccinGenerate
         $this->vaccinRepository = $vaccinRepository;
     }
 
-    public function generateCalendar($patient,$birthday,$type_patient,$state,$praticien=null)
+    public function generateCalendar($patient,$birthday,$type_patient,$state,$praticien=null, $dateNow)
     {
         $etat = 0;
         if($praticien) $etat = 1;
-        $day_preg = date();
+        $day_preg =  $dateNow;
         if(strtoupper($state)=='CAMEROUN'){
             switch ($type_patient){
                 case 'ENFANT':

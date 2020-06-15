@@ -2,6 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Repository\PatientRepository;
+use App\Repository\PraticienRepository;
+use App\Service\VaccinGenerate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,6 +14,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
+
+    protected $vaccinGenerate;
+    protected $patientRepository;
+    protected $praticienRepository;
+    function __construct(VaccinGenerate $vaccinGenerate,PatientRepository $patientRepository,PraticienRepository $praticienRepository)
+    {
+        $this->vaccinGenerate = $vaccinGenerate;
+        $this->patientRepository = $patientRepository;
+        $this->praticienRepository = $praticienRepository;
+    }
     /**
      * @Route("/", name="admin")
      */
@@ -38,8 +51,11 @@ class AdminController extends AbstractController
      */
     public function praticiens_admin()
     {
+
+        $praticien = $this->praticienRepository->findByPraticien();
+
         return $this->render('admin/praticien.html.twig', [
-            'controller_name' => 'AdminController',
+            'praticiens' => $praticien,
         ]);
 
     }
@@ -49,8 +65,9 @@ class AdminController extends AbstractController
      */
     public function patients_admin()
     {
+        $patient = $this->patientRepository->findByPatient();
         return $this->render('admin/patient.html.twig', [
-            'controller_name' => 'AdminController',
+            'patients' => $patient,
         ]);
 
     }

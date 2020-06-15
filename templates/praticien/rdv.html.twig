@@ -1,0 +1,143 @@
+{% extends 'praticien/include/base.html.twig' %}
+{%  block title %}
+    Rendez-Vous
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Tous les rendez-vous</h4>
+        </div>
+        <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-danger" data-toggle="modal" data-target="#orangeModalSubscription">+ Creer rendez-vous</button>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Date rdv</th>
+                <th>Déscription</th>
+                <th>Patient</th>
+                <th>Validation</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for rdv in Consultations  %}
+                <tr>
+                    <td>
+                        {{ rdv.dateRdv |localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                    </td>
+                    <td>
+                        {{ rdv.detail }}
+                    </td>
+                    <td>
+                        {{ rdv.nom }} <br>
+                    </td>
+                    <td>
+                        {% if rdv.etat == 0 %}
+                            <button class="btn btn-danger active_etat_rdv" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" >Non valide</button>
+                        {% else %}
+                            Validé
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="orangeModalSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-notify modal-primary" role="document">
+            <!--Content-->
+
+            <div class="modal-content">
+                <!--Header-->
+                <div class="modal-header text-center">
+                    <h4 class="modal-title white-text w-100 font-weight-bold py-2">Rendez-Vous</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" class="white-text">&times;</span>
+                    </button>
+                </div>
+                <form action="{{ path('register_rdv') }}" method="post">
+                    <!--Body-->
+
+                    <div class="modal-body">
+
+                        <input type="hidden" name="type_id" id="form1" class="form-control" value="{{ type }}">
+                        <div class="md-form mb-5">
+                            <label class="active">Docteur</label>
+                            <select class="mdb-select md-form" name="doctor" editable="true" searchable="Rechercher le nom du docteur..." required>
+                                <option value="" disabled selected>Choisissez votre médecin</option>
+                                {% for doc in Doctors %}
+                                    <option value="{{ doc.id }}">{{doc.firstName}} {{doc.lastName}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="md-form mb-5">
+                            <input type="datetime-local" id="form1" name="date" class="form-control" required>
+                            <label class="active" for="form1">Date rendez-vous</label>
+                        </div>
+                        <div class="md-form">
+                            <textarea id="form103" name="description" class="md-textarea form-control" rows="2" required></textarea>
+                            <label for="form103" class="">Déscription</label>
+                        </div>
+                    </div>
+
+                    <!--Footer-->
+                    <div class="modal-footer justify-content-center">
+                        <button type="submit" class="btn btn-outline-primary waves-effect">Enregistrer <i class="fas fa-paper-plane-o ml-1"></i></button>
+                    </div>
+
+                </form>
+            </div>
+            <!--/.Content-->
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $("#example1").DataTable({
+            language: {
+                url: "{{ asset('vendor/datatables/lang.json') }}"
+            }
+        });
+        $('.mdb-select').materialSelect();
+        $('.active_etat_rdv').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var etat = $(this).data('etat');
+           $.ajax({
+               url: "{{ path('update_status_rdv') }}",
+               type: 'post',
+               data: {
+                   'id_rdv': id,
+                   'etat': etat
+               },
+               dataType: "json",
+               success: (data) =>{
+                   if(data.status == 'OK' ){
+                       location.reload();
+                   }
+               },
+               error: (e) => {
+                   console.log(e.statusText);
+               }
+           }).done(() => {
+
+           });
+
+        })
+
+    </script>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'patient/include/base.html.twig' %}
+{%  block title %}
+    Groupe - Familiale
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <style>
+        .close {
+            line-height: 1.5 !important;
+            padding: .84rem 2.14rem !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Tous les membres de Famille</h4>
+        </div>
+        <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-danger" data-toggle="modal" data-target="#orangeModalSubscription">+ Nouveau Famille</button>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Nom </th>
+                <th>Prénoms</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for membre in membres  %}
+                <tr>
+                    <td>
+                        {{ membre.firstName }}
+                    </td>
+                    <td>
+                        {{ membre.lastName }}
+                    </td>
+                    <td>
+                        <span class="delete_membres_group" data-id-group="{{ group.id }}" data-id-mmb="{{ membre.id }}"><i class="fa fa-trash"></i></span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="orangeModalSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-notify modal-primary" role="document">
+            <!--Content-->
+            <form action="{{ path('add_new_membres_group') }}" method="post">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title white-text w-100 font-weight-bold py-2 title_modal">Ajouter nouveau membre</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="white-text">&times;</span>
+                        </button>
+                    </div>
+
+                    <!--Body-->
+
+                    <div class="modal-body">
+                        <input type="hidden" name="group_id" id="group_id" class="form-control" value="{{ group.id }}" >
+                        <div class="md-form mb-5">
+                            <label  for="group_name" class="active">Nouveau Membre</label>
+                            <select class="mdb-select md-form " name="patient" editable="true" searchable="Rechercher le nom du patient..." required>
+                                <option value="" disabled selected>Choisissez nouveau membre</option>
+                                {% for patient in patients %}
+                                    <option value="{{ patient.id }}">{{patient.firstName}} {{patient.lastName}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--Footer-->
+                    <div class="modal-footer justify-content-center">
+                        <button  data-dismiss="modal" class="btn btn-outline-danger waves-effect close">Annuler <i class="fas fa-paper-plane-o ml-1"></i></button>
+                        <button type="submit" class="btn btn-outline-primary waves-effect">Enregistrer <i class="fas fa-paper-plane-o ml-1"></i></button>
+                    </div>
+                </div>
+            </form>
+            <!--/.Content-->
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $("#example1").DataTable({
+            language: {
+                url: "{{ asset('vendor/datatables/lang.json') }}"
+            }
+        });
+
+        $('.delete_membres_group').on('click', function (e) {
+            e.preventDefault();
+            var id_group = $(this).data('id-group');
+            var id_membre = $(this).data('id-mmb');
+            var result = confirm("Êtes-vous sûr de vouloir supprimer dans cet groupe ?");
+            if (result) {
+                var url = "{{ path('delete_membres_group') }}";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {id_group: id_group, id_membre: id_membre},
+                    success: (data) => {
+                        if(data.status){
+                            location.reload()
+                        }
+                    },
+                    error: (e) => {
+                        console.log(error);
+                    }
+                }).done(() => {
+                });
+            }else {
+                return false;
+            }
+        });
+    </script>
+{% endblock %}

@@ -1,3 +1,4 @@
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <div class="col_exc_1">
     <h4 class="h4_patient">Espace Admin</h4>
     <div class="mt-4">
@@ -7,10 +8,10 @@
             <label>Administrator</label>
         </div>
         <ul class="menu_suivi">
-            <li class="active"><a href="{{ path('admin') }}">Dashboard</a></li>
-            <li><a href="{{ path('vaccin_admin') }}">Calendrier Vaccination</a></li>
-            <li><a href="{{ path('praticiens_admin') }}">Liste des praticiens</a></li>
-            <li><a href="{{ path('patients_admin') }}">Liste des patients</a></li>
+            <li class="{{ (currentPath == path('admin')) ? 'active' }}"><a href="{{ path('admin') }}">Dashboard</a></li>
+            <li class="{{ (currentPath == path('vaccin_admin')) ? 'active' }}"><a href="{{ path('vaccin_admin') }}">Calendrier Vaccination</a></li>
+            <li class="{{ (currentPath == path('praticiens_admin')) ? 'active' }}"><a href="{{ path('praticiens_admin') }}">Liste des praticiens</a></li>
+            <li class="{{ (currentPath == path('patients_admin')) ? 'active' }}"><a href="{{ path('patients_admin') }}">Liste des patients</a></li>
         </ul>
         <ul class="logout_footer">
             <li>

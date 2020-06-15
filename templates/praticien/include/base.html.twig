@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/mdb.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/component.css') }}" />
+        <link href="{{ asset('vendor/fullcalendar/packages/core/main.css') }}" rel='stylesheet' />
+        <link href="{{ asset('vendor/fullcalendar/packages/daygrid/main.css') }}" rel='stylesheet' />
+        <link href="{{ asset('vendor/fullcalendar/packages/timegrid/main.css') }}" rel='stylesheet' />
+        <link href="{{ asset('vendor/fullcalendar/packages/list/main.css') }}" rel='stylesheet' />
+    {% endblock %}
+</head>
+<body>
+
+
+<!-- Content -->
+
+<div class="body-page">
+    <div class="d-flex">
+        <!--nav-->
+        {% block nav %}
+            {{ include('praticien/include/sidebar.html.twig') }}
+        {% endblock %}
+        <!--nav-->
+        <div class="col_exc_2">
+            <!---header-->
+            {% block header %}
+                {{ include('praticien/include/header.html.twig') }}
+            {% endblock %}
+
+            <!---header-->
+
+            <!-- Container -->
+
+            <div class="container-fluid">
+                {% block body %}
+
+                {% endblock %}
+            </div>
+
+            <!-- End Container  -->
+            <footer>
+
+            </footer>
+        </div>
+    </div>
+</div>
+
+<!-- End Content -->
+<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+<script src="{{ asset('assets/js/popper.min.js') }}"></script>
+<script src="{{ asset('assets/js/mdb.min.js') }}"></script>
+<script src="{{ asset('vendor/fullcalendar/packages/core/main.js') }}"></script>
+<script src="{{ asset('vendor/fullcalendar/packages/interaction/main.js') }}"></script>
+<script src="{{ asset('vendor/fullcalendar/packages/core/locales-all.js') }}"></script>
+<script src="{{ asset('vendor/fullcalendar/packages/daygrid/main.js') }}"></script>
+<script src="{{ asset('vendor/fullcalendar/packages/timegrid/main.js') }}"></script>
+<script src="{{ asset('vendor/fullcalendar/packages/list/main.js') }}"></script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

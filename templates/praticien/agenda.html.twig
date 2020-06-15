@@ -1,0 +1,68 @@
+{% extends 'praticien/include/base.html.twig' %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .fc-dayGrid-view .fc-body .fc-row {
+            min-height: 7em;
+        }
+        .fc-header-toolbar {
+            padding-top: 1em;
+            padding-left: 1em;
+            padding-right: 1em;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div id='calendar-container'>
+        <div id='calendar'></div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var url = "{{ path('generate_vaccin_patient') }}";
+        $("#generate").click(function () {
+            console.log(this);
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: (data) => {
+                    console.log(data);
+                },
+                error: (e) => {
+                    console.log(error);
+                }
+            }).done(() => {
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+                height: 'parent',
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'timeGridDay,timeGridWeek,dayGridMonth'
+                },
+                defaultView: 'dayGridMonth',
+                defaultDate: new Date(),
+                locale:'fr',
+                navLinks: true, // can click day/week names to navigate views
+                editable: false,
+                eventClick(arg) {
+                    console.log(arg)
+                },
+                eventLimit: true, // allow "more" link when too many events
+                events: {{ Events|json_encode()|raw }}
+            });
+
+            calendar.render();
+        });
+    </script>
+
+
+{% endblock %}

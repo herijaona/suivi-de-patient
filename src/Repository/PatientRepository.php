@@ -48,4 +48,14 @@ class PatientRepository extends ServiceEntityRepository
     }
     */
 
+    public function findByPatient()
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.user', 'u')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
 }

@@ -8,7 +8,9 @@
         <ul class="menu_suivi">
             <li {% if app.request.get('_route') == 'patient' %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li>
             <li {% if app.request.get('_route') == 'consultaion_patient' %} class="active" {% endif %} ><a href="{{ path('consultaion_patient') }}">Consultation</a></li>
-            <li {% if app.request.get('_route') == 'vaccination_patient' %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">Vaccination</a></li>
+            <li {% if app.request.get('_route') == 'vaccination_patient' %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">Calendrier de Vaccination</a></li>
+            <li {% if app.request.get('_route') == 'rdv_patient' %} class="active" {% endif %}><a href="{{ path('rdv_patient') }}">Rendez-Vous</a></li>
+            <li {% if app.request.get('_route') == 'group_patient' or app.request.get('_route')== 'see_my_group' %} class="active" {% endif %}><a href="{{ path('group_patient') }}">Groupe Famille</a></li>
         </ul>
         <ul class="logout_footer">
             <li>

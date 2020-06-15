@@ -1,0 +1,124 @@
+{% extends 'praticien/include/base.html.twig' %}
+{%  block title %}
+    Vaccination
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Tous les vaccinations</h4>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Date vaccination</th>
+                <th>Détail</th>
+                <th>Patient</th>
+                <th>Validation</th>
+                <th>Status</th>
+                {# <th>More</th> #}
+            </tr>
+            </thead>
+            <tbody>
+            {% for rdv in Vaccinations  %}
+                <tr>
+                    <td>
+                        {{ rdv.dateRdv|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                    </td>
+                    <td>
+                        {{ rdv.detail }}
+                    </td>
+                    <td>
+                        {{ rdv.nom }} <br>
+                    </td>
+                    <td>
+                        {% if rdv.etat == 0 %}
+                            <button class="btn btn-danger active_etat_rdv" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" >Non valide</button>
+                        {% else %}
+                            <button class="btn btn-green" >Validé</button>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rdv.status == 0 %}
+                            <button class="btn btn-deep-orange active_status_rdv" data-id="{{ rdv.id }}" data-status="{{ rdv.status }}" >Pas Fait</button>
+                        {% else %}
+                            <button class="btn btn-green" >Fait</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $("#example1").DataTable({
+            language: {
+                url: "{{ asset('vendor/datatables/lang.json') }}"
+            }
+        });
+
+        $('.active_etat_rdv').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var etat = $(this).data('etat');
+            $.ajax({
+                url: "{{ path('update_etat_rdv') }}",
+                type: 'post',
+                data: {
+                    'id_rdv': id,
+                    'etat': etat
+                },
+                dataType: "json",
+                success: (data) =>{
+                    if(data.status == 'OK' ){
+                        location.reload();
+                    }
+                },
+                error: (e) => {
+                    console.log(e.statusText);
+                }
+            }).done(() => {
+
+            });
+        });
+
+        $('.active_status_rdv').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var status = $(this).data('status');
+
+            $.ajax({
+                url: "{{ path('update_status_rdv') }}",
+                type: 'post',
+                data: {
+                    'id_rdv': id,
+                    'status': status
+                },
+                dataType: "json",
+                success: (data) =>{
+                    if(data.status == 'OK' ){
+                        location.reload();
+                    }
+                },
+                error: (e) => {
+                    console.log(e.statusText);
+                }
+            }).done(() => {
+
+            });
+        });
+    </script>
+{% endblock %}

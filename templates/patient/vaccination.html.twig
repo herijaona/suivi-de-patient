@@ -29,14 +29,14 @@
             {% for rdv in Vaccinations  %}
                 <tr>
                     <td>
-                        {{ rdv.dateRdv }}
+                        {{ rdv.dateRdv|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
                         {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
                     </td>
                     <td>
                         {{ rdv.detail }}
                     </td>
                     <td>
-                        {{ rdv.nom }} <br> {{ rdv.phone }}
+                        {{ rdv.nom }} <br>
                     </td>
                     <td>
                         {% if rdv.etat==0 %}

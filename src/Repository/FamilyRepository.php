@@ -47,4 +47,34 @@ class FamilyRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByPatientParent($parent = null)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery('SELECT f.id, pp.id as ppid, pc.id as pcid, pp.first_name as pc_first_name, pp.last_name as pc_last_name
+            FROM App\Entity\Family f
+            LEFT JOIN App\Entity\Patient pp with pp.id = f.patient_parent
+            LEFT JOIN App\Entity\Patient pc with pc.id = f.patient_child 
+            WHERE pp.id = :parent')
+            ->setParameter('parent', $parent);
+        return $query->getResult();
+
+    }
+
+    public function getPatientByIdFamily($groupeId, $notPatient) {
+        $qb = $this->createQueryBuilder('f');
+        $qb->join('f.group_family', 'g')
+            ->addSelect('g')
+            ->join('f.patient_child', 'pc')
+            ->addSelect('pc')
+            ->add('where', $qb->expr()->eq('g.id', ':groupeId'))
+            //->where("g.id", ":groupeId")
+            ->andWhere($qb->expr()->notIn('pc.id',':notPatient'))
+            ->setParameter('groupeId', $groupeId)
+            ->setParameter('notPatient',  $notPatient);
+
+
+        return $qb->getQuery()->getResult();
+    }
 }

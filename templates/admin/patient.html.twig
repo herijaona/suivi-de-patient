@@ -1,82 +1,69 @@
 {% extends 'admin/include/base.html.twig' %}
 
 {% block title %}Patient{% endblock %}
-
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+{% endblock %}
 {% block body %}
 
 
-<!-- Content -->
+    <!-- Content -->
 
-<div class="row head-table col-md-12">
-    <div class="grid-title-table col-md-9 mt-4">
-        <h4 class="h4-content">Liste des patients</h4>
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Liste des patients</h4>
+        </div>
+        <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-info">+ Add membres</button>
+            <button class="btn btn-danger">+ Creer patient</button>
+        </div>
     </div>
-    <div class="grid-edit-btn col-md-3 mt-3">
-        <button class="btn btn-info">+ Add membres</button>
-        <button class="btn btn-danger">+ Creer patient</button>
-    </div>
-</div>
-<div class="d-flex table-input-up">
-    <div class="form-group d-flex pr-4">
-        <label for="exampleFormControlSelect1">Afficher :</label>
-        <select class="form-control select1" id="exampleFormControlSelect1">
-          <option>1</option>
-          <option>5</option>
-          <option>10</option>
-        </select>
-    </div>
-    <div class="form-group d-flex">
-        <label for="exampleFormControlSelect1">Trier par :</label>
-        <select class="form-control select1" id="exampleFormControlSelect1">
-            <option>Femme enceinte</option>
-            <option>Nouveaux-nees</option>
-            <option>Homme</option>
-        </select>
-    </div>
-</div>
-<div class="row-table table-content">
-    <table class="table table-striped">
-        <thead>
+
+    <div class="row-table table-content">
+        <table class="table table-striped" id="patient">
+            <thead>
             <tr>
                 <th>Nom et prenom</th>
                 <th>Telephone</th>
-                <th>Type</th>
-                <th>Sexe</th>
+                <th>E-mail</th>
                 <th>Date de naissance</th>
-                <th>Calendrier vaccinal</th>
                 <th>Actions</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><a href="#">Gomez Maria</a></td>
-                <td>Maria</td>
-                <td>Maria@gmail.com</td>
-                <td>Femme</td>
-                <td>05/04/2020</td>
-                <td>05/04/2020</td>
-                <td>
-                    <i class="fas fa-eye"></i>
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-ellipsis-v"></i>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div class="navigation">
-    <nav aria-label="Page">
-        <ul class="pagination">
-            <li class="page-item" id="prev"><a class="page-link" href="#"><i class="fa fa-chevron-left"></i></a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item" id="next"><a class="page-link" href="#"><i class="fa fa-chevron-right"></i></a></li>
-        </ul>
-    </nav>
-</div>
+            </thead>
+            <tbody>
+            {% for patient in patients %}
+                <tr>
+                    <td><a href="#">{{ patient.lastname }}</a></td>
+                    <td>{{ patient.firstname }}</td>
+                    <td>{{ patient.user.email }}</td>
+                    <td>{{ patient.dateborn|date("d/m/Y") }}</td>
+                    <td>
+                        <i class="fas fa-eye"></i>
+                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-ellipsis-v"></i>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-<!-- End Content -->
+    <!-- End Content -->
 
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    {{ parent() }}
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $("#patient").DataTable({
+            language: {
+                url: "{{ asset('vendor/datatables/lang.json') }}"
+            }
+        });
+    </script>
 {% endblock %}
  
