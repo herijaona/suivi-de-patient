@@ -69,7 +69,6 @@ class FamilyRepository extends ServiceEntityRepository
             ->join('f.patient_child', 'pc')
             ->addSelect('pc')
             ->add('where', $qb->expr()->eq('g.id', ':groupeId'))
-            //->where("g.id", ":groupeId")
             ->andWhere($qb->expr()->notIn('pc.id',':notPatient'))
             ->setParameter('groupeId', $groupeId)
             ->setParameter('notPatient',  $notPatient);

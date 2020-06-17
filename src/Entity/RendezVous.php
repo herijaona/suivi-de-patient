@@ -29,12 +29,13 @@ class RendezVous
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="rendeVous")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $patient;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="rendezVous")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $praticien;
 

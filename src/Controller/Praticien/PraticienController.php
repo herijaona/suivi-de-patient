@@ -2,6 +2,8 @@
 
 namespace App\Controller\Praticien;
 
+use App\Entity\RendezVous;
+use App\Form\ConsultationPraticienType;
 use App\Repository\FamilyRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
@@ -52,14 +54,28 @@ class PraticienController extends AbstractController
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $all_rdv = $praticien->getRendezVous();
+        $all_rdv = $this->rendezVousRepository->findCalendarPraticien($praticien->getId());
+
         $event = [];
         foreach ($all_rdv as $rdv){
+            $color = '#fcb41d';
+            if($rdv->getEtat() == 0){
+                $color = '#fcb41d';
+            }else if ($rdv->getStatus() == 1){
+                $color = '#51c81c';
+            }else if($rdv->getType() == 1){
+                $color = '#3794fc';
+            }else if($rdv->getType() == 2){
+                $color = '#ec37fc';
+            }else if($rdv->getType() == 3){
+                $color = '#fc381d';
+            }
             $element = [
-                'title'=>($rdv->getVaccin() != null && $rdv->getVaccin()->getVaccinName() != null) ? $rdv->getVaccin()->getVaccinName() : ($rdv->getType() == 2 ? "Demander de consultation" : ($rdv->getType() == 3 ? 'Demander de Rendez-vous': '')),
-                'start'=>$rdv->getDateRdv()->format('Y-m-d'),
-                'id'=>$rdv->getId(),
-                'color'=> $rdv->getEtat() == 0 ? '#1e7e34':'#1fdc25'
+                'id' => $rdv->getId(),
+                'title' => ($rdv->getVaccin() != null && $rdv->getVaccin()->getVaccinName() != null) ? $rdv->getVaccin()->getVaccinName() : $rdv->getDescription() .' - '. (($rdv->getPatient() != null && $rdv->getPatient()->getFirstName() != null) ? $rdv->getPatient()->getFirstName() : 'Proposition Consultation'),
+                'start' => $rdv->getDateRdv()->format('Y-m-d'),
+                'id' => $rdv->getId(),
+                'color' => $color
             ];
             array_push($event,$element);
         }
@@ -77,27 +93,12 @@ class PraticienController extends AbstractController
             return $this->redirectToRoute('homepage');
         }
         $user = $this->getUser();
-        $patient = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $all_rdv = $patient->getRendezVous();
-        $data =[];
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
-        foreach ($all_rdv as $rdv){
-            if($rdv->getType() == 2){
-                $rdv->detail = $rdv->getDescription();
-                //$rdv->dateRdv = Carbon::parse($rdv->getDateRdv())->locale('fr_FR')->isoFormat('dddd d MMMM Y');
-                if($rdv->getPatient()){
-                    $rdv->nom = $rdv->getPatient()->getFirstName()." ".$rdv->getPatient()->getLastName();
-                    $rdv->phone = $rdv->getPatient()->getPhone();
-                }else{
-                    $rdv->nom  = "";
-                    $rdv->phone = "";
-                }
-                array_push($data,$rdv);
-            }
-        }
+        $all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 2);
 
         return $this->render('praticien/consultation.html.twig', [
-            'Consultations' => $data,
+            'Consultations' => $all_rdv,
             'Doctors' => $doctor,
             'type' => 2
         ]);
@@ -112,30 +113,13 @@ class PraticienController extends AbstractController
             return $this->redirectToRoute('homepage');
         }
         $user = $this->getUser();
-        $patient = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $all_rdv = $patient->getRendezVous();
-        $data =[];
-        foreach ($all_rdv as $rdv){
-            if($rdv->getType() == 1){
-                $rdv->detail = $rdv->getVaccin()->getVaccinName();
-                //$rdv->dateRdv = Carbon::parse($rdv->getDateRdv())->locale('fr_FR')->isoFormat('dddd d MMMM Y');
-                if($rdv->getPatient()){
-                    $rdv->nom = $rdv->getPatient()->getFirstName()." ".$rdv->getPatient()->getLastName();
-                    $rdv->phone = $rdv->getPatient()->getPhone();
-                }else{
-                    $rdv->nom  = "";
-                    $rdv->phone = "";
-                }
-                array_push($data,$rdv);
-            }
-        }
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 1);
         return $this->render('praticien/vaccination.html.twig', [
-            'Vaccinations'=>$data,
+            'Vaccinations' => $all_rdv,
             'type' => 1
         ]);
     }
-
-
 
     /**
      * @Route("/rdv", name="rdv_praticien")
@@ -146,28 +130,14 @@ class PraticienController extends AbstractController
             return $this->redirectToRoute('homepage');
         }
         $user = $this->getUser();
-        $patient = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $all_rdv = $patient->getRendezVous();
-        $data =[];
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+
         $doctor = $this->praticienRepository->findAll();
 
-        foreach ($all_rdv as $rdv){
-            if($rdv->getType() == 3){
-                $rdv->detail = $rdv->getDescription();
-                //$rdv->dateRdv = Carbon::parse($rdv->getDateRdv())->format('d/m/y')->locale('fr_FR')->isoFormat('dddd d MMMM Y');
-                if($rdv->getPatient()){
-                    $rdv->nom = $rdv->getPatient()->getFirstName()." ".$rdv->getPatient()->getLastName();
-                    $rdv->phone = $rdv->getPatient()->getPhone();
-                }else{
-                    $rdv->nom  = "";
-                    $rdv->phone = "";
-                }
-                array_push($data,$rdv);
-            }
-        }
+        $all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 3);
 
         return $this->render('praticien/rdv.html.twig', [
-            'Consultations' => $data,
+            'Consultations' => $all_rdv,
             'Doctors' => $doctor,
             'type' => 3
         ]);
@@ -178,15 +148,22 @@ class PraticienController extends AbstractController
      */
     public function update_etat_rdv(Request $request)
     {
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $Rdv = $this->rendezVousRepository->find($request->request->get("id_rdv"));
-        if ($request->request->get("etat") == 0){
-            $Rdv->setEtat(true);
-        }elseif ($request->request->get("etat") == 1){
-            $Rdv->setEtat(false);
+        if ($Rdv){
+            if ($Rdv->getPraticien() == null){
+                $Rdv->setPraticien($praticien);
+            }
+            if ($request->request->get("etat") == 0){
+                $Rdv->setEtat(true);
+            }elseif ($request->request->get("etat") == 1){
+                $Rdv->setEtat(false);
+            }
         }
-
         $this->entityManager->persist($Rdv);
         $this->entityManager->flush();
+        $this->addFlash('success', 'Changement effectué avec succès');
         return new JsonResponse(['status' => 'OK']);
     }
 
@@ -195,16 +172,87 @@ class PraticienController extends AbstractController
      */
     public function update_status_rdv(Request $request)
     {
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $Rdv = $this->rendezVousRepository->find($request->request->get("id_rdv"));
-        //dd($Rdv, $request->request->get("id_rdv"), $request->request->get("status"));
+
+        if ($Rdv && $Rdv->getPraticien() != null && $Rdv->getPraticien()->getId() == $praticien->getId()){
             if ($request->request->get("status") == 0){
                 $Rdv->setStatus(1);
             }elseif ($request->request->get("status") == 1){
                 $Rdv->setStatus(0);
             }
-        $this->entityManager->persist($Rdv);
-        $this->entityManager->flush();
+            $this->entityManager->persist($Rdv);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Changement effectué avec succès');
+        }else{
+            $this->addFlash('error', 'Vous n\'êtes pas d\'accès à cette évenement ');
+        }
         return new JsonResponse(['status' => 'OK']);
+    }
+
+    /**
+     * @Route("/form-add", name="add_form_rdv")
+     */
+    public function add_form_rdv(Request $request)
+    {
+
+        $action = $request->request->get('action');
+        $eventData = [];
+        $eventData['type_id'] = 2;
+        $form = $this->createForm(ConsultationPraticienType::class, $eventData);
+
+        if ($action == "new") {
+            $response = $this->renderView('praticien/modal/new_consultation.html.twig', [
+                'new' => true,
+                'form' => $form->createView(),
+                'eventData' => $eventData,
+            ]);
+        } else {
+
+            $response = $this->renderView('praticien/modal/new_consultation.html.twig', [
+                'new' => false,
+                'form' => $form->createView(),
+                'eventData' => $eventData,
+            ]);
+        }
+        $form->handleRequest($request);
+        return new JsonResponse(['form_consultation_html' => $response]);
+    }
+
+    /**
+     * @Route("/register-rdv-praticien", name="register_rdv_praticien")
+     */
+    public function register_rdv_praticien(Request $request)
+    {
+
+        $consultation_praticien = $request->request->get("consultation_praticien");
+        $type_id = $consultation_praticien['type_id'];
+        $date = $consultation_praticien['date_consultation'];
+        $description = $consultation_praticien['description'];
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $rdv_date = str_replace("/", "-", $date);
+
+        $Date_Rdv = new \DateTime(date ("Y-m-d", strtotime ($rdv_date)));
+
+        $rdv = new RendezVous();
+        $rdv->setPraticien($praticien);
+        $rdv->setDescription($description);
+        $rdv->setType($type_id);
+        $rdv->setDateRdv($Date_Rdv);
+        $rdv->setPatient(null);
+        $rdv->setVaccin(null);
+        $this->entityManager->persist($rdv);
+        $this->entityManager->flush();
+        if ($type_id == 1 ){
+            return $this->redirectToRoute('vaccination_praticien');
+        }elseif ($type_id == 2 ){
+            return $this->redirectToRoute('consultaion_praticien');
+        }elseif ($type_id == 3){
+            return $this->redirectToRoute('rdv_praticien');
+        }
+
     }
 
 }

@@ -36,32 +36,91 @@
             }).done(() => {
             });
         });
+        $(document).ready(function () {
+            /*$('#demo').spectrum({
+                showPaletteOnly: true,
+                palette: ["#1abc9c", "#16a085", "#2ecc71", "#27ae60", "#3498db", "#2980b9", "#9b59b6", "#8e44ad", "#34495e", "#2c3e50", "#f1c40f", "#f39c12", "#e67e22", "#d35400", "#e74c3c", "#c0392b", "#ecf0f1"]
+            });*/
+            $('#external-events div.external-event').each(function () {
 
-        document.addEventListener('DOMContentLoaded', function() {
+                // store data so the calendar knows to render an event upon drop
+                $(this).data('event', {
+                    title: $.trim($(this).text()), // use the element's text as the event title
+                    stick: true // maintain when user navigates (see docs on the renderEvent method)
+                });
+
+                // make the event draggable using jQuery UI
+                $(this).draggable({
+                    zIndex: 1111999,
+                    revert: true,      // will cause the event to go back to its
+                    revertDuration: 0  //  original position after the drag
+                });
+
+            });
             var calendarEl = document.getElementById('calendar');
-
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
                 height: 'parent',
+                defaultView: 'dayGridMonth',
+                defaultDate: new Date(),
+                editable: true,
+                dayMaxEvents: true,
+                droppable: true,
+                selectable: true,
+                selectMirror: true,
+                nowIndicator: true,
+                eventLimit: true,
+                locale:'fr',
+                firstDay: 1,
+                slotLabelFormat: "HH:mm",
+                axisFormat: 'HH:mm',
+                eventTimeFormat: 'HH:mm',
                 header: {
                     left: 'prev,next today',
                     center: 'title',
                     right: 'timeGridDay,timeGridWeek,dayGridMonth'
                 },
-                defaultView: 'dayGridMonth',
-                defaultDate: new Date(),
-                locale:'fr',
-                navLinks: true, // can click day/week names to navigate views
-                editable: false,
-                eventClick(arg) {
-                    console.log(arg)
+               /* buttonIcons: {
+                    prev: 'left-single-arrow',
+                    next: 'right-single-arrow',
+                },*/
+                buttonText: {
+                    today: "Aujourd'hui",
+                    year: "Année",
+                    month: "Mois",
+                    week: "Semaine",
+                    day: "Jour",
                 },
-                eventLimit: true, // allow "more" link when too many events
-                events: {{ Events|json_encode()|raw }}
+                columnFormat: {
+                    month: 'dddd',
+                    week: 'ddd D/M',
+                    day: 'dddd D/M'
+                },
+                events: {{ Events|json_encode()|raw }},
+                select: function(arg) {
+                    var title = prompt('Event Title:');
+                    if (title) {
+                        calendar.addEvent({
+                            title: title,
+                            start: arg.start,
+                            end: arg.end,
+                            allDay: arg.allDay
+                        })
+                    }
+                    calendar.unselect()
+                },
+                eventClick: function(event, jsEvent) {
+                    jsEvent.preventDefault() // don't navigate in main tab
+                    console.log(event)
+                    //window.open(arg.event.url, 'google-calendar-event', 'width=700,height=600');
+                }
             });
 
             calendar.render();
         });
+
+
+
     </script>
 
 

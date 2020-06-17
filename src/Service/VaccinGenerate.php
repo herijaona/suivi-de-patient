@@ -28,14 +28,14 @@ class VaccinGenerate
         if(strtoupper($state)=='CAMEROUN'){
             switch ($type_patient){
                 case 'ENFANT':
-                    $this->ca_vaccin_enfant($patient,$birthday,'Antituberculeux : B.C.G',1,$etat,$praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'DTC – HepB + Hib 1',6,$etat,$praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'DTC-HepB2 + Hib2',10,$etat,$praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'DTC-HepB2 + Hib3',14,$etat,$praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'Pneumo 13-1 (VPO-1 + Rota1)',6,$etat,$praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'Pneumo 13-2 (VPO-2 + Rota2)',10,$etat,$praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'Pneumo 13-3 (VPO-3)',14,$etat,$praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'VAR + VAA',36,$etat,$praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'Antituberculeux : B.C.G',1, $etat, $praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'DTC – HepB + Hib 1',6, $etat, $praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'DTC-HepB2 + Hib2',10, $etat, $praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'DTC-HepB2 + Hib3',14, $etat, $praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'Pneumo 13-1 (VPO-1 + Rota1)',6, $etat, $praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'Pneumo 13-2 (VPO-2 + Rota2)',10, $etat, $praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'Pneumo 13-3 (VPO-3)',14, $etat, $praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'VAR + VAA',36, $etat, $praticien);
                     break;
                 case 'ADULTE':
                     $this->ca_vaccin_adulte($patient,$birthday,$etat,$patient);

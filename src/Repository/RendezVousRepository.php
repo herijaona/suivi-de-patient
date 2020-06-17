@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\RendezVous;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -47,4 +48,48 @@ class RendezVousRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findRdvBy($praticien, $type, $status = 0)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT r
+            FROM App\Entity\RendezVous r
+            LEFT JOIN App\Entity\Praticien p with p.id = r.praticien
+            LEFT JOIN App\Entity\Patient pp with pp.id = r.patient
+            WHERE (p.id = :praticien OR p.id IS NULL) AND r.type = :type AND r.status = :status
+            ORDER BY r.date_rdv ASC')
+            ->setParameter('praticien', $praticien)
+            ->setParameter('type', $type)
+            ->setParameter('status', $status);
+        return $query->getResult();
+    }
+
+    public function findCalendarPraticien($praticien, $status = 0)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT r
+            FROM App\Entity\RendezVous r
+            LEFT JOIN App\Entity\Praticien p with p.id = r.praticien
+            LEFT JOIN App\Entity\Patient pp with pp.id = r.patient
+            WHERE p.id = :praticien  AND r.status = :status
+            ORDER BY r.date_rdv ASC')
+            ->setParameter('praticien', $praticien)
+            ->setParameter('status', $status);
+        return $query->getResult();
+    }
+
+    public function findNotification($type, $status = 0)
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT r
+            FROM App\Entity\RendezVous r
+            LEFT JOIN App\Entity\Praticien p with p.id = r.praticien
+            LEFT JOIN App\Entity\Patient pp with pp.id = r.patient
+            WHERE pp.id IS NULL AND r.type = :type AND r.status = :status AND r.date_rdv >= :now
+            ORDER BY r.date_rdv ASC')
+            ->setParameter('type', $type)
+            ->setParameter('status', $status)
+            ->setParameter('now', new \DateTime('now'));
+        return $query->getResult();
+    }
 }

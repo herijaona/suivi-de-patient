@@ -1,0 +1,41 @@
+<!--Header-->
+
+<div class="modal-header text-center">
+    <h4 class="modal-title white-text w-100 font-weight-bold py-2">Nouveau Consultation</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="white-text">&times;</span>
+    </button>
+</div>
+<!--Content-->
+{{ form_start(form, {'attr': {'action': path('register_rdv_praticien'), 'id': 'new_consultation' }}) }}
+    <!--Body-->
+    <div class="modal-body">
+        {{ form_row(form.type_id) }}
+        <div class="md-form mb-5">
+            {{ form_widget(form.date_consultation, { 'attr' : { 'id':'form1', 'class': 'form-control', 'required': 'required'} })}}
+            <label class="active" for="form1">Date consultation</label>
+        </div>
+        <div class="md-form">
+            {{ form_widget(form.description, {'attr': {'id': 'form103', 'class': 'md-textarea form-control', 'rows': '2', 'required': 'required'} }) }}
+            <label for="form103" class="">Déscription</label>
+        </div>
+    </div>
+{{ form_end(form) }}
+<!--Footer-->
+<div class="modal-footer justify-content-center">
+    <button type="submit" class="btn btn-outline-primary waves-effect submit_new_consultation">Enregistrer <i class="fas fa-paper-plane-o ml-1"></i></button>
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.submit_new_consultation').on('click', function (e) {
+            e.preventDefault();
+            $('#new_consultation').submit();
+        })
+        $('#consultation_praticien_date_consultation').datepicker({
+            format: 'dd/mm/yyyy',
+            autoclose: true,
+        });
+    });
+</script>

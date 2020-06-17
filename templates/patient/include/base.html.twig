@@ -12,6 +12,9 @@
         <link href="{{ asset('vendor/fullcalendar/packages/daygrid/main.css') }}" rel='stylesheet' />
         <link href="{{ asset('vendor/fullcalendar/packages/timegrid/main.css') }}" rel='stylesheet' />
         <link href="{{ asset('vendor/fullcalendar/packages/list/main.css') }}" rel='stylesheet' />
+        <link rel="stylesheet" type="text/css" href="{{  asset('vendor/sweetalert2/toastr.scss') }}" />
+        <link rel="stylesheet" type="text/css" href="{{  asset('vendor/sweetalert2/bootstrap-4.min.css') }}" />
+        <link href="{{ asset('vendor/datapicker/datepicker3.css') }}" rel="stylesheet">
     {% endblock %}
 </head>
 <body>
@@ -33,7 +36,15 @@
             {% endblock %}
 
             <!---header-->
-
+            {% for message in app.flashes('error') %}
+                <input type="hidden" id="notice_error" value="{{ message }}" />
+            {% endfor %}
+            {% for message in app.flashes('success') %}
+                <input type="hidden" id="notice_success" value="{{ message }}" />
+            {% endfor %}
+            {% for message in app.flashes('warning') %}
+                <input type="hidden" id="notice_warning" value="{{ message }}" />
+            {% endfor %}
             <!-- Container -->
 
             <div class="container-fluid">
@@ -60,6 +71,12 @@
 <script src="{{ asset('vendor/fullcalendar/packages/daygrid/main.js') }}"></script>
 <script src="{{ asset('vendor/fullcalendar/packages/timegrid/main.js') }}"></script>
 <script src="{{ asset('vendor/fullcalendar/packages/list/main.js') }}"></script>
+<!-- SweetAlert2/scramble -->
+<script type="text/javascript" src="{{ asset('vendor/sweetalert2/toastr.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('vendor/sweetalert2/sweetalert2.min.js') }}"></script>
+<script type="text/javascript" src="{{ asset('vendor/sweetalert2/toast.js') }}"></script>
+<!-- Data picker -->
+<script src="{{ asset('vendor/datapicker/bootstrap-datepicker.js') }}"></script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

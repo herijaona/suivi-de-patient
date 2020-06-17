@@ -12,9 +12,7 @@
         <div class="grid-title-table col-md-9 mt-4">
             <h4 class="h4-content">Tous les rendez-vous</h4>
         </div>
-        <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger" data-toggle="modal" data-target="#orangeModalSubscription">+ Creer rendez-vous</button>
-        </div>
+
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
@@ -34,14 +32,14 @@
                         {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
                     </td>
                     <td>
-                        {{ rdv.detail }}
+                        {% if rdv.description is defined and rdv.description is not null  %}{{ rdv.description }}{% elseif rdv.vaccin is defined and rdv.vaccin.vaccinName is not null %}{{ rdv.vaccin.vaccinName }}{% endif %}
                     </td>
                     <td>
-                        {{ rdv.nom }} <br>
+                        {{ rdv.patient.lastName ~' '~ rdv.patient.firstName }} <br>
                     </td>
                     <td>
                         {% if rdv.etat == 0 %}
-                            <button class="btn btn-danger active_etat_rdv" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" >Non valide</button>
+                            <button class="btn btn-danger active_etat_rdv validation_width" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" >Non valide</button>
                         {% else %}
                             Validé
                         {% endif %}
@@ -50,54 +48,6 @@
             {% endfor %}
             </tbody>
         </table>
-    </div>
-    <div class="modal fade" id="orangeModalSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-notify modal-primary" role="document">
-            <!--Content-->
-
-            <div class="modal-content">
-                <!--Header-->
-                <div class="modal-header text-center">
-                    <h4 class="modal-title white-text w-100 font-weight-bold py-2">Rendez-Vous</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true" class="white-text">&times;</span>
-                    </button>
-                </div>
-                <form action="{{ path('register_rdv') }}" method="post">
-                    <!--Body-->
-
-                    <div class="modal-body">
-
-                        <input type="hidden" name="type_id" id="form1" class="form-control" value="{{ type }}">
-                        <div class="md-form mb-5">
-                            <label class="active">Docteur</label>
-                            <select class="mdb-select md-form" name="doctor" editable="true" searchable="Rechercher le nom du docteur..." required>
-                                <option value="" disabled selected>Choisissez votre médecin</option>
-                                {% for doc in Doctors %}
-                                    <option value="{{ doc.id }}">{{doc.firstName}} {{doc.lastName}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="md-form mb-5">
-                            <input type="datetime-local" id="form1" name="date" class="form-control" required>
-                            <label class="active" for="form1">Date rendez-vous</label>
-                        </div>
-                        <div class="md-form">
-                            <textarea id="form103" name="description" class="md-textarea form-control" rows="2" required></textarea>
-                            <label for="form103" class="">Déscription</label>
-                        </div>
-                    </div>
-
-                    <!--Footer-->
-                    <div class="modal-footer justify-content-center">
-                        <button type="submit" class="btn btn-outline-primary waves-effect">Enregistrer <i class="fas fa-paper-plane-o ml-1"></i></button>
-                    </div>
-
-                </form>
-            </div>
-            <!--/.Content-->
-        </div>
     </div>
 
 {% endblock %}

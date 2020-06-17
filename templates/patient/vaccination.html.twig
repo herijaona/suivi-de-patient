@@ -40,16 +40,16 @@
                     </td>
                     <td>
                         {% if rdv.etat == 0 %}
-                            <button class="btn btn-danger active_etat_rdv"  >Non valide</button>
+                            <button class="btn btn-danger active_etat_rdv validation_width"  >Non valide</button>
                         {% else %}
-                            <button class="btn btn-green" >Validé</button>
+                            <button class="btn btn-green validation_width" >Validé</button>
                         {% endif %}
                     </td>
                     <td>
                         {% if rdv.status == 0 %}
-                            <button class="btn btn-deep-orange active_status_rdv"  >Pas Fait</button>
+                            <button class="btn btn-deep-orange active_status_rdv validation_width"  >Pas Fait</button>
                         {% else %}
-                            <button class="btn btn-green" >Fait</button>
+                            <button class="btn btn-green validation_width" >Fait</button>
                         {% endif %}
                     </td>
                 </tr>
@@ -64,10 +64,12 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
-        $("#example1").DataTable({
-            language: {
-                url: "{{ asset('vendor/datatables/lang.json') }}"
-            }
-        });
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/lang.json') }}"
+                }
+            });
+        })
     </script>
 {% endblock %}

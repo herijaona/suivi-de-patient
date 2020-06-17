@@ -9,6 +9,7 @@ use App\Repository\FamilyRepository;
 use App\Repository\GroupFamilyRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\RendezVousRepository;
 use App\Service\VaccinGenerate;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,6 +29,7 @@ class PatientController extends AbstractController
     protected $praticienRepository;
     protected $familyRepository;
     protected $groupFamilyRepository;
+    protected $rendezVousRepository;
     protected $entityManager;
     function __construct(
         VaccinGenerate $vaccinGenerate,
@@ -35,7 +37,8 @@ class PatientController extends AbstractController
         PraticienRepository $praticienRepository,
         FamilyRepository $familyRepository,
         GroupFamilyRepository $groupFamilyRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        RendezVousRepository $rendezVousRepository
     )
     {
         $this->vaccinGenerate = $vaccinGenerate;
@@ -43,6 +46,7 @@ class PatientController extends AbstractController
         $this->praticienRepository = $praticienRepository;
         $this->familyRepository = $familyRepository;
         $this->groupFamilyRepository = $groupFamilyRepository;
+        $this->rendezVousRepository = $rendezVousRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -59,13 +63,26 @@ class PatientController extends AbstractController
         $birtday = $patient->getDateOnBorn();
 
         $all_rdv = $patient->getRendeVous();
+
         $event = [];
         foreach ($all_rdv as $rdv){
+            $color = '#fcb41d';
+            if($rdv->getEtat() == 0){
+                $color = '#fcb41d';
+            }else if ($rdv->getStatus() == 1){
+                $color = '#51c81c';
+            }else if($rdv->getType() == 1){
+                $color = '#3794fc';
+            }else if($rdv->getType() == 2){
+                $color = '#ec37fc';
+            }else if($rdv->getType() == 3){
+                $color = '#fc381d';
+            }
             $element = [
                     'title'=>($rdv->getVaccin() != null && $rdv->getVaccin()->getVaccinName() != null) ? $rdv->getVaccin()->getVaccinName() : ($rdv->getType() == 2 ? "Demander de consultation" : ($rdv->getType() == 3 ? 'Demander de Rendez-vous': '')),
                     'start'=>$rdv->getDateRdv()->format('Y-m-d'),
                     'id'=>$rdv->getId(),
-                    'color'=> $rdv->getEtat() == 0 ? '#1e7e34':'#1fdc25'
+                    'color'=> $color
                 ];
             array_push($event,$element);
         }
@@ -86,8 +103,8 @@ class PatientController extends AbstractController
             $state = $patient->getAdressOnBorn()->getRegion()->getState()->getNameState();
             $birtday = $patient->getDateOnBorn();
             $dateNow = date('Y-m-d');
-            $praticien = $this->praticienRepository->find(1);
-            $this->vaccinGenerate->generateCalendar($patient,$birtday,$type,$state, $praticien, $dateNow);
+            //$praticien = $this->praticienRepository->find(1);
+            $this->vaccinGenerate->generateCalendar($patient,$birtday,$type,$state, null, $dateNow);
             return new JsonResponse("ok");
         }
         return "error";
@@ -235,8 +252,9 @@ class PatientController extends AbstractController
         $date = $request->request->get("date");
         $description = $request->request->get("description");
         $user = $this->getUser();
+        $rdv_date = str_replace("/", "-", $date);
 
-        $Date_Rdv = new \DateTime(date ("Y-m-d", strtotime ($date)));
+        $Date_Rdv = new \DateTime(date ("Y-m-d", strtotime ($rdv_date)));
 
         $praticien = null;
         if($doctor != ''){
@@ -262,7 +280,19 @@ class PatientController extends AbstractController
         }
 
     }
+    /**
+     * @Route("/list_notification", name="notification_patient")
+     */
+    public function notification_patient(Request $request)
+    {
+        $user = $this->getUser();
 
+        $rdv_praticien = $this->rendezVousRepository->findNotification(2);
+dd($rdv_praticien);
+        return $this->render('patient/notification_patient.html.twig', [
+            'rdv_praticien' => $rdv_praticien
+        ]);
+    }
 
     /**
      * @Route("/register-group", name="register_group")

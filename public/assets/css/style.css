@@ -272,3 +272,6 @@ footer {
 select.mdb-select.initialized {
     display: none;
 }
+.validation_width {
+    width: 10rem !important;
+}
