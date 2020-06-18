@@ -262,16 +262,98 @@ img#qrcode {
 .aide a {
     font-size: 12px;
 }
+
 img.qrCode {
     margin: 0 35px;
 }
+
 footer {
     margin-bottom: 50px;
     padding-bottom: 50px;
 }
+
 select.mdb-select.initialized {
     display: none;
 }
+
 .validation_width {
     width: 10rem !important;
 }
+
+
+/* Dashboard */
+
+.admin {
+    position: relative;
+    top: 16px;
+}
+
+.admin .card-admin {
+    background: white;
+    display: flex;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.admin .card-admin i {
+    font-size: 44px;
+    color: #eaeaea;
+    margin-right: 25px;
+    position: relative;
+    top: 11px;
+    margin-left: 10px;
+}
+
+.admin .card-admin h5 {
+    font-family: "roboto-medium";
+    font-size: 16px;
+    margin: 0;
+}
+
+.admin .card-admin h3 {
+    font-size: 25px;
+    font-family: "roboto-bold";
+    margin: 0;
+    opacity: 0.3;
+}
+
+.card-admin {
+    position: relative;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+
+.card-admin span {
+    position: absolute;
+    right: 5px;
+    top: 4px;
+    font-size: 11px;
+    padding: 0px 4px;
+    color: white;
+    border-radius: 3px;
+    font-family: "roboto-medium";
+}
+
+.card-admin .note-red {
+    background: #e20f0f;
+}
+
+.card-admin .note-green {
+    background: green;
+}
+
+.card-admin .in-card {
+    margin-top: 7px;
+}
+
+.title-dash {
+    font-family: "roboto-medium";
+    font-size: 20px;
+    position: relative;
+    display: initial;
+    top: 12px;
+}
+
+
+/* Dashboard */
