@@ -3,7 +3,8 @@ window.onload = function() {
     var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
         title: {
-            text: "Evolution de patients par an"
+            text: "Evolution de patients par an",
+            fontSize: 18,
         },
         axisY: {
             title: "Units Sold",
@@ -46,7 +47,8 @@ window.onload = function() {
         animationEnabled: true,
         title: {
             text: "Email Categories",
-            horizontalAlign: "left"
+            horizontalAlign: "left",
+            fontSize: 18,
         },
         data: [{
             type: "doughnut",
@@ -69,25 +71,24 @@ window.onload = function() {
 
     // chart3
 
-
+    var colorPalette = ['#00b04f', '#ffbf00'];
     var chart3 = new CanvasJS.Chart("chartContainer3", {
         animationEnabled: true,
         title: {
-            text: "Desktop Search Engine Market Share - 2016"
+            text: "Utilisateurs",
+            fontSize: 18,
         },
         data: [{
             type: "pie",
             startAngle: 240,
-            yValueFormatString: "##0.00'%'",
+            yValueFormatString: "##",
             indexLabel: "{label} {y}",
             dataPoints: [
-                { y: 79.45, label: "Google" },
-                { y: 7.31, label: "Bing" },
-                { y: 7.06, label: "Baidu" },
-                { y: 4.91, label: "Yahoo" },
-                { y: 1.26, label: "Others" }
+                { y: 75, label: "Patient", },
+                { y: 15, label: "Praticien" },
             ]
-        }]
+        }],
+        color: colorPalette,
     });
     chart3.render();
 

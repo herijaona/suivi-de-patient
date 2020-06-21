@@ -3,11 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get", "put", "delete"},
+ *     normalizationContext={"groups"={"user:read"}},
+ *     denormalizationContext={"groups"={"user:write"}}
+ * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
  */
@@ -43,11 +51,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("user:read")
      */
     private $first_name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("user:read")
      */
     private $phone;
 

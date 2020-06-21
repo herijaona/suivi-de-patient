@@ -65,7 +65,8 @@ ul {
 }
 
 .col_exc_1 {
-    background: linear-gradient(163deg, #3c023c 10%, #1c053a 57%);
+    /* background: linear-gradient(163deg, #3c023c 10%, #1c053a 57%); */
+    background: linear-gradient(163deg, #02273c 10%, #052749 57%);
     min-height: 97.5vh;
     width: 18%;
     position: relative;
@@ -80,7 +81,7 @@ ul {
     font-size: 15px;
     color: #eae9e9;
     text-align: center;
-    border-bottom: 2px solid #461f50;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
     padding: 12px;
 }
 
@@ -88,6 +89,7 @@ ul {
     text-align: center;
     border-bottom: 1px solid rgba(125, 122, 122, 0.11);
     z-index: 9;
+    padding-bottom: 26px;
 }
 
 .img_profile h5 {
@@ -135,7 +137,7 @@ ul {
 
 .logout_footer {
     text-align: center;
-    border-top: 1px solid;
+    border-top: 2px solid rgba(255, 255, 255, 0.05);
     margin: 0;
     padding: 6px 40px;
     font-family: "roboto-regular";
@@ -357,3 +359,17 @@ select.mdb-select.initialized {
 
 
 /* Dashboard */
+
+.btn-class {
+    background: #c70053 !important;
+    border: none;
+    border-radius: 0;
+    font-family: "roboto-medium";
+    text-transform: none;
+    padding: 12px;
+}
+
+.btn-danger.active_etat_rdv {
+    padding: 7px;
+    width: 193px !important;
+}

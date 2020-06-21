@@ -3,12 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\PatientRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * 
  * @ORM\Entity(repositoryClass=PatientRepository::class)
+ *  @ApiResource(
+ *    normalizationContext={"groups"={"read:patient"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"} 
+ * )
  */
 class Patient
 {
@@ -16,28 +24,33 @@ class Patient
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:patient"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:patient"})
      */
-    private $first_name;
+    private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("read:patient")
      */
     private $last_name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:patient"})
      */
     private $sexe;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"read:patient"})
      */
-    private $date_on_born;
+    private $dateOnBorn;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -51,6 +64,7 @@ class Patient
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="type_patient")
+     * @Groups({"read:patient"})
      */
     private $adress;
 
@@ -63,6 +77,7 @@ class Patient
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read:patient"})
      */
     private $etat;
 
@@ -84,6 +99,7 @@ class Patient
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:patient"})
      */
     private $phone;
 
@@ -124,12 +140,12 @@ class Patient
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
-    public function setFirstName(string $first_name): self
+    public function setFirstName(string $firstName): self
     {
-        $this->first_name = $first_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -160,12 +176,12 @@ class Patient
 
     public function getDateOnBorn(): ?\DateTimeInterface
     {
-        return $this->date_on_born;
+        return $this->dateOnBorn;
     }
 
-    public function setDateOnBorn(\DateTimeInterface $date_on_born): self
+    public function setDateOnBorn(\DateTimeInterface $dateOnBorn): self
     {
-        $this->date_on_born = $date_on_born;
+        $this->dateOnBorn = $dateOnBorn;
 
         return $this;
     }
