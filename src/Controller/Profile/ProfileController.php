@@ -2,9 +2,12 @@
 
 namespace App\Controller\Profile;
 
+use App\Entity\Praticien;
+use App\Entity\User;
 
 use App\Entity\Patient;
 use App\Repository\PatientRepository;
+
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Family;
@@ -24,20 +27,28 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use App\Form\RegistrationPraticienFormType;
+use App\Security\LoginFormAuthenticator;
+use App\Repository\UserRepository;
 
 class ProfileController extends AbstractController
 {
+    protected $user;
     protected $patientRepository;
     protected $praticienRepository;
     private $userCurrent;
     function __construct(
         PatientRepository $patientRepository,
         PraticienRepository $praticienRepository,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        UserRepository $userRepository
     )
     {
+        $this->user = $userRepository;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
         $this->userCurrent = $tokenStorage->getToken()->getUser();
@@ -92,6 +103,62 @@ class ProfileController extends AbstractController
             'id' => $id
         ]);
       
+    }
+
+    /**
+     * @Route("praticien/profile/{id}", name="editPraticien")
+     * @return Response
+     */
+    public function editPraticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator,$id) : Response{
+        $user = [];
+        $form = $this->createForm(RegistrationPraticienFormType::class, $user);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $last_name = $form->get('lastname')->getData();
+            $first_name = $form->get('firstname')->getData();
+         
+            $currentUser = $this->getUser();
+            $user = $this->user->find($currentUser->getId());
+
+            $user->setLastName($last_name);
+            $user->setFirstName($first_name);
+            $user->setEmail($form->get('email')->getData());
+            $user->setRoles(['ROLE_PRATICIEN']);
+            $user->setEtat(0);
+            // encode the plain password
+            $user->setPassword( 
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+
+            $praticien = $this->praticienRepository->find($id);
+
+            $praticien->setFirstName($first_name);
+            $praticien->setLastName($last_name);
+            $praticien->setCreatedAt(new \DateTime('now'));
+            $praticien->setAdress($form->get('address')->getData());
+            $praticien->setDateBorn($form->get('date_naissance')->getData());
+            $praticien->setAdressBorn($form->get('lieu_naissance')->getData());
+            $praticien->setFonction($form->get('fonction')->getData());
+            $praticien->setPhone($form->get('phone')->getData());
+            $praticien->setPhoneProfessional($form->get('phone_professional')->getData());
+            $praticien->setUser($user);
+            $entityManager->persist($praticien);
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
+            // do anything else you need here, like send an email
+
+            return $this->redirectToRoute('editPraticien',['id'=>$id]);
+        }
+        return $this->render('profile/editPraticien.html.twig', [
+            'registrationForm' => $form->createView()
+        ]);
     }
 
 }

@@ -375,9 +375,9 @@ select.mdb-select.initialized {
 }
 
 .profile-h2 {
-    font-family: "roboto-medium";
-    font-size: 22px;
-    padding-top: 37px;
+    width: 50%;
+    font-family: "marvel-bold";
+    font-size: 25px;
     padding-bottom: 16px;
     margin-top: 26px;
 }
@@ -408,4 +408,21 @@ select.mdb-select.initialized {
 
 .profileTrigger div a:hover {
     color: #b7b2b2;
+}
+
+.edit-register .body-content {
+    width: auto;
+    margin: initial;
+}
+
+.edit-register .body-content button {
+    width: 178px;
+}
+
+.btn-edit {
+    margin-top: 23px;
+    width: 111px;
+    padding: 7px;
+    background: linear-gradient(163deg, #1cc888 10%, #37af21 57%);
+    text-transform: capitalize;
 }
