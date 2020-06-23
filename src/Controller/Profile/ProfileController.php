@@ -96,7 +96,8 @@ class ProfileController extends AbstractController
 
         $user = $this->getUser();
         $isuser = $this->praticienRepository->findByPraticien(['user'=>$user]);
-        
+
+
         return $this->render('profile/profilePraticien.html.twig', [
             'isuser' => $isuser,
             'slug' => $slug,
@@ -106,10 +107,10 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("praticien/profile/{id}", name="editPraticien")
+     * @Route("praticien/profile", name="editPraticien")
      * @return Response
      */
-    public function editPraticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator,$id) : Response{
+    public function editPraticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator) : Response{
         $user = [];
         $form = $this->createForm(RegistrationPraticienFormType::class, $user);
 
@@ -137,7 +138,8 @@ class ProfileController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
 
-            $praticien = $this->praticienRepository->find($id);
+            $idPraticien = $this->praticienRepository->findByPraticienId($currentUser->getId());
+            $praticien = $this->praticienRepository->find($idPraticien['0']['id']);
 
             $praticien->setFirstName($first_name);
             $praticien->setLastName($last_name);
@@ -152,9 +154,8 @@ class ProfileController extends AbstractController
             $entityManager->persist($praticien);
             $entityManager->flush();
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
-            // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('editPraticien',['id'=>$id]);
+            return $this->redirectToRoute('editPraticien',['id'=>$idPraticien['0']['id']]);
         }
         return $this->render('profile/editPraticien.html.twig', [
             'registrationForm' => $form->createView()

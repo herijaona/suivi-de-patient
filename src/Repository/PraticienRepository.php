@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Praticien;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -55,5 +56,15 @@ class PraticienRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult()
             ;
+    }
+
+    public function findByPraticienId($user){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT r.id
+            FROM App\Entity\Praticien r
+            INNER JOIN App\Entity\User c with c.id = r.user 
+            WHERE (c.id = :user) ')
+            ->setParameter('user', $user);
+        return $query->getArrayResult();
     }
 }
