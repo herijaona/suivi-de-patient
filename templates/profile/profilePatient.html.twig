@@ -1,0 +1,16 @@
+{% extends 'profile/include/basePatient.html.twig' %} {% block body %}
+{{ slug }}
+<h2 class="profile-h2">Mon profile</h2>
+<div>
+
+    <div>
+        {% for person in isuser %} 
+            {% if person.id == id  %} 
+                {{ include('profile/template/patient.html.twig') }} 
+            {% endif %} 
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %} 
+

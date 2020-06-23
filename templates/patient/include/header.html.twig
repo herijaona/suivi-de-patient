@@ -8,7 +8,7 @@
     </ul>
     <ul class="menu_right">
         <li>
-            <a href="">
+            <a class="profileTrigger">
                 <i class="far fa-envelope"></i>
             </a>
         </li>
@@ -19,10 +19,26 @@
                 </i>
             </a>
         </li>
-        <li>
-            <a href="">
-                <i class="fas fa-user-circle"></i>
+        <li class="position-relative profileTrigger">
+            <a class="clickTr"> <i class="fas fa-user-circle"></i>
             </a>
+            <div class="menu_">
+                <a href="{{ path('profile',{slug:'patient',id:1}) }}">Mon Profile</a>
+                <a href="{{ path('app_logout') }}">Deconnexion</a>
+            </div>
+        </li>
+        <li>
+            {{ slug }}
         </li>
     </ul>
 </div>
+
+{% block javascripts %}
+<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+<script>
+    $('.menu_').css('display', 'none');
+    $(".clickTr").click(function() {
+        $('.menu_').toggle();
+    });
+</script>
+{% endblock %}

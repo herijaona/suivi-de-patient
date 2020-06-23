@@ -358,7 +358,7 @@ select.mdb-select.initialized {
 }
 
 
-/* Dashboard */
+/* End Dashboard */
 
 .btn-class {
     background: #c70053 !important;
@@ -372,4 +372,40 @@ select.mdb-select.initialized {
 .btn-danger.active_etat_rdv {
     padding: 7px;
     width: 193px !important;
+}
+
+.profile-h2 {
+    font-family: "roboto-medium";
+    font-size: 22px;
+    padding-top: 37px;
+    padding-bottom: 16px;
+    margin-top: 26px;
+}
+
+.profile label {
+    color: #052748;
+    font-size: 14px;
+    font-family: "roboto-medium";
+}
+
+.profileTrigger div {
+    color: white;
+    position: absolute;
+    display: block;
+    font-size: 12px;
+    right: -2px;
+    text-align: right;
+    background: #032743;
+    padding: 6px 11px;
+    border-radius: 2px;
+    top: 29px;
+    line-height: 21px;
+}
+
+.profileTrigger div a {
+    color: white;
+}
+
+.profileTrigger div a:hover {
+    color: #b7b2b2;
 }
