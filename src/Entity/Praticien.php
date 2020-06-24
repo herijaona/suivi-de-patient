@@ -49,15 +49,6 @@ class Praticien
      */
     private $dateBorn;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="praticiens")
-     */
-    private $adress;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="city_born")
-     */
-    private $adressBorn;
 
     /**
      * @ORM\Column(type="datetime")
@@ -74,15 +65,76 @@ class Praticien
      */
     private $user;
 
+
     /**
-     * @ORM\OneToMany(targetEntity=RendezVous::class, mappedBy="praticien")
+     * @ORM\OneToMany(targetEntity=Ordonnace::class, mappedBy="praticien")
      */
-    private $rendezVous;
+    private $ordonnaces;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Ordonnace::class, mappedBy="medecinTraitant")
+     */
+    private $ordonnacesMedecin;
+
+    /**
+     * @ORM\OneToMany(targetEntity=IntervationMedicale::class, mappedBy="praticien")
+     */
+    private $intervationMedicales;
+
+    /**
+     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="praticienPrescripteur")
+     */
+    private $interventionVaccinations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="praticienExecutant")
+     */
+    private $interventionExecutant;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrdoVaccination::class, mappedBy="referencePraticienExecutant")
+     */
+    private $ordoVaccinationPraticienExecutant;
+
+    /**
+     * @ORM\OneToMany(targetEntity=IntervationConsultation::class, mappedBy="praticienPrescripteur")
+     */
+    private $intervationConsultationsPraticienPrescripteur;
+
+    /**
+     * @ORM\OneToMany(targetEntity=IntervationConsultation::class, mappedBy="praticienConsultant")
+     */
+    private $intervationConsultationsPraticienConsultant;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VaccinPraticien::class, mappedBy="praticien")
+     */
+    private $vaccinPraticiens;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PraticienSpecialite::class, mappedBy="praticien")
+     */
+    private $praticienSpecialites;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="praticien")
+     */
+    private $address;
 
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime('now'));
-        $this->rendezVous = new ArrayCollection();
+        $this->setCreatedAt(new \DateTime('now'));
+        $this->ordonnaces = new ArrayCollection();
+        $this->ordonnacesMedecin = new ArrayCollection();
+        $this->intervationMedicales = new ArrayCollection();
+        $this->interventionVaccinations = new ArrayCollection();
+        $this->interventionExecutant = new ArrayCollection();
+        $this->ordoVaccinationPraticienExecutant = new ArrayCollection();
+        $this->intervationConsultationsPraticienPrescripteur = new ArrayCollection();
+        $this->intervationConsultationsPraticienConsultant = new ArrayCollection();
+        $this->vaccinPraticiens = new ArrayCollection();
+        $this->praticienSpecialites = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -161,29 +213,6 @@ class Praticien
         return $this;
     }
 
-    public function getAdress(): ?City
-    {
-        return $this->adress;
-    }
-
-    public function setAdress(?City $adress): self
-    {
-        $this->adress = $adress;
-
-        return $this;
-    }
-
-    public function getAdressBorn(): ?City
-    {
-        return $this->adressBorn;
-    }
-
-    public function setAdressBorn(?City $adress_born): self
-    {
-        $this->adressBorn = $adress_born;
-
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
@@ -222,32 +251,323 @@ class Praticien
     }
 
     /**
-     * @return Collection|RendezVous[]
+     * @return Collection|Ordonnace[]
      */
-    public function getRendezVous(): Collection
+    public function getOrdonnaces(): Collection
     {
-        return $this->rendezVous;
+        return $this->ordonnaces;
     }
 
-    public function addRendezVou(RendezVous $rendezVou): self
+    public function addOrdonnace(Ordonnace $ordonnace): self
     {
-        if (!$this->rendezVous->contains($rendezVou)) {
-            $this->rendezVous[] = $rendezVou;
-            $rendezVou->setPraticien($this);
+        if (!$this->ordonnaces->contains($ordonnace)) {
+            $this->ordonnaces[] = $ordonnace;
+            $ordonnace->setPraticien($this);
         }
 
         return $this;
     }
 
-    public function removeRendezVou(RendezVous $rendezVou): self
+    public function removeOrdonnace(Ordonnace $ordonnace): self
     {
-        if ($this->rendezVous->contains($rendezVou)) {
-            $this->rendezVous->removeElement($rendezVou);
+        if ($this->ordonnaces->contains($ordonnace)) {
+            $this->ordonnaces->removeElement($ordonnace);
             // set the owning side to null (unless already changed)
-            if ($rendezVou->getPraticien() === $this) {
-                $rendezVou->setPraticien(null);
+            if ($ordonnace->getPraticien() === $this) {
+                $ordonnace->setPraticien(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ordonnace[]
+     */
+    public function getOrdonnacesMedecin(): Collection
+    {
+        return $this->ordonnacesMedecin;
+    }
+
+    public function addOrdonnacesMedecin(Ordonnace $ordonnacesMedecin): self
+    {
+        if (!$this->ordonnacesMedecin->contains($ordonnacesMedecin)) {
+            $this->ordonnacesMedecin[] = $ordonnacesMedecin;
+            $ordonnacesMedecin->setMedecinTraitant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdonnacesMedecin(Ordonnace $ordonnacesMedecin): self
+    {
+        if ($this->ordonnacesMedecin->contains($ordonnacesMedecin)) {
+            $this->ordonnacesMedecin->removeElement($ordonnacesMedecin);
+            // set the owning side to null (unless already changed)
+            if ($ordonnacesMedecin->getMedecinTraitant() === $this) {
+                $ordonnacesMedecin->setMedecinTraitant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|IntervationMedicale[]
+     */
+    public function getIntervationMedicales(): Collection
+    {
+        return $this->intervationMedicales;
+    }
+
+    public function addIntervationMedicale(IntervationMedicale $intervationMedicale): self
+    {
+        if (!$this->intervationMedicales->contains($intervationMedicale)) {
+            $this->intervationMedicales[] = $intervationMedicale;
+            $intervationMedicale->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntervationMedicale(IntervationMedicale $intervationMedicale): self
+    {
+        if ($this->intervationMedicales->contains($intervationMedicale)) {
+            $this->intervationMedicales->removeElement($intervationMedicale);
+            // set the owning side to null (unless already changed)
+            if ($intervationMedicale->getPraticien() === $this) {
+                $intervationMedicale->setPraticien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InterventionVaccination[]
+     */
+    public function getInterventionVaccinations(): Collection
+    {
+        return $this->interventionVaccinations;
+    }
+
+    public function addInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if (!$this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations[] = $interventionVaccination;
+            $interventionVaccination->setPraticienPrescripteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if ($this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations->removeElement($interventionVaccination);
+            // set the owning side to null (unless already changed)
+            if ($interventionVaccination->getPraticienPrescripteur() === $this) {
+                $interventionVaccination->setPraticienPrescripteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InterventionVaccination[]
+     */
+    public function getInterventionExecutant(): Collection
+    {
+        return $this->interventionExecutant;
+    }
+
+    public function addInterventionExecutant(InterventionVaccination $interventionExecutant): self
+    {
+        if (!$this->interventionExecutant->contains($interventionExecutant)) {
+            $this->interventionExecutant[] = $interventionExecutant;
+            $interventionExecutant->setPraticienExecutant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterventionExecutant(InterventionVaccination $interventionExecutant): self
+    {
+        if ($this->interventionExecutant->contains($interventionExecutant)) {
+            $this->interventionExecutant->removeElement($interventionExecutant);
+            // set the owning side to null (unless already changed)
+            if ($interventionExecutant->getPraticienExecutant() === $this) {
+                $interventionExecutant->setPraticienExecutant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrdoVaccination[]
+     */
+    public function getOrdoVaccinationPraticienExecutant(): Collection
+    {
+        return $this->ordoVaccinationPraticienExecutant;
+    }
+
+    public function addOrdoVaccinationPraticienExecutant(OrdoVaccination $ordoVaccinationPraticienExecutant): self
+    {
+        if (!$this->ordoVaccinationPraticienExecutant->contains($ordoVaccinationPraticienExecutant)) {
+            $this->ordoVaccinationPraticienExecutant[] = $ordoVaccinationPraticienExecutant;
+            $ordoVaccinationPraticienExecutant->setReferencePraticienExecutant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdoVaccinationPraticienExecutant(OrdoVaccination $ordoVaccinationPraticienExecutant): self
+    {
+        if ($this->ordoVaccinationPraticienExecutant->contains($ordoVaccinationPraticienExecutant)) {
+            $this->ordoVaccinationPraticienExecutant->removeElement($ordoVaccinationPraticienExecutant);
+            // set the owning side to null (unless already changed)
+            if ($ordoVaccinationPraticienExecutant->getReferencePraticienExecutant() === $this) {
+                $ordoVaccinationPraticienExecutant->setReferencePraticienExecutant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|IntervationConsultation[]
+     */
+    public function getIntervationConsultationsPraticienPrescripteur(): Collection
+    {
+        return $this->intervationConsultationsPraticienPrescripteur;
+    }
+
+    public function addIntervationConsultationsPraticienPrescripteur(IntervationConsultation $intervationConsultationsPraticienPrescripteur): self
+    {
+        if (!$this->intervationConsultationsPraticienPrescripteur->contains($intervationConsultationsPraticienPrescripteur)) {
+            $this->intervationConsultationsPraticienPrescripteur[] = $intervationConsultationsPraticienPrescripteur;
+            $intervationConsultationsPraticienPrescripteur->setPraticienPrescripteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntervationConsultationsPraticienPrescripteur(IntervationConsultation $intervationConsultationsPraticienPrescripteur): self
+    {
+        if ($this->intervationConsultationsPraticienPrescripteur->contains($intervationConsultationsPraticienPrescripteur)) {
+            $this->intervationConsultationsPraticienPrescripteur->removeElement($intervationConsultationsPraticienPrescripteur);
+            // set the owning side to null (unless already changed)
+            if ($intervationConsultationsPraticienPrescripteur->getPraticienPrescripteur() === $this) {
+                $intervationConsultationsPraticienPrescripteur->setPraticienPrescripteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|IntervationConsultation[]
+     */
+    public function getIntervationConsultationsPraticienConsultant(): Collection
+    {
+        return $this->intervationConsultationsPraticienConsultant;
+    }
+
+    public function addIntervationConsultationsPraticienConsultant(IntervationConsultation $intervationConsultationsPraticienConsultant): self
+    {
+        if (!$this->intervationConsultationsPraticienConsultant->contains($intervationConsultationsPraticienConsultant)) {
+            $this->intervationConsultationsPraticienConsultant[] = $intervationConsultationsPraticienConsultant;
+            $intervationConsultationsPraticienConsultant->setPraticienConsultant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntervationConsultationsPraticienConsultant(IntervationConsultation $intervationConsultationsPraticienConsultant): self
+    {
+        if ($this->intervationConsultationsPraticienConsultant->contains($intervationConsultationsPraticienConsultant)) {
+            $this->intervationConsultationsPraticienConsultant->removeElement($intervationConsultationsPraticienConsultant);
+            // set the owning side to null (unless already changed)
+            if ($intervationConsultationsPraticienConsultant->getPraticienConsultant() === $this) {
+                $intervationConsultationsPraticienConsultant->setPraticienConsultant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VaccinPraticien[]
+     */
+    public function getVaccinPraticiens(): Collection
+    {
+        return $this->vaccinPraticiens;
+    }
+
+    public function addVaccinPraticien(VaccinPraticien $vaccinPraticien): self
+    {
+        if (!$this->vaccinPraticiens->contains($vaccinPraticien)) {
+            $this->vaccinPraticiens[] = $vaccinPraticien;
+            $vaccinPraticien->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVaccinPraticien(VaccinPraticien $vaccinPraticien): self
+    {
+        if ($this->vaccinPraticiens->contains($vaccinPraticien)) {
+            $this->vaccinPraticiens->removeElement($vaccinPraticien);
+            // set the owning side to null (unless already changed)
+            if ($vaccinPraticien->getPraticien() === $this) {
+                $vaccinPraticien->setPraticien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PraticienSpecialite[]
+     */
+    public function getPraticienSpecialites(): Collection
+    {
+        return $this->praticienSpecialites;
+    }
+
+    public function addPraticienSpecialite(PraticienSpecialite $praticienSpecialite): self
+    {
+        if (!$this->praticienSpecialites->contains($praticienSpecialite)) {
+            $this->praticienSpecialites[] = $praticienSpecialite;
+            $praticienSpecialite->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removePraticienSpecialite(PraticienSpecialite $praticienSpecialite): self
+    {
+        if ($this->praticienSpecialites->contains($praticienSpecialite)) {
+            $this->praticienSpecialites->removeElement($praticienSpecialite);
+            // set the owning side to null (unless already changed)
+            if ($praticienSpecialite->getPraticien() === $this) {
+                $praticienSpecialite->setPraticien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }

@@ -30,37 +30,13 @@ class City
     private $region;
 
     /**
-     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="adress")
+     * @ORM\OneToMany(targetEntity=Address::class, mappedBy="ville")
      */
-    private $typePatient;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="adress_on_born")
-     */
-    private $patients;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="adress")
-     */
-    private $praticiens;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="adress_born")
-     */
-    private $cityBorn;
-
-    /**
-     * @ORM\OneToMany(targetEntity=CentreHealth::class, mappedBy="centre_city")
-     */
-    private $centreHealths;
+    private $addresses;
 
     public function __construct()
     {
-        $this->typePatient = new ArrayCollection();
-        $this->patients = new ArrayCollection();
-        $this->praticiens = new ArrayCollection();
-        $this->cityBorn = new ArrayCollection();
-        $this->centreHealths = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,154 +69,30 @@ class City
     }
 
     /**
-     * @return Collection|Patient[]
+     * @return Collection|Address[]
      */
-    public function getTypePatient(): Collection
+    public function getAddresses(): Collection
     {
-        return $this->typePatient;
+        return $this->addresses;
     }
 
-    public function addTypePatient(Patient $typePatient): self
+    public function addAddress(Address $address): self
     {
-        if (!$this->typePatient->contains($typePatient)) {
-            $this->typePatient[] = $typePatient;
-            $typePatient->setAdress($this);
+        if (!$this->addresses->contains($address)) {
+            $this->addresses[] = $address;
+            $address->setVille($this);
         }
 
         return $this;
     }
 
-    public function removeTypePatient(Patient $typePatient): self
+    public function removeAddress(Address $address): self
     {
-        if ($this->typePatient->contains($typePatient)) {
-            $this->typePatient->removeElement($typePatient);
+        if ($this->addresses->contains($address)) {
+            $this->addresses->removeElement($address);
             // set the owning side to null (unless already changed)
-            if ($typePatient->getAdress() === $this) {
-                $typePatient->setAdress(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Patient[]
-     */
-    public function getPatients(): Collection
-    {
-        return $this->patients;
-    }
-
-    public function addPatient(Patient $patient): self
-    {
-        if (!$this->patients->contains($patient)) {
-            $this->patients[] = $patient;
-            $patient->setAdressOnBorn($this);
-        }
-
-        return $this;
-    }
-
-    public function removePatient(Patient $patient): self
-    {
-        if ($this->patients->contains($patient)) {
-            $this->patients->removeElement($patient);
-            // set the owning side to null (unless already changed)
-            if ($patient->getAdressOnBorn() === $this) {
-                $patient->setAdressOnBorn(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Praticien[]
-     */
-    public function getPraticiens(): Collection
-    {
-        return $this->praticiens;
-    }
-
-    public function addPraticien(Praticien $praticien): self
-    {
-        if (!$this->praticiens->contains($praticien)) {
-            $this->praticiens[] = $praticien;
-            $praticien->setAdress($this);
-        }
-
-        return $this;
-    }
-
-    public function removePraticien(Praticien $praticien): self
-    {
-        if ($this->praticiens->contains($praticien)) {
-            $this->praticiens->removeElement($praticien);
-            // set the owning side to null (unless already changed)
-            if ($praticien->getAdress() === $this) {
-                $praticien->setAdress(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Praticien[]
-     */
-    public function getCityBorn(): Collection
-    {
-        return $this->cityBorn;
-    }
-
-    public function addCityBorn(Praticien $cityBorn): self
-    {
-        if (!$this->cityBorn->contains($cityBorn)) {
-            $this->cityBorn[] = $cityBorn;
-            $cityBorn->setAdressBorn($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCityBorn(Praticien $cityBorn): self
-    {
-        if ($this->cityBorn->contains($cityBorn)) {
-            $this->cityBorn->removeElement($cityBorn);
-            // set the owning side to null (unless already changed)
-            if ($cityBorn->getAdressBorn() === $this) {
-                $cityBorn->setAdressBorn(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|CentreHealth[]
-     */
-    public function getCentreHealths(): Collection
-    {
-        return $this->centreHealths;
-    }
-
-    public function addCentreHealth(CentreHealth $centreHealth): self
-    {
-        if (!$this->centreHealths->contains($centreHealth)) {
-            $this->centreHealths[] = $centreHealth;
-            $centreHealth->setCentreCity($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCentreHealth(CentreHealth $centreHealth): self
-    {
-        if ($this->centreHealths->contains($centreHealth)) {
-            $this->centreHealths->removeElement($centreHealth);
-            // set the owning side to null (unless already changed)
-            if ($centreHealth->getCentreCity() === $this) {
-                $centreHealth->setCentreCity(null);
+            if ($address->getVille() === $this) {
+                $address->setVille(null);
             }
         }
 

@@ -2,12 +2,10 @@
 
 namespace App\Controller\Praticien;
 
-use App\Entity\RendezVous;
 use App\Form\ConsultationPraticienType;
 use App\Repository\FamilyRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
-use App\Repository\RendezVousRepository;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
@@ -25,7 +23,6 @@ class PraticienController extends AbstractController
     protected $patientRepository;
     protected $praticienRepository;
     protected $familyRepository;
-    protected $rendezVousRepository;
     protected $entityManager;
 
     function __construct(
@@ -33,15 +30,13 @@ class PraticienController extends AbstractController
         PatientRepository $patientRepository,
         PraticienRepository $praticienRepository,
         FamilyRepository $familyRepository,
-        EntityManagerInterface $entityManager,
-        RendezVousRepository $rendezVousRepository
+        EntityManagerInterface $entityManager
     )
     {
         $this->vaccinGenerate = $vaccinGenerate;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
         $this->familyRepository = $familyRepository;
-        $this->rendezVousRepository = $rendezVousRepository;
         $this->entityManager = $entityManager;
     }
     /**
@@ -54,8 +49,8 @@ class PraticienController extends AbstractController
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $all_rdv = $this->rendezVousRepository->findCalendarPraticien($praticien->getId());
-
+       // $all_rdv = $this->rendezVousRepository->findCalendarPraticien($praticien->getId());
+        $all_rdv = [];
         $event = [];
         foreach ($all_rdv as $rdv){
             $color = '#fcb41d';
@@ -95,8 +90,8 @@ class PraticienController extends AbstractController
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
-        $all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 2);
-
+        //$all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 2);
+        $all_rdv = [];
         return $this->render('praticien/consultation.html.twig', [
             'Consultations' => $all_rdv,
             'Doctors' => $doctor,
@@ -114,7 +109,8 @@ class PraticienController extends AbstractController
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 1);
+        //$all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 1);
+        $all_rdv = [];
         return $this->render('praticien/vaccination.html.twig', [
             'Vaccinations' => $all_rdv,
             'type' => 1
@@ -134,7 +130,8 @@ class PraticienController extends AbstractController
 
         $doctor = $this->praticienRepository->findAll();
 
-        $all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 3);
+        //$all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 3);
+        $all_rdv = [];
 
         return $this->render('praticien/rdv.html.twig', [
             'Consultations' => $all_rdv,
@@ -150,7 +147,8 @@ class PraticienController extends AbstractController
     {
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $Rdv = $this->rendezVousRepository->find($request->request->get("id_rdv"));
+        //$Rdv = $this->rendezVousRepository->find($request->request->get("id_rdv"));
+        $Rdv = null;
         if ($Rdv){
             if ($Rdv->getPraticien() == null){
                 $Rdv->setPraticien($praticien);
@@ -174,8 +172,8 @@ class PraticienController extends AbstractController
     {
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $Rdv = $this->rendezVousRepository->find($request->request->get("id_rdv"));
-
+        //$Rdv = $this->rendezVousRepository->find($request->request->get("id_rdv"));
+        $Rdv = null;
         if ($Rdv && $Rdv->getPraticien() != null && $Rdv->getPraticien()->getId() == $praticien->getId()){
             if ($request->request->get("status") == 0){
                 $Rdv->setStatus(1);
@@ -236,7 +234,7 @@ class PraticienController extends AbstractController
 
         $Date_Rdv = new \DateTime(date ("Y-m-d", strtotime ($rdv_date)));
 
-        $rdv = new RendezVous();
+        /*$rdv = new RendezVous();
         $rdv->setPraticien($praticien);
         $rdv->setDescription($description);
         $rdv->setType($type_id);
@@ -244,7 +242,7 @@ class PraticienController extends AbstractController
         $rdv->setPatient(null);
         $rdv->setVaccin(null);
         $this->entityManager->persist($rdv);
-        $this->entityManager->flush();
+        $this->entityManager->flush();*/
         if ($type_id == 1 ){
             return $this->redirectToRoute('vaccination_praticien');
         }elseif ($type_id == 2 ){

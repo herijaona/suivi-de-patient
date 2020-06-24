@@ -52,36 +52,6 @@ class User implements UserInterface
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $phone;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $dateNaissance;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lieuNaissance;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $address;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $namedaddy;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $namemonther;
-
-    /**
      * @ORM\Column(type="integer")
      */
     private $etat;
@@ -91,9 +61,19 @@ class User implements UserInterface
      */
     private $activatorId;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updatedAt;
+
     public function __construct()
     {
-        $this->dateNaissance = new \DateTime('now');
+        $this->createdAt = new \DateTime('now');
     }
 
     public function getId(): ?int
@@ -209,78 +189,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): self
-    {
-        $this->phone = $phone;
-
-        return $this;
-    }
-
-    public function getDateNaissance(): ?\DateTimeInterface
-    {
-        return $this->dateNaissance;
-    }
-
-    public function setDateNaissance(?\DateTimeInterface $date_naissance): self
-    {
-        $this->dateNaissance = $date_naissance;
-
-        return $this;
-    }
-
-    public function getLieuNaissance(): ?string
-    {
-        return $this->lieuNaissance;
-    }
-
-    public function setLieuNaissance(?string $lieu_naissance): self
-    {
-        $this->lieuNaissance = $lieu_naissance;
-
-        return $this;
-    }
-
-    public function getAddress(): ?string
-    {
-        return $this->address;
-    }
-
-    public function setAddress(?string $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
-
-    public function getNamedaddy(): ?string
-    {
-        return $this->namedaddy;
-    }
-
-    public function setNamedaddy(?string $namedaddy): self
-    {
-        $this->namedaddy = $namedaddy;
-
-        return $this;
-    }
-
-    public function getNamemonther(): ?string
-    {
-        return $this->namemonther;
-    }
-
-    public function setNamemonther(?string $namemonther): self
-    {
-        $this->namemonther = $namemonther;
-
-        return $this;
-    }
-
     public function getEtat(): ?int
     {
         return $this->etat;
@@ -301,6 +209,30 @@ class User implements UserInterface
     public function setActivatorId(?string $activator_id): self
     {
         $this->activatorId = $activator_id;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

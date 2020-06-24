@@ -4,12 +4,10 @@ namespace App\Controller\Patient;
 
 use App\Entity\Family;
 use App\Entity\GroupFamily;
-use App\Entity\RendezVous;
 use App\Repository\FamilyRepository;
 use App\Repository\GroupFamilyRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
-use App\Repository\RendezVousRepository;
 use App\Service\VaccinGenerate;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +27,6 @@ class PatientController extends AbstractController
     protected $praticienRepository;
     protected $familyRepository;
     protected $groupFamilyRepository;
-    protected $rendezVousRepository;
     protected $entityManager;
     function __construct(
         VaccinGenerate $vaccinGenerate,
@@ -37,8 +34,7 @@ class PatientController extends AbstractController
         PraticienRepository $praticienRepository,
         FamilyRepository $familyRepository,
         GroupFamilyRepository $groupFamilyRepository,
-        EntityManagerInterface $entityManager,
-        RendezVousRepository $rendezVousRepository
+        EntityManagerInterface $entityManager
     )
     {
         $this->vaccinGenerate = $vaccinGenerate;
@@ -46,7 +42,6 @@ class PatientController extends AbstractController
         $this->praticienRepository = $praticienRepository;
         $this->familyRepository = $familyRepository;
         $this->groupFamilyRepository = $groupFamilyRepository;
-        $this->rendezVousRepository = $rendezVousRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -262,7 +257,7 @@ class PatientController extends AbstractController
         }
 
         $patient =  $this->patientRepository->findOneBy(['user'=>$user]);
-        $rdv = new RendezVous();
+        /*$rdv = new RendezVous();
         $rdv->setPraticien($praticien);
         $rdv->setDescription($description);
         $rdv->setType($type_id);
@@ -270,7 +265,7 @@ class PatientController extends AbstractController
         $rdv->setPatient($patient);
         $rdv->setVaccin(null);
         $this->entityManager->persist($rdv);
-        $this->entityManager->flush();
+        $this->entityManager->flush();*/
         if ($type_id == 1 ){
         return $this->redirectToRoute('vaccination_patient');
         }elseif ($type_id == 2 ){
@@ -287,8 +282,8 @@ class PatientController extends AbstractController
     {
         $user = $this->getUser();
 
-        $rdv_praticien = $this->rendezVousRepository->findNotification(2);
-dd($rdv_praticien);
+        //$rdv_praticien = $this->rendezVousRepository->findNotification(2);
+        $rdv_praticien = [];
         return $this->render('patient/notification_patient.html.twig', [
             'rdv_praticien' => $rdv_praticien
         ]);
