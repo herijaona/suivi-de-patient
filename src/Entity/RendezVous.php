@@ -20,7 +20,7 @@ class RendezVous
     /**
      * @ORM\Column(type="datetime")
      */
-    private $date_rdv;
+    private $dateRdv;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -48,7 +48,7 @@ class RendezVous
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\Column(type="integer")
@@ -79,12 +79,12 @@ class RendezVous
 
     public function getDateRdv(): ?\DateTimeInterface
     {
-        return $this->date_rdv;
+        return $this->dateRdv;
     }
 
-    public function setDateRdv(\DateTimeInterface $date_rdv): self
+    public function setDateRdv(\DateTimeInterface $dateRrdv): self
     {
-        $this->date_rdv = $date_rdv;
+        $this->dateRdv = $dateRdv;
 
         return $this;
     }
@@ -139,12 +139,12 @@ class RendezVous
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

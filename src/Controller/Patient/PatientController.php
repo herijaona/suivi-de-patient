@@ -55,8 +55,8 @@ class PatientController extends AbstractController
      */
     public function patient()
     {
-        if (!$this->isGranted('ROLE_PATIENT')) {
-            return $this->redirectToRoute('homepage');
+        if ($this->isGranted('ROLE_PRATICIEN')) {
+            return $this->redirectToRoute('praticien');
         }
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);

@@ -2,7 +2,7 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-app_lucky_number:
+app_home_page:
     path: /
     controller: App\Controller\HomepageController::index
 

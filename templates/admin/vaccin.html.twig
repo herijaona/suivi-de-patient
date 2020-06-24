@@ -1,82 +1,127 @@
-{% extends 'admin/include/base.html.twig' %}
-
-{% block title %}Vaccin{% endblock %}
+{% extends 'praticien/include/base.html.twig' %}
+{%  block title %}
+    Vaccination
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+{% endblock %}
 
 {% block body %}
-
-
-<!-- Content -->
-
-<div class="row head-table col-md-12">
-    <div class="grid-title-table col-md-9 mt-4">
-        <h4 class="h4-content">Liste des patients</h4>
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Tous les vaccinations</h4>
+        </div>
     </div>
-    <div class="grid-edit-btn col-md-3 mt-3">
-        <button class="btn btn-info">+ Add membres</button>
-        <button class="btn btn-danger">+ Creer patient</button>
-    </div>
-</div>
-<div class="d-flex table-input-up">
-    <div class="form-group d-flex pr-4">
-        <label for="exampleFormControlSelect1">Afficher :</label>
-        <select class="form-control select1" id="exampleFormControlSelect1">
-          <option>1</option>
-          <option>5</option>
-          <option>10</option>
-        </select>
-    </div>
-    <div class="form-group d-flex">
-        <label for="exampleFormControlSelect1">Trier par :</label>
-        <select class="form-control select1" id="exampleFormControlSelect1">
-            <option>Femme enceinte</option>
-            <option>Nouveaux-nees</option>
-            <option>Homme</option>
-        </select>
-    </div>
-</div>
-<div class="row-table table-content">
-    <table class="table table-striped">
-        <thead>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
             <tr>
-                <th>Nom et prenom</th>
-                <th>Telephone</th>
-                <th>Type</th>
-                <th>Sexe</th>
-                <th>Date de naissance</th>
-                <th>Calendrier vaccinal</th>
-                <th>Actions</th>
+                <th>Date vaccination</th>
+                <th>Détail</th>
+                <th>Patient</th>
+                <th>Praticien</th>
+                <th>Validation</th>
+                <th>Status</th>
+                {# <th>More</th> #}
             </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><a href="#">Gomez Maria</a></td>
-                <td>Maria</td>
-                <td>Maria@gmail.com</td>
-                <td>Femme</td>
-                <td>05/04/2020</td>
-                <td>05/04/2020</td>
-                <td>
-                    <i class="fas fa-eye"></i>
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-ellipsis-v"></i>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-<div class="navigation">
-    <nav aria-label="Page">
-        <ul class="pagination">
-            <li class="page-item" id="prev"><a class="page-link" href="#"><i class="fa fa-chevron-left"></i></a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item" id="next"><a class="page-link" href="#"><i class="fa fa-chevron-right"></i></a></li>
-        </ul>
-    </nav>
-</div>
-
-<!-- End Content -->
-
+            </thead>
+            <tbody>
+            {% for rdv in Vaccinations  %}
+                <tr>
+                    <td>
+                        {{ rdv.dateRdv|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                    </td>
+                    <td>
+                        {% if rdv.description is defined and rdv.description is not null  %}{{ rdv.description }}{% elseif rdv.vaccin is defined and rdv.vaccin.vaccinName is not null %}{{ rdv.vaccin.vaccinName }}{% endif %}
+                    </td>
+                    <td>
+                        {{ rdv.patient.lastName ~' '~ rdv.patient.firstName }} <br>
+                    </td>
+                    <td>
+                       {% if rdv.praticien is defined and rdv.praticien is not null %} {{ rdv.praticien.lastName ~' '~ rdv.praticien.firstName }} {% endif %} <br>
+                    </td>
+                    <td>
+                        {% if rdv.etat == 0 %}
+                            <button class="btn btn-danger active_etat_rdv validation_width" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" >Non valide</button>
+                        {% else %}
+                            <button class="btn btn-green validation_width" >Validé</button>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rdv.status == 0 %}
+                            <button class="btn btn-deep-orange active_status_rdv validation_width" data-id="{{ rdv.id }}" data-status="{{ rdv.status }}" >Pas Fait</button>
+                        {% else %}
+                            <button class="btn btn-green validation_width" >Fait</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}
- 
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $("#example1").DataTable({
+            language: {
+                url: "{{ asset('vendor/datatables/lang.json') }}"
+            }
+        });
+
+        $('.active_etat_rdv').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var etat = $(this).data('etat');
+            $.ajax({
+                url: "{{ path('update_etat_rdv') }}",
+                type: 'post',
+                data: {
+                    'id_rdv': id,
+                    'etat': etat
+                },
+                dataType: "json",
+                success: (data) =>{
+                    if(data.status == 'OK' ){
+                        location.reload();
+                    }
+                },
+                error: (e) => {
+                    console.log(e.statusText);
+                }
+            }).done(() => {
+
+            });
+        });
+
+        $('.active_status_rdv').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var status = $(this).data('status');
+
+            $.ajax({
+                url: "{{ path('update_status_rdv') }}",
+                type: 'post',
+                data: {
+                    'id_rdv': id,
+                    'status': status
+                },
+                dataType: "json",
+                success: (data) =>{
+                    if(data.status == 'OK' ){
+                        location.reload();
+                    }
+                },
+                error: (e) => {
+                    console.log(e.statusText);
+                }
+            }).done(() => {
+
+            });
+        });
+    </script>
+{% endblock %}

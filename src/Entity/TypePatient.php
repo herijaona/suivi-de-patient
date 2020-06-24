@@ -22,7 +22,7 @@ class TypePatient
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type_patient_name;
+    private $typePatientName;
 
     /**
      * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="ManyToOne")
@@ -32,12 +32,12 @@ class TypePatient
     /**
      * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="type_patient")
      */
-    private $type_patient;
+    private $typePatient;
 
     public function __construct()
     {
         $this->patients = new ArrayCollection();
-        $this->type_patient = new ArrayCollection();
+        $this->typePatient = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,12 +47,12 @@ class TypePatient
 
     public function getTypePatientName(): ?string
     {
-        return $this->type_patient_name;
+        return $this->typePatientName;
     }
 
     public function setTypePatientName(string $type_patient_name): self
     {
-        $this->type_patient_name = $type_patient_name;
+        $this->typePatientName = $type_patient_name;
 
         return $this;
     }
@@ -93,13 +93,13 @@ class TypePatient
      */
     public function getTypePatient(): Collection
     {
-        return $this->type_patient;
+        return $this->typePatient;
     }
 
     public function addTypePatient(Patient $typePatient): self
     {
-        if (!$this->type_patient->contains($typePatient)) {
-            $this->type_patient[] = $typePatient;
+        if (!$this->typePatient->contains($typePatient)) {
+            $this->typePatient[] = $typePatient;
             $typePatient->setTypePatient($this);
         }
 
@@ -108,8 +108,8 @@ class TypePatient
 
     public function removeTypePatient(Patient $typePatient): self
     {
-        if ($this->type_patient->contains($typePatient)) {
-            $this->type_patient->removeElement($typePatient);
+        if ($this->typePatient->contains($typePatient)) {
+            $this->typePatient->removeElement($typePatient);
             // set the owning side to null (unless already changed)
             if ($typePatient->getTypePatient() === $this) {
                 $typePatient->setTypePatient(null);

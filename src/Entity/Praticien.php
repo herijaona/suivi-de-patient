@@ -22,12 +22,12 @@ class Praticien
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $first_name;
+    private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $last_name;
+    private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -37,7 +37,7 @@ class Praticien
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $phone_professional;
+    private $phoneProfessional;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -47,7 +47,7 @@ class Praticien
     /**
      * @ORM\Column(type="date")
      */
-    private $date_born;
+    private $dateBorn;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="praticiens")
@@ -57,17 +57,17 @@ class Praticien
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="city_born")
      */
-    private $adress_born;
+    private $adressBorn;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $created_at;
+    private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $updated_at;
+    private $updatedAt;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
@@ -91,24 +91,24 @@ class Praticien
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
     public function setFirstName(string $first_name): self
     {
-        $this->first_name = $first_name;
+        $this->firstName = $first_name;
 
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
     public function setLastName(?string $last_name): self
     {
-        $this->last_name = $last_name;
+        $this->lastName = $last_name;
 
         return $this;
     }
@@ -127,12 +127,12 @@ class Praticien
 
     public function getPhoneProfessional(): ?string
     {
-        return $this->phone_professional;
+        return $this->phoneProfessional;
     }
 
     public function setPhoneProfessional(?string $phone_professional): self
     {
-        $this->phone_professional = $phone_professional;
+        $this->phoneProfessional = $phone_professional;
 
         return $this;
     }
@@ -151,12 +151,12 @@ class Praticien
 
     public function getDateBorn(): ?\DateTimeInterface
     {
-        return $this->date_born;
+        return $this->dateBorn;
     }
 
     public function setDateBorn(\DateTimeInterface $date_born): self
     {
-        $this->date_born = $date_born;
+        $this->dateBorn = $date_born;
 
         return $this;
     }
@@ -175,36 +175,36 @@ class Praticien
 
     public function getAdressBorn(): ?City
     {
-        return $this->adress_born;
+        return $this->adressBorn;
     }
 
     public function setAdressBorn(?City $adress_born): self
     {
-        $this->adress_born = $adress_born;
+        $this->adressBorn = $adress_born;
 
         return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
     public function setCreatedAt(\DateTimeInterface $created_at): self
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $created_at;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
     public function setUpdatedAt(?\DateTimeInterface $updated_at): self
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updated_at;
 
         return $this;
     }

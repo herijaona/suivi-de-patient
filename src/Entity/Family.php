@@ -20,13 +20,13 @@ class Family
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="family_child")
      */
-    private $patient_child;
+    private $patientChild;
 
     /**
      * @ORM\ManyToOne(targetEntity=GroupFamily::class, inversedBy="families")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $group_family;
+    private $groupFamily;
 
     public function getId(): ?int
     {
@@ -36,24 +36,24 @@ class Family
 
     public function getPatientChild(): ?Patient
     {
-        return $this->patient_child;
+        return $this->patientChild;
     }
 
-    public function setPatientChild(?Patient $patient_child): self
+    public function setPatientChild(?Patient $patientChild): self
     {
-        $this->patient_child = $patient_child;
+        $this->patientChild = $patientChild;
 
         return $this;
     }
 
     public function getGroupFamily(): ?GroupFamily
     {
-        return $this->group_family;
+        return $this->groupFamily;
     }
 
-    public function setGroupFamily(?GroupFamily $group_family): self
+    public function setGroupFamily(?GroupFamily $groupFamily): self
     {
-        $this->group_family = $group_family;
+        $this->groupFamily = $groupFamily;
 
         return $this;
     }

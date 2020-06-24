@@ -22,17 +22,17 @@ class Vaccin
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $vaccin_name;
+    private $vaccinName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $vaccin_description;
+    private $vaccinDescription;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeVaccin::class, inversedBy="vaccins")
      */
-    private $Type_vaccin;
+    private $TypeVaccin;
 
     /**
      * @ORM\ManyToOne(targetEntity=State::class, inversedBy="vaccins")
@@ -62,36 +62,36 @@ class Vaccin
 
     public function getVaccinName(): ?string
     {
-        return $this->vaccin_name;
+        return $this->vaccinName;
     }
 
     public function setVaccinName(string $vaccin_name): self
     {
-        $this->vaccin_name = $vaccin_name;
+        $this->vaccinName = $vaccin_name;
 
         return $this;
     }
 
     public function getVaccinDescription(): ?string
     {
-        return $this->vaccin_description;
+        return $this->vaccinDescription;
     }
 
     public function setVaccinDescription(?string $vaccin_description): self
     {
-        $this->vaccin_description = $vaccin_description;
+        $this->vaccinDescription = $vaccin_description;
 
         return $this;
     }
 
     public function getTypeVaccin(): ?TypeVaccin
     {
-        return $this->Type_vaccin;
+        return $this->TypeVaccin;
     }
 
     public function setTypeVaccin(?TypeVaccin $Type_vaccin): self
     {
-        $this->Type_vaccin = $Type_vaccin;
+        $this->TypeVaccin = $Type_vaccin;
 
         return $this;
     }

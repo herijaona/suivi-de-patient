@@ -22,7 +22,7 @@ class City
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name_city;
+    private $nameCity;
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="cities")
@@ -32,7 +32,7 @@ class City
     /**
      * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="adress")
      */
-    private $type_patient;
+    private $typePatient;
 
     /**
      * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="adress_on_born")
@@ -47,7 +47,7 @@ class City
     /**
      * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="adress_born")
      */
-    private $city_born;
+    private $cityBorn;
 
     /**
      * @ORM\OneToMany(targetEntity=CentreHealth::class, mappedBy="centre_city")
@@ -56,10 +56,10 @@ class City
 
     public function __construct()
     {
-        $this->type_patient = new ArrayCollection();
+        $this->typePatient = new ArrayCollection();
         $this->patients = new ArrayCollection();
         $this->praticiens = new ArrayCollection();
-        $this->city_born = new ArrayCollection();
+        $this->cityBorn = new ArrayCollection();
         $this->centreHealths = new ArrayCollection();
     }
 
@@ -70,12 +70,12 @@ class City
 
     public function getNameCity(): ?string
     {
-        return $this->name_city;
+        return $this->nameCity;
     }
 
-    public function setNameCity(string $name_city): self
+    public function setNameCity(string $nameCity): self
     {
-        $this->name_city = $name_city;
+        $this->nameCity = $nameCity;
 
         return $this;
     }
@@ -97,13 +97,13 @@ class City
      */
     public function getTypePatient(): Collection
     {
-        return $this->type_patient;
+        return $this->typePatient;
     }
 
     public function addTypePatient(Patient $typePatient): self
     {
-        if (!$this->type_patient->contains($typePatient)) {
-            $this->type_patient[] = $typePatient;
+        if (!$this->typePatient->contains($typePatient)) {
+            $this->typePatient[] = $typePatient;
             $typePatient->setAdress($this);
         }
 
@@ -112,8 +112,8 @@ class City
 
     public function removeTypePatient(Patient $typePatient): self
     {
-        if ($this->type_patient->contains($typePatient)) {
-            $this->type_patient->removeElement($typePatient);
+        if ($this->typePatient->contains($typePatient)) {
+            $this->typePatient->removeElement($typePatient);
             // set the owning side to null (unless already changed)
             if ($typePatient->getAdress() === $this) {
                 $typePatient->setAdress(null);
@@ -190,13 +190,13 @@ class City
      */
     public function getCityBorn(): Collection
     {
-        return $this->city_born;
+        return $this->cityBorn;
     }
 
     public function addCityBorn(Praticien $cityBorn): self
     {
-        if (!$this->city_born->contains($cityBorn)) {
-            $this->city_born[] = $cityBorn;
+        if (!$this->cityBorn->contains($cityBorn)) {
+            $this->cityBorn[] = $cityBorn;
             $cityBorn->setAdressBorn($this);
         }
 
@@ -205,8 +205,8 @@ class City
 
     public function removeCityBorn(Praticien $cityBorn): self
     {
-        if ($this->city_born->contains($cityBorn)) {
-            $this->city_born->removeElement($cityBorn);
+        if ($this->cityBorn->contains($cityBorn)) {
+            $this->cityBorn->removeElement($cityBorn);
             // set the owning side to null (unless already changed)
             if ($cityBorn->getAdressBorn() === $this) {
                 $cityBorn->setAdressBorn(null);

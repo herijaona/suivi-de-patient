@@ -22,7 +22,7 @@ class State
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name_state;
+    private $nameState;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="state", orphanRemoval=true)
@@ -47,12 +47,12 @@ class State
 
     public function getNameState(): ?string
     {
-        return $this->name_state;
+        return $this->nameState;
     }
 
     public function setNameState(string $name_state): self
     {
-        $this->name_state = $name_state;
+        $this->nameState = $name_state;
 
         return $this;
     }

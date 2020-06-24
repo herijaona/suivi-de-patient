@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\RendezVousRepository;
 use App\Service\VaccinGenerate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,11 +19,19 @@ class AdminController extends AbstractController
     protected $vaccinGenerate;
     protected $patientRepository;
     protected $praticienRepository;
-    function __construct(VaccinGenerate $vaccinGenerate,PatientRepository $patientRepository,PraticienRepository $praticienRepository)
+    protected $rendezVousRepository;
+
+    function __construct(
+        VaccinGenerate $vaccinGenerate,
+        PatientRepository $patientRepository,
+        PraticienRepository $praticienRepository,
+        RendezVousRepository $rendezVousRepository
+    )
     {
         $this->vaccinGenerate = $vaccinGenerate;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
+        $this->rendezVousRepository = $rendezVousRepository;
     }
     /**
      * @Route("/", name="admin")
@@ -40,10 +49,15 @@ class AdminController extends AbstractController
      */
     public function vaccin_admin()
     {
-        return $this->render('admin/vaccin.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('homepage');
+        }
+        $all_rdv = $this->rendezVousRepository->findRdvByAdmin(1);
 
+        return $this->render('admin/vaccin.html.twig', [
+            'Vaccinations' => $all_rdv,
+            'type' => 1
+        ]);
     }
 
     /**

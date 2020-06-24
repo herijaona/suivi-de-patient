@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
+ * @UniqueEntity(fields={"username"}, message="There is already an account with this email")
  */
 class User implements UserInterface
 {
@@ -21,9 +21,14 @@ class User implements UserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\Column(type="string", length=180, nullable=true)
      */
     private $email;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $username;
 
     /**
      * @ORM\Column(type="json")
@@ -39,12 +44,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $last_name;
+    private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $first_name;
+    private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -54,12 +59,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $date_naissance;
+    private $dateNaissance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lieu_naissance;
+    private $lieuNaissance;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -84,11 +89,11 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $activator_id;
+    private $activatorId;
 
     public function __construct()
     {
-        $this->date_naissance = new \DateTime('now');
+        $this->dateNaissance = new \DateTime('now');
     }
 
     public function getId(): ?int
@@ -113,9 +118,20 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
-        return (string) $this->email;
+        return $this->username;
+    }
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function setUsername(string  $username): self
+    {
+        $this->username = $username;
+
+        return $this;
     }
 
     /**
@@ -171,24 +187,24 @@ class User implements UserInterface
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
     public function setLastName(string $last_name): self
     {
-        $this->last_name = $last_name;
+        $this->lastName = $last_name;
 
         return $this;
     }
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
     public function setFirstName(string $first_name): self
     {
-        $this->first_name = $first_name;
+        $this->firstName = $first_name;
 
         return $this;
     }
@@ -207,24 +223,24 @@ class User implements UserInterface
 
     public function getDateNaissance(): ?\DateTimeInterface
     {
-        return $this->date_naissance;
+        return $this->dateNaissance;
     }
 
     public function setDateNaissance(?\DateTimeInterface $date_naissance): self
     {
-        $this->date_naissance = $date_naissance;
+        $this->dateNaissance = $date_naissance;
 
         return $this;
     }
 
     public function getLieuNaissance(): ?string
     {
-        return $this->lieu_naissance;
+        return $this->lieuNaissance;
     }
 
     public function setLieuNaissance(?string $lieu_naissance): self
     {
-        $this->lieu_naissance = $lieu_naissance;
+        $this->lieuNaissance = $lieu_naissance;
 
         return $this;
     }
@@ -279,12 +295,12 @@ class User implements UserInterface
 
     public function getActivatorId(): ?string
     {
-        return $this->activator_id;
+        return $this->activatorId;
     }
 
     public function setActivatorId(?string $activator_id): self
     {
-        $this->activator_id = $activator_id;
+        $this->activatorId = $activator_id;
 
         return $this;
     }

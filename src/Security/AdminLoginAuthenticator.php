@@ -1,14 +1,17 @@
 <?php
 
+
 namespace App\Security;
 
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Security;
@@ -20,13 +23,14 @@ use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticato
 use Symfony\Component\Security\Guard\PasswordAuthenticatedInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
+class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator implements PasswordAuthenticatedInterface
 {
+
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
-    public const DASH_ROUTE_PATIENT = 'patient';
-    public const DASH_ROUTE_PRATICIEN = 'praticien';
+    public const LOGIN_ROUTE = 'admin_login';
+    public const DASH_ROUTE_ADMIN = 'admin';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     private $entityManager;
     private $urlGenerator;
@@ -52,7 +56,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         $credentials = [
             'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
-            'roles' => $request->request->get('roles'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
@@ -77,10 +80,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
         }
 
-        if(!in_array($credentials['roles'], $user->getRoles())){
-            throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
-        }
-
         return $user;
     }
 
@@ -91,10 +90,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             return false;
         }
 
-        if (in_array('ROLE_PRATICIEN', $user->getRoles()) || in_array('ROLE_PATIENT', $user->getRoles())){
-            return true;
-        }
-        else{
+        if (!in_array('ROLE_ADMIN', $user->getRoles())) { /*$user->hasRole('ROLE_ADMIN')*/
             throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
         }
 
@@ -115,12 +111,11 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         /*if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }*/
-        /*if($role == 'ROLE_PATIENT'){
-            return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PATIENT));
-        }elseif($role == 'ROLE_PRATICIEN'){
-            return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PRATICIEN));
+
+        /*if($role == self::ROLE_ADMIN){
+            return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_ADMIN));
         }*/
-        return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PATIENT));
+        return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_ADMIN));
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
 

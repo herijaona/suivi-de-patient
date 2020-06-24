@@ -20,27 +20,27 @@ class CentreHealth
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $centre_name;
+    private $centreName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $centre_phone;
+    private $centrePhone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $centre_referent;
+    private $centreReferent;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="centreHealths")
      */
-    private $centre_city;
+    private $centreCity;
 
     /**
      * @ORM\ManyToOne(targetEntity=CentreType::class, inversedBy="centreHealths")
      */
-    private $centre_type;
+    private $centreType;
 
     public function getId(): ?int
     {
@@ -49,60 +49,60 @@ class CentreHealth
 
     public function getCentreName(): ?string
     {
-        return $this->centre_name;
+        return $this->centreName;
     }
 
-    public function setCentreName(string $centre_name): self
+    public function setCentreName(string $centreName): self
     {
-        $this->centre_name = $centre_name;
+        $this->centreName = $centreName;
 
         return $this;
     }
 
     public function getCentrePhone(): ?string
     {
-        return $this->centre_phone;
+        return $this->centrePhone;
     }
 
-    public function setCentrePhone(string $centre_phone): self
+    public function setCentrePhone(string $centrePhone): self
     {
-        $this->centre_phone = $centre_phone;
+        $this->centrePhone = $centrePhone;
 
         return $this;
     }
 
     public function getCentreReferent(): ?string
     {
-        return $this->centre_referent;
+        return $this->centreReferent;
     }
 
-    public function setCentreReferent(?string $centre_referent): self
+    public function setCentreReferent(?string $centreReferent): self
     {
-        $this->centre_referent = $centre_referent;
+        $this->centreReferent = $centreReferent;
 
         return $this;
     }
 
     public function getCentreCity(): ?City
     {
-        return $this->centre_city;
+        return $this->centreCity;
     }
 
-    public function setCentreCity(?City $centre_city): self
+    public function setCentreCity(?City $centreCity): self
     {
-        $this->centre_city = $centre_city;
+        $this->centreCity = $centreCity;
 
         return $this;
     }
 
     public function getCentreType(): ?CentreType
     {
-        return $this->centre_type;
+        return $this->centreType;
     }
 
-    public function setCentreType(?CentreType $centre_type): self
+    public function setCentreType(?CentreType $centreType): self
     {
-        $this->centre_type = $centre_type;
+        $this->centreType = $centreType;
 
         return $this;
     }

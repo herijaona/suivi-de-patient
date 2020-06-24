@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}LogIn{% endblock %}
 
 {% block body %}
 <form method="post">
@@ -8,7 +8,7 @@
 <div class="background-img"></div>
 <div class="body-page">
     <div class="container text-center body-content">
-        <img width="88px" src="assets/images/logo2.png" alt="logo" id="logo">
+        <img width="88px" src="{{asset('assets/images/logo2.png')}}" alt="logo" id="logo">
         <h3 class="main-title">Se connecter</h3>
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -18,13 +18,22 @@
                 <label for="input-id">
                     Identifiant
                 </label>
-                <input id="input-id" type='text' name="email" value="{{ last_username }}" class="form-control">
+                <input id="input-id" type='text' name="username" value="{{ last_username }}" class="form-control">
             </div>
             <div class="form-group">
                 <label for="input-id">
                     Mot de passe
                 </label>
                 <input id="input-id" type='password' name="password" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="input-id">
+                    Roles
+                </label>
+                <select id="input-id" name="roles" class="form-control">
+                    <option value="ROLE_PATIENT">PATIENT</option>
+                    <option value="ROLE_PRATICIEN">PRATICIEN</option>
+                </select>
             </div>
             <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
             <button type="submit" class="btn btn-info button-login">
