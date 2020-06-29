@@ -1,0 +1,221 @@
+{% extends 'admin/include/base.html.twig' %}
+{%  block title %}
+    Centre de Santé
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Tous les Centre de Santé</h4>
+        </div>
+        <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-danger new_center_health">+ Nouveau Centre du santé </button>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Nom de Centre</th>
+                <th>Type de centre</th>
+                <th>Téléphone</th>
+                <th>Responsable</th>
+                <th>Adresse</th>
+                <th>Ville</th>
+                <th>Région</th>
+                <th>Pays</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for centre in centreSante  %}
+                <tr>
+                    <td>
+                        {{ centre.centreName }}
+                    </td>
+                    <td>
+                        {{ centre.centreType.typeName }}
+                    </td>
+                    <td>
+                        {{ centre.centrePhone }}
+                    </td>
+                    <td>
+                        {{ centre.responsableCentre }}
+                    </td>
+                    <td>
+                        {{ centre.numRue }} - {{ centre.quartier }}
+                    </td>
+                    <td>
+                        {{ centre.city.nameCity }}
+                    </td>
+                    <td>
+                        {{ centre.city.region.nameRegion }}
+                    </td>
+                    <td>
+                        {{ centre.city.region.state.nameState }}
+                    </td>
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ centre.id }}"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ centre.id }}"><i class="fa fa-trash-o"></i></span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        function changeState(e) {
+            $(".loadBody").css("display", "block");
+            let idState = $(e).val();
+            $.ajax({
+                type: 'post',
+                url: "{{ path('select_state_center_health') }}",
+                dataType: "json",
+                data: { idState: idState },
+                success: function ($tabRegion) {
+                    $("#center_health_region").empty();
+                    var lastKey = Object.keys($tabRegion)[Object.keys($tabRegion).length - 1];
+                    $("#center_health_region").append('<option value=""> Choisir Région </option>');
+                    $.each($tabRegion, function (key, region) {
+                        $("#center_health_region").append('<option value="' + key + '">' + region + '</option>');
+                    });
+
+                    $('.chosen-select').trigger('chosen:updated');
+                    $(".loadBody").css("display", "none");
+                },
+                error: function () {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                    //alert('Erreur load affaire');
+                }
+            });
+        }
+
+        function changeRegion(e) {
+            $(".loadBody").css("display", "block");
+            let idRegion = $(e).val();
+            $.ajax({
+                type: 'post',
+                url: "{{ path('select_region_center_health') }}",
+                dataType: "json",
+                data: { idRegion: idRegion },
+                success: function ($tabCity) {
+                    $("#center_health_ville").empty();
+                    var lastKey = Object.keys($tabCity)[Object.keys($tabCity).length - 1];
+                    $("#center_health_ville").append('<option value=""> Choisir Ville </option>');
+                    $.each($tabCity, function (key, city) {
+                        $("#center_health_ville").append('<option value="' + key + '">' + city + '</option>');
+                    });
+
+                    $('.chosen-select').trigger('chosen:updated');
+                    $(".loadBody").css("display", "none");
+                },
+                error: function () {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                    //alert('Erreur load affaire');
+                }
+            });
+        }
+
+        $(".new_center_health").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            $.ajax({
+                url: "{{ path('add_form_center_health') }}",
+                type: 'post',
+                data: {
+                    action: 'new'
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('.chosen-select').chosen({width: "100%"});
+                    $('.chosen-select').trigger('chosen:updated');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $(".data-edit").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            var id = $(this).data('id');
+            e.preventDefault();
+            $.ajax({
+                url: "{{ path('add_form_center_health') }}",
+                type: 'post',
+                data: {
+                    action: 'edit',
+                    id_health_center: id,
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('.chosen-select').chosen({width: "100%"});
+                    $('.chosen-select').trigger('chosen:updated');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-remove').on('click', function (e) {
+            e.preventDefault();
+            var $delete = confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');
+            if($delete){
+                $(".loadBody").css("display", "block");
+                var id = $(this).data('id');
+                $.ajax({
+                    url: "{{ path('remove_center_health') }}",
+                    type: 'post',
+                    data: {
+                        id_center_health: id
+                    },
+                    dataType: "json",
+                    success: (data) =>{
+                        $(".loadBody").css("display", "none");
+                        location.reload();
+                    },
+                    error: (e) => {
+                        $(".loadBody").css("display", "none");
+                        $(".chargementError").css("display", "block");
+                    }
+                }).done(() => {
+                    $(".loadBody").css("display", "none");
+                });
+            }else {
+                return false
+            }
+
+        });
+
+
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/lang.json') }}"
+                }
+            });
+        });
+
+    </script>
+{% endblock %}

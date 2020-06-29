@@ -27,7 +27,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public const LOGIN_ROUTE = 'app_login';
     public const DASH_ROUTE_PATIENT = 'patient';
     public const DASH_ROUTE_PRATICIEN = 'praticien';
-    public const DASH_ROUTE_ADMIN = 'admin';
 
     private $entityManager;
     private $urlGenerator;
@@ -51,13 +50,14 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'email' => $request->request->get('email'),
+            'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
+            'roles' => $request->request->get('roles'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['email']
+            $credentials['username']
         );
 
         return $credentials;
@@ -70,11 +70,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $credentials['email']]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
 
         if (!$user) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Email could not be found.');
+        }
+
+        if(!in_array($credentials['roles'], $user->getRoles())){
+            throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
         }
 
         return $user;
@@ -82,7 +86,19 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        //return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
+            return false;
+        }
+
+        if (in_array('ROLE_PRATICIEN', $user->getRoles()) || in_array('ROLE_PATIENT', $user->getRoles())){
+            return true;
+        }
+        else{
+            throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
+        }
+
+        return true;
     }
 
     /**
@@ -99,14 +115,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         /*if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }*/
-        if($role=='ROLE_PATIENT'){
+        /*if($role == 'ROLE_PATIENT'){
             return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PATIENT));
-        }elseif($role=='ROLE_PRATICIEN'){
+        }elseif($role == 'ROLE_PRATICIEN'){
             return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PRATICIEN));
-        }elseif($role=='ROLE_ADMIN'){
-            return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_ADMIN));
-        }
-        return new RedirectResponse($this->urlGenerator->generate(self::LOGIN_ROUTE));
+        }*/
+        return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PATIENT));
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
 

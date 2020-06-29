@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CentreHealthRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,27 +22,67 @@ class CentreHealth
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $centre_name;
+    private $centreName;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $centre_phone;
+    private $centrePhone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $centre_referent;
+    private $centreReferent;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="centreHealths")
      */
-    private $centre_city;
+    private $centreCity;
 
     /**
      * @ORM\ManyToOne(targetEntity=CentreType::class, inversedBy="centreHealths")
      */
-    private $centre_type;
+    private $centreType;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $responsableCentre;
+
+    /**
+     * @ORM\OneToMany(targetEntity=VaccinCentreHealth::class, mappedBy="centreHealth")
+     */
+    private $vaccinCentreHealths;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="centerHealth")
+     */
+    private $address;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="centreHealths")
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $numRue;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $quartier;
+
+    public function __construct()
+    {
+        $this->vaccinCentreHealths = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -49,60 +91,163 @@ class CentreHealth
 
     public function getCentreName(): ?string
     {
-        return $this->centre_name;
+        return $this->centreName;
     }
 
-    public function setCentreName(string $centre_name): self
+    public function setCentreName(string $centreName): self
     {
-        $this->centre_name = $centre_name;
+        $this->centreName = $centreName;
 
         return $this;
     }
 
     public function getCentrePhone(): ?string
     {
-        return $this->centre_phone;
+        return $this->centrePhone;
     }
 
-    public function setCentrePhone(string $centre_phone): self
+    public function setCentrePhone(string $centrePhone): self
     {
-        $this->centre_phone = $centre_phone;
+        $this->centrePhone = $centrePhone;
 
         return $this;
     }
 
     public function getCentreReferent(): ?string
     {
-        return $this->centre_referent;
+        return $this->centreReferent;
     }
 
-    public function setCentreReferent(?string $centre_referent): self
+    public function setCentreReferent(?string $centreReferent): self
     {
-        $this->centre_referent = $centre_referent;
+        $this->centreReferent = $centreReferent;
 
         return $this;
     }
 
     public function getCentreCity(): ?City
     {
-        return $this->centre_city;
+        return $this->centreCity;
     }
 
-    public function setCentreCity(?City $centre_city): self
+    public function setCentreCity(?City $centreCity): self
     {
-        $this->centre_city = $centre_city;
+        $this->centreCity = $centreCity;
 
         return $this;
     }
 
     public function getCentreType(): ?CentreType
     {
-        return $this->centre_type;
+        return $this->centreType;
     }
 
-    public function setCentreType(?CentreType $centre_type): self
+    public function setCentreType(?CentreType $centreType): self
     {
-        $this->centre_type = $centre_type;
+        $this->centreType = $centreType;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?int
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?int $telephone): self
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getResponsableCentre(): ?string
+    {
+        return $this->responsableCentre;
+    }
+
+    public function setResponsableCentre(?string $responsableCentre): self
+    {
+        $this->responsableCentre = $responsableCentre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|VaccinCentreHealth[]
+     */
+    public function getVaccinCentreHealths(): Collection
+    {
+        return $this->vaccinCentreHealths;
+    }
+
+    public function addVaccinCentreHealth(VaccinCentreHealth $vaccinCentreHealth): self
+    {
+        if (!$this->vaccinCentreHealths->contains($vaccinCentreHealth)) {
+            $this->vaccinCentreHealths[] = $vaccinCentreHealth;
+            $vaccinCentreHealth->setCentreHealth($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVaccinCentreHealth(VaccinCentreHealth $vaccinCentreHealth): self
+    {
+        if ($this->vaccinCentreHealths->contains($vaccinCentreHealth)) {
+            $this->vaccinCentreHealths->removeElement($vaccinCentreHealth);
+            // set the owning side to null (unless already changed)
+            if ($vaccinCentreHealth->getCentreHealth() === $this) {
+                $vaccinCentreHealth->setCentreHealth(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAddress(): ?Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?Address $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getNumRue(): ?string
+    {
+        return $this->numRue;
+    }
+
+    public function setNumRue(?string $numRue): self
+    {
+        $this->numRue = $numRue;
+
+        return $this;
+    }
+
+    public function getQuartier(): ?string
+    {
+        return $this->quartier;
+    }
+
+    public function setQuartier(?string $quartier): self
+    {
+        $this->quartier = $quartier;
 
         return $this;
     }

@@ -22,7 +22,7 @@ class TypeVaccin
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type_name;
+    private $typeName;
 
     /**
      * @ORM\OneToMany(targetEntity=Vaccin::class, mappedBy="Type_vaccin")
@@ -41,12 +41,12 @@ class TypeVaccin
 
     public function getTypeName(): ?string
     {
-        return $this->type_name;
+        return $this->typeName;
     }
 
     public function setTypeName(string $type_name): self
     {
-        $this->type_name = $type_name;
+        $this->typeName = $type_name;
 
         return $this;
     }
@@ -81,4 +81,9 @@ class TypeVaccin
 
         return $this;
     }
+    public function __toString()
+    {
+        return $this->getTypeName();
+    }
+
 }

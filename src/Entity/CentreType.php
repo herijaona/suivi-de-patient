@@ -22,7 +22,7 @@ class CentreType
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type_name;
+    private $typeName;
 
     /**
      * @ORM\OneToMany(targetEntity=CentreHealth::class, mappedBy="centre_type")
@@ -46,12 +46,12 @@ class CentreType
 
     public function getTypeName(): ?string
     {
-        return $this->type_name;
+        return $this->typeName;
     }
 
-    public function setTypeName(string $type_name): self
+    public function setTypeName(string $typeName): self
     {
-        $this->type_name = $type_name;
+        $this->typeName = $typeName;
 
         return $this;
     }
@@ -97,5 +97,10 @@ class CentreType
         $this->description = $description;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getTypeName().' - '. $this->getDescription();
     }
 }

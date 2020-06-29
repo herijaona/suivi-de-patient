@@ -46,7 +46,7 @@
             </div>
              <div class="row form-group">
                 <div class="col-lg-6">
-                {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Adresse email'}}) }}
+                {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Votre identifiant'}}) }}
                 </div>
                 <div class="col-lg-6">
                 {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
@@ -59,4 +59,56 @@
     {{ form_end(registrationForm) }}
     </div>
 </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function getRndInteger(min = 100, max= 1000) {
+            return Math.floor(Math.random() * (max - min + 1) ) + min;
+        }
+
+        function createUsername()  {
+            var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
+
+            var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
+            var username = fname + lname + getRndInteger();
+
+            $.ajax({
+                url: "{{ path('check_username') }}",
+                type: 'POST',
+                data: {
+                    'username': username,
+                },
+                dataType: "json",
+                success: (data) => {
+                    console.log(data);
+                    if (data.status == "OK"){
+                        $('#registration_praticien_form_username').val(username);
+                    }else {
+                        createUsername();
+                    }
+                },
+                error: (e) => {
+                    console.log(error);
+                }
+            }).done(() => {
+            });
+            //$('#registration_form_email').val(username);
+        }
+
+        $(document).ready(function () {
+            $('#form-parent').css("display", "none");
+            $('#registration_praticien_form_username').attr("readonly", "true");
+            $("#registration_form_type_patient").on('change', function (e) {
+                if ($("#registration_form_type_patient").val() == 3){
+                    $('#form-parent').css("display", "block");
+                }else {
+                    $('#form-parent').css("display", "none");
+                }
+            });
+
+            $('#registration_praticien_form_firstname').on('keyup', createUsername);
+            $('#registration_praticien_form_lastname').on('keyup', createUsername);
+        });
+    </script>
 {% endblock %}

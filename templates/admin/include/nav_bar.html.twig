@@ -4,18 +4,32 @@
     <div class="mt-4">
         <div class="img_profile">
             <img width="88px" src="{{ asset('assets/images/praticien.jpg') }}" alt="logo" id="logo">
-            <h5>Maria Eudw</h5>
+            <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
             <label>Administrator</label>
         </div>
-        <ul class="menu_suivi">
-            <li class="{{ (currentPath == path('admin')) ? 'active' }}"><a href="{{ path('admin') }}">Dashboard</a></li>
-            <li class="{{ (currentPath == path('vaccin_admin')) ? 'active' }}"><a href="{{ path('vaccin_admin') }}">Calendrier Vaccination</a></li>
-            <li class="{{ (currentPath == path('praticiens_admin')) ? 'active' }}"><a href="{{ path('praticiens_admin') }}">Liste des praticiens</a></li>
-            <li class="{{ (currentPath == path('patients_admin')) ? 'active' }}"><a href="{{ path('patients_admin') }}">Liste des patients</a></li>
+        <ul class="menu_suivi" id="side-bar-menu">
+            <li class="{{ (currentPath == path('admin')) ? 'active' :'' }}"><a href="{{ path('admin') }}">Dashboard</a></li>
+            <li class="{{ (currentPath == path('admin_member')) ? 'active' : '' }}"><a href="{{ path('admin_member') }}">Membres</a></li>
+            <li class="{{ (currentPath == path('vaccin_admin')) ? 'active' : '' }}"><a href="{{ path('vaccin_admin') }}">Calendrier Vaccination</a></li>
+            <li class="{{ (currentPath == path('praticiens_admin')) ? 'active' : '' }}"><a href="{{ path('praticiens_admin') }}">Liste des praticiens</a></li>
+            <li class="{{ (currentPath == path('patients_admin')) ? 'active' : '' }}"><a href="{{ path('patients_admin') }}">Liste des patients</a></li>
+            <li class="{{ (currentPath == path('admin_centre_health')) ? 'active' : '' }}"><a href="{{ path('admin_centre_health') }}">Centre de Santé</a></li>
+            <li class="{{ (currentPath == path('admin_city')) ? 'active' : '' }}"><a href="{{ path('admin_city') }}">Ville</a></li>
+            <li class="{{ (currentPath == path('admin_region')) ? 'active' : '' }}"><a href="{{ path('admin_region') }}">Région</a></li>
+            <li class="{{ (currentPath == path('admin_state')) ? 'active' : '' }}"><a href="{{ path('admin_state') }}">Pays</a></li>
+            <li class="{{ (currentPath == path('admin_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_vaccin') }}">Vaccin</a></li>
+            <li class="{{ (currentPath == path('admin_type_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_type_vaccin') }}">Type de vaccin</a></li>
+            <li class="{{ (currentPath == path('admin_type_vaccin') or currentPath == path('admin_vaccin'))  ? 'active' : '' }}">
+                <a href="#" data-toggle="collapse" data-target="#vacc"><span><i class="material-icons fs-16"></i>Parametres</span></a>
+                <ul id="vacc" class="collapse" aria-labelledby="vacc" data-parent="#side-bar-menu">
+                    <li> <a href="{{ path('admin_type_vaccin') }}" class="{{ (currentPath == path('admin_type_vaccin')) ? 'active' : '' }}" >Type de vaccin</a></li>
+                    <li> <a href="{{ path('admin_vaccin') }}" class="{{ (currentPath == path('admin_vaccin')) ? 'active' : '' }}">Vaccin</a></li>
+                </ul>
+            </li>
         </ul>
         <ul class="logout_footer">
             <li>
-                <a href="{{ path('app_logout') }}">
+                <a href="{{ path('admin_logout') }}">
                     <i class="fas fa-sign-out-alt"></i> Deconnexion
                 </a>
             </li>

@@ -1,0 +1,51 @@
+{% extends 'admin/include/base.html.twig' %}
+{%  block title %}
+    Type de Vaccin
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Tous les Type de Vaccin</h4>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Type de Vaccin</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for tpVaccin in typeVaccin  %}
+                <tr>
+                    <td>
+                        {{ tpVaccin.typeName }}
+                    </td>
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ tpVaccin.id }}"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ tpVaccin.id }}"><i class="fa fa-trash-o"></i></span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/lang.json') }}"
+                }
+            });
+            $('.mdb-select').materialSelect();
+        });
+    </script>
+{% endblock %}

@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Patient;
 use App\Entity\Praticien;
+use App\Entity\TypePatient;
 use App\Entity\User;
 use App\Form\ActivatorFormType;
 use App\Form\RegistrationFormType;
 use App\Form\RegistrationPraticienFormType;
+use App\Repository\PatientRepository;
+use App\Repository\PraticienRepository;
+use App\Repository\TypePatientRepository;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,9 +24,15 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 class RegistrationController extends AbstractController
 {
     protected $user;
-    function __construct(UserRepository $userRepository)
+    protected $typePatientRepository;
+    const ROLE_PATIENT = 'ROLE_PATIENT';
+    const ROLE_PRATICIEN = 'ROLE_PRATICIEN';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
+    function __construct(UserRepository $userRepository, TypePatientRepository $typePatientRepository)
     {
         $this->user = $userRepository;
+        $this->typePatientRepository = $typePatientRepository;
     }
 
     /**
@@ -46,8 +56,8 @@ class RegistrationController extends AbstractController
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
-            $user->setEmail($form->get('email')->getData());
-            $user->setRoles(['ROLE_PATIENT']);
+            $user->setUsername($form->get('username')->getData());
+            $user->setRoles([self::ROLE_PATIENT]);
             $user->setActivatorId($code);
             $user->setEtat(0);
             // encode the plain password
@@ -99,16 +109,17 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // CREATE ACCOUNT PRATICIEN
             $code = $this->generate_code();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
-            $user->setEmail($form->get('email')->getData());
-            $user->setRoles(['ROLE_PRATICIEN']);
+            $user->setUsername($form->get('username')->getData());
+            $user->setRoles([self::ROLE_PRATICIEN]);
             $user->setActivatorId($code);
-            $user->setEtat(0);
+            $user->setEtat(false);
             // encode the plain password
             $user->setPassword(
                 $passwordEncoder->encodePassword(
@@ -122,14 +133,53 @@ class RegistrationController extends AbstractController
             $praticien->setFirstName($first_name);
             $praticien->setLastName($last_name);
             $praticien->setCreatedAt(new \DateTime('now'));
-            $praticien->setAdress($form->get('address')->getData());
+            //$praticien->setAdress($form->get('address')->getData());
             $praticien->setDateBorn($form->get('date_naissance')->getData());
-            $praticien->setAdressBorn($form->get('lieu_naissance')->getData());
+            //$praticien->setAdressBorn($form->get('lieu_naissance')->getData());
             $praticien->setFonction($form->get('fonction')->getData());
             $praticien->setPhone($form->get('phone')->getData());
             $praticien->setPhoneProfessional($form->get('phone_professional')->getData());
+            $praticien->setEtat(false);
             $praticien->setUser($user);
             $entityManager->persist($praticien);
+            $entityManager->flush();
+
+            // CREATE ACCOUNT PATIENT
+            $code2 = $this->generate_code();
+            $last_name = $form->get('lastname')->getData();
+            $first_name = $form->get('firstname')->getData();
+
+            $userName2 = $this->random_username($last_name . $first_name);
+
+            $user2 = new User();
+            $user2->setLastName($last_name);
+            $user2->setFirstName($first_name);
+            $user2->setUsername($userName2);
+            $user2->setRoles([self::ROLE_PATIENT]);
+            $user2->setActivatorId($code2);
+            $user2->setEtat(false);
+            // encode the plain password
+            $user2->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user2,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $typePatient = $this->typePatientRepository->find(1);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user2);
+            $patient = new Patient();
+            $patient->setFirstName($first_name);
+            $patient->setLastName($last_name);
+            //$patient->setAdress($form->get('address')->getData());
+            $patient->setDateOnBorn($form->get('date_naissance')->getData());
+            //$patient->setAdressOnBorn($form->get('lieu_naissance')->getData());
+            $patient->setTypePatient($typePatient);
+            $patient->setEtat(false);
+            $patient->setPhone($form->get('phone')->getData());
+            $patient->setPhone($form->get('phone')->getData());
+            $patient->setUser($user2);
+            $entityManager->persist($patient);
             $entityManager->flush();
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             // do anything else you need here, like send an email
@@ -143,11 +193,11 @@ class RegistrationController extends AbstractController
     }
     public function checkConnected(){
         $securityContext = $this->container->get('security.authorization_checker');
-        if ($securityContext->isGranted('ROLE_PATIENT')) {
+        if ($securityContext->isGranted(self::ROLE_PATIENT)) {
             return 'patient';
-        }elseif($securityContext->isGranted('ROLE_PRATICIEN')){
+        }elseif($securityContext->isGranted(self::ROLE_PRATICIEN)){
             return 'praticien';
-        }elseif($securityContext->isGranted('ROLE_ADMIN')){
+        }elseif($securityContext->isGranted(self::ROLE_ADMIN)){
             return 'admin';
         }
         return false;
@@ -162,17 +212,32 @@ class RegistrationController extends AbstractController
             $case = mt_rand(0,count($dico[$option])-1);
             $text .= $dico[$option][$case];
         }
-        $user = $this->user->findBy(['activator_id'=>$text]);
+        $user = $this->user->findBy(['activatorId'=>$text]);
         if($user) {
             return $this->generate_code();
         }
         return $text;
     }
 
+    private function random_username($string) {
+        $pattern = " ";
+        $firstPart = strstr(strtolower($string), $pattern, true);
+        $secondPart = substr(strstr(strtolower($string), $pattern, false), 0,3);
+        $nrRand = rand(0, 100);
+
+        $username = trim($firstPart).trim($secondPart).trim($nrRand);
+        // $username;
+        $user = $this->user->findBy(['username'=>$username]);
+        if($user) {
+            return $this->random_username($string);
+        }
+        return $username;
+    }
+
     /**
      * @Route("/register/activate", name="app_register_activate")
      */
-    public function activeCompte(Request $request,UserRepository $userRepository)
+    public function activeCompte(Request $request, UserRepository $userRepository, PatientRepository $patientRepository, PraticienRepository $praticienRepository)
     {
         if($this->checkConnected()){
             return $this->redirectToRoute($this->checkConnected());
@@ -184,13 +249,28 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $add_code = $form->get('code')->getData();
             $entityManager = $this->getDoctrine()->getManager();
-            $auser = $userRepository->findOneBy(['activator_id'=>$add_code]);
+            $auser = $userRepository->findOneBy(['activatorId' => $add_code]);
             if($auser){
-                if($auser->getEtat()!=1){
-                    $auser->setEtat(1);
+                $patientUser = $patientRepository->findOneBy(['user' => $auser]);
+                $praticienUser = $praticienRepository->findOneBy(['user' => $auser]);
+                if($auser->getEtat() != 1){
+                    $auser->setEtat(true);
                     $entityManager->persist($auser);
                     $entityManager->flush();
                 }
+
+                if ($patientUser && $patientUser->getEtat() != 1 ){
+                    $patientUser->setEtat(true);
+                    $entityManager->persist($patientUser);
+                    $entityManager->flush();
+                }
+
+                if ($praticienUser && $praticienUser->getEtat() != 1 ){
+                    $praticienUser->setEtat(true);
+                    $entityManager->persist($praticienUser);
+                    $entityManager->flush();
+                }
+
                 return $this->redirectToRoute('app_login');
             }else{
                 $this->addFlash('error', 'Code non valide');

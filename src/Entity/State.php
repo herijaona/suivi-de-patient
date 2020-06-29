@@ -22,22 +22,18 @@ class State
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name_state;
+    private $nameState;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="state", orphanRemoval=true)
      */
     private $regions;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Vaccin::class, mappedBy="state")
-     */
-    private $vaccins;
+
 
     public function __construct()
     {
         $this->regions = new ArrayCollection();
-        $this->vaccins = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,12 +43,12 @@ class State
 
     public function getNameState(): ?string
     {
-        return $this->name_state;
+        return $this->nameState;
     }
 
     public function setNameState(string $name_state): self
     {
-        $this->name_state = $name_state;
+        $this->nameState = $name_state;
 
         return $this;
     }
@@ -88,34 +84,10 @@ class State
         return $this;
     }
 
-    /**
-     * @return Collection|Vaccin[]
-     */
-    public function getVaccins(): Collection
+    public function __toString()
     {
-        return $this->vaccins;
+        return $this->getNameState();
     }
 
-    public function addVaccin(Vaccin $vaccin): self
-    {
-        if (!$this->vaccins->contains($vaccin)) {
-            $this->vaccins[] = $vaccin;
-            $vaccin->setState($this);
-        }
 
-        return $this;
-    }
-
-    public function removeVaccin(Vaccin $vaccin): self
-    {
-        if ($this->vaccins->contains($vaccin)) {
-            $this->vaccins->removeElement($vaccin);
-            // set the owning side to null (unless already changed)
-            if ($vaccin->getState() === $this) {
-                $vaccin->setState(null);
-            }
-        }
-
-        return $this;
-    }
 }

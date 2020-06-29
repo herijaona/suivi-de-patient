@@ -31,7 +31,7 @@ class City
      * @ORM\Column(type="string", length=255)
      * @Groups({"read:city"})
      */
-    private $name_city;
+    private $nameCity;
 
     /**
      * @ORM\ManyToOne(targetEntity=Region::class, inversedBy="cities")
@@ -40,36 +40,18 @@ class City
     private $region;
 
     /**
-     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="adress")
+     * @ORM\OneToMany(targetEntity=Address::class, mappedBy="ville")
      */
-    private $type_patient;
+    private $addresses;
 
     /**
-     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="adress_on_born")
-     */
-    private $patients;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="adress")
-     */
-    private $praticiens;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="adress_born")
-     */
-    private $city_born;
-
-    /**
-     * @ORM\OneToMany(targetEntity=CentreHealth::class, mappedBy="centre_city")
+     * @ORM\OneToMany(targetEntity=CentreHealth::class, mappedBy="city")
      */
     private $centreHealths;
 
     public function __construct()
     {
-        $this->type_patient = new ArrayCollection();
-        $this->patients = new ArrayCollection();
-        $this->praticiens = new ArrayCollection();
-        $this->city_born = new ArrayCollection();
+        $this->addresses = new ArrayCollection();
         $this->centreHealths = new ArrayCollection();
     }
 
@@ -80,12 +62,12 @@ class City
 
     public function getNameCity(): ?string
     {
-        return $this->name_city;
+        return $this->nameCity;
     }
 
-    public function setNameCity(string $name_city): self
+    public function setNameCity(string $nameCity): self
     {
-        $this->name_city = $name_city;
+        $this->nameCity = $nameCity;
 
         return $this;
     }
@@ -103,127 +85,39 @@ class City
     }
 
     /**
-     * @return Collection|Patient[]
+     * @return Collection|Address[]
      */
-    public function getTypePatient(): Collection
+    public function getAddresses(): Collection
     {
-        return $this->type_patient;
+        return $this->addresses;
     }
 
-    public function addTypePatient(Patient $typePatient): self
+    public function addAddress(Address $address): self
     {
-        if (!$this->type_patient->contains($typePatient)) {
-            $this->type_patient[] = $typePatient;
-            $typePatient->setAdress($this);
+        if (!$this->addresses->contains($address)) {
+            $this->addresses[] = $address;
+            $address->setVille($this);
         }
 
         return $this;
     }
 
-    public function removeTypePatient(Patient $typePatient): self
+    public function removeAddress(Address $address): self
     {
-        if ($this->type_patient->contains($typePatient)) {
-            $this->type_patient->removeElement($typePatient);
+        if ($this->addresses->contains($address)) {
+            $this->addresses->removeElement($address);
             // set the owning side to null (unless already changed)
-            if ($typePatient->getAdress() === $this) {
-                $typePatient->setAdress(null);
+            if ($address->getVille() === $this) {
+                $address->setVille(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * @return Collection|Patient[]
-     */
-    public function getPatients(): Collection
+    public function __toString()
     {
-        return $this->patients;
-    }
-
-    public function addPatient(Patient $patient): self
-    {
-        if (!$this->patients->contains($patient)) {
-            $this->patients[] = $patient;
-            $patient->setAdressOnBorn($this);
-        }
-
-        return $this;
-    }
-
-    public function removePatient(Patient $patient): self
-    {
-        if ($this->patients->contains($patient)) {
-            $this->patients->removeElement($patient);
-            // set the owning side to null (unless already changed)
-            if ($patient->getAdressOnBorn() === $this) {
-                $patient->setAdressOnBorn(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Praticien[]
-     */
-    public function getPraticiens(): Collection
-    {
-        return $this->praticiens;
-    }
-
-    public function addPraticien(Praticien $praticien): self
-    {
-        if (!$this->praticiens->contains($praticien)) {
-            $this->praticiens[] = $praticien;
-            $praticien->setAdress($this);
-        }
-
-        return $this;
-    }
-
-    public function removePraticien(Praticien $praticien): self
-    {
-        if ($this->praticiens->contains($praticien)) {
-            $this->praticiens->removeElement($praticien);
-            // set the owning side to null (unless already changed)
-            if ($praticien->getAdress() === $this) {
-                $praticien->setAdress(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Praticien[]
-     */
-    public function getCityBorn(): Collection
-    {
-        return $this->city_born;
-    }
-
-    public function addCityBorn(Praticien $cityBorn): self
-    {
-        if (!$this->city_born->contains($cityBorn)) {
-            $this->city_born[] = $cityBorn;
-            $cityBorn->setAdressBorn($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCityBorn(Praticien $cityBorn): self
-    {
-        if ($this->city_born->contains($cityBorn)) {
-            $this->city_born->removeElement($cityBorn);
-            // set the owning side to null (unless already changed)
-            if ($cityBorn->getAdressBorn() === $this) {
-                $cityBorn->setAdressBorn(null);
-            }
-        }
-
-        return $this;
+        return $this->getNameCity();
     }
 
     /**
@@ -238,7 +132,7 @@ class City
     {
         if (!$this->centreHealths->contains($centreHealth)) {
             $this->centreHealths[] = $centreHealth;
-            $centreHealth->setCentreCity($this);
+            $centreHealth->setCity($this);
         }
 
         return $this;
@@ -249,11 +143,12 @@ class City
         if ($this->centreHealths->contains($centreHealth)) {
             $this->centreHealths->removeElement($centreHealth);
             // set the owning side to null (unless already changed)
-            if ($centreHealth->getCentreCity() === $this) {
-                $centreHealth->setCentreCity(null);
+            if ($centreHealth->getCity() === $this) {
+                $centreHealth->setCity(null);
             }
         }
 
         return $this;
     }
+
 }

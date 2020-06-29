@@ -22,7 +22,7 @@ class Region
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name_region;
+    private $nameRegion;
 
     /**
      * @ORM\ManyToOne(targetEntity=State::class, inversedBy="regions")
@@ -47,12 +47,12 @@ class Region
 
     public function getNameRegion(): ?string
     {
-        return $this->name_region;
+        return $this->nameRegion;
     }
 
-    public function setNameRegion(string $name_region): self
+    public function setNameRegion(string $nameRegion): self
     {
-        $this->name_region = $name_region;
+        $this->nameRegion = $nameRegion;
 
         return $this;
     }
@@ -99,4 +99,9 @@ class Region
 
         return $this;
     }
+    public function __toString()
+    {
+        return $this->getNameRegion();
+    }
+
 }
