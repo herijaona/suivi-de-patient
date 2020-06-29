@@ -23,11 +23,9 @@
             <a class="clickTr"> <i class="fas fa-user-circle"></i>
             </a>
             <div class="menu_">
-                {# {% for person in isuser %}
-                <a href="{{ path('praticienProfile',{slug:person.lastName,id:person.id}) }}">Mon Profile</a> {% endfor %} #}
 
 
-                <a href="{{ path('praticienProfile',{slug:'praticien',id:1}) }}">Mon Profile</a>
+                <a href="{{ path('editPraticien') }}">Mon Profile</a>
                 <a href="{{ path('app_logout') }}">Deconnexion</a>
             </div>
         </li>

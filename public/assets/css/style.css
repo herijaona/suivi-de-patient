@@ -426,3 +426,11 @@ select.mdb-select.initialized {
     background: linear-gradient(163deg, #1cc888 10%, #37af21 57%);
     text-transform: capitalize;
 }
+
+.edit-register label {
+    text-align: left;
+    width: 100%;
+    font-family: "marvel-bold";
+    font-size: 18px;
+    margin-bottom: -1px;
+}

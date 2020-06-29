@@ -83,21 +83,9 @@ class ProfileController extends AbstractController
      */
     public function praticienProfile($slug, $id) : Response
     {   
-        // if ($this->isGranted('ROLE_PATIENT') || $this->isGranted('ROLE_ADMIN')) {
-        //     return $this->redirectToRoute('');
-        // }
-        
-        // if($slug == 'patient'){
-        //     $isuser = $this->patientRepository->find($id);
-        // }else if($slug == 'praticien'){
-        // $user = $this->getUser();
-        // $isuser = $this->praticienRepository->findByPraticien(['user'=>$user]);
-        // }
 
         $user = $this->getUser();
         $isuser = $this->praticienRepository->findByPraticien(['user'=>$user]);
-
-
         return $this->render('profile/profilePraticien.html.twig', [
             'isuser' => $isuser,
             'slug' => $slug,
@@ -107,7 +95,7 @@ class ProfileController extends AbstractController
     }
 
     /**
-     * @Route("praticien/profile", name="editPraticien")
+     * @Route("/praticien/profile", name="editPraticien")
      * @return Response
      */
     public function editPraticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator) : Response{
@@ -116,11 +104,12 @@ class ProfileController extends AbstractController
 
         $form->handleRequest($request);
 
+        $currentUser = $this->getUser();
+
         if ($form->isSubmitted() && $form->isValid()) {
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
          
-            $currentUser = $this->getUser();
             $user = $this->user->find($currentUser->getId());
 
             $user->setLastName($last_name);
@@ -157,8 +146,19 @@ class ProfileController extends AbstractController
 
             return $this->redirectToRoute('editPraticien',['id'=>$idPraticien['0']['id']]);
         }
+
+        $isuser = $this->praticienRepository->findByPraticien(['user'=>$user]);
+
+        $coprs = $this->praticienRepository->findByPraticienUser($currentUser->getId());
+        
+        $values;
+        foreach ( $coprs as $key => $val) { $values = $val; }
+
         return $this->render('profile/editPraticien.html.twig', [
-            'registrationForm' => $form->createView()
+            'values' => $values,
+            'isuser' => $isuser,
+            'registrationForm' => $form->createView(),
+            'currentUser' => $currentUser
         ]);
     }
 
