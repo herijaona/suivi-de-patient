@@ -98,4 +98,9 @@ class CentreType
 
         return $this;
     }
+
+    public function __toString()
+    {
+        return $this->getTypeName().' - '. $this->getDescription();
+    }
 }

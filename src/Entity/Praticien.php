@@ -121,6 +121,11 @@ class Praticien
      */
     private $address;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $etat;
+
     public function __construct()
     {
         $this->setUpdatedAt(new \DateTime('now'));
@@ -135,6 +140,7 @@ class Praticien
         $this->intervationConsultationsPraticienConsultant = new ArrayCollection();
         $this->vaccinPraticiens = new ArrayCollection();
         $this->praticienSpecialites = new ArrayCollection();
+        $this->etat = false;
     }
     public function getId(): ?int
     {
@@ -568,6 +574,23 @@ class Praticien
     public function setAddress(?Address $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getLastName() .' '. $this->getFirstName();
+    }
+
+    public function getEtat(): ?bool
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?bool $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

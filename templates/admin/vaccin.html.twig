@@ -1,10 +1,9 @@
-{% extends 'praticien/include/base.html.twig' %}
+{% extends 'admin/include/base.html.twig' %}
 {%  block title %}
     Vaccination
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
 {% endblock %}
 
 {% block body %}
@@ -63,9 +62,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <!-- DataTables -->
-    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
-    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    {{ parent() }}
     <script>
         $("#example1").DataTable({
             language: {

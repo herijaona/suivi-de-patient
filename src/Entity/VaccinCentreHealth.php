@@ -55,4 +55,5 @@ class VaccinCentreHealth
 
         return $this;
     }
+
 }

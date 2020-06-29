@@ -64,6 +64,21 @@ class CentreHealth
      */
     private $address;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="centreHealths")
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $numRue;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $quartier;
+
     public function __construct()
     {
         $this->vaccinCentreHealths = new ArrayCollection();
@@ -197,6 +212,42 @@ class CentreHealth
     public function setAddress(?Address $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getNumRue(): ?string
+    {
+        return $this->numRue;
+    }
+
+    public function setNumRue(?string $numRue): self
+    {
+        $this->numRue = $numRue;
+
+        return $this;
+    }
+
+    public function getQuartier(): ?string
+    {
+        return $this->quartier;
+    }
+
+    public function setQuartier(?string $quartier): self
+    {
+        $this->quartier = $quartier;
 
         return $this;
     }

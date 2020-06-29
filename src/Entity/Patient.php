@@ -57,7 +57,7 @@ class Patient
     private $user;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $etat;
 
@@ -181,6 +181,7 @@ class Patient
         $this->patientOrdoVaccinations = new ArrayCollection();
         $this->patientIntervationConsultations = new ArrayCollection();
         $this->patientVaccins = new ArrayCollection();
+        $this->etat = false;
     }
 
     public function getId(): ?int
@@ -272,12 +273,12 @@ class Patient
         return $this;
     }
 
-    public function getEtat(): ?int
+    public function getEtat(): ?bool
     {
         return $this->etat;
     }
 
-    public function setEtat(int $etat): self
+    public function setEtat(bool $etat): self
     {
         $this->etat = $etat;
 
@@ -769,6 +770,11 @@ class Patient
         $this->addressOnBorn = $addressOnBorn;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getLastName() .' '. $this->getFirstName();
     }
 
 }

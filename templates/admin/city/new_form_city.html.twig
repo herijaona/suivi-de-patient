@@ -1,0 +1,38 @@
+<!--Header-->
+
+<div class="modal-header text-center">
+    {% if new == true %}
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Nouveau Ville</h4>
+    {% else %}
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Modification Ville</h4>
+    {% endif %}
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="white-text">&times;</span>
+    </button>
+</div>
+<!--Content-->
+{{ form_start(form, {'attr': {'action': path('register_city') }}) }}
+<!--Body-->
+<div class="modal-body">
+    <div class="md-form">
+        <label class="active" for="form1">Nom </label>
+        {{ form_widget(form.nameCity, {'attr': { 'class': 'form-control', 'required': 'required' }}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">Région </label>
+        {{ form_widget(form.region, {'attr': { 'class': 'form-control chosen-select', 'required': 'required' }}) }}
+    </div>
+
+</div>
+<div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" aria-label="Close">Annuler <i class="fas fa-paper-plane-o ml-1"></i></button>
+    <button type="submit" class="btn btn-outline-primary waves-effect submit_new_center_health">Enregistrer <i class="fas fa-paper-plane-o ml-1"></i></button>
+</div>
+
+{{ form_end(form) }}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.chosen-select').chosen({width: "100%"});
+    });
+</script>

@@ -3,22 +3,62 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
+        <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/font-awesome.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/css/component.css') }}" />
+        <link href="{{ asset('vendor/fullcalendar/packages/core/main.css') }}" rel='stylesheet' />
+        <link href="{{ asset('vendor/fullcalendar/packages/daygrid/main.css') }}" rel='stylesheet' />
+        <link href="{{ asset('vendor/fullcalendar/packages/timegrid/main.css') }}" rel='stylesheet' />
+        <link href="{{ asset('vendor/fullcalendar/packages/list/main.css') }}" rel='stylesheet' />
+        <link rel="stylesheet" href="{{ asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{  asset('vendor/sweetalert2/toastr.scss') }}" />
+        <link rel="stylesheet" type="text/css" href="{{  asset('vendor/sweetalert2/bootstrap-4.min.css') }}" />
+        <link href="{{ asset('assets/css/chosen/bootstrap-chosen.css') }}" rel="stylesheet">
+        <style>
+            .loadBody{
+                display: none;
+            }
+            .loadBody .chargement{
+                background-color: #7dc6ff;
+                color: #000000;
+                width: 400px;
+                margin: 0 auto;
+                height: 30px;
+                border-radius: 5px;
+                font-weight: bold;
+                line-height: 30px;
+                text-align: center;
+                margin-top: 5px;
+                position: fixed;
+                z-index: 9999999;
+                left: 35%;
+                padding: 0;
+            }
+            .loadBody button.close{
+                margin-right: 5px;
+            }
+            .chargementError{
+                display: none;
+                z-index: 9999999;
+            }
+            .badge-style {
+                font-size: .8rem !important;
+                font-weight: 500 !important;
+                line-height: 2 !important;
+                width: 70px !important;
+                cursor: pointer;
+            }
+            table tbody tr td i {
+                padding-left: 0px !important;
+                cursor: pointer;
+            }
+        </style>
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('assets/css/all.min.css') }}" />
-            <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}" />
-            <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
-            <link rel="stylesheet" href="{{ asset('assets/css/component.css') }}" />
-            <link href="{{ asset('vendor/fullcalendar/packages/core/main.css') }}" rel='stylesheet' />
-            <link href="{{ asset('vendor/fullcalendar/packages/daygrid/main.css') }}" rel='stylesheet' />
-            <link href="{{ asset('vendor/fullcalendar/packages/timegrid/main.css') }}" rel='stylesheet' />
-            <link href="{{ asset('vendor/fullcalendar/packages/list/main.css') }}" rel='stylesheet' />
-            <link rel="stylesheet" type="text/css" href="{{  asset('vendor/sweetalert2/toastr.scss') }}" />
-            <link rel="stylesheet" type="text/css" href="{{  asset('vendor/sweetalert2/bootstrap-4.min.css') }}" />
         {% endblock %}
     </head>
     <body>
-        
-
 
 <!-- Content -->
 
@@ -36,7 +76,6 @@
                     {% endblock %}
 
 
-                    <!---header-->
                     {% for message in app.flashes('error') %}
                         <input type="hidden" id="notice_error" value="{{ message }}" />
                     {% endfor %}
@@ -46,6 +85,27 @@
                     {% for message in app.flashes('warning') %}
                         <input type="hidden" id="notice_warning" value="{{ message }}" />
                     {% endfor %}
+                    <!-- Container -->
+
+                    <div class="loadBody">
+                        <div class="chargement alert-dismissable alert alert-warning alert-dismissable">
+                            <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                            Merci de patienter!.. Chargement en cours..
+                        </div>
+                    </div>
+
+                    <div class="alert alert-danger alert-dismissable chargementError">
+                        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+                        Le serveur a rencontré un problème interne ou un problème de configuration et ne peut pas satisfaire votre requête...
+                    </div>
+
+                    <div class="modal inmodal" id="modal_create_body" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-notify modal-primary">
+                            <div class="modal-content animated bounceInDown">
+                                <div class="create_body"></div>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Container -->
 
                     <div class="container">
@@ -61,21 +121,23 @@
         </div>
 
 <!-- End Content -->
-
+        <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+        <script src="{{ asset('assets/js/popper.min.js') }}"></script>
+        <script src="{{ asset('assets/js/bootstrap.min.js') }}" async></script>
+        <script src="{{ asset('vendor/fullcalendar/packages/core/main.js') }}"></script>
+        <script src="{{ asset('vendor/fullcalendar/packages/interaction/main.js') }}"></script>
+        <script src="{{ asset('vendor/fullcalendar/packages/core/locales-all.js') }}"></script>
+        <script src="{{ asset('vendor/fullcalendar/packages/daygrid/main.js') }}"></script>
+        <script src="{{ asset('vendor/fullcalendar/packages/timegrid/main.js') }}"></script>
+        <script src="{{ asset('vendor/fullcalendar/packages/list/main.js') }}"></script>
+        <script src="{{ asset('vendor/datatables/jquery.dataTables.js') }}"></script>
+        <script src="{{ asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js') }}"></script> <!-- Chosen -->
+        <script src="{{ asset('assets/js/chosen/chosen.jquery.js') }}"></script>
+        <!-- SweetAlert2/scramble -->
+        <script type="text/javascript" src="{{ asset('vendor/sweetalert2/toastr.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('vendor/sweetalert2/sweetalert2.min.js') }}"></script>
+        <script type="text/javascript" src="{{ asset('vendor/sweetalert2/toast.js') }}"></script>
         {% block javascripts %}
-            <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
-            <script src="{{ asset('assets/js/popper.min.js') }}"></script>
-            <script src="{{ asset('assets/js/bootstrap.min.js') }}" async></script>
-            <script src="{{ asset('vendor/fullcalendar/packages/core/main.js') }}"></script>
-            <script src="{{ asset('vendor/fullcalendar/packages/interaction/main.js') }}"></script>
-            <script src="{{ asset('vendor/fullcalendar/packages/core/locales-all.js') }}"></script>
-            <script src="{{ asset('vendor/fullcalendar/packages/daygrid/main.js') }}"></script>
-            <script src="{{ asset('vendor/fullcalendar/packages/timegrid/main.js') }}"></script>
-            <script src="{{ asset('vendor/fullcalendar/packages/list/main.js') }}"></script>
-            <!-- SweetAlert2/scramble -->
-            <script type="text/javascript" src="{{ asset('vendor/sweetalert2/toastr.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('vendor/sweetalert2/sweetalert2.min.js') }}"></script>
-            <script type="text/javascript" src="{{ asset('vendor/sweetalert2/toast.js') }}"></script>
         {% endblock %}
     </body>
 </html>

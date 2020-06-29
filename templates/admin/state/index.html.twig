@@ -1,20 +1,131 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Hello StateController!{% endblock %}
+{% extends 'admin/include/base.html.twig' %}
+{%  block title %}
+    Pays
+{% endblock %}
+{% block stylesheets %}
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Tous les Pays</h4>
+        </div>
+        <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-danger new_state">+ Nouveau Pays </button>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Nom de Pays</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for state in states  %}
+                <tr>
+                    <td>
+                        {{ state.nameState }}
+                    </td>
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ state.id }}"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ state.id }}"><i class="fa fa-trash-o"></i></span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/lang.json') }}"
+                }
+            });
+            $('.mdb-select').materialSelect();
+        });
+        $(".new_state").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            $.ajax({
+                url: "{{ path('add_form_state') }}",
+                type: 'post',
+                data: {
+                    action: 'new'
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/NEITIC/suivi-de-patient/src/Controller/Admin/StateController.php'|file_link(0) }}">src/Controller/Admin/StateController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/NEITIC/suivi-de-patient/templates/admin/state/index.html.twig'|file_link(0) }}">templates/admin/state/index.html.twig</a></code></li>
-    </ul>
-</div>
+        $('.data-edit').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            $.ajax({
+                url: "{{ path('add_form_state') }}",
+                type: 'post',
+                data: {
+                    id_state: id,
+                    action: 'edit'
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-remove').on('click', function (e) {
+            e.preventDefault();
+            var $delete = confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');
+            if($delete){
+                $(".loadBody").css("display", "block");
+                var id = $(this).data('id');
+                $.ajax({
+                    url: "{{ path('remove_state') }}",
+                    type: 'post',
+                    data: {
+                        id_state: id
+                    },
+                    dataType: "json",
+                    success: (data) =>{
+                        $(".loadBody").css("display", "none");
+                        location.reload();
+                    },
+                    error: (e) => {
+                        $(".loadBody").css("display", "none");
+                        $(".chargementError").css("display", "block");
+                    }
+                }).done(() => {
+                    $(".loadBody").css("display", "none");
+                });
+            }else {
+                return false
+            }
+        });
+
+    </script>
 {% endblock %}

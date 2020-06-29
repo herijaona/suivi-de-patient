@@ -35,12 +35,7 @@ class Vaccin
     private $TypeVaccin;
 
     /**
-     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="vaccins")
-     */
-    private $state;
-
-    /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $etat;
 
@@ -61,57 +56,57 @@ class Vaccin
     private $carnetVaccinations;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $datePriseInitiale;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel1;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel2;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel3;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel4;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel5;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel6;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel7;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel8;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel9;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $rappel10;
 
@@ -132,7 +127,7 @@ class Vaccin
 
     function __construct()
     {
-        $this->etat = true;
+        $this->etat = false;
         $this->interventionVaccinations = new ArrayCollection();
         $this->ordoVaccinations = new ArrayCollection();
         $this->carnetVaccinations = new ArrayCollection();
@@ -178,18 +173,6 @@ class Vaccin
     public function setTypeVaccin(?TypeVaccin $Type_vaccin): self
     {
         $this->TypeVaccin = $Type_vaccin;
-
-        return $this;
-    }
-
-    public function getState(): ?State
-    {
-        return $this->state;
-    }
-
-    public function setState(?State $state): self
-    {
-        $this->state = $state;
 
         return $this;
     }
@@ -299,132 +282,132 @@ class Vaccin
         return $this;
     }
 
-    public function getDatePriseInitiale(): ?\DateTimeInterface
+    public function getDatePriseInitiale(): ?string
     {
         return $this->datePriseInitiale;
     }
 
-    public function setDatePriseInitiale(\DateTimeInterface $datePriseInitiale): self
+    public function setDatePriseInitiale(?string $datePriseInitiale): self
     {
         $this->datePriseInitiale = $datePriseInitiale;
 
         return $this;
     }
 
-    public function getRappel1(): ?int
+    public function getRappel1(): ?string
     {
         return $this->rappel1;
     }
 
-    public function setRappel1(?int $rappel1): self
+    public function setRappel1(?string $rappel1): self
     {
         $this->rappel1 = $rappel1;
 
         return $this;
     }
 
-    public function getRappel2(): ?int
+    public function getRappel2(): ?string
     {
         return $this->rappel2;
     }
 
-    public function setRappel2(?int $rappel2): self
+    public function setRappel2(?string $rappel2): self
     {
         $this->rappel2 = $rappel2;
 
         return $this;
     }
 
-    public function getRappel3(): ?int
+    public function getRappel3(): ?string
     {
         return $this->rappel3;
     }
 
-    public function setRappel3(?int $rappel3): self
+    public function setRappel3(?string $rappel3): self
     {
         $this->rappel3 = $rappel3;
 
         return $this;
     }
 
-    public function getRappel4(): ?int
+    public function getRappel4(): ?string
     {
         return $this->rappel4;
     }
 
-    public function setRappel4(?int $rappel4): self
+    public function setRappel4(?string $rappel4): self
     {
         $this->rappel4 = $rappel4;
 
         return $this;
     }
 
-    public function getRappel5(): ?int
+    public function getRappel5(): ?string
     {
         return $this->rappel5;
     }
 
-    public function setRappel5(?int $rappel5): self
+    public function setRappel5(?string $rappel5): self
     {
         $this->rappel5 = $rappel5;
 
         return $this;
     }
 
-    public function getRappel6(): ?int
+    public function getRappel6(): ?string
     {
         return $this->rappel6;
     }
 
-    public function setRappel6(?int $rappel6): self
+    public function setRappel6(?string $rappel6): self
     {
         $this->rappel6 = $rappel6;
 
         return $this;
     }
 
-    public function getRappel7(): ?int
+    public function getRappel7(): ?string
     {
         return $this->rappel7;
     }
 
-    public function setRappel7(?int $rappel7): self
+    public function setRappel7(?string $rappel7): self
     {
         $this->rappel7 = $rappel7;
 
         return $this;
     }
 
-    public function getRappel8(): ?int
+    public function getRappel8(): ?string
     {
         return $this->rappel8;
     }
 
-    public function setRappel8(?int $rappel8): self
+    public function setRappel8(?string $rappel8): self
     {
         $this->rappel8 = $rappel8;
 
         return $this;
     }
 
-    public function getRappel9(): ?int
+    public function getRappel9(): ?string
     {
         return $this->rappel9;
     }
 
-    public function setRappel9(?int $rappel9): self
+    public function setRappel9(?string $rappel9): self
     {
         $this->rappel9 = $rappel9;
 
         return $this;
     }
 
-    public function getRappel10(): ?int
+    public function getRappel10(): ?string
     {
         return $this->rappel10;
     }
 
-    public function setRappel10(?int $rappel10): self
+    public function setRappel10(?string $rappel10): self
     {
         $this->rappel10 = $rappel10;
 
