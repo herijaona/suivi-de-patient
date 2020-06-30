@@ -3,12 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\PatientRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * 
  * @ORM\Entity(repositoryClass=PatientRepository::class)
+ *  @ApiResource(
+ *    normalizationContext={"groups"={"read:patient"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"} 
+ * )
  */
 class Patient
 {
@@ -16,26 +24,31 @@ class Patient
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:patient"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:patient"})
      */
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups("read:patient")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:patient"})
      */
     private $sexe;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"read:patient"})
      */
     private $dateOnBorn;
 
@@ -53,6 +66,7 @@ class Patient
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:patient"})
      */
     private $user;
 
@@ -74,6 +88,7 @@ class Patient
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:patient"})
      */
     private $phone;
 
@@ -194,9 +209,9 @@ class Patient
         return $this->firstName;
     }
 
-    public function setFirstName(string $first_name): self
+    public function setFirstName(string $firstName): self
     {
-        $this->firstName = $first_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -230,9 +245,9 @@ class Patient
         return $this->dateOnBorn;
     }
 
-    public function setDateOnBorn(\DateTimeInterface $date_on_born): self
+    public function setDateOnBorn(\DateTimeInterface $dateOnBorn): self
     {
-        $this->dateOnBorn = $date_on_born;
+        $this->dateOnBorn = $dateOnBorn;
 
         return $this;
     }

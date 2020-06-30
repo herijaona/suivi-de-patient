@@ -15,15 +15,29 @@
         <li>
             <a href="">
                 <i class="far fa-bell">
-
                     <span>1</span>
                 </i>
             </a>
         </li>
-        <li>
-            <a href="">
-                <i class="fas fa-user-circle"></i>
+        <li class="position-relative profileTrigger">
+            <a class="clickTr"> <i class="fas fa-user-circle"></i>
             </a>
+            <div class="menu_">
+
+
+                <a href="{{ path('editPraticien') }}">Mon Profile</a>
+                <a href="{{ path('app_logout') }}">Deconnexion</a>
+            </div>
         </li>
     </ul>
 </div>
+
+{% block javascripts %}
+<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+<script>
+    $('.menu_').css('display', 'none');
+    $(".clickTr").click(function() {
+        $('.menu_').toggle();
+    });
+</script>
+{% endblock %}

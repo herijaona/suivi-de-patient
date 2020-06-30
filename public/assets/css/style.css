@@ -65,7 +65,8 @@ ul {
 }
 
 .col_exc_1 {
-    background: linear-gradient(163deg, #3c023c 10%, #1c053a 57%);
+    /* background: linear-gradient(163deg, #3c023c 10%, #1c053a 57%); */
+    background: linear-gradient(163deg, #02273c 10%, #052749 57%);
     min-height: 97.5vh;
     width: 18%;
     position: relative;
@@ -80,7 +81,7 @@ ul {
     font-size: 15px;
     color: #eae9e9;
     text-align: center;
-    border-bottom: 2px solid #461f50;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.05);
     padding: 12px;
 }
 
@@ -88,6 +89,7 @@ ul {
     text-align: center;
     border-bottom: 1px solid rgba(125, 122, 122, 0.11);
     z-index: 9;
+    padding-bottom: 26px;
 }
 
 .img_profile h5 {
@@ -135,7 +137,7 @@ ul {
 
 .logout_footer {
     text-align: center;
-    border-top: 1px solid;
+    border-top: 2px solid rgba(255, 255, 255, 0.05);
     margin: 0;
     padding: 6px 40px;
     font-family: "roboto-regular";
@@ -262,16 +264,173 @@ img#qrcode {
 .aide a {
     font-size: 12px;
 }
+
 img.qrCode {
     margin: 0 35px;
 }
+
 footer {
     margin-bottom: 50px;
     padding-bottom: 50px;
 }
+
 select.mdb-select.initialized {
     display: none;
 }
+
 .validation_width {
     width: 10rem !important;
+}
+
+
+/* Dashboard */
+
+.admin {
+    position: relative;
+    top: 16px;
+}
+
+.admin .card-admin {
+    background: white;
+    display: flex;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.admin .card-admin i {
+    font-size: 44px;
+    color: #eaeaea;
+    margin-right: 25px;
+    position: relative;
+    top: 11px;
+    margin-left: 10px;
+}
+
+.admin .card-admin h5 {
+    font-family: "roboto-medium";
+    font-size: 16px;
+    margin: 0;
+}
+
+.admin .card-admin h3 {
+    font-size: 25px;
+    font-family: "roboto-bold";
+    margin: 0;
+    opacity: 0.3;
+}
+
+.card-admin {
+    position: relative;
+    margin-top: 8px;
+    margin-bottom: 6px;
+}
+
+.card-admin span {
+    position: absolute;
+    right: 5px;
+    top: 4px;
+    font-size: 11px;
+    padding: 0px 4px;
+    color: white;
+    border-radius: 3px;
+    font-family: "roboto-medium";
+}
+
+.card-admin .note-red {
+    background: #e20f0f;
+}
+
+.card-admin .note-green {
+    background: green;
+}
+
+.card-admin .in-card {
+    margin-top: 7px;
+}
+
+.title-dash {
+    font-family: "roboto-medium";
+    font-size: 20px;
+    position: relative;
+    display: initial;
+    top: 12px;
+}
+
+
+/* End Dashboard */
+
+.btn-class {
+    background: #c70053 !important;
+    border: none;
+    border-radius: 0;
+    font-family: "roboto-medium";
+    text-transform: none;
+    padding: 12px;
+}
+
+.btn-danger.active_etat_rdv {
+    padding: 7px;
+    width: 193px !important;
+}
+
+.profile-h2 {
+    width: 50%;
+    font-family: "marvel-bold";
+    font-size: 25px;
+    padding-bottom: 16px;
+    margin-top: 26px;
+}
+
+.profile label {
+    color: #052748;
+    font-size: 14px;
+    font-family: "roboto-medium";
+}
+
+.profileTrigger div {
+    color: white;
+    position: absolute;
+    display: block;
+    font-size: 12px;
+    right: -2px;
+    text-align: right;
+    background: #032743;
+    padding: 6px 11px;
+    border-radius: 2px;
+    top: 29px;
+    line-height: 21px;
+}
+
+.profileTrigger div a {
+    color: white;
+}
+
+.profileTrigger div a:hover {
+    color: #b7b2b2;
+}
+
+.edit-register .body-content {
+    width: auto;
+    margin: initial;
+}
+
+.edit-register .body-content button {
+    width: 178px;
+}
+
+.btn-edit {
+    margin-top: 23px;
+    width: 111px;
+    padding: 7px;
+    background: linear-gradient(163deg, #1cc888 10%, #37af21 57%);
+    text-transform: capitalize;
+}
+
+.edit-register label {
+    text-align: left;
+    width: 100%;
+    font-family: "marvel-bold";
+    font-size: 18px;
+    margin-bottom: -1px;
 }
