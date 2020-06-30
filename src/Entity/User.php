@@ -74,6 +74,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
+        $this->roles[] = 'ROLE_PATIENT';
     }
 
     public function getId(): ?int
@@ -121,7 +122,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_PATIENT';
+        //$roles[] = 'ROLE_PATIENT';
 
         return array_unique($roles);
     }

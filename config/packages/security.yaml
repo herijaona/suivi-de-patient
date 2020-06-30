@@ -50,6 +50,3 @@ security:
          - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/admin/, role: [ROLE_ADMIN] }
 
-    role_hierarchy:
-        ROLE_PATIENT: [ROLE_ADMIN]
-        ROLE_PRATICIEN: [ROLE_ADMIN]
