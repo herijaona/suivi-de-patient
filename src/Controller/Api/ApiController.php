@@ -4,6 +4,7 @@ namespace App\Controller\Api;
 
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\UserRepository;
 use App\Service\VaccinGenerate;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -11,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/api")
+ * @Route("/apis")
  */
 class ApiController extends AbstractController
 {
@@ -25,6 +26,7 @@ class ApiController extends AbstractController
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
     }
+
     /**
      * @Route("/", name="api_index")
      */
@@ -33,6 +35,7 @@ class ApiController extends AbstractController
 
         return new JsonResponse(['status' => 'OK']);
     }
+
 
     /**
      * @Route("/praticiens", name="api_praticiens")
