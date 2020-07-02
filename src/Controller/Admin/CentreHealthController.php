@@ -3,12 +3,15 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CentreHealth;
+use App\Entity\VaccinCentreHealth;
 use App\Form\CenterHealthType;
 use App\Repository\CentreHealthRepository;
 use App\Repository\CentreTypeRepository;
 use App\Repository\CityRepository;
 use App\Repository\RegionRepository;
 use App\Repository\StateRepository;
+use App\Repository\VaccinCentreHealthRepository;
+use App\Repository\VaccinRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +25,8 @@ class CentreHealthController extends AbstractController
     protected $regionRepository;
     protected $cityRepository;
     protected $centreTypeRepository;
+    protected $vaccinRepository;
+    protected $vaccinCentreHealthRepository;
     protected $entityManager;
 
     function __construct(
@@ -30,7 +35,9 @@ class CentreHealthController extends AbstractController
         RegionRepository $regionRepository,
         CityRepository $cityRepository,
         CentreTypeRepository $centreTypeRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        VaccinRepository $vaccinRepository,
+        VaccinCentreHealthRepository $vaccinCentreHealthRepository
     )
     {
         $this->centreHealthRepository = $centreHealthRepository;
@@ -38,6 +45,8 @@ class CentreHealthController extends AbstractController
         $this->regionRepository = $regionRepository;
         $this->cityRepository = $cityRepository;
         $this->centreTypeRepository = $centreTypeRepository;
+        $this->vaccinRepository = $vaccinRepository;
+        $this->vaccinCentreHealthRepository = $vaccinCentreHealthRepository;
         $this->entityManager = $entityManager;
     }
 
@@ -47,8 +56,10 @@ class CentreHealthController extends AbstractController
     public function index()
     {
         $centreSante = $this->centreHealthRepository->findAll();
+        $vaccinActive = $this->vaccinRepository->findBy(['etat' => true], ['vaccinName' => 'ASC']);
         return $this->render('admin/centre_health/index.html.twig', [
             'centreSante' => $centreSante,
+            'vaccinActive' => $vaccinActive
         ]);
     }
 
@@ -200,5 +211,36 @@ class CentreHealthController extends AbstractController
         }
 
         return new JsonResponse(['form_delete' => $delete]);
+    }
+
+    /**
+     * @Route("/admin/center-health/affected-vaccin", name="affected_center_health", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     */
+    public function affected_center_health(Request $request)
+    {
+        $center_healths = $request->request->get('center_health');
+        $vaccin_center_healths = $request->request->get('vaccin_center_health');
+
+
+        if ($center_healths && count($center_healths) > 0  ){
+            foreach ($center_healths as $center_health ){
+                $CenterHealth = $this->centreHealthRepository->find((int)$center_health);
+                if ($vaccin_center_healths && count($vaccin_center_healths) > 0 ){
+                    foreach ($vaccin_center_healths as $vaccin_center_health){
+                        $Vaccin = $this->vaccinRepository->find((int)$vaccin_center_health);
+                        if ($this->vaccinCentreHealthRepository->findOneBy(['centreHealth' => $CenterHealth , 'vaccin' => $Vaccin ]) == null){
+                            $vaccinCentreHealth = new VaccinCentreHealth();
+                            $vaccinCentreHealth->setCentreHealth($CenterHealth);
+                            $vaccinCentreHealth->setVaccin($Vaccin);
+                            $this->entityManager->persist($vaccinCentreHealth);
+                            $this->entityManager->flush();
+                            $this->addFlash('success', 'Affectation avec succès !');
+                        }
+                    }
+                }
+            }
+        }
+
+        return new JsonResponse(['form_success' => 'OK']);
     }
 }
