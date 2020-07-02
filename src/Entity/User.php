@@ -11,8 +11,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations={"get", "put", "delete"},
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *            "controller"=App\Controller\Api\InscriptionUserController::class
+ *         }
+ *      },
+ *     itemOperations={
+ *        "get", 
+ *        "put", 
+ *        "delete"
+ *     },
  *     normalizationContext={"groups"={"user:read"}},
  *     denormalizationContext={"groups"={"user:write"}}
  * )
@@ -25,32 +34,38 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * 
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, nullable=true)
+     * @Groups("user:read")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups("user:read")
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("user:read")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups("user:read")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("user:read")
      */
     private $lastName;
 
@@ -104,6 +119,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->createdAt = new \DateTime('now');
+        $this->roles[] = 'ROLE_PATIENT';
     }
 
     public function getId(): ?int
@@ -151,7 +167,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_PATIENT';
+        //$roles[] = 'ROLE_PATIENT';
 
         return array_unique($roles);
     }
