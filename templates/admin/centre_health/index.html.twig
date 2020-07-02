@@ -9,7 +9,7 @@
             justify-content: flex-end !important;
         }
         #vaccin_center_health_chosen {
-            width: 170px !important;
+            /*width: 170px !important;*/
         }
     </style>
 {% endblock %}
@@ -27,14 +27,14 @@
         </div>
     </div>
     <div class="row head-table col-md-12">
-        <div class="grid-edit-btn  mt-3 p-1 id_vaccin_center_health col-md-10">
+        <div class="grid-edit-btn  mt-3  id_vaccin_center_health col-md-10">
             <select name="vaccin_center_health" id="vaccin_center_health" class="form-control chosen-select" multiple>
                 {% for vacc in vaccinActive %}
                     <option value="{{ vacc.id }}">{{ vacc.vaccinName }}</option>
                 {% endfor %}
             </select>
         </div>
-        <div class="grid-edit-btn  mt-3 p-1 col-md-2">
+        <div class="grid-edit-btn  mt-3 col-md-2">
             <button class="btn btn-danger affected_center_health">+ Affecter </button>
         </div>
     </div>
@@ -242,7 +242,7 @@
                 center_health.push($(this).val());
             });
             var vaccin_center_health = $('#vaccin_center_health').val();
-            if (vaccin_center_health.length > 0){
+            if (vaccin_center_health.length > 0 && center_health.length > 0){
                 $(".loadBody").css("display", "block");
                 $.ajax({
                     url: "{{ path('affected_center_health') }}",
@@ -264,7 +264,7 @@
                     $(".loadBody").css("display", "none");
                 });
             }else {
-
+                alert("Veuillez selectionner au moins un centre de santé ou vaccin !")
             }
         });
 
@@ -276,19 +276,19 @@
                 }
             });
             $('.chosen-select').chosen({width: "100%"});
-            $(".id_vaccin_center_health").css("display", "none");
-            $(".affected_center_health").css("display", "none");
+            //$(".id_vaccin_center_health").css("display", "none");
+            //$(".affected_center_health").css("display", "none");
 
             $('#example-select-all').on('click', function(){
                 var rows = table.rows({ 'search': 'applied' }).nodes();
                 $('input[type="checkbox"]', rows).prop('checked', this.checked);
-                if ($('input[name="checkbox_centre"]').is(':checked')){
+                /*if ($('input[name="checkbox_centre"]').is(':checked')){
                     $(".id_vaccin_center_health").css("display", "block");
                     $(".affected_center_health").css("display", "block");
                 }else {
                     $(".id_vaccin_center_health").css("display", "none");
                     $(".affected_center_health").css("display", "none");
-                }
+                }*/
             });
 
             $('#example1 tbody').on('change', 'input[type="checkbox"]', function(){
@@ -298,13 +298,13 @@
                         el.indeterminate = true;
                     }
                 }
-                if ($('input[name="checkbox_centre"]').is(':checked')){
+                /*if ($('input[name="checkbox_centre"]').is(':checked')){
                     $(".id_vaccin_center_health").css("display", "block");
                     $(".affected_center_health").css("display", "block");
                 }else {
                     $(".id_vaccin_center_health").css("display", "none");
                     $(".affected_center_health").css("display", "none");
-                }
+                }*/
 
             });
 
