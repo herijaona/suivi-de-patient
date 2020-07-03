@@ -4,10 +4,12 @@ namespace App\Controller\Admin;
 
 use App\Entity\Vaccin;
 use App\Form\CenterHealthType;
+use App\Form\ChangePasswordType;
 use App\Form\VaccinType;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
 use App\Repository\TypeVaccinRepository;
+use App\Repository\UserRepository;
 use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 /**
@@ -28,6 +31,7 @@ class AdminController extends AbstractController
     protected $praticienRepository;
     protected $vaccinRepository;
     protected $typeVaccinRepository;
+    protected $userRepository;
     protected $entityManager;
 
     function __construct(
@@ -36,6 +40,7 @@ class AdminController extends AbstractController
         PraticienRepository $praticienRepository,
         VaccinRepository $vaccinRepository,
         TypeVaccinRepository $typeVaccinRepository,
+        UserRepository $userRepository,
         EntityManagerInterface $entityManager
     )
     {
@@ -44,6 +49,7 @@ class AdminController extends AbstractController
         $this->praticienRepository = $praticienRepository;
         $this->vaccinRepository = $vaccinRepository;
         $this->typeVaccinRepository = $typeVaccinRepository;
+        $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
     }
     /**
@@ -245,7 +251,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/vaccin/remove", name="remove_vaccin", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     * @Route("/vaccin/remove", name="remove_vaccin", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
     public function remove_vaccin(Request $request)
     {
@@ -282,7 +288,7 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/vaccin/edit-status", name="edit_status_vaccin", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     * @Route("/vaccin/edit-status", name="edit_status_vaccin", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
     public function edit_status_vaccin(Request $request)
     {
@@ -305,4 +311,137 @@ class AdminController extends AbstractController
         }
         return new JsonResponse(['form_edit' => $modif]);
     }
+
+    /**
+     * @Route("/users/remove", name="remove_users", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     */
+    public function remove_users(Request $request)
+    {
+        $id = $request->request->get('id');
+        $type = $request->request->get('type');
+        $delete = false;
+        if ($type != '' && $type != null){
+            if ($type == 'patient'){
+                $Patient = $this->patientRepository->find($id);
+                if($Patient && $Patient->getUser() != null){
+                    $this->entityManager->remove($Patient->getUser());
+                }
+                $this->entityManager->remove($Patient);
+            }
+            elseif ($type == 'praticien'){
+                $Praticien = $this->praticienRepository->find($id);
+                if($Praticien && $Praticien->getUser() != null){
+                    $this->entityManager->remove($Praticien->getUser());
+                }
+                $this->entityManager->remove($Praticien);
+            }
+            $this->entityManager->flush();
+            $delete = true;
+            $this->addFlash('success', ' suppression avec succès !');
+        }
+
+        return new JsonResponse(['form_delete' => $delete]);
+    }
+
+    /**
+     * @Route("/users/edit-status", name="edit_status_users", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     */
+    public function edit_status_users(Request $request)
+    {
+        $id = $request->request->get('id');
+        $type = $request->request->get('type');
+        $status = $request->request->get('status');
+
+        $Etat = false;
+        if ($status == 0){
+            $Etat = true;
+        }
+        $modif = false;
+        if ($type != '' && $type != null){
+            if ($type == 'patient'){
+                $Patient = $this->patientRepository->find($id);
+                $Patient->setEtat($Etat);
+                if($Patient && $Patient->getUser() != null){
+                    $User = $this->userRepository->find($Patient->getUser()->getId());
+                    $User->setEtat($Etat);
+                    $this->entityManager->persist($User);
+                }
+                $this->entityManager->persist($Patient);
+            }
+            elseif ($type == 'praticien'){
+                $Praticien = $this->praticienRepository->find($id);
+                $Praticien->setEtat($Etat);
+                if($Praticien && $Praticien->getUser() != null){
+                    $User = $this->userRepository->find($Praticien->getUser()->getId());
+                    $User->setEtat($Etat);
+                    $this->entityManager->persist($User);
+                }
+                $this->entityManager->persist($Praticien);
+            }
+            $this->entityManager->flush();
+            $modif = true;
+            $this->addFlash('success', ' Modification avec succès !');
+        }
+
+        return new JsonResponse(['form_status' => $modif]);
+    }
+
+    /**
+     * @Route("/users/edit-password", name="show_change_password_users", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     */
+    public function show_change_password_users(Request $request)
+    {
+        $id = $request->request->get('id');
+        $type = $request->request->get('type');
+
+        $modif = false;
+        $eventData = null;
+        if ($type == 'patient'){
+            $Patient = $this->patientRepository->find($id);
+            if($Patient && $Patient->getUser() != null){
+                //$User = $this->userRepository->find($Patient->getUser()->getId());
+                $eventData = $Patient->getUser();
+            }
+        }
+        elseif ($type == 'praticien'){
+            $Praticien = $this->praticienRepository->find($id);
+            if($Praticien && $Praticien->getUser() != null){
+                //$User = $this->userRepository->find($Praticien->getUser()->getId());
+                $eventData = $Praticien->getUser();
+            }
+        }
+
+        $form = $this->createForm(ChangePasswordType::class, $eventData);
+        $response = $this->renderView('security/_form_forget_password.html.twig', [
+            'form' => $form->createView(),
+            'user' => $eventData,
+        ]);
+        $form->handleRequest($request);
+        return new JsonResponse(['form_edit_password' => $response]);
+    }
+
+    /**
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $userPasswordEncoder
+     * @Route("/resetting-mdp", name="resetting_password")
+     */
+    public function resetting_password(Request $request, UserPasswordEncoderInterface $userPasswordEncoder)
+    {
+        $requestUser = $request->request->get('change_password');
+        $IdUser = $requestUser['id'];
+        $PasswordUser = $requestUser['password']['first'];
+        $user =  $this->userRepository->find($IdUser);
+        if($user){
+            $password = $userPasswordEncoder->encodePassword($user, $PasswordUser);
+            $user->setPassword($password);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+            $this->addFlash('success', 'Mot de passe mis à jour ');
+        }else{
+            $this->addFlash('error', 'Erreur de changement mot de passe ');
+        }
+
+        return $this->redirectToRoute('admin_member');
+    }
+
 }

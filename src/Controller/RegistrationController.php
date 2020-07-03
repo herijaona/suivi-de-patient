@@ -49,6 +49,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $code = $this->generate_code();
             // encode the plain password
             $last_name = $form->get('lastname')->getData();
@@ -171,9 +172,9 @@ class RegistrationController extends AbstractController
             $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
-            //$patient->setAdress($form->get('address')->getData());
+            $patient->setAdress($form->get('address')->getData());
             $patient->setDateOnBorn($form->get('date_naissance')->getData());
-            //$patient->setAdressOnBorn($form->get('lieu_naissance')->getData());
+            $patient->setAdressOnBorn($form->get('lieu_naissance')->getData());
             $patient->setTypePatient($typePatient);
             $patient->setEtat(false);
             $patient->setPhone($form->get('phone')->getData());

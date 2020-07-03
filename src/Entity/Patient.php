@@ -47,7 +47,7 @@ class Patient
     private $sexe;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime", nullable=true)
      * @Groups({"read:patient"})
      */
     private $dateOnBorn;
@@ -164,7 +164,7 @@ class Patient
     private $patientVaccins;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="patient")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="patient")
      */
     private $address;
 
@@ -174,7 +174,7 @@ class Patient
     private $createdAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="patients")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="patients")
      */
     private $addressOnBorn;
 
@@ -751,12 +751,12 @@ class Patient
         return $this;
     }
 
-    public function getAddress(): ?Address
+    public function getAddress(): ?City
     {
         return $this->address;
     }
 
-    public function setAddress(?Address $address): self
+    public function setAddress(?City $address): self
     {
         $this->address = $address;
 
@@ -775,12 +775,12 @@ class Patient
         return $this;
     }
 
-    public function getAddressOnBorn(): ?Address
+    public function getAddressOnBorn(): ?City
     {
         return $this->addressOnBorn;
     }
 
-    public function setAddressOnBorn(?Address $addressOnBorn): self
+    public function setAddressOnBorn(?City $addressOnBorn): self
     {
         $this->addressOnBorn = $addressOnBorn;
 
