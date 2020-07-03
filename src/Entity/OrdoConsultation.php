@@ -45,12 +45,12 @@ class OrdoConsultation
     private $statusConsultation;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $referencePraticientExecutant;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $typePraticien;
 
