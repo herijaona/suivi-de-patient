@@ -19,6 +19,47 @@ class OrdoConsultationRepository extends ServiceEntityRepository
         parent::__construct($registry, OrdoConsultation::class);
     }
 
+    public function searchstatusvalider($patient= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT o.dateRdv, o.objetConsultation, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,pr.firstName, pr.lastName FROM App\Entity\OrdoConsultation o 
+        INNER JOIN App\Entity\Patient p with p.id= o.patient
+        INNER JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
+        INNER JOIN App\Entity\Praticien pr with pr.id=d.praticien
+         WHERE p.id= :patient AND o.statusConsultation= :valider ')
+            ->setParameter('valider', "Valider")
+
+            ->setParameter('patient', $patient);
+        return $query->getResult();
+    }
+    public function searchstatusattente($patient= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT o.dateRdv, o.objetConsultation, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,pr.firstName, pr.lastName FROM App\Entity\OrdoConsultation o 
+        INNER JOIN App\Entity\Patient p with p.id= o.patient
+        INNER JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
+        INNER JOIN App\Entity\Praticien pr with pr.id=d.praticien
+         WHERE p.id= :patient AND o.statusConsultation= :attente ')
+            ->setParameter('attente', "En attente")
+
+            ->setParameter('patient', $patient);
+        return $query->getResult();
+    }
+
+    public function searchstatusannuler($patient= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT o.dateRdv, o.objetConsultation, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,pr.firstName, pr.lastName FROM App\Entity\OrdoConsultation o 
+        INNER JOIN App\Entity\Patient p with p.id= o.patient
+        INNER JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
+        INNER JOIN App\Entity\Praticien pr with pr.id=d.praticien
+         WHERE p.id= :patient AND o.statusConsultation= :annuler')
+            ->setParameter('annuler', "Annuler")
+
+            ->setParameter('patient', $patient);
+        return $query->getResult();
+    }
+
+
+
+
     // /**
     //  * @return OrdoConsultation[] Returns an array of OrdoConsultation objects
     //  */

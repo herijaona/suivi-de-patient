@@ -31,7 +31,7 @@ class GroupFamily
     private $designation;
 
     /**
-     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="group_family")
+     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="groupfamily")
      */
     private $families;
 

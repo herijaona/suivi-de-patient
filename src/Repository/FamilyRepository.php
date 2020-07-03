@@ -64,9 +64,9 @@ class FamilyRepository extends ServiceEntityRepository
 
     public function getPatientByIdFamily($groupeId, $notPatient) {
         $qb = $this->createQueryBuilder('f');
-        $qb->join('f.group_family', 'g')
+        $qb->join('f.groupFamily', 'g')
             ->addSelect('g')
-            ->join('f.patient_child', 'pc')
+            ->join('f.patientChild', 'pc')
             ->addSelect('pc')
             ->add('where', $qb->expr()->eq('g.id', ':groupeId'))
             ->andWhere($qb->expr()->notIn('pc.id',':notPatient'))

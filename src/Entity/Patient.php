@@ -82,7 +82,7 @@ class Patient
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TypePatient::class, inversedBy="type_patient")
+     * @ORM\ManyToOne(targetEntity=TypePatient::class, inversedBy="typePatient")
      */
     private $typePatient;
 
@@ -99,7 +99,7 @@ class Patient
     private $isEnceinte;
 
     /**
-     * @ORM\OneToMany(targetEntity=GroupFamily::class, mappedBy="groupFamily")
+     * @ORM\OneToMany(targetEntity=GroupFamily::class, mappedBy="patient")
      */
     private $groupFamily;
 
