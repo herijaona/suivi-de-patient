@@ -25,7 +25,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
     use TargetPathTrait;
 
     public const LOGIN_ROUTE = 'app_login';
-    public const DASH_ROUTE_PATIENT = 'patient';
+    public const DASH_ROUTE_ = 'check_users';
     public const DASH_ROUTE_PRATICIEN = 'praticien';
 
     private $entityManager;
@@ -120,7 +120,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
         }elseif($role == 'ROLE_PRATICIEN'){
             return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PRATICIEN));
         }*/
-        return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_PATIENT));
+        return new RedirectResponse($this->urlGenerator->generate(self::DASH_ROUTE_));
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
 

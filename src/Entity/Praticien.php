@@ -117,7 +117,7 @@ class Praticien
     private $praticienSpecialites;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Address::class, inversedBy="praticien")
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="praticien")
      */
     private $address;
 
@@ -128,8 +128,8 @@ class Praticien
 
     public function __construct()
     {
-        $this->setUpdatedAt(new \DateTime('now'));
-        $this->setCreatedAt(new \DateTime('now'));
+        $this->updatedAt = new \DateTime('now');
+        $this->createdAt = new \DateTime('now');
         $this->ordonnaces = new ArrayCollection();
         $this->ordonnacesMedecin = new ArrayCollection();
         $this->intervationMedicales = new ArrayCollection();
@@ -566,14 +566,14 @@ class Praticien
         return $this;
     }
 
-    public function getAddress(): ?Address
+    public function getAddress(): ?City
     {
         return $this->address;
     }
 
-    public function setAddress(?Address $address): self
+    public function setAddress(?City $city): self
     {
-        $this->address = $address;
+        $this->address = $city;
 
         return $this;
     }

@@ -134,7 +134,7 @@ class RegistrationController extends AbstractController
             $praticien->setFirstName($first_name);
             $praticien->setLastName($last_name);
             $praticien->setCreatedAt(new \DateTime('now'));
-            //$praticien->setAdress($form->get('address')->getData());
+            $praticien->setAdress($form->get('address')->getData());
             $praticien->setDateBorn($form->get('date_naissance')->getData());
             //$praticien->setAdressBorn($form->get('lieu_naissance')->getData());
             $praticien->setFonction($form->get('fonction')->getData());

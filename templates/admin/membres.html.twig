@@ -98,10 +98,10 @@
                                     {{ patient.phone }}
                                 </td>
                                 <td class="text-center">
-                                    {{ patient.user.createdAt|date('d-m-Y')  }}
+                                    {% if patient.user.createdAt is defined and patient.user.createdAt != null %}{{ patient.user.createdAt|date('d-m-Y')  }}{% else %}  {% endif %}
                                 </td>
                                 <td class="text-center">
-                                    {% if patient.user.updatedAt is defined %}{{ patient.user.updatedAt|date('d-m-Y') }}{% else %}  {% endif %}
+                                    {% if patient.user.updatedAt is defined and patient.user.updatedAt != null %}{{ patient.user.updatedAt|date('d-m-Y') }}{% else %}  {% endif %}
                                 </td>
                                 <td>
                                     {% if patient.etat == 1 %}
@@ -147,10 +147,10 @@
                                     {{ praticien.phone }}
                                 </td>
                                 <td class="text-center">
-                                    {{ praticien.user.createdAt|date('d-m-Y')}}
+                                    {% if praticien.user.updatedAt is defined and praticien.user.updatedAt != null %}{{ praticien.user.createdAt|date('d-m-Y')}}{% else %}  {% endif %}
                                 </td>
                                 <td class="text-center">
-                                    {{ praticien.user.updatedAt|date('d-m-Y') }}
+                                    {% if praticien.user.updatedAt is defined and praticien.user.updatedAt != null %}{{ praticien.user.updatedAt|date('d-m-Y') }}{% else %}  {% endif %}
                                 </td>
                                 <td>
                                     {% if praticien.etat == 1 %}

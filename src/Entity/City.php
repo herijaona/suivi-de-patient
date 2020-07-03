@@ -55,6 +55,11 @@ class City
     private $patients;
 
     /**
+     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="praticien")
+     */
+    private $praticien;
+
+    /**
      * @ORM\OneToMany(targetEntity=CentreHealth::class, mappedBy="city")
      */
     private $centreHealths;
@@ -65,6 +70,7 @@ class City
         $this->centreHealths = new ArrayCollection();
         $this->patient = new ArrayCollection();
         $this->patients = new ArrayCollection();
+        $this->praticien = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,6 +225,37 @@ class City
             // set the owning side to null (unless already changed)
             if ($patients->getAddressOnBorn() === $this) {
                 $patients->setAddressOnBorn(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Praticien[]
+     */
+    public function getPraticien(): Collection
+    {
+        return $this->praticien;
+    }
+
+    public function addPraticien(Praticien $praticien): self
+    {
+        if (!$this->praticien->contains($praticien)) {
+            $this->praticien[] = $praticien;
+            $praticien->setAddress($this);
+        }
+
+        return $this;
+    }
+
+    public function removePraticien(Praticien $praticien): self
+    {
+        if ($this->praticien->contains($praticien)) {
+            $this->praticien->removeElement($praticien);
+            // set the owning side to null (unless already changed)
+            if ($praticien->getAddress() === $this) {
+                $praticien->setAddress(null);
             }
         }
 
