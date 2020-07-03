@@ -34,7 +34,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * 
+     *  @Groups("user:read")
      */
     private $id;
 
@@ -79,22 +79,6 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("user:read")
      */
-    private $phone;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $date_naissance;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lieu_naissance;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $address;
 
     /**
      * @ORM\Column(type="integer")
