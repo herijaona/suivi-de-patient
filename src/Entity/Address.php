@@ -3,12 +3,19 @@
 namespace App\Entity;
 
 use App\Repository\AddressRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=AddressRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:address"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"} 
+ * )
  */
 class Address
 {
@@ -16,21 +23,25 @@ class Address
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:address"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="addresses")
+     * @Groups({"read:address"})
      */
     private $ville;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({"read:address"})
      */
     private $numRue;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups({"read:address"})
      */
     private $Quartier;
 

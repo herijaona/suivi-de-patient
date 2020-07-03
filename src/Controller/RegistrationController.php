@@ -72,10 +72,12 @@ class RegistrationController extends AbstractController
             $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
-            //$patient->setAdress($form->get('address')->getData());
+
+            $patient->setAddress($form->get('address')->getData());
             $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($form->get('date_naissance')->getData());
-            //$patient->setAdressOnBorn($form->get('lieu_naissance')->getData());
+            $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
+
             $patient->setTypePatient($form->get('type_patient')->getData());
             $patient->setPhone($form->get('phone')->getData());
             $patient->setFatherName($form->get('namedaddy')->getData());

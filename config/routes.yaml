@@ -9,3 +9,7 @@ app_home_page:
 test:
   path: /api/test
   controller: App\Controller\Api\ApiController::test
+
+api_login_check:
+    path: /apip/login_check
+

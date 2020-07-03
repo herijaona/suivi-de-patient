@@ -11,8 +11,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ApiResource(
- *     collectionOperations={"get"},
- *     itemOperations={"get", "put", "delete"},
+ *     collectionOperations={
+ *          "get",
+ *          "post"={
+ *            "controller"=App\Controller\Api\InscriptionUserController::class
+ *         }
+ *      },
+ *     itemOperations={
+ *        "get", 
+ *        "put", 
+ *        "delete"
+ *     },
  *     normalizationContext={"groups"={"user:read"}},
  *     denormalizationContext={"groups"={"user:write"}}
  * )
@@ -25,32 +34,38 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     *  @Groups("user:read")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, nullable=true)
+     * @Groups("user:read")
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups("user:read")
      */
     private $username;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups("user:read")
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups("user:read")
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("user:read")
      */
     private $lastName;
 
@@ -64,22 +79,6 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("user:read")
      */
-    private $phone;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $date_naissance;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $lieu_naissance;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $address;
 
     /**
      * @ORM\Column(type="integer")
