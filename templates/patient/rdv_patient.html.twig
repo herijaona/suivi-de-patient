@@ -10,7 +10,7 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Tous les rendez-vous</h4>
+            <h4 class="h4-content">rendez-vous</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
             <button class="btn btn-danger" data-toggle="modal" data-target="#orangeModalSubscription">+ Creer rendez-vous</button>
@@ -21,48 +21,57 @@
             <thead>
             <tr>
                 <th>Date rdv</th>
-                <th>Déscription</th>
+                <th>Type</th>
+                <th>Objet de consultation </th>
                 <th>Docteur</th>
-                <th>Validation</th>
+                <th>Vaccin</th>
                 <th>Status</th>
-                <th>Action</th>
-                {# <th>More</th> #}
+
             </tr>
             </thead>
             <tbody>
-            {% for rdv in Consultations  %}
+            {% for rdv in consultation  %}
                 <tr>
                     <td>
                         {{ rdv.dateRdv |localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
-                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                    </td>
+                    <td>Consultation</td>
+                    <td>
+                        {{ rdv.objetConsultation }}
                     </td>
                     <td>
-                        {{ rdv.detail }}
+                        {{ rdv.firstName }}
+                        {{ rdv.lastName }}
                     </td>
+                    <td></td>
                     <td>
-                        {{ rdv.nom }} <br>
+                        {{ rdv.statusConsultation }}
                     </td>
-                    <td>
-                        {% if rdv.etat == 0 %}
-                            <button class="btn btn-danger active_etat_rdv validation_width"  >Non valide</button>
-                        {% else %}
-                            <button class="btn btn-green validation_width" >Validé</button>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if rdv.status == 0 %}
-                            <button class="btn btn-deep-orange active_status_rdv validation_width" >Pas Fait</button>
-                        {% else %}
-                            <button class="btn btn-green validation_width" >Fait</button>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <i class="fas fa-eye"></i>
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-ellipsis-v"></i>
-                    </td>
+
                 </tr>
             {% endfor %}
+
+            {% for vac in vaccination  %}
+                <tr>
+                    <td>
+                        {{ vac.datePrise |localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                    </td>
+                    <td>Vaccination</td>
+                    <td>
+
+                    </td>
+                    <td>
+                        {{ vac.firstName }} {{ vac.lastName }} <br>
+                    </td>
+                    <td>{{ vac.vaccinName }}</td>
+                    <td>
+                        {{ vac. statusVaccin }}
+                    </td>
+
+                </tr>
+            {% endfor %}
+
             </tbody>
         </table>
     </div>
@@ -83,14 +92,12 @@
                     <!--Body-->
 
                     <div class="modal-body">
-
-                        <input type="hidden" name="type_id" id="form1" class="form-control" value="{{ type }}">
                         <div class="md-form mb-5">
                             <label class="active">Docteur</label>
                             <select class="mdb-select md-form" name="doctor" editable="true" searchable="Rechercher le nom du docteur..." required>
                                 <option value="" disabled selected>Choisissez votre médecin</option>
                                 {% for doc in Doctors %}
-                                    <option value="{{ doc.id }}">{{doc.firstName}} {{doc.lastName}}</option>
+                                    <option  value="{{ doc.id }}">{{doc.firstName}} {{doc.lastName}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -99,8 +106,24 @@
                             <label class="active" for="date_rdv">Date rendez-vous</label>
                         </div>
                         <div class="md-form">
-                            <textarea id="form103" name="description" class="md-textarea form-control" rows="2" required></textarea>
+                            <textarea id="form103" name="description" class="md-textarea form-control" rows="2" ></textarea>
                             <label for="form103" class="">Déscription</label>
+                        </div>
+                        <div class="md-form mb-5">
+                            <label class="active">Type de rendez-vous</label>
+                            <select id="mdb-select md-form" name="type" required onchange="showselect('hidden_select', this)">
+                                <option value="consultation">CONSULTATION</option>
+                                <option value="vaccination" >VACCINATION</option>
+                            </select>
+                        </div>
+                        <div class="md-form mb-5">
+                            <select class="mdb-select md-form" name="vaccin" editable="true" searchable="Rechercher vaccin..." >
+                                <option value="null" disable>Vaccin</option>
+                                {% for vac in Vaccin %}
+                                    <option  value="{{ vac.id }}"> {{vac.vaccinName}} </option>>
+                                {% endfor %}
+                            </select>
+
                         </div>
                     </div>
 
@@ -137,4 +160,6 @@
         })
 
     </script>
+
+
 {% endblock %}

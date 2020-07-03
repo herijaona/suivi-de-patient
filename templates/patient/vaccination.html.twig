@@ -18,40 +18,27 @@
             <thead>
             <tr>
                 <th>Date vaccination</th>
-                <th>Détail</th>
                 <th>Docteur</th>
-                <th>Validation</th>
+                <th>Vaccin</th>
                 <th>Status</th>
-                {# <th>More</th> #}
+
+
             </tr>
             </thead>
             <tbody>
-            {% for rdv in Vaccinations  %}
+            {% for vac in vaccination  %}
                 <tr>
                     <td>
-                        {{ rdv.dateRdv|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                        {{ vac.datePrise |localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
                         {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
                     </td>
+
+                    <td>{{ vac.firstName }} {{ vac.lastName }}</td>
+                    <td>{{vac.vaccinName }}</td>
                     <td>
-                        {{ rdv.detail }}
+                        {{ vac.statusVaccin }}
                     </td>
-                    <td>
-                        {{ rdv.nom }} <br>
-                    </td>
-                    <td>
-                        {% if rdv.etat == 0 %}
-                            <button class="btn btn-danger active_etat_rdv validation_width"  >Non valide</button>
-                        {% else %}
-                            <button class="btn btn-green validation_width" >Validé</button>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if rdv.status == 0 %}
-                            <button class="btn btn-deep-orange active_status_rdv validation_width"  >Pas Fait</button>
-                        {% else %}
-                            <button class="btn btn-green validation_width" >Fait</button>
-                        {% endif %}
-                    </td>
+
                 </tr>
             {% endfor %}
             </tbody>
