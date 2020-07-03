@@ -128,7 +128,7 @@ class PatientController extends AbstractController
     }
 
     /**
-     * @Route("/consultation", name="consultaion_patient")
+     * @Route("/consultation", name="consultation_patient")
      */
     public function consultation_patient()
     {
@@ -136,10 +136,10 @@ class PatientController extends AbstractController
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
         $rvc=$this->ordoConsultationRepository->searchstatusvalider($patient);
+
         return $this->render('patient/consultation.html.twig', [
             'consultation'=>$rvc,
             'Doctors'=>$doctor,
-
         ]);
     }
 
@@ -185,7 +185,7 @@ class PatientController extends AbstractController
     /**
      * @Route("/rdv", name="rdv_patient")
      */
-    public function rdv_patient(  )
+    public function rdv_patient()
     {
         $user=$this->getUser();
         $patient= $this->patientRepository->findOneBy(['user'=>$user]);
@@ -193,8 +193,6 @@ class PatientController extends AbstractController
         $rve= $this->ordoVaccinationRepository->searchstatusattente($patient);
         $doctor = $this->praticienRepository->findAll();
         $vaccin= $this->vaccinRepository->findAll();
-
-
         return $this->render('patient/rdv_patient.html.twig', [
             'consultation'=>$rce,
             'vaccination'=>$rve,
