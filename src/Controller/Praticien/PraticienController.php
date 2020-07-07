@@ -4,8 +4,11 @@ namespace App\Controller\Praticien;
 
 use App\Form\ConsultationPraticienType;
 use App\Repository\FamilyRepository;
+use App\Repository\OrdoConsultationRepository;
+use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
@@ -24,13 +27,19 @@ class PraticienController extends AbstractController
     protected $praticienRepository;
     protected $familyRepository;
     protected $entityManager;
+    protected $ordoConsultationRepository;
+    protected $ordoVaccinationRepository;
+    protected $vaccinRepository;
 
     function __construct(
         VaccinGenerate $vaccinGenerate,
         PatientRepository $patientRepository,
         PraticienRepository $praticienRepository,
         FamilyRepository $familyRepository,
-        EntityManagerInterface $entityManager
+        OrdoConsultationRepository $ordoConsultationRepository,
+        OrdoVaccinationRepository $ordoVaccinationRepository,
+        EntityManagerInterface $entityManager,
+        VaccinRepository $vaccinRepository
     )
     {
         $this->vaccinGenerate = $vaccinGenerate;
@@ -38,6 +47,9 @@ class PraticienController extends AbstractController
         $this->praticienRepository = $praticienRepository;
         $this->familyRepository = $familyRepository;
         $this->entityManager = $entityManager;
+        $this->ordoConsultationRepository = $ordoConsultationRepository;
+        $this->ordoVaccinationRepository = $ordoVaccinationRepository;
+        $this->vaccinRepository = $vaccinRepository;
     }
     /**
      * @Route("/agenda", name="praticien")
@@ -89,13 +101,10 @@ class PraticienController extends AbstractController
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $doctor = $this->praticienRepository->findAll();
-        //$all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 2);
-        $all_rdv = [];
+        $rvc = $this->ordoConsultationRepository->searchStatusPraticien($praticien->getId(), 1);
+
         return $this->render('praticien/consultation.html.twig', [
-            'Consultations' => $all_rdv,
-            'Doctors' => $doctor,
-            'type' => 2
+            'consultation' => $rvc,
         ]);
     }
 
@@ -109,34 +118,46 @@ class PraticienController extends AbstractController
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        //$all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 1);
-        $all_rdv = [];
+        $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId(), 1);
+
         return $this->render('praticien/vaccination.html.twig', [
-            'Vaccinations' => $all_rdv,
-            'type' => 1
+            'vaccination' => $rvc,
         ]);
     }
 
     /**
-     * @Route("/rdv", name="rdv_praticien")
+     * @Route("/rdv-prat/rejected", name="rdv_praticien_reject")
+     *
      */
-    public function rdv_patient()
+    public function rdv_praticien_reject()
+    {
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $rce = $this->ordoConsultationRepository->searchStatusPraticien($praticien->getId(), 2);
+        $rve = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId(), 2);
+        return $this->render('praticien/rdv_annuler_patient.html.twig',[
+            'consultation'=> $rce,
+            'vaccination'=>$rve
+        ]);
+    }
+
+    /**
+     * @Route("/rdv-prat", name="rdv_praticien")
+     */
+    public function rdv_praticien()
     {
         if (!$this->isGranted('ROLE_PRATICIEN')) {
             return $this->redirectToRoute('homepage');
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-
-        $doctor = $this->praticienRepository->findAll();
-
-        //$all_rdv = $this->rendezVousRepository->findRdvBy($praticien->getId(), 3);
-        $all_rdv = [];
-
+        $rce = $this->ordoConsultationRepository->searchStatusPraticienEnValid($praticien->getId());
+        $rve = $this->ordoVaccinationRepository->searchStatusPraticienEnValid($praticien->getId());
+        $vaccin= $this->vaccinRepository->findAll();
         return $this->render('praticien/rdv.html.twig', [
-            'Consultations' => $all_rdv,
-            'Doctors' => $doctor,
-            'type' => 3
+            'consultation'=>$rce,
+            'vaccination'=>$rve,
+            'Vaccin'=>$vaccin
         ]);
     }
 

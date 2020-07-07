@@ -30,16 +30,21 @@
                 <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li>
                 <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
                 <li class="{{  (currentPath == path('vaccination_praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Calendrier de Vaccination</a></li>
-                <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"><a href="{{ path('rdv_praticien') }}">Rendez-Vous</a></li>
+                <li class="{{ (currentPath == path('rdv_praticien') or currentPath == path('rdv_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#rdv">Rendez-Vous</a>
+                    <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
+                        <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" >En attente de validation</a></li>
+                        <li class="{{ (currentPath == path('rdv_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien_reject') }}" >Réjeter</a></li>
+                    </ul>
+                </li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
                 <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li>
                 <li {% if (currentPath == path('vaccination_patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">Calendrier de Vaccination</a></li>
                 <li {% if (currentPath == path('consultation_patient')) ? 'active' :''  %} class="active" {% endif %} ><a href="{{ path('consultation_patient') }}">Consultation</a></li>
-                <li {% if (currentPath == path('rdv_patient')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">Rendez-Vous</a>
+                <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">Rendez-Vous</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
-                        <li> <a href="{{ path('rdv_patient') }}" >Rendez-Vous en attente</a></li>
-                        <li> <a href="{{ path('rdv_annuler') }}" >Rendez-Vous annuler</a></li>
+                        <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" >En attente de validation</a></li>
+                        <li class="{{ (currentPath == path('rdv_annuler')) ? 'active' :''  }}"> <a href="{{ path('rdv_annuler') }}" >Réjeter</a></li>
                     </ul>
                 </li>
 

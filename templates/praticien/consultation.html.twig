@@ -20,40 +20,37 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date consultation</th>
-                <th>Déscription</th>
+                <th>Date Consultation</th>
+                <th>Objet de consultation </th>
                 <th>Patient</th>
-                <th>Validation</th>
                 <th>Status</th>
+
+                {# <th>More</th> #}
             </tr>
             </thead>
             <tbody>
-            {% for rdv in Consultations  %}
+            {% for rdv in consultation  %}
                 <tr>
                     <td>
-                        {{ rdv.dateRdv|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
-                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                        {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale) }}
+                    </td>
+
+                    <td>
+                        {{ rdv.objetConsultation }}
                     </td>
                     <td>
-                        {% if rdv.description is defined and rdv.description is not null  %}{{ rdv.description }}{% elseif rdv.vaccin is defined and rdv.vaccin.vaccinName is not null %}{{ rdv.vaccin.vaccinName }}{% endif %}
+                        {{ rdv.firstName }} {{ rdv.lastName }}
                     </td>
                     <td>
-                        {% if rdv.patient is defined and rdv.patient is not null  %}{{ rdv.patient.lastName ~' '~ rdv.patient.firstName }}{% else %} <span>-</span> {% endif %} <br>
-                    </td>
-                    <td>
-                        {% if rdv.etat == 0 %}
-                            <button class="btn btn-danger active_etat_rdv validation_width" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" >Non valide</button>
-                        {% else %}
-                            <button class="btn btn-green validation_width" >Validé</button>
+                        {% if rdv.statusConsultation == 1 %}
+                            <span class="badge badge-success badge-style modif-status"> activé </span>
+                        {% elseif rdv.statusConsultation == 0 %}
+                            <span class="badge badge-warning badge-style modif-status">En attente</span>
+                        {% elseif rdv.statusConsultation == 2 %}
+                            <span class="badge badge-danger badge-style modif-status">Réjeter</span>
                         {% endif %}
                     </td>
-                    <td>
-                        {% if rdv.status == 0 %}
-                            <button class="btn btn-deep-orange active_status_rdv validation_width" data-id="{{ rdv.id }}" data-status="{{ rdv.status }}" >Pas Fait</button>
-                        {% else %}
-                            <button class="btn btn-green validation_width" >Fait</button>
-                        {% endif %}
-                    </td>
+
                 </tr>
             {% endfor %}
             </tbody>

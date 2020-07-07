@@ -4,7 +4,6 @@
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
 {% endblock %}
 
 {% block body %}
@@ -21,10 +20,9 @@
                 <th>Date rdv</th>
                 <th>Type</th>
                 <th>Objet de consultation </th>
-                <th>Docteur</th>
+                <th>Patient</th>
                 <th>Vaccin</th>
                 <th>Status</th>
-
             </tr>
             </thead>
             <tbody>
@@ -90,9 +88,6 @@
 {% endblock %}
 
 {% block javascripts %}
-    <!-- DataTables -->
-    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
-    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
         $(document).ready(function () {
             $("#example1").DataTable({

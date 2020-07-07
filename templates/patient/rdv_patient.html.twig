@@ -4,7 +4,6 @@
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
 {% endblock %}
 
 {% block body %}
@@ -13,7 +12,7 @@
             <h4 class="h4-content">rendez-vous</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger" data-toggle="modal" data-target="#orangeModalSubscription">+ Creer rendez-vous</button>
+            <button class="btn btn-danger add_form_rdv">+ Creer rendez-vous</button>
         </div>
     </div>
     <div class="row-table table-content">
@@ -26,14 +25,15 @@
                 <th>Docteur</th>
                 <th>Vaccin</th>
                 <th>Status</th>
+                <th></th>
 
             </tr>
             </thead>
             <tbody>
             {% for rdv in consultation  %}
                 <tr>
-                    <td>
-                        {{ rdv.dateRdv |localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                    <td class="text-left">
+                        {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale)}}
                     </td>
                     <td>Consultation</td>
                     <td>
@@ -45,7 +45,17 @@
                     </td>
                     <td></td>
                     <td>
-                        {{ rdv.statusConsultation }}
+                        {% if rdv.statusConsultation == 1 %}
+                            <span class="badge badge-success badge-style modif-status"> activé </span>
+                        {% elseif rdv.statusConsultation == 0 %}
+                            <span class="badge badge-warning badge-style modif-status">En attente</span>
+                        {% elseif rdv.statusConsultation == 2 %}
+                            <span class="badge badge-danger badge-style modif-status">Réjeter</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ rdv.id }}" data-type="consultation"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ rdv.id }}" data-type="consultation"><i class="fa fa-trash-o"></i></span>
                     </td>
 
                 </tr>
@@ -54,8 +64,8 @@
             {% for vac in vaccination  %}
                 <tr>
                     <td>
-                        {{ vac.datePrise |localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
-                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                        {{ vac.datePrise |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {#{ user.createdAt|localizeddate('none', 'none', app.request.locale, null, 'EEEE d MMMM Y') }}#}
                     </td>
                     <td>Vaccination</td>
                     <td>
@@ -66,85 +76,129 @@
                     </td>
                     <td>{{ vac.vaccinName }}</td>
                     <td>
-                        {{ vac. statusVaccin }}
+                        {% if vac.statusVaccin == 1 %}
+                            <span class="badge badge-success badge-style modif-status"> activé </span>
+                        {% elseif vac.statusVaccin == 0 %}
+                            <span class="badge badge-warning badge-style modif-status">En attente</span>
+                        {% elseif vac.statusVaccin == 2 %}
+                            <span class="badge badge-danger badge-style modif-status">Réjeter</span>
+                        {% endif %}
                     </td>
-
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ vac.id }}" data-type="vaccination"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ vac.id }}" data-type="vaccination"><i class="fa fa-trash-o"></i></span>
+                    </td>
                 </tr>
             {% endfor %}
 
             </tbody>
         </table>
     </div>
-    <div class="modal fade" id="orangeModalSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog modal-notify modal-primary" role="document">
-            <!--Content-->
-
-                <div class="modal-content">
-                    <!--Header-->
-                    <div class="modal-header text-center">
-                        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Rendez-Vous</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true" class="white-text">&times;</span>
-                        </button>
-                    </div>
-                    <form action="{{ path('register_rdv') }}" method="post">
-                    <!--Body-->
-
-                    <div class="modal-body">
-                        <div class="md-form mb-5">
-                            <label class="active">Docteur</label>
-                            <select class="mdb-select md-form" name="doctor" editable="true" searchable="Rechercher le nom du docteur..." required>
-                                <option value="" disabled selected>Choisissez votre médecin</option>
-                                {% for doc in Doctors %}
-                                    <option  value="{{ doc.id }}">{{doc.firstName}} {{doc.lastName}}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="md-form mb-5">
-                            <input type="datetime-local" id="date_rdv" name="date" class="form-control date_rdv" required>
-                            <label class="active" for="date_rdv">Date rendez-vous</label>
-                        </div>
-                        <div class="md-form">
-                            <textarea id="form103" name="description" class="md-textarea form-control" rows="2" ></textarea>
-                            <label for="form103" class="">Déscription</label>
-                        </div>
-                        <div class="md-form mb-5">
-                            <label class="active">Type de rendez-vous</label>
-                            <select id="mdb-select md-form" name="type" required onchange="showselect('hidden_select', this)">
-                                <option value="consultation">CONSULTATION</option>
-                                <option value="vaccination" >VACCINATION</option>
-                            </select>
-                        </div>
-                        <div class="md-form mb-5">
-                            <select class="mdb-select md-form" name="vaccin" editable="true" searchable="Rechercher vaccin..." >
-                                <option value="null" disable>Vaccin</option>
-                                {% for vac in Vaccin %}
-                                    <option  value="{{ vac.id }}"> {{vac.vaccinName}} </option>>
-                                {% endfor %}
-                            </select>
-
-                        </div>
-                    </div>
-
-                    <!--Footer-->
-                    <div class="modal-footer justify-content-center">
-                        <button type="submit" class="btn btn-outline-primary waves-effect">Enregistrer <i class="fas fa-paper-plane-o ml-1"></i></button>
-                    </div>
-
-                    </form>
-                </div>
-            <!--/.Content-->
-        </div>
-    </div>
 
 {% endblock %}
 
 {% block javascripts %}
     <!-- DataTables -->
-    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
-    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
+        $(".add_form_rdv").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            $.ajax({
+                url: "{{ path('add_form_rdv_patient') }}",
+                type: 'post',
+                data: {
+                    action: 'new'
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('#rdv_heureRdv').clockpicker({
+                        donetext: "valider",
+                        autoclose: true,
+                    });
+                    $('#rdv_heureRdv').on('change', function () {
+                        let receivedVal = $(this).val();
+                        $(this).val(receivedVal + ":00");
+                    });
+
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-edit').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            $.ajax({
+                url: "{{ path('add_form_rdv_patient') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                    type: type,
+                    action: 'edit'
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('#rdv_heureRdv').clockpicker({
+                        donetext: "valider",
+                        autoclose: true,
+                    });
+                    $('#rdv_heureRdv').on('change', function () {
+                        let receivedVal = $(this).val();
+                        $(this).val(receivedVal + ":00");
+                    });
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-remove').on('click', function (e) {
+            e.preventDefault();
+            var $delete = confirm('Êtes-vous sûr de vouloir supprimer cet rdv ?');
+            if($delete){
+                $(".loadBody").css("display", "block");
+                var id = $(this).data('id');
+                var type = $(this).data('type');
+                $.ajax({
+                    url: "{{ path('remove_rdv_patient') }}",
+                    type: 'post',
+                    data: {
+                        id: id,
+                        type: type,
+                    },
+                    dataType: "json",
+                    success: (data) =>{
+                        $(".loadBody").css("display", "none");
+                        location.reload();
+                    },
+                    error: (e) => {
+                        $(".loadBody").css("display", "none");
+                        $(".chargementError").css("display", "block");
+                    }
+                }).done(() => {
+                    $(".loadBody").css("display", "none");
+                });
+            }else {
+                return false
+            }
+        });
+
         $(document).ready(function () {
             $("#example1").DataTable({
                 language: {
@@ -160,6 +214,4 @@
         })
 
     </script>
-
-
 {% endblock %}

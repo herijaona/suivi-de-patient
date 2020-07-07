@@ -55,7 +55,7 @@ class OrdoVaccination
     private $patientOrdoVaccinations;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $statusVaccin;
 
@@ -192,12 +192,12 @@ class OrdoVaccination
         return $this;
     }
 
-    public function getStatusVaccin(): ?string
+    public function getStatusVaccin(): ?integer
     {
         return $this->statusVaccin;
     }
 
-    public function setStatusVaccin(string $statusVaccin): self
+    public function setStatusVaccin(integer $statusVaccin): self
     {
         $this->statusVaccin = $statusVaccin;
 

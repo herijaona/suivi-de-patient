@@ -40,7 +40,7 @@ class OrdoConsultation
     private $objetConsultation;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $statusConsultation;
 
@@ -123,12 +123,12 @@ class OrdoConsultation
         return $this;
     }
 
-    public function getStatusConsultation(): ?string
+    public function getStatusConsultation(): ?integer
     {
         return $this->statusConsultation;
     }
 
-    public function setStatusConsultation(string $statusConsultation): self
+    public function setStatusConsultation(integer $statusConsultation): self
     {
         $this->statusConsultation = $statusConsultation;
 
