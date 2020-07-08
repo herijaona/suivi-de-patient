@@ -135,10 +135,7 @@ class PatientController extends AbstractController
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
-        //$rvc=$this->ordoConsultationRepository->searchstatusvalider($patient);
-
         $rvc = $this->ordoConsultationRepository->searchStatus($patient->getId(), 1);
-
         return $this->render('patient/consultation.html.twig', [
             'consultation'=>$rvc,
             'Doctors'=>$doctor,
@@ -153,9 +150,6 @@ class PatientController extends AbstractController
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
-
-        //$rvc = $this->ordoVaccinationRepository->searchstatusvalider($patient);
-
         $rvc = $this->ordoVaccinationRepository->searchStatus($patient->getId(), 1);
 
         return $this->render('patient/vaccination.html.twig', [
@@ -172,8 +166,6 @@ class PatientController extends AbstractController
     {
         $user = $this->getUser();
         $patient= $this->patientRepository->findOneBy(['user'=>$user]);
-        //$rce= $this->ordoConsultationRepository->searchstatusannuler($patient);
-        //$rve= $this->ordoVaccinationRepository->searchstatusannuler($patient);
         $rce = $this->ordoConsultationRepository->searchStatus($patient->getId(), 2);
         $rve = $this->ordoVaccinationRepository->searchStatus($patient->getId(), 2);
         return $this->render('patient/rdv_annuler_patient.html.twig',[
@@ -190,8 +182,6 @@ class PatientController extends AbstractController
     {
         $user = $this->getUser();
         $patient= $this->patientRepository->findOneBy(['user'=>$user]);
-        //$rce= $this->ordoConsultationRepository->searchstatusattente($patient);
-        //$rve= $this->ordoVaccinationRepository->searchstatusattente($patient);
         $rce = $this->ordoConsultationRepository->searchStatus($patient->getId());
         $rve = $this->ordoVaccinationRepository->searchStatus($patient->getId());
         $doctor = $this->praticienRepository->findAll();
@@ -211,9 +201,6 @@ class PatientController extends AbstractController
     {
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        //$family = $this->familyRepository->findByPatientParent($patient);
-
-        $family_group = [];
         $my_group = [];
 
         $mygroups = $this->familyRepository->findBy(['patientChild' => $patient]);

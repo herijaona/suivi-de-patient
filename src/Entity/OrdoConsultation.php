@@ -123,12 +123,12 @@ class OrdoConsultation
         return $this;
     }
 
-    public function getStatusConsultation(): ?integer
+    public function getStatusConsultation(): ?int
     {
         return $this->statusConsultation;
     }
 
-    public function setStatusConsultation(integer $statusConsultation): self
+    public function setStatusConsultation(int $statusConsultation): self
     {
         $this->statusConsultation = $statusConsultation;
 

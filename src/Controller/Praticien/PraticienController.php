@@ -2,6 +2,8 @@
 
 namespace App\Controller\Praticien;
 
+use App\Entity\OrdoConsultation;
+use App\Entity\OrdoVaccination;
 use App\Form\ConsultationPraticienType;
 use App\Repository\FamilyRepository;
 use App\Repository\OrdoConsultationRepository;
@@ -11,6 +13,7 @@ use App\Repository\PraticienRepository;
 use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ObjectManager;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -141,6 +144,7 @@ class PraticienController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/rdv-prat", name="rdv_praticien")
      */
@@ -160,6 +164,59 @@ class PraticienController extends AbstractController
             'Vaccin'=>$vaccin
         ]);
     }
+
+    /**
+     * @Route("/update/edit", name="change_status")
+     */
+      public function  update( Request $request)
+      {
+            //dd($request->request);
+          if($request->request->get('action') == "active")
+          {
+              if($request->request->get('type') == "vaccination" && $request->request->get('status')== 0){
+                  $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
+                  if($ordoVacc != null){
+                      $ordoVacc->setStatusVaccin(1);
+                      $this->entityManager->persist($ordoVacc);
+                      $this->entityManager->flush();
+                  }
+                  elseif($request->request->get('type')== "consultation" && $request->request->get('status')== 0){
+                      $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
+                      if($ordoConsu != null){
+                          $ordoConsu->setstatusConsultation(1);
+                          $this->entityManager->persist($ordoConsu);
+                          $this->entityManager->flush();
+                      }
+
+                  }
+              }
+              $this->addFlash('success', 'Changement effectué avec succès');
+              return new JsonResponse(['status' => 'OK']);
+          }
+          elseif ($request->request->get('action') == "reject"){
+                  if($request->request->get('type') == "vaccination" && $request->request->get('status')== 0){
+                      $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
+                      if($ordoVacc != null){
+                          $ordoVacc->setStatusVaccin(2);
+                          $this->entityManager->persist($ordoVacc);
+                          $this->entityManager->flush();
+                      }
+                      elseif($request->request->get('type')== "consultation" && $request->request->get('status')== 0){
+                          $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
+                          if($ordoConsu != null){
+                              $ordoConsu->setstatusConsultation(2);
+                              $this->entityManager->persist($ordoConsu);
+                              $this->entityManager->flush();
+                          }
+
+                      }
+                  }
+                  $this->addFlash('success', 'Changement effectué avec succès');
+                  return new JsonResponse(['status' => 'OK']);
+          }
+
+
+      }
 
     /**
      * @Route("/update-rdv", name="update_etat_rdv")
