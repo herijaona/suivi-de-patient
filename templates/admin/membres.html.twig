@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Vaccins
+    Membres
 {% endblock %}
 {% block stylesheets %}
     <style>
@@ -76,7 +76,8 @@
                             <th>Prénoms</th>
                             <th>Nom du mère</th>
                             <th>Téléphone</th>
-                            <th>Date de consultation</th>
+                            <th class="text-center">Date de création</th>
+                            <th class="text-center">Date de consultation</th>
                             <th>Status</th>
                             <th></th>
                         </tr>
@@ -96,19 +97,22 @@
                                 <td>
                                     {{ patient.phone }}
                                 </td>
-                                <td>
-                                    {{ patient.user.username }}
+                                <td class="text-center">
+                                    {% if patient.user.createdAt is defined and patient.user.createdAt != null %}{{ patient.user.createdAt|date('d-m-Y')  }}{% else %}  {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if patient.user.updatedAt is defined and patient.user.updatedAt != null %}{{ patient.user.updatedAt|date('d-m-Y') }}{% else %}  {% endif %}
                                 </td>
                                 <td>
                                     {% if patient.etat == 1 %}
-                                        <span class="badge badge-success badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}"> activé </span>
+                                        <span class="badge badge-success badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient"> activé </span>
                                     {% else %}
-                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}">Desactivé</span>
+                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient">Desactivé</span>
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <span class="btn btn-primary data-edit" data-id="{{ patient.id }}"><i class="fa fa-pencil"></i></span>
-                                    <span class="btn btn-danger data-remove" data-id="{{ patient.id }}"><i class="fa fa-trash-o"></i></span>
+                                    <span class="btn btn-primary data-edit" data-id="{{ patient.id }}" data-type="patient"><i class="fa fa-pencil"></i></span>
+                                    <span class="btn btn-danger data-remove" data-id="{{ patient.id }}" data-type="patient"><i class="fa fa-trash-o"></i></span>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -124,7 +128,8 @@
                             <th>Nom</th>
                             <th>Prénoms</th>
                             <th>Téléphone</th>
-                            <th>Date de consultation</th>
+                            <th class="text-center">Date de création</th>
+                            <th class="text-center">Date de consultation</th>
                             <th>Status</th>
                             <th></th>
                         </tr>
@@ -141,19 +146,22 @@
                                 <td>
                                     {{ praticien.phone }}
                                 </td>
-                                <td>
-                                    {{ praticien.user.username }}
+                                <td class="text-center">
+                                    {% if praticien.user.updatedAt is defined and praticien.user.updatedAt != null %}{{ praticien.user.createdAt|date('d-m-Y')}}{% else %}  {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if praticien.user.updatedAt is defined and praticien.user.updatedAt != null %}{{ praticien.user.updatedAt|date('d-m-Y') }}{% else %}  {% endif %}
                                 </td>
                                 <td>
                                     {% if praticien.etat == 1 %}
-                                        <span class="badge badge-success badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}"> activé </span>
+                                        <span class="badge badge-success badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien"> activé </span>
                                     {% else %}
-                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}">Desactivé</span>
+                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien">Desactivé</span>
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <span class="btn btn-primary data-edit" data-id="{{ praticien.id }}"><i class="fa fa-pencil"></i></span>
-                                    <span class="btn btn-danger data-remove" data-id="{{ praticien.id }}"><i class="fa fa-trash-o"></i></span>
+                                    <span class="btn btn-primary data-edit" data-id="{{ praticien.id }}" data-type="praticien"><i class="fa fa-pencil"></i></span>
+                                    <span class="btn btn-danger data-remove" data-id="{{ praticien.id }}" data-type="praticien"><i class="fa fa-trash-o"></i></span>
                                 </td>
                             </tr>
                         {% endfor %}
@@ -195,16 +203,18 @@
         $('.data-edit').on('click', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
+            var type = $(this).data('type');
+            $(".loadBody").css("display", "block");
             $.ajax({
-                url: "{{ path('add_form_vaccin') }}",
+                url: "{{ path('show_change_password_users') }}",
                 type: 'post',
                 data: {
-                    id_vaccin: id,
-                    action: 'edit'
+                    id: id,
+                    type: type,
                 },
                 dataType: "json",
                 success: (data) =>{
-                    $('.create_body').html(data.form_html);
+                    $('.create_body').html(data.form_edit_password);
                     $("#modal_create_body").modal('show');
                     $(".loadBody").css("display", "none");
                 },
@@ -223,11 +233,13 @@
             if($delete){
                 $(".loadBody").css("display", "block");
                 var id = $(this).data('id');
+                var type = $(this).data('type');
                 $.ajax({
-                    url: "{{ path('remove_vaccin') }}",
+                    url: "{{ path('remove_users') }}",
                     type: 'post',
                     data: {
-                        id_vaccin: id
+                        id: id,
+                        type: type,
                     },
                     dataType: "json",
                     success: (data) =>{
@@ -251,12 +263,14 @@
             $(".loadBody").css("display", "block");
             var id = $(this).data('id');
             var status = $(this).data('etat');
+            var type = $(this).data('type');
             $.ajax({
-                url: "{{ path('edit_status_vaccin') }}",
+                url: "{{ path('edit_status_users') }}",
                 type: 'post',
                 data: {
-                    id_vaccin: id,
-                    status: status
+                    id: id,
+                    status: status,
+                    type: type
                 },
                 dataType: "json",
                 success: (data) =>{

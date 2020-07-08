@@ -30,12 +30,12 @@ security:
         #     guard:
         #         authenticators:
         #             - lexik_jwt_authentication.jwt_token_authenticator
-        users:
-            pattern:   ^/apip/users
-            stateless: true
-            guard:
-                authenticators:
-                    - lexik_jwt_authentication.jwt_token_authenticator
+        # users:
+        #     pattern:   ^/apip/users
+        #     stateless: true
+        #     guard:
+        #         authenticators:
+        #             - lexik_jwt_authentication.jwt_token_authenticator
         admin:
             pattern:            /admin(.*)
             form_login:

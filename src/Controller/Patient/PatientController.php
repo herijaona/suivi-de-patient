@@ -4,10 +4,19 @@ namespace App\Controller\Patient;
 
 use App\Entity\Family;
 use App\Entity\GroupFamily;
+use App\Entity\OrdoConsultation;
+use App\Entity\OrdoVaccination;
+use App\Entity\PatientOrdoConsultation;
+use App\Form\RdvType;
+use App\Form\VaccinType;
 use App\Repository\FamilyRepository;
 use App\Repository\GroupFamilyRepository;
+use App\Repository\OrdoConsultationRepository;
+use App\Repository\OrdonnaceRepository;
+use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,18 +37,31 @@ class PatientController extends AbstractController
     protected $familyRepository;
     protected $groupFamilyRepository;
     protected $entityManager;
+    protected $ordonnaceRepository;
+    protected $ordoConsultationRepository;
+    protected $ordoVaccinationRepository;
+    protected $vaccinRepository;
+
     function __construct(
         VaccinGenerate $vaccinGenerate,
         PatientRepository $patientRepository,
         PraticienRepository $praticienRepository,
+        OrdoConsultationRepository $ordoConsultationRepository,
+        OrdoVaccinationRepository $ordoVaccinationRepository,
+        VaccinRepository $vaccinRepository,
         FamilyRepository $familyRepository,
+        OrdonnaceRepository $ordonnaceRepository,
         GroupFamilyRepository $groupFamilyRepository,
         EntityManagerInterface $entityManager
     )
     {
         $this->vaccinGenerate = $vaccinGenerate;
+        $this->vaccinRepository = $vaccinRepository;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
+        $this->ordonnaceRepository = $ordonnaceRepository;
+        $this->ordoConsultationRepository = $ordoConsultationRepository;
+        $this->ordoVaccinationRepository = $ordoVaccinationRepository;
         $this->familyRepository = $familyRepository;
         $this->groupFamilyRepository = $groupFamilyRepository;
         $this->entityManager = $entityManager;
@@ -50,42 +72,41 @@ class PatientController extends AbstractController
      */
     public function patient()
     {
-        if ($this->isGranted('ROLE_PRATICIEN')) {
-            return $this->redirectToRoute('praticien');
-        }
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $birtday = $patient->getDateOnBorn();
+        $event = [];
 
-        // $all_rdv = $patient->getRendeVous();
+        /*$all_rdv = $patient->getRendeVous();
 
-         $event = [];
-        // foreach ($all_rdv as $rdv){
-        //     $color = '#fcb41d';
-        //     if($rdv->getEtat() == 0){
-        //         $color = '#fcb41d';
-        //     }else if ($rdv->getStatus() == 1){
-        //         $color = '#51c81c';
-        //     }else if($rdv->getType() == 1){
-        //         $color = '#3794fc';
-        //     }else if($rdv->getType() == 2){
-        //         $color = '#ec37fc';
-        //     }else if($rdv->getType() == 3){
-        //         $color = '#fc381d';
-        //     }
-        //     $element = [
-        //             'title'=>($rdv->getVaccin() != null && $rdv->getVaccin()->getVaccinName() != null) ? $rdv->getVaccin()->getVaccinName() : ($rdv->getType() == 2 ? "Demander de consultation" : ($rdv->getType() == 3 ? 'Demander de Rendez-vous': '')),
-        //             'start'=>$rdv->getDateRdv()->format('Y-m-d'),
-        //             'id'=>$rdv->getId(),
-        //             'color'=> $color
-        //         ];
-        //     array_push($event,$element);
-        // }
+
+        foreach ($all_rdv as $rdv){
+            $color = '#fcb41d';
+            if($rdv->getEtat() == 0){
+                $color = '#fcb41d';
+            }else if ($rdv->getStatus() == 1){
+                $color = '#51c81c';
+            }else if($rdv->getType() == 1){
+                $color = '#3794fc';
+            }else if($rdv->getType() == 2){
+                $color = '#ec37fc';
+            }else if($rdv->getType() == 3){
+                $color = '#fc381d';
+            }
+            $element = [
+                    'title'=>($rdv->getVaccin() != null && $rdv->getVaccin()->getVaccinName() != null) ? $rdv->getVaccin()->getVaccinName() : ($rdv->getType() == 2 ? "Demander de consultation" : ($rdv->getType() == 3 ? 'Demander de Rendez-vous': '')),
+                    'start'=>$rdv->getDateRdv()->format('Y-m-d'),
+                    'id'=>$rdv->getId(),
+                    'color'=> $color
+                ];
+            array_push($event,$element);
+        }*/
         return $this->render('patient/patient.html.twig', [
             'controller_name' => 'PatientController',
             'Events'=>$event
         ]);
     }
+
 
     /**
      * @Route("/generate/vaccin", name="generate_vaccin_patient")
@@ -107,34 +128,20 @@ class PatientController extends AbstractController
     }
 
     /**
-     * @Route("/consultation", name="consultaion_patient")
+     * @Route("/consultation", name="consultation_patient")
      */
-    public function consultaion_patient()
+    public function consultation_patient()
     {
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        $all_rdv = $patient->getRendeVous();
-        $data =[];
         $doctor = $this->praticienRepository->findAll();
-        foreach ($all_rdv as $rdv){
-            if($rdv->getType() == 2){
-                $rdv->detail = $rdv->getDescription();
-                //$rdv->dateRdv = Carbon::parse($rdv->getDateRdv())->locale('fr_FR')->isoFormat('dddd d MMMM Y');
-                if($rdv->getPraticien()){
-                    $rdv->nom = $rdv->getPraticien()->getFirstName()." ".$rdv->getPraticien()->getLastName();
-                    $rdv->phone = $rdv->getPraticien()->getPhone();
-                }else{
-                    $rdv->nom  = "";
-                    $rdv->phone = "";
-                }
-                array_push($data,$rdv);
-            }
-        }
+        //$rvc=$this->ordoConsultationRepository->searchstatusvalider($patient);
+
+        $rvc = $this->ordoConsultationRepository->searchStatus($patient->getId(), 1);
 
         return $this->render('patient/consultation.html.twig', [
-            'Consultations' => $data,
-            'Doctors' => $doctor,
-            'type' => 2
+            'consultation'=>$rvc,
+            'Doctors'=>$doctor,
         ]);
     }
 
@@ -145,60 +152,55 @@ class PatientController extends AbstractController
     {
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        $all_rdv = $patient->getRendeVous();
-        $data =[];
-        foreach ($all_rdv as $rdv){
-            if($rdv->getType() == 1){
-                $rdv->detail = $rdv->getVaccin()->getVaccinName();
-                //$rdv->dateRdv = Carbon::parse($rdv->getDateRdv())->locale('fr_FR')->isoFormat('dddd d MMMM Y');
-                if($rdv->getPraticien()){
-                    $rdv->nom = $rdv->getPraticien()->getFirstName()." ".$rdv->getPraticien()->getLastName();
-                    $rdv->phone = $rdv->getPraticien()->getPhone();
-                }else{
-                    $rdv->nom  = "";
-                    $rdv->phone = "";
-                }
-                array_push($data,$rdv);
-            }
-        }
+        $doctor = $this->praticienRepository->findAll();
+
+        //$rvc = $this->ordoVaccinationRepository->searchstatusvalider($patient);
+
+        $rvc = $this->ordoVaccinationRepository->searchStatus($patient->getId(), 1);
+
         return $this->render('patient/vaccination.html.twig', [
-            'Vaccinations'=>$data,
-            'type' => 1
+            'vaccination'=>$rvc,
+            'Doctors'=>$doctor,
+        ]);
+    }
+
+    /**
+     * @Route("/rdv/rejected", name="rdv_annuler")
+     *
+     */
+    public function rdv_annuler()
+    {
+        $user = $this->getUser();
+        $patient= $this->patientRepository->findOneBy(['user'=>$user]);
+        //$rce= $this->ordoConsultationRepository->searchstatusannuler($patient);
+        //$rve= $this->ordoVaccinationRepository->searchstatusannuler($patient);
+        $rce = $this->ordoConsultationRepository->searchStatus($patient->getId(), 2);
+        $rve = $this->ordoVaccinationRepository->searchStatus($patient->getId(), 2);
+        return $this->render('patient/rdv_annuler_patient.html.twig',[
+            'consultation'=> $rce,
+            'vaccination'=>$rve
         ]);
     }
 
 
-
     /**
-     * @Route("/rdv", name="rdv_patient")
+     * @Route("/rdv/in", name="rdv_patient")
      */
     public function rdv_patient()
     {
         $user = $this->getUser();
-        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        $all_rdv = $patient->getRendeVous();
-        $data =[];
+        $patient= $this->patientRepository->findOneBy(['user'=>$user]);
+        //$rce= $this->ordoConsultationRepository->searchstatusattente($patient);
+        //$rve= $this->ordoVaccinationRepository->searchstatusattente($patient);
+        $rce = $this->ordoConsultationRepository->searchStatus($patient->getId());
+        $rve = $this->ordoVaccinationRepository->searchStatus($patient->getId());
         $doctor = $this->praticienRepository->findAll();
-
-        foreach ($all_rdv as $rdv){
-            if($rdv->getType() == 3){
-                $rdv->detail = $rdv->getDescription();
-                //$rdv->dateRdv = Carbon::parse($rdv->getDateRdv())->format('d/m/y')->locale('fr_FR')->isoFormat('dddd d MMMM Y');
-                if($rdv->getPraticien()){
-                    $rdv->nom = $rdv->getPraticien()->getFirstName()." ".$rdv->getPraticien()->getLastName();
-                    $rdv->phone = $rdv->getPraticien()->getPhone();
-                }else{
-                    $rdv->nom  = "";
-                    $rdv->phone = "";
-                }
-                array_push($data,$rdv);
-            }
-        }
-
+        $vaccin= $this->vaccinRepository->findAll();
         return $this->render('patient/rdv_patient.html.twig', [
-            'Consultations' => $data,
-            'Doctors' => $doctor,
-            'type' => 3
+            'consultation'=>$rce,
+            'vaccination'=>$rve,
+            'Doctors'=>$doctor,
+            'Vaccin'=>$vaccin
         ]);
     }
 
@@ -209,11 +211,13 @@ class PatientController extends AbstractController
     {
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        //$family = $this->familyRepository->findByPatientParent($patient->getId());
+        //$family = $this->familyRepository->findByPatientParent($patient);
+
         $family_group = [];
         $my_group = [];
 
-        $mygroups = $this->familyRepository->findBy(['patient_child' => $patient]);
+        $mygroups = $this->familyRepository->findBy(['patientChild' => $patient]);
+
         $m = 0;
         if($mygroups && count($mygroups) > 0){
             foreach ($mygroups as $mygroup){
@@ -226,7 +230,7 @@ class PatientController extends AbstractController
 
         if ($my_group && count($my_group) > 0){
             for ($i = 0; $i < $m; $i++) {
-                $my_group[$i]["Membres"] = $this->familyRepository->findBy(['group_family' => $my_group[$i]["ID"]]);
+                $my_group[$i]["Membres"] = $this->familyRepository->findBy(['groupFamily' => $my_group[$i]["ID"]]);
             }
         }
 
@@ -242,37 +246,68 @@ class PatientController extends AbstractController
      */
     public function register_rdv(Request $request)
     {
-        $type_id = $request->request->get("type_id");
-        $doctor = $request->request->get("doctor");
-        $date = $request->request->get("date");
-        $description = $request->request->get("description");
+        $rdvRequest = $request->request->get("rdv");
+        $type = $rdvRequest["typeRdv"];
+        $doctor = $rdvRequest["praticiens"];
+        $vaccin = $rdvRequest["vaccin"];
+        $date = $rdvRequest["dateRdv"];
+        $description = $rdvRequest["description"];
+        $heure = $rdvRequest["heureRdv"];
+        $Id = $rdvRequest["id"];
+
         $user = $this->getUser();
+
         $rdv_date = str_replace("/", "-", $date);
 
-        $Date_Rdv = new \DateTime(date ("Y-m-d", strtotime ($rdv_date)));
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
 
+        $ordo = null;
+        $vaccination = null;
         $praticien = null;
+
         if($doctor != ''){
             $praticien =  $this->praticienRepository->find($doctor);
+            $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
         }
 
-        $patient =  $this->patientRepository->findOneBy(['user'=>$user]);
-        /*$rdv = new RendezVous();
-        $rdv->setPraticien($praticien);
-        $rdv->setDescription($description);
-        $rdv->setType($type_id);
-        $rdv->setDateRdv($Date_Rdv);
-        $rdv->setPatient($patient);
-        $rdv->setVaccin(null);
-        $this->entityManager->persist($rdv);
-        $this->entityManager->flush();*/
-        if ($type_id == 1 ){
-        return $this->redirectToRoute('vaccination_patient');
-        }elseif ($type_id == 2 ){
-            return $this->redirectToRoute('consultaion_patient');
-        }elseif ($type_id == 3){
-            return $this->redirectToRoute('rdv_patient');
+        if($vaccin != ''){
+            $vaccination= $this->vaccinRepository->find($vaccin);
         }
+
+        $patient =  $this->patientRepository->findOneBy(['user' => $user]);
+
+        if ($type=="consultation"){
+            if ($Id != ''){
+                $ordoconsultation = $this->ordoConsultationRepository->find($Id);
+            }else{
+                $ordoconsultation = new OrdoConsultation();
+            }
+            $ordoconsultation->setDateRdv($Date_Rdv);
+            $ordoconsultation->setObjetConsultation($description);
+            $ordoconsultation->setStatusConsultation(0);
+            $ordoconsultation->setPatient($patient);
+            $ordoconsultation->setOrdonnance($ordo);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($ordoconsultation);
+            $entityManager->flush();
+
+        }else{
+            if ($Id != ''){
+                $ordovaccination = $this->ordoVaccinationRepository->find($Id);
+            }else{
+                $ordovaccination = new OrdoVaccination();
+            }
+            $ordovaccination->setDatePrise($Date_Rdv);
+            $ordovaccination->setOrdonnance($ordo);
+            $ordovaccination->setReferencePraticienExecutant($praticien);
+            $ordovaccination->setVaccin($vaccination);
+            $ordovaccination->setPatient($patient);
+            $ordovaccination->setStatusVaccin(0);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($ordovaccination);
+            $entityManager->flush();
+        }
+        return $this->redirectToRoute('rdv_patient');
 
     }
     /**
@@ -320,7 +355,6 @@ class PatientController extends AbstractController
      */
     public function add_new_membres_group(Request $request)
     {
-        $user = $this->getUser();
         if ($request->request->get('group_id') != "" && $request->request->get('patient')){
             $group_family = $this->groupFamilyRepository->find($request->request->get('group_id'));
             $patient = $this->patientRepository->find($request->request->get('patient'));
@@ -340,7 +374,7 @@ class PatientController extends AbstractController
     {
         $user = $this->getUser();
         if ($request->request->get('id_group') != "" && $request->request->get('id_membre')){
-            $group_family = $this->familyRepository->findOneBy(['patient_child' => $request->request->get('id_membre'), 'group_family' => $request->request->get('id_group')]);
+            $group_family = $this->familyRepository->findOneBy(['patientChild' => $request->request->get('id_membre'), 'groupFamily' => $request->request->get('id_group')]);
 
             if($group_family){
                 $this->entityManager->remove($group_family);
@@ -398,6 +432,107 @@ class PatientController extends AbstractController
             'group' => $group,
             'patients' => $membres_patients
         ]);
+    }
+
+    /**
+     * @Route("/form-add-rdv", name="add_form_rdv_patient", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function add_form_rdv(Request $request)
+    {
+        $action = $request->request->get('action');
+        $rdv = [];
+        $typeRdvArrays = [
+            "consultation" => "CONSULTATION",
+            "vaccination" => "VACCINATION"
+        ];
+        if ($action == "new") {
+            $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
+            $response = $this->renderView('patient/_form_rdv.html.twig', [
+                'new' => true,
+                'form' => $form->createView(),
+                'eventData' => $rdv,
+            ]);
+        } else {
+            $action = $request->request->get('id');
+            $rdv['id'] = $request->request->get('id');
+            $rdv['typeRdv'] = $request->request->get('type');
+            if ($rdv['typeRdv'] == 'consultation'){
+                $ordoCon = $this->ordoConsultationRepository->find($rdv['id']);
+                $rdv['description'] = $ordoCon->getObjetConsultation();
+                $rdv['dateRdv'] = $ordoCon->getDateRdv();
+            }
+            elseif ($rdv['typeRdv'] == 'vaccination'){
+                $ordoCon = $this->ordoVaccinationRepository->find($rdv['id']);
+                $rdv['vaccin'] = $ordoCon->getVaccin();
+                $rdv['dateRdv'] = $ordoCon->getDatePrise();
+            }
+            if ($ordoCon->getOrdonnance() != null && $ordoCon->getOrdonnance()->getPraticien() != null) $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien()->getId();
+            if ($rdv['dateRdv'] != ''){
+                $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
+
+                $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
+                $rdv['heureRdv'] = explode(' ', $date)[1];
+            }
+
+            $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
+            $response = $this->renderView('patient/_form_rdv.html.twig', [
+                'new' => false,
+                'form' => $form->createView(),
+                'eventData' => $rdv,
+            ]);
+        }
+        $form->handleRequest($request);
+        return new JsonResponse(['form_html' => $response]);
+    }
+
+
+    /**
+     * @Route("/rdv/remove", name="remove_rdv_patient", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     */
+    public function remove_vaccin(Request $request)
+    {
+        $Id = $request->request->get('id');
+        $type = $request->request->get('type');
+        $delete = false;
+        if ($type == 'consultation'){
+            $ordoCon = $this->ordoConsultationRepository->find($Id);
+            if ( $ordoCon != null){
+                $IntervationConsultations = $ordoCon->getIntervationConsultations();
+                $PatientOrdoConsultations = $ordoCon->getPatientOrdoConsultations();
+                if (($IntervationConsultations && count($IntervationConsultations) > 0) ||
+                    ($PatientOrdoConsultations && count($PatientOrdoConsultations) > 0))
+                {
+                    $delete = false;
+                    $this->addFlash('error', 'Erreur de suprimé de cet élément !');
+                }else{
+                    $this->entityManager->remove($ordoCon);
+                    $this->entityManager->flush();
+                    $delete = true;
+                    $this->addFlash('success', 'Rdv à été supprimé avec succès !');
+                }
+            }
+        }
+        elseif ($type == 'vaccination'){
+            $ordoCon = $this->ordoVaccinationRepository->find($Id);
+            if ( $ordoCon != null){
+                $InterventionVaccinations = $ordoCon->getInterventionVaccinations();
+                $PatientOrdoVaccinations = $ordoCon->getPatientOrdoVaccinations();
+                if (($PatientOrdoVaccinations && count($PatientOrdoVaccinations) > 0) ||
+                    ($InterventionVaccinations && count($InterventionVaccinations) > 0))
+                {
+                    $delete = false;
+                    $this->addFlash('error', 'Erreur de suprimé de cet élément !');
+                }else{
+                    $this->entityManager->remove($ordoCon);
+                    $this->entityManager->flush();
+                    $delete = true;
+                    $this->addFlash('success', 'Rdv à été supprimé avec succès !');
+                }
+            }
+        }
+        return new JsonResponse(['form_delete' => $delete]);
     }
 
 }

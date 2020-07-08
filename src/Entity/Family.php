@@ -18,7 +18,7 @@ class Family
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="family_child")
+     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="familyChild")
      */
     private $patientChild;
 

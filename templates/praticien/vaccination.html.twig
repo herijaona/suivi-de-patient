@@ -17,39 +17,31 @@
             <thead>
             <tr>
                 <th>Date vaccination</th>
-                <th>Détail</th>
                 <th>Patient</th>
-                <th>Validation</th>
+                <th>Vaccin</th>
                 <th>Status</th>
-                {# <th>More</th> #}
             </tr>
             </thead>
             <tbody>
-            {% for rdv in Vaccinations  %}
+            {% for vac in vaccination  %}
                 <tr>
                     <td>
-                        {{ rdv.dateRdv|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                        {{ vac.datePrise |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
                     </td>
+
+                    <td>{{ vac.firstName }} {{ vac.lastName }}</td>
+                    <td>{{vac.vaccinName }}</td>
                     <td>
-                        {% if rdv.description is defined and rdv.description is not null  %}{{ rdv.description }}{% elseif rdv.vaccin is defined and rdv.vaccin.vaccinName is not null %}{{ rdv.vaccin.vaccinName }}{% endif %}
-                    </td>
-                    <td>
-                        {{ rdv.patient.lastName ~' '~ rdv.patient.firstName }} <br>
-                    </td>
-                    <td>
-                        {% if rdv.etat == 0 %}
-                            <button class="btn btn-danger active_etat_rdv validation_width" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" >Non valide</button>
-                        {% else %}
-                            <button class="btn btn-green validation_width" >Validé</button>
+                        {% if vac.statusVaccin == 1 %}
+                            <span class="badge badge-success badge-style modif-status"> activé </span>
+                        {% elseif vac.statusVaccin == 0 %}
+                            <span class="badge badge-warning badge-style modif-status">En attente</span>
+                        {% elseif vac.statusVaccin == 2 %}
+                            <span class="badge badge-danger badge-style modif-status">Réjeter</span>
                         {% endif %}
                     </td>
-                    <td>
-                        {% if rdv.status == 0 %}
-                            <button class="btn btn-deep-orange active_status_rdv validation_width" data-id="{{ rdv.id }}" data-status="{{ rdv.status }}" >Pas Fait</button>
-                        {% else %}
-                            <button class="btn btn-green validation_width" >Fait</button>
-                        {% endif %}
-                    </td>
+
                 </tr>
             {% endfor %}
             </tbody>

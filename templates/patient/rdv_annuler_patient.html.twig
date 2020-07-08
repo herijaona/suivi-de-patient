@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Vaccination
+    Rendez-Vous
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -10,29 +10,65 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Tous les vaccinations</h4>
+            <h4 class="h4-content">rendez-vous annuler</h4>
         </div>
+
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date vaccination</th>
+                <th>Date rdv</th>
+                <th>Type</th>
+                <th>Objet de consultation </th>
                 <th>Docteur</th>
                 <th>Vaccin</th>
                 <th>Status</th>
+
             </tr>
             </thead>
             <tbody>
+            {% for rdv in consultation  %}
+                <tr>
+                    <td>
+                        {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale) }}
+                    </td>
+                    <td>Consultation</td>
+                    <td>
+                        {{ rdv.objetConsultation }}
+                    </td>
+                    <td>
+                        {{ rdv.firstName }}
+                        {{ rdv.lastName }}
+                    </td>
+                    <td></td>
+                    <td>
+                        {% if rdv.statusConsultation == 1 %}
+                            <span class="badge badge-success badge-style modif-status"> activé </span>
+                        {% elseif rdv.statusConsultation == 0 %}
+                            <span class="badge badge-warning badge-style modif-status">En attente</span>
+                        {% elseif rdv.statusConsultation == 2 %}
+                            <span class="badge badge-danger badge-style modif-status">Réjeter</span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+            {% endfor %}
+
             {% for vac in vaccination  %}
                 <tr>
                     <td>
-                        {{ vac.datePrise |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {{ vac.datePrise |format_datetime('full', 'short', locale=app.request.locale)}}
                         {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
                     </td>
+                    <td>Vaccination</td>
+                    <td>
 
-                    <td>{{ vac.firstName }} {{ vac.lastName }}</td>
-                    <td>{{vac.vaccinName }}</td>
+                    </td>
+                    <td>
+                        {{ vac.firstName }} {{ vac.lastName }} <br>
+                    </td>
+                    <td>{{ vac.vaccinName }}</td>
                     <td>
                         {% if vac.statusVaccin == 1 %}
                             <span class="badge badge-success badge-style modif-status"> activé </span>
@@ -45,9 +81,12 @@
 
                 </tr>
             {% endfor %}
+
             </tbody>
         </table>
     </div>
+
+
 {% endblock %}
 
 {% block javascripts %}
@@ -61,6 +100,15 @@
                     url: "{{ asset('vendor/datatables/lang.json') }}"
                 }
             });
+            $('.mdb-select').materialSelect();
+
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            });
         })
+
     </script>
+
+
 {% endblock %}

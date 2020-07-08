@@ -54,6 +54,11 @@ class OrdoVaccination
      */
     private $patientOrdoVaccinations;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $statusVaccin;
+
     public function __construct()
     {
         $this->interventionVaccinations = new ArrayCollection();
@@ -183,6 +188,18 @@ class OrdoVaccination
                 $patientOrdoVaccination->setOrdoVaccination(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStatusVaccin(): ?integer
+    {
+        return $this->statusVaccin;
+    }
+
+    public function setStatusVaccin(integer $statusVaccin): self
+    {
+        $this->statusVaccin = $statusVaccin;
 
         return $this;
     }

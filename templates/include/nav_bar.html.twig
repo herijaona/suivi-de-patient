@@ -12,34 +12,43 @@
                 <li class="{{ (currentPath == path('admin')) ? 'active' :'' }}"><a href="{{ path('admin') }}">Dashboard</a></li>
                 <li class="{{ (currentPath == path('admin_member')) ? 'active' : '' }}"><a href="{{ path('admin_member') }}">Membres</a></li>
                 <li class="{{ (currentPath == path('vaccin_admin')) ? 'active' : '' }}"><a href="{{ path('vaccin_admin') }}">Calendrier Vaccination</a></li>
-                <li class="{{ (currentPath == path('praticiens_admin')) ? 'active' : '' }}"><a href="{{ path('praticiens_admin') }}">Liste des praticiens</a></li>
-                <li class="{{ (currentPath == path('patients_admin')) ? 'active' : '' }}"><a href="{{ path('patients_admin') }}">Liste des patients</a></li>
-                <li class="{{ (currentPath == path('admin_centre_health')) ? 'active' : '' }}"><a href="{{ path('admin_centre_health') }}">Centre de Santé</a></li>
-                <li class="{{ (currentPath == path('admin_city')) ? 'active' : '' }}"><a href="{{ path('admin_city') }}">Ville</a></li>
-                <li class="{{ (currentPath == path('admin_region')) ? 'active' : '' }}"><a href="{{ path('admin_region') }}">Région</a></li>
-                <li class="{{ (currentPath == path('admin_state')) ? 'active' : '' }}"><a href="{{ path('admin_state') }}">Pays</a></li>
-                <li class="{{ (currentPath == path('admin_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_vaccin') }}">Vaccin</a></li>
-                <li class="{{ (currentPath == path('admin_type_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_type_vaccin') }}">Type de vaccin</a></li>
-                {#<li class="{{ (currentPath == path('admin_type_vaccin') or currentPath == path('admin_vaccin'))  ? 'active' : '' }}">
-                    <a href="#" data-toggle="collapse" data-target="#vacc"><span><i class="material-icons fs-16"></i>Parametres</span></a>
+                {#<li class="{{ (currentPath == path('praticiens_admin')) ? 'active' : '' }}"><a href="{{ path('praticiens_admin') }}">Liste des praticiens</a></li>
+                <li class="{{ (currentPath == path('patients_admin')) ? 'active' : '' }}"><a href="{{ path('patients_admin') }}">Liste des patients</a></li>#}
+                <li class="{{ (currentPath == path('admin_centre_health') or currentPath == path('admin_city') or currentPath == path('admin_region') or currentPath == path('admin_state') or currentPath == path('admin_vaccin') or currentPath == path('admin_type_vaccin'))  ? 'active' : '' }}">
+                    <a href="#" data-toggle="collapse" data-target="#vacc"><span><i class="material-icons fs-16"></i>Paramètres</span></a>
                     <ul id="vacc" class="collapse" aria-labelledby="vacc" data-parent="#side-bar-menu">
-                        <li> <a href="{{ path('admin_type_vaccin') }}" class="{{ (currentPath == path('admin_type_vaccin')) ? 'active' : '' }}" >Type de vaccin</a></li>
-                        <li> <a href="{{ path('admin_vaccin') }}" class="{{ (currentPath == path('admin_vaccin')) ? 'active' : '' }}">Vaccin</a></li>
+                        <li class="{{ (currentPath == path('admin_centre_health')) ? 'active' : '' }}"><a href="{{ path('admin_centre_health') }}">Centre de Santé</a></li>
+                        <li class="{{ (currentPath == path('admin_type_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_type_vaccin') }}">Type de vaccin</a></li>
+                        <li class="{{ (currentPath == path('admin_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_vaccin') }}">Vaccin</a></li>
+                        <li class="{{ (currentPath == path('admin_state')) ? 'active' : '' }}"><a href="{{ path('admin_state') }}">Pays</a></li>
+                        <li class="{{ (currentPath == path('admin_region')) ? 'active' : '' }}"><a href="{{ path('admin_region') }}">Région</a></li>
+                        <li class="{{ (currentPath == path('admin_city')) ? 'active' : '' }}"><a href="{{ path('admin_city') }}">Ville</a></li>
                     </ul>
-                </li>#}
+                </li>
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
-                <li {% if (currentPath == path('praticien')) ? 'active' :'' %} class="active" {% endif %}><a href="{{ path('praticien') }}">Agenda</a></li>
-                <li {% if (currentPath == path('consultaion_praticien')) ? 'active' :''  %} class="active" {% endif %} ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
-                <li {% if (currentPath == path('vaccination_praticien')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('vaccination_praticien') }}">Calendrier de Vaccination</a></li>
-                <li {% if (currentPath == path('rdv_praticien')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('rdv_praticien') }}">Rendez-Vous</a></li>
+                <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li>
+                <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
+                <li class="{{  (currentPath == path('vaccination_praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Calendrier de Vaccination</a></li>
+                <li class="{{ (currentPath == path('rdv_praticien') or currentPath == path('rdv_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#rdv">Rendez-Vous</a>
+                    <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
+                        <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" >En attente de validation</a></li>
+                        <li class="{{ (currentPath == path('rdv_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien_reject') }}" >Réjeter</a></li>
+                    </ul>
+                </li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
                 <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li>
                 <li {% if (currentPath == path('vaccination_patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">Calendrier de Vaccination</a></li>
-                <li {% if (currentPath == path('consultaion_patient')) ? 'active' :''  %} class="active" {% endif %} ><a href="{{ path('consultaion_patient') }}">Consultation</a></li>
-                <li {% if (currentPath == path('rdv_patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('rdv_patient') }}">Rendez-Vous</a></li>
-                <li {% if (currentPath == path('group_patient') or currentPath == path('see_my_group')) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">Groupe Famille</a></li>
+                <li {% if (currentPath == path('consultation_patient')) ? 'active' :''  %} class="active" {% endif %} ><a href="{{ path('consultation_patient') }}">Consultation</a></li>
+                <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">Rendez-Vous</a>
+                    <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
+                        <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" >En attente de validation</a></li>
+                        <li class="{{ (currentPath == path('rdv_annuler')) ? 'active' :''  }}"> <a href="{{ path('rdv_annuler') }}" >Réjeter</a></li>
+                    </ul>
+                </li>
+
+                <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">Groupe Famille</a></li>
             {% endif %}
         </ul>
         <ul class="logout_footer">

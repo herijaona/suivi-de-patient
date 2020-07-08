@@ -49,6 +49,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $code = $this->generate_code();
             // encode the plain password
             $last_name = $form->get('lastname')->getData();
@@ -72,10 +73,12 @@ class RegistrationController extends AbstractController
             $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
+
             $patient->setAddress($form->get('address')->getData());
             $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($form->get('date_naissance')->getData());
             $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
+
             $patient->setTypePatient($form->get('type_patient')->getData());
             $patient->setPhone($form->get('phone')->getData());
             $patient->setFatherName($form->get('namedaddy')->getData());
@@ -133,7 +136,7 @@ class RegistrationController extends AbstractController
             $praticien->setFirstName($first_name);
             $praticien->setLastName($last_name);
             $praticien->setCreatedAt(new \DateTime('now'));
-            //$praticien->setAdress($form->get('address')->getData());
+            $praticien->setAdress($form->get('address')->getData());
             $praticien->setDateBorn($form->get('date_naissance')->getData());
             //$praticien->setAdressBorn($form->get('lieu_naissance')->getData());
             $praticien->setFonction($form->get('fonction')->getData());
@@ -171,9 +174,9 @@ class RegistrationController extends AbstractController
             $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
-            //$patient->setAdress($form->get('address')->getData());
+            $patient->setAdress($form->get('address')->getData());
             $patient->setDateOnBorn($form->get('date_naissance')->getData());
-            //$patient->setAdressOnBorn($form->get('lieu_naissance')->getData());
+            $patient->setAdressOnBorn($form->get('lieu_naissance')->getData());
             $patient->setTypePatient($typePatient);
             $patient->setEtat(false);
             $patient->setPhone($form->get('phone')->getData());
