@@ -192,12 +192,12 @@ class OrdoVaccination
         return $this;
     }
 
-    public function getStatusVaccin(): ?integer
+    public function getStatusVaccin(): ?int
     {
         return $this->statusVaccin;
     }
 
-    public function setStatusVaccin(integer $statusVaccin): self
+    public function setStatusVaccin(int $statusVaccin): self
     {
         $this->statusVaccin = $statusVaccin;
 
