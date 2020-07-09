@@ -180,8 +180,7 @@ class PraticienController extends AbstractController
                       $this->entityManager->persist($ordoVacc);
                       $this->entityManager->flush();
                   }
-              }
-              elseif($request->request->get('type') == "consultation" && $request->request->get('status')== 0){
+              }else{
                   $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
                   if($ordoConsu != null){
                       $ordoConsu->setstatusConsultation(1);
