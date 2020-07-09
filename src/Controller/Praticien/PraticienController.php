@@ -170,24 +170,23 @@ class PraticienController extends AbstractController
      */
       public function  update( Request $request)
       {
-            //dd($request->request);
+
           if($request->request->get('action') == "active")
           {
-              if($request->request->get('type') == "vaccination" && $request->request->get('status')== 0){
+              if($request->request->get('type') == "vaccination" && $request->request->get('status') == 0){
                   $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
                   if($ordoVacc != null){
                       $ordoVacc->setStatusVaccin(1);
                       $this->entityManager->persist($ordoVacc);
                       $this->entityManager->flush();
                   }
-                  elseif($request->request->get('type')== "consultation" && $request->request->get('status')== 0){
-                      $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
-                      if($ordoConsu != null){
-                          $ordoConsu->setstatusConsultation(1);
-                          $this->entityManager->persist($ordoConsu);
-                          $this->entityManager->flush();
-                      }
-
+              }
+              elseif($request->request->get('type') == "consultation" && $request->request->get('status')== 0){
+                  $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
+                  if($ordoConsu != null){
+                      $ordoConsu->setstatusConsultation(1);
+                      $this->entityManager->persist($ordoConsu);
+                      $this->entityManager->flush();
                   }
               }
               $this->addFlash('success', 'Changement effectué avec succès');
@@ -201,23 +200,19 @@ class PraticienController extends AbstractController
                           $this->entityManager->persist($ordoVacc);
                           $this->entityManager->flush();
                       }
-                      elseif($request->request->get('type')== "consultation" && $request->request->get('status')== 0){
-                          $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
-                          if($ordoConsu != null){
-                              $ordoConsu->setstatusConsultation(2);
-                              $this->entityManager->persist($ordoConsu);
-                              $this->entityManager->flush();
-                          }
-
+                  }
+                  elseif($request->request->get('type')== "consultation" && $request->request->get('status')== 0){
+                      $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
+                      if($ordoConsu != null){
+                          $ordoConsu->setstatusConsultation(2);
+                          $this->entityManager->persist($ordoConsu);
+                          $this->entityManager->flush();
                       }
                   }
                   $this->addFlash('success', 'Changement effectué avec succès');
                   return new JsonResponse(['status' => 'OK']);
           }
-
-
       }
-
     /**
      * @Route("/update-rdv", name="update_etat_rdv")
      */

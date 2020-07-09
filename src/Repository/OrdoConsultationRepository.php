@@ -19,14 +19,14 @@ class OrdoConsultationRepository extends ServiceEntityRepository
         parent::__construct($registry, OrdoConsultation::class);
     }
 
-    public function searchStatus($patient = null, $status = 0){
+    public function searchStatus($patient = null, $status = 0 ){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,pr.firstName, pr.lastName 
             FROM App\Entity\OrdoConsultation o 
             INNER JOIN App\Entity\Patient p with p.id = o.patient
             LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
             LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
-            WHERE p.id = :patient AND o.statusConsultation = :status AND o.dateRdv >= :now
+            WHERE p.id = :patient AND o.statusConsultation = :status AND o.dateRdv >= :now 
             ORDER BY o.dateRdv ASC')
                 ->setParameter('status', $status)
                 ->setParameter('patient', $patient)
