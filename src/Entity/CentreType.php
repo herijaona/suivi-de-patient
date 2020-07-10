@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\CentreTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CentreTypeRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:typevaccin"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class CentreType
 {

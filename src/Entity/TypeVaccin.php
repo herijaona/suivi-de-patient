@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\TypeVaccinRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=TypeVaccinRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:typevaccin"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class TypeVaccin
 {
@@ -16,11 +23,13 @@ class TypeVaccin
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:typevaccin", "read:vaccin"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:typevaccin", "read:vaccin"})
      */
     private $typeName;
 

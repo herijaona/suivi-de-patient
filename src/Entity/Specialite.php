@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\SpecialiteRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=SpecialiteRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:specialite"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class Specialite
 {
@@ -16,16 +23,19 @@ class Specialite
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:specialite", "read:praticien"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:specialite", "read:PraticienSpecialite"})
      */
     private $nomSpecialite;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:specialite"})
      */
     private $noteSpecialite;
 

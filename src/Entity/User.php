@@ -76,12 +76,8 @@ class User implements UserInterface
     private $firstName;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("user:read")
-     */
-
-    /**
      * @ORM\Column(type="integer")
+     * @Groups("user:read")
      */
     private $etat;
 

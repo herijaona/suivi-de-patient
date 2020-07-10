@@ -50,3 +50,6 @@ Suivi de patient
         "type_patient": "1",
         "sexe":"femme"
     }
+## Ordo Vaccination
+    url get all ordo vaccination http://localhost:9000/apip/ordo_vaccinations
+    url get by id of ordo vaccination http://localhost:9000/apip/ordo_vaccinations/1

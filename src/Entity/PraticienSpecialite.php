@@ -2,11 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\PraticienSpecialiteRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PraticienSpecialiteRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:PraticienSpecialite"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class PraticienSpecialite
 {
@@ -14,16 +21,19 @@ class PraticienSpecialite
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:PraticienSpecialite", "read:praticien", "read:specialite"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="praticienSpecialites")
+     * @Groups({"read:PraticienSpecialite", "read:praticien"})
      */
     private $praticien;
 
     /**
      * @ORM\ManyToOne(targetEntity=Specialite::class, inversedBy="praticienSpecialites")
+     * @Groups({"read:PraticienSpecialite", "read:praticien"})
      */
     private $specialite;
 
