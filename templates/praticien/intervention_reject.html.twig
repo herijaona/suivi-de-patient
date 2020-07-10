@@ -1,0 +1,70 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    Intervention
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Intervention</h4>
+        </div>
+
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Date d' Intervention</th>
+                <th>Type</th>
+                <th>Objet de consultation </th>
+                <th>Patient</th>
+                <th>Praticien</th>
+                <th>Vaccin</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for icp in consultation  %}
+                <tr>
+                    <td class="text-left">
+                        {{ icp.dateConsultation |format_datetime('full', 'short', locale=app.request.locale)}}
+                    </td>
+                    <td>Consultation</td>
+                    <td>{{ icp.objetConsultation }}</td>
+                    <td>{{ icp.patient_name }} {{ icp.patient_lastname }} </td>
+                    <td>{{ icp.firstName }} {{ icp.lastName }} </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+            {% for ivp in vaccination  %}
+                <tr>
+                    <td>
+                        {{ ivp.datePriseVaccin |format_datetime('full', 'short', locale=app.request.locale) }}
+
+                    </td>
+                    <td>Vaccination</td>
+                    <td></td>
+                    <td>{{ ivp.patient_name }} {{ ivp.patient_lastname }} </td>
+                    <td>{{ ivp.firstName }} {{ ivp.lastName }} </td>
+                    <td>{{ ivp.vaccinName }}</td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+    <!-- DataTables -->
+
+    </script>
+{% endblock %}

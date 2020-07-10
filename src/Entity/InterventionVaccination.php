@@ -59,6 +59,16 @@ class InterventionVaccination
      */
     private $carnetVaccinations;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="interventionVaccinations")
+     */
+    private $patient;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $etat;
+
     public function __construct()
     {
         $this->carnetVaccinations = new ArrayCollection();
@@ -180,6 +190,30 @@ class InterventionVaccination
                 $carnetVaccination->setIntervationVaccination(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPatient(): ?Patient
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(?Patient $patient): self
+    {
+        $this->patient = $patient;
+
+        return $this;
+    }
+
+    public function getEtat(): ?int
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?int $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

@@ -64,6 +64,11 @@ class OrdoConsultation
      */
     private $patientOrdoConsultations;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $etat;
+
     public function __construct()
     {
         $this->intervationConsultations = new ArrayCollection();
@@ -123,12 +128,12 @@ class OrdoConsultation
         return $this;
     }
 
-    public function getStatusConsultation(): ?integer
+    public function getStatusConsultation(): ?int
     {
         return $this->statusConsultation;
     }
 
-    public function setStatusConsultation(integer $statusConsultation): self
+    public function setStatusConsultation(int $statusConsultation): self
     {
         $this->statusConsultation = $statusConsultation;
 
@@ -217,6 +222,18 @@ class OrdoConsultation
                 $patientOrdoConsultation->setOrdoConsultation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEtat(): ?int
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?int $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

@@ -54,6 +54,11 @@ class IntervationConsultation
      */
     private $patientIntervationConsultations;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $etat;
+
     public function __construct()
     {
         $this->patientIntervationConsultations = new ArrayCollection();
@@ -88,12 +93,12 @@ class IntervationConsultation
         return $this;
     }
 
-    public function getDateConsultation(): ?\DateTimeInterface
+    public function getDateConsultation(): ?\DateTime
     {
         return $this->dateConsultation;
     }
 
-    public function setDateConsultation(?\DateTimeInterface $dateConsultation): self
+    public function setDateConsultation(?\DateTime $dateConsultation): self
     {
         $this->dateConsultation = $dateConsultation;
 
@@ -163,6 +168,18 @@ class IntervationConsultation
                 $patientIntervationConsultation->setInterventionConsultation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEtat(): ?int
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?int $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }
