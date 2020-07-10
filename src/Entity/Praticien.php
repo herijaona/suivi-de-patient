@@ -126,6 +126,21 @@ class Praticien
      */
     private $etat;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $numRue;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $quartier;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="citypraticien")
+     */
+    private $city;
+
     public function __construct()
     {
         $this->updatedAt = new \DateTime('now');
@@ -591,6 +606,42 @@ class Praticien
     public function setEtat(?bool $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getNumRue(): ?string
+    {
+        return $this->numRue;
+    }
+
+    public function setNumRue(?string $numRue): self
+    {
+        $this->numRue = $numRue;
+
+        return $this;
+    }
+
+    public function getQuartier(): ?string
+    {
+        return $this->quartier;
+    }
+
+    public function setQuartier(?string $quartier): self
+    {
+        $this->quartier = $quartier;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

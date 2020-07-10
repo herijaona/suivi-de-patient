@@ -64,6 +64,16 @@ class City
      */
     private $centreHealths;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="city")
+     */
+    private $citypatient;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="city")
+     */
+    private $citypraticien;
+
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
@@ -71,6 +81,8 @@ class City
         $this->patient = new ArrayCollection();
         $this->patients = new ArrayCollection();
         $this->praticien = new ArrayCollection();
+        $this->citypatient = new ArrayCollection();
+        $this->citypraticien = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -256,6 +268,68 @@ class City
             // set the owning side to null (unless already changed)
             if ($praticien->getAddress() === $this) {
                 $praticien->setAddress(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Patient[]
+     */
+    public function getCitypatient(): Collection
+    {
+        return $this->citypatient;
+    }
+
+    public function addCitypatient(Patient $citypatient): self
+    {
+        if (!$this->citypatient->contains($citypatient)) {
+            $this->citypatient[] = $citypatient;
+            $citypatient->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCitypatient(Patient $citypatient): self
+    {
+        if ($this->citypatient->contains($citypatient)) {
+            $this->citypatient->removeElement($citypatient);
+            // set the owning side to null (unless already changed)
+            if ($citypatient->getCity() === $this) {
+                $citypatient->setCity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Praticien[]
+     */
+    public function getCitypraticien(): Collection
+    {
+        return $this->citypraticien;
+    }
+
+    public function addCitypraticien(Praticien $citypraticien): self
+    {
+        if (!$this->citypraticien->contains($citypraticien)) {
+            $this->citypraticien[] = $citypraticien;
+            $citypraticien->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCitypraticien(Praticien $citypraticien): self
+    {
+        if ($this->citypraticien->contains($citypraticien)) {
+            $this->citypraticien->removeElement($citypraticien);
+            // set the owning side to null (unless already changed)
+            if ($citypraticien->getCity() === $this) {
+                $citypraticien->setCity(null);
             }
         }
 

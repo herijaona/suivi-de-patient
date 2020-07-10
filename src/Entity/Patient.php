@@ -178,6 +178,21 @@ class Patient
      */
     private $addressOnBorn;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $numRue;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $quartier;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="citypatient")
+     */
+    private $city;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -790,6 +805,42 @@ class Patient
     public function __toString()
     {
         return $this->getLastName() .' '. $this->getFirstName();
+    }
+
+    public function getNumRue(): ?string
+    {
+        return $this->numRue;
+    }
+
+    public function setNumRue(?string $numRue): self
+    {
+        $this->numRue = $numRue;
+
+        return $this;
+    }
+
+    public function getQuartier(): ?string
+    {
+        return $this->quartier;
+    }
+
+    public function setQuartier(?string $quartier): self
+    {
+        $this->quartier = $quartier;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
+
+        return $this;
     }
 
 }
