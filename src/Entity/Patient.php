@@ -178,6 +178,11 @@ class Patient
      */
     private $addressOnBorn;
 
+    /**
+     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="patient")
+     */
+    private $interventionVaccinations;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -197,6 +202,7 @@ class Patient
         $this->patientIntervationConsultations = new ArrayCollection();
         $this->patientVaccins = new ArrayCollection();
         $this->etat = false;
+        $this->interventionVaccinations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -790,6 +796,37 @@ class Patient
     public function __toString()
     {
         return $this->getLastName() .' '. $this->getFirstName();
+    }
+
+    /**
+     * @return Collection|InterventionVaccination[]
+     */
+    public function getInterventionVaccinations(): Collection
+    {
+        return $this->interventionVaccinations;
+    }
+
+    public function addInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if (!$this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations[] = $interventionVaccination;
+            $interventionVaccination->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if ($this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations->removeElement($interventionVaccination);
+            // set the owning side to null (unless already changed)
+            if ($interventionVaccination->getPatient() === $this) {
+                $interventionVaccination->setPatient(null);
+            }
+        }
+
+        return $this;
     }
 
 }
