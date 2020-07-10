@@ -38,21 +38,20 @@
                     <td>{{ icp.patient_name }} {{ icp.patient_lastname }} </td>
                     <td>{{ icp.firstName }} {{ icp.lastName }} </td>
                     <td></td>
-                    <td></td>
+                    <td><span class="badge badge-danger badge-style">Non Fait</span> </td>
                 </tr>
             {% endfor %}
             {% for ivp in vaccination  %}
                 <tr>
                     <td>
                         {{ ivp.datePriseVaccin |format_datetime('full', 'short', locale=app.request.locale) }}
-
                     </td>
                     <td>Vaccination</td>
                     <td></td>
                     <td>{{ ivp.patient_name }} {{ ivp.patient_lastname }} </td>
                     <td>{{ ivp.firstName }} {{ ivp.lastName }} </td>
                     <td>{{ ivp.vaccinName }}</td>
-                    <td></td>
+                    <td><span class="badge badge-danger badge-style">Non Fait</span></td>
                 </tr>
             {% endfor %}
 
