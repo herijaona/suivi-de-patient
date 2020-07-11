@@ -38,7 +38,7 @@ class ApiController extends AbstractController
 
 
     /**
-     * @Route("/praticiens", name="api_praticiens")
+     * @Route("/praticiens", name="api_praticiens", methods={"GET"})
      */
     public function api_praticiens()
     {
@@ -48,7 +48,7 @@ class ApiController extends AbstractController
         return  $this->praticienRepository->findByPraticien();
     }
     /**
-     * @Route("/patients", name="api_patients")
+     * @Route("/patients", name="api_patients", methods={"GET"})
      */
     public function api_patients()
     {
@@ -56,6 +56,15 @@ class ApiController extends AbstractController
         return new JsonResponse(['patients' => $patients]);
     }
 
+    /**
+     * @param PraticienRepository $praticienRepository
+     * @return JsonResponse
+     * @Route("/posts", name="posts", methods={"GET"})
+     */
+  public function getPosts(PraticienRepository $praticienRepository){
+    $data = $praticienRepository->findByPraticienUser(28);
+    return $this->response($data);
+   }
 
 
     /**
@@ -66,5 +75,6 @@ class ApiController extends AbstractController
     {
         return new Response($this->get("serializer")->serialize($data, "json"));
     }
+
 
 }
