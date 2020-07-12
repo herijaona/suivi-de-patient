@@ -12,9 +12,20 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=OrdoConsultationRepository::class)
  * @ApiResource(
- *    normalizationContext={"groups"={"read:OrdoConsultation"}},
- *    collectionOperations={"get"},
- *    itemOperations={"get"}
+ *    collectionOperations={
+ *          "get"={
+ *              "controller"=App\Controller\Api\Consultation\RetriveConsultation::class
+ *          },
+ *          "post"={
+ *              "controller"=App\Controller\Api\Consultation\CreateConsultation::class
+ *         }
+ *     },
+ *    itemOperations={
+ *     "put",
+ *     "delete"
+ *     },
+ *     normalizationContext={"groups"={"read:OrdoConsultation"}},
+ *     denormalizationContext={"groups"={"write:OrdoConsultation"}}
  * )
  */
 class OrdoConsultation
@@ -65,16 +76,19 @@ class OrdoConsultation
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:OrdoConsultation"})
      */
     private $typePraticien;
 
     /**
      * @ORM\OneToMany(targetEntity=IntervationConsultation::class, mappedBy="ordoConsulataion")
+     * @Groups({"read:OrdoConsultation"})
      */
     private $intervationConsultations;
 
     /**
      * @ORM\OneToMany(targetEntity=PatientOrdoConsultation::class, mappedBy="ordoConsultation")
+     * @Groups({"read:OrdoConsultation"})
      */
     private $patientOrdoConsultations;
 

@@ -12,8 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ApiResource(
  *     collectionOperations={
- *          "get",
- *          "post"
+ *          "get"={
+ *              "controller"=App\Controller\Api\Vaccination\RetriveVaccination::class
+ *          },
+ *          "post"={
+ *              "controller"=App\Controller\Api\Vaccination\CreateVaccination::class
+ *         }
  *      },
  *     itemOperations={
  *        "get",
@@ -34,65 +38,63 @@ class OrdoVaccination
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Vaccin::class, inversedBy="ordoVaccinations")
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $vaccin;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $datePrise;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ordonnace::class, inversedBy="ordoVaccinations")
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $ordonnance;
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="ordoVaccinations")
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $patient;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="ordoVaccinationPraticienExecutant")
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $referencePraticienExecutant;
 
     /**
      * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="ordoVaccination")
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $interventionVaccinations;
 
     /**
      * @ORM\OneToMany(targetEntity=PatientOrdoVaccination::class, mappedBy="ordoVaccination")
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $patientOrdoVaccinations;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $statusVaccin;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Groups("ordovaccination:read")
+     * @Groups({"ordovaccination:read"})
      */
     private $etat;
-
-
 
     public function __construct()
     {

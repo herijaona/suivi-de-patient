@@ -108,7 +108,7 @@ class PraticienController extends AbstractController
     /**
      * @Route("/consultation", name="consultaion_praticien")
      */
-    public function consultaion_patient()
+    public function consultaion_praticien()
     {
         if (!$this->isGranted('ROLE_PRATICIEN')) {
             return $this->redirectToRoute('homepage');

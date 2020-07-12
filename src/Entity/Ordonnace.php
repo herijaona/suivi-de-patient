@@ -23,43 +23,43 @@ class Ordonnace
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups("read:Ordonnace")
+     * @Groups({"read:Ordonnace","read:OrdoConsultation"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @Groups("read:Ordonnace")
+     * @Groups({"read:Ordonnace"})
      */
     private $datePrescription;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="ordonnaces")
-     * @Groups("read:Ordonnace")
+     * @Groups({"read:Ordonnace"})
      */
     private $praticien;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="ordonnacesMedecin")
-     * @Groups("read:Ordonnace")
+     * @Groups({"read:Ordonnace"})
      */
     private $medecinTraitant;
 
     /**
      * @ORM\OneToMany(targetEntity=OrdoVaccination::class, mappedBy="ordonnance")
-     * @Groups("read:Ordonnace")
+     * @Groups({"read:Ordonnace"})
      */
     private $ordoVaccinations;
 
     /**
      * @ORM\OneToMany(targetEntity=OrdoConsultation::class, mappedBy="ordonnance")
-     * @Groups("read:Ordonnace")
+     * @Groups({"read:Ordonnace"})
      */
     private $ordoConsultations;
 
     /**
      * @ORM\OneToMany(targetEntity=OrdoMedicaments::class, mappedBy="ordonnance")
-     * @Groups("read:Ordonnace")
+     * @Groups({"read:Ordonnace"})
      */
     private $ordoMedicaments;
 

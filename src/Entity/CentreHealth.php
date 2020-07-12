@@ -29,36 +29,43 @@ class CentreHealth
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:centerSante"})
      */
     private $centreName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:centerSante"})
      */
     private $centrePhone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:centerSante"})
      */
     private $centreReferent;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="centreHealths")
+     * @Groups({"read:centerSante"})
      */
     private $centreCity;
 
     /**
      * @ORM\ManyToOne(targetEntity=CentreType::class, inversedBy="centreHealths")
+     * @Groups({"read:centerSante"})
      */
     private $centreType;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:centerSante"})
      */
     private $telephone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:centerSante"})
      */
     private $responsableCentre;
 
@@ -74,16 +81,19 @@ class CentreHealth
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="centreHealths")
+     * @Groups({"read:centerSante"})
      */
     private $city;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:centerSante"})
      */
     private $numRue;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:centerSante"})
      */
     private $quartier;
 
