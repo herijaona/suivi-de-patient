@@ -2,11 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\FamilyRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=FamilyRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:Family"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class Family
 {
@@ -14,17 +21,20 @@ class Family
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:Family"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="familyChild")
+     * @Groups({"read:Family"})
      */
     private $patientChild;
 
     /**
      * @ORM\ManyToOne(targetEntity=GroupFamily::class, inversedBy="families")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"read:Family"})
      */
     private $groupFamily;
 

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\StateRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=StateRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:state"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class State
 {
@@ -16,16 +23,19 @@ class State
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:state", "read:patient"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:state"})
      */
     private $nameState;
 
     /**
      * @ORM\OneToMany(targetEntity=Region::class, mappedBy="state", orphanRemoval=true)
+     * @Groups({"read:state"})
      */
     private $regions;
 

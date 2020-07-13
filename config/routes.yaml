@@ -7,9 +7,16 @@ app_home_page:
     controller: App\Controller\HomepageController::index
 
 test:
-  path: /api/test
-  controller: App\Controller\Api\ApiController::test
+    path: /api/test
+    controller: App\Controller\Api\ApiController::test
 
+#api_login_check:
+#    path: /apip/login_check
+
+# Login check endpoint
 api_login_check:
-    path: /apip/login_check
+    path: /api/login_check
+
+api_ordovaccination:
+    path: /api/ordo_vaccinations
 

@@ -24,7 +24,7 @@ class Patient
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read:patient"})
+     * @Groups({"read:patient","read:OrdoConsultation"})
      */
     private $id;
 
@@ -180,6 +180,7 @@ class Patient
 
     /**
 
+
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $numRue;
@@ -193,7 +194,7 @@ class Patient
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="citypatient")
      */
     private $city;
-    
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));

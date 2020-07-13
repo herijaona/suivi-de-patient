@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\IntervationConsultationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=IntervationConsultationRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:IntervationConsultation"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class IntervationConsultation
 {
@@ -16,26 +23,31 @@ class IntervationConsultation
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:IntervationConsultation"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=OrdoConsultation::class, inversedBy="intervationConsultations")
+     * @Groups({"read:IntervationConsultation"})
      */
     private $ordoConsulataion;
 
     /**
      * @ORM\ManyToOne(targetEntity=IntervationMedicale::class, inversedBy="intervationConsultations")
+     * @Groups({"read:IntervationConsultation"})
      */
     private $intervationMedicale;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"read:IntervationConsultation"})
      */
     private $dateConsultation;
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="intervationConsultations")
+     * @Groups({"read:IntervationConsultation"})
      */
     private $patient;
 
@@ -56,6 +68,7 @@ class IntervationConsultation
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:IntervationConsultation"})
      */
     private $etat;
 

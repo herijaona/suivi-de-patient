@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\OrdoConsultationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,22 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=OrdoConsultationRepository::class)
+ * @ApiResource(
+ *    collectionOperations={
+ *          "get"={
+ *              "controller"=App\Controller\Api\Consultation\RetriveConsultation::class
+ *          },
+ *          "post"={
+ *              "controller"=App\Controller\Api\Consultation\CreateConsultation::class
+ *         }
+ *     },
+ *    itemOperations={
+ *     "put",
+ *     "delete"
+ *     },
+ *     normalizationContext={"groups"={"read:OrdoConsultation"}},
+ *     denormalizationContext={"groups"={"write:OrdoConsultation"}}
+ * )
  */
 class OrdoConsultation
 {
@@ -16,56 +34,67 @@ class OrdoConsultation
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:OrdoConsultation"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ordonnace::class, inversedBy="ordoConsultations")
+     * @Groups({"read:OrdoConsultation"})
      */
     private $ordonnance;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"read:OrdoConsultation"})
      */
     private $dateRdv;
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="ordoConsultations")
+     * @Groups({"read:OrdoConsultation"})
      */
     private $patient;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:OrdoConsultation"})
      */
     private $objetConsultation;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:OrdoConsultation"})
      */
     private $statusConsultation;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:OrdoConsultation"})
      */
     private $referencePraticientExecutant;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:OrdoConsultation"})
      */
     private $typePraticien;
 
     /**
      * @ORM\OneToMany(targetEntity=IntervationConsultation::class, mappedBy="ordoConsulataion")
+     * @Groups({"read:OrdoConsultation"})
      */
     private $intervationConsultations;
 
     /**
      * @ORM\OneToMany(targetEntity=PatientOrdoConsultation::class, mappedBy="ordoConsultation")
+     * @Groups({"read:OrdoConsultation"})
      */
     private $patientOrdoConsultations;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:OrdoConsultation"})
      */
     private $etat;
 

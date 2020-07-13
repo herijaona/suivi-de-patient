@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\OrdonnaceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=OrdonnaceRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:Ordonnace"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class Ordonnace
 {
@@ -16,36 +23,43 @@ class Ordonnace
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:Ordonnace","read:OrdoConsultation"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"read:Ordonnace"})
      */
     private $datePrescription;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="ordonnaces")
+     * @Groups({"read:Ordonnace"})
      */
     private $praticien;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="ordonnacesMedecin")
+     * @Groups({"read:Ordonnace"})
      */
     private $medecinTraitant;
 
     /**
      * @ORM\OneToMany(targetEntity=OrdoVaccination::class, mappedBy="ordonnance")
+     * @Groups({"read:Ordonnace"})
      */
     private $ordoVaccinations;
 
     /**
      * @ORM\OneToMany(targetEntity=OrdoConsultation::class, mappedBy="ordonnance")
+     * @Groups({"read:Ordonnace"})
      */
     private $ordoConsultations;
 
     /**
      * @ORM\OneToMany(targetEntity=OrdoMedicaments::class, mappedBy="ordonnance")
+     * @Groups({"read:Ordonnace"})
      */
     private $ordoMedicaments;
 

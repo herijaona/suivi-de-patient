@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\IntervationMedicaleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=IntervationMedicaleRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:IntervationMedicale"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class IntervationMedicale
 {
@@ -16,46 +23,55 @@ class IntervationMedicale
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:IntervationMedicale"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:IntervationMedicale"})
      */
     private $typeIntervation;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:IntervationMedicale"})
      */
     private $natureIntervation;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"read:IntervationMedicale"})
      */
     private $dateIntervation;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:IntervationMedicale"})
      */
     private $lieuIntervation;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="intervationMedicales")
+     * @Groups({"read:IntervationMedicale"})
      */
     private $praticien;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups({"read:IntervationMedicale"})
      */
     private $IdSantePatient;
 
     /**
      * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="intervationMedicale")
+     * @Groups({"read:IntervationMedicale"})
      */
     private $interventionVaccinations;
 
     /**
      * @ORM\OneToMany(targetEntity=IntervationConsultation::class, mappedBy="intervationMedicale")
+     * @Groups({"read:IntervationMedicale"})
      */
     private $intervationConsultations;
 
