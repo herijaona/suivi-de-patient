@@ -60,7 +60,7 @@ class InterventionVaccination
     private $carnetVaccinations;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="interventionVaccinations")
+     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="patientIntervationConsultations")
      */
     private $patient;
 

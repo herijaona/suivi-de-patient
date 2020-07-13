@@ -25,7 +25,7 @@ class TypeVaccin
     private $typeName;
 
     /**
-     * @ORM\OneToMany(targetEntity=Vaccin::class, mappedBy="Type_vaccin")
+     * @ORM\OneToMany(targetEntity=Vaccin::class, mappedBy="TypeVaccin")
      */
     private $vaccins;
 

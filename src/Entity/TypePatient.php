@@ -30,7 +30,7 @@ class TypePatient
     private $patients;
 
     /**
-     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="type_patient")
+     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="typePatient")
      */
     private $typePatient;
 

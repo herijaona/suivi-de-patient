@@ -20,7 +20,7 @@ class GroupFamily
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="patient")
+     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="groupFamily")
      * @ORM\JoinColumn(nullable=false)
      */
     private $patient;
@@ -31,7 +31,7 @@ class GroupFamily
     private $designation;
 
     /**
-     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="groupfamily")
+     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="groupFamily")
      */
     private $families;
 

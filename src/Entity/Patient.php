@@ -104,7 +104,7 @@ class Patient
     private $groupFamily;
 
     /**
-     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="family_child")
+     * @ORM\OneToMany(targetEntity=Family::class, mappedBy="patientChild")
      */
     private $familyChild;
 
@@ -179,7 +179,7 @@ class Patient
     private $addressOnBorn;
 
     /**
-<<<<<<< HEAD
+
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $numRue;
@@ -193,12 +193,7 @@ class Patient
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="citypatient")
      */
     private $city;
-=======
-     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="patient")
-     */
-    private $interventionVaccinations;
->>>>>>> b1c6476c408283827640650eac20489457fac71e
-
+    
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
