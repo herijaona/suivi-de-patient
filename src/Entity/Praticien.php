@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\PraticienRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PraticienRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:praticien"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class Praticien
 {
@@ -16,52 +23,61 @@ class Praticien
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:VaccinPraticien","read:praticien"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:VaccinPraticien","read:praticien"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:VaccinPraticien", "read:praticien"})
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:praticien"})
      */
     private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:praticien"})
      */
     private $phoneProfessional;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:praticien"})
      */
     private $fonction;
 
     /**
      * @ORM\Column(type="date")
+     * @Groups({"read:praticien"})
      */
     private $dateBorn;
 
-
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"read:praticien"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"read:praticien"})
      */
     private $updatedAt;
 
     /**
      * @ORM\OneToOne(targetEntity=User::class, cascade={"persist", "remove"})
+     * @Groups({"read:praticien"})
      */
     private $user;
 
@@ -123,8 +139,27 @@ class Praticien
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"read:praticien"})
      */
     private $etat;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:praticien"})
+     */
+    private $numRue;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:praticien"})
+     */
+    private $quartier;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="citypraticien")
+     * @Groups({"read:praticien"})
+     */
+    private $city;
 
     public function __construct()
     {
@@ -591,6 +626,42 @@ class Praticien
     public function setEtat(?bool $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getNumRue(): ?string
+    {
+        return $this->numRue;
+    }
+
+    public function setNumRue(?string $numRue): self
+    {
+        $this->numRue = $numRue;
+
+        return $this;
+    }
+
+    public function getQuartier(): ?string
+    {
+        return $this->quartier;
+    }
+
+    public function setQuartier(?string $quartier): self
+    {
+        $this->quartier = $quartier;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

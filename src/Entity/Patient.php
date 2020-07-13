@@ -178,6 +178,26 @@ class Patient
      */
     private $addressOnBorn;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $numRue;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $quartier;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="citypatient")
+     */
+    private $city;
+
+    /**
+     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="patient")
+     */
+    private $interventionVaccinations;
+
     public function __construct()
     {
         $this->setCreatedAt(new \DateTime('now'));
@@ -197,6 +217,7 @@ class Patient
         $this->patientIntervationConsultations = new ArrayCollection();
         $this->patientVaccins = new ArrayCollection();
         $this->etat = false;
+        $this->interventionVaccinations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -790,6 +811,69 @@ class Patient
     public function __toString()
     {
         return $this->getLastName() .' '. $this->getFirstName();
+    }
+
+
+    public function getNumRue(): ?string
+    {
+        return $this->numRue;
+    }
+
+    public function setNumRue(?string $numRue): self
+    {
+        $this->numRue = $numRue;
+        return $this;
+    }
+
+    /**
+     * @return Collection|InterventionVaccination[]
+     */
+    public function getInterventionVaccinations(): Collection
+    {
+        return $this->interventionVaccinations;
+    }
+
+    public function addInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if (!$this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations[] = $interventionVaccination;
+            $interventionVaccination->setPatient($this);
+        }
+        return $this;
+    }
+    
+    public function removeInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if ($this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations->removeElement($interventionVaccination);
+            // set the owning side to null (unless already changed)
+            if ($interventionVaccination->getPatient() === $this) {
+                $interventionVaccination->setPatient(null);
+            }
+        }
+        return $this;
+    }
+    public function getQuartier(): ?string
+    {
+        return $this->quartier;
+    }
+
+    public function setQuartier(?string $quartier): self
+    {
+        $this->quartier = $quartier;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
+        return $this;
     }
 
 }

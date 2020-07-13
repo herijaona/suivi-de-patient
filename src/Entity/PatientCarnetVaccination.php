@@ -2,11 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\PatientCarnetVaccinationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PatientCarnetVaccinationRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:PatientCarnetVaccination"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class PatientCarnetVaccination
 {
@@ -14,16 +21,19 @@ class PatientCarnetVaccination
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:PatientCarnetVaccination"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="patientCarnetVaccinations")
+     * @Groups({"read:PatientCarnetVaccination"})
      */
     private $patient;
 
     /**
      * @ORM\ManyToOne(targetEntity=CarnetVaccination::class, inversedBy="patientCarnetVaccinations")
+     * @Groups({"read:PatientCarnetVaccination"})
      */
     private $carnetVaccination;
 

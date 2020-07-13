@@ -8,6 +8,8 @@ use App\Entity\Patient;
 use App\Entity\Praticien;
 use App\Entity\TypePatient;
 use App\Entity\User;
+use App\Repository\CityRepository;
+use App\Repository\TypePatientRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\BooleanType;
@@ -40,7 +42,7 @@ class InscriptionUserController extends AbstractController
         $this->encoder = $userPasswordEncoderInterface;
     }
      
-    public function __invoke(User $data, Request $request)
+    public function __invoke(User $data, Request $request, EntityManagerInterface $entityManager, TypePatientRepository $typePatientRepository, CityRepository $cityRepository)
     {
         $user = json_decode($request->getContent(), true);
 
@@ -51,6 +53,8 @@ class InscriptionUserController extends AbstractController
         $roles = $user["roles"];
         $password = $user["password"];
         $date_on_born = $user["date_on_born"];
+        $num_rue = $user["num_rue"];
+        $quartier = $user["quartier"];
 
         $data->setPassword($this->encoder->encodePassword($data,$password));
         $data->setEmail($email);
@@ -58,23 +62,47 @@ class InscriptionUserController extends AbstractController
         $data->setFirstName($first_name);
         $data->setLastName($last_name);
         $data->setUsername($username);
-        $temp = $data->getRoles();
-        if(strcmp($roles, "ROLE_PRATICIENT")==0){
-            $temp[] = $roles;  
-        }
-        $data->setRoles($temp);
-        $entityManager = $this->getDoctrine()->getManager();
+        $data->setRoles([$roles]);
         $sexe = $user["sexe"];
-        $type_patient = $this->getDoctrine()->getRepository(TypePatient::class)->find(intval($user["type_patient"]));
-        $this->add_patient($entityManager, $data, $type_patient, $sexe, new DateTime($date_on_born));
-        if(strcmp($roles, "ROLE_PRATICIENT")==0){
-             $addresse_praticient = $this->getDoctrine()->getRepository(Address::class)->find(intval($user["id_address"]));
-             $this->add_praticient($entityManager, $data, $user["telephone"],new DateTime($date_on_born), $addresse_praticient, $user["fonction"]);
+        $type_patient = $typePatientRepository->find(intval($user["type_patient"]));
+        $addresse = $cityRepository->find(intval($user["id_address"]));
+
+        if(strcmp($roles, "ROLE_PRATICIENT") == 0){
+             $this->add_praticient($entityManager, $data, $user["telephone"],new DateTime($date_on_born), $addresse, $user["fonction"], $num_rue, $quartier);
+            $this->add_patient_praticient($entityManager, $data, $type_patient, $addresse, $sexe, new DateTime($date_on_born), $num_rue, $quartier, $password);
+        }
+        if(strcmp($roles, "ROLE_PATIENT") == 0){
+            $this->add_patient($entityManager, $data, $type_patient, $addresse, $sexe, new DateTime($date_on_born), $num_rue, $quartier);
         }
         return $data;
     }
 
-    public function add_patient(EntityManager $entityManager, User $user, TypePatient $typePatient, string $sexe, DateTime $naissance){
+    public function add_patient_praticient(EntityManager $entityManager, User $user, TypePatient $typePatient, City $address, string $sexe, DateTime $naissance, $num_rue, $quartier, $password){
+        $userPatient = new User();
+        $userPatient->setPassword($this->encoder->encodePassword($userPatient,$password));
+        $userPatient->setEmail($user->getEmail());
+        $userPatient->setEtat(1);
+        $userPatient->setFirstName($user->getFirstName());
+        $userPatient->setLastName($user->getLastName());
+        $userPatient->setUsername($user->getUsername().rand(1, 20));
+        $userPatient->setRoles(['ROLE_PATIENT']);
+        $entityManager->persist($userPatient);
+        $patient = new Patient();
+        $patient->setUser($userPatient);
+        $patient->setTypePatient($typePatient);
+        $patient->setLastName($user->getLastName());
+        $patient->setFirstName($user->getFirstName());
+        $patient->setLastName($user->getLastName());
+        $patient->setDateOnBorn($naissance);
+        $patient->setCity($address);
+        $patient->setNumRue($num_rue);
+        $patient->setQuartier($quartier);
+        $patient->setSexe($sexe);
+        $entityManager->persist($patient);
+        $entityManager->flush();
+    }
+
+    public function add_patient(EntityManager $entityManager, User $user, TypePatient $typePatient, City $address, string $sexe, DateTime $naissance, $num_rue, $quartier){
         $patient = new Patient();
         $patient->setUser($user);
         $patient->setTypePatient($typePatient);
@@ -82,15 +110,20 @@ class InscriptionUserController extends AbstractController
         $patient->setFirstName($user->getFirstName());
         $patient->setLastName($user->getLastName());
         $patient->setDateOnBorn($naissance);
+        $patient->setCity($address);
+        $patient->setNumRue($num_rue);
+        $patient->setQuartier($quartier);
         $patient->setSexe($sexe);
         $entityManager->persist($patient);
         $entityManager->flush();
     }
 
-    public function add_praticient(EntityManager $entityManager,User $user, string $numeroPhone, DateTime $naissance, Address $address, string $fonction){
+    public function add_praticient(EntityManager $entityManager,User $user, string $numeroPhone, DateTime $naissance, City $address, string $fonction, $num_rue, $quartier){
         $praticient = new Praticien();
         $praticient->setUser($user);
-        $praticient->setAddress($address);
+        $praticient->setCity($address);
+        $praticient->setNumRue($num_rue);
+        $praticient->setQuartier($quartier);
         $praticient->setLastName($user->getLastName());
         $praticient->setFirstName($user->getFirstName());
         $praticient->setLastName($user->getLastName());
@@ -98,7 +131,6 @@ class InscriptionUserController extends AbstractController
         $praticient->setPhoneProfessional($numeroPhone);
         $praticient->setFonction($fonction);
         $praticient->setDateBorn($naissance);
-        // dd($praticient->getFonction());
         $entityManager->persist($praticient);
         $entityManager->flush();
     }

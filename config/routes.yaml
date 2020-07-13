@@ -13,3 +13,6 @@ test:
 api_login_check:
     path: /apip/login_check
 
+api_ordovaccination:
+  path: /apip/ordo_vaccinations
+

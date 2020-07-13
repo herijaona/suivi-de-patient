@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\OrdoMedicamentsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=OrdoMedicamentsRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:OrdoMedicaments"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class OrdoMedicaments
 {
@@ -16,41 +23,49 @@ class OrdoMedicaments
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("read:OrdoMedicaments")
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ordonnace::class, inversedBy="ordoMedicaments")
+     * @Groups("read:OrdoMedicaments")
      */
     private $ordonnance;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("read:OrdoMedicaments")
      */
     private $nomMedicament;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("read:OrdoMedicaments")
      */
     private $posologie;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups("read:OrdoMedicaments")
      */
     private $statutMedicament;
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="ordoMedicaments")
+     * @Groups("read:OrdoMedicaments")
      */
     private $patient;
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Groups("read:OrdoMedicaments")
      */
     private $referencePraticienExecutant;
 
     /**
      * @ORM\OneToMany(targetEntity=PatientOrdoMedicaments::class, mappedBy="ordoMedicaments")
+     * @Groups("read:OrdoMedicaments")
      */
     private $patientOrdoMedicaments;
 

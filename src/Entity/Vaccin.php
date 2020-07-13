@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\VaccinRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=VaccinRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:vaccin"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class Vaccin
 {
@@ -16,26 +23,31 @@ class Vaccin
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:vaccin","read:VaccinPraticien"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:center","read:vaccin","ordovaccination:read", "read:VaccinPraticien"})
      */
     private $vaccinName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $vaccinDescription;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeVaccin::class, inversedBy="vaccins")
+     * @Groups("read:vaccin")
      */
     private $TypeVaccin;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("read:vaccin")
      */
     private $etat;
 
@@ -57,56 +69,67 @@ class Vaccin
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $datePriseInitiale;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel1;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel2;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel3;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel4;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel5;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel6;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel7;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel8;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel9;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("read:vaccin")
      */
     private $rappel10;
 

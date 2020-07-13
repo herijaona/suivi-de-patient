@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\InterventionVaccinationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=InterventionVaccinationRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:InterventionVaccination"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
  */
 class InterventionVaccination
 {
@@ -16,31 +23,37 @@ class InterventionVaccination
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:InterventionVaccination"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Vaccin::class, inversedBy="interventionVaccinations")
+     * @Groups({"read:InterventionVaccination"})
      */
     private $vaccin;
 
     /**
      * @ORM\Column(type="string", length=10, nullable=true)
+     * @Groups({"read:InterventionVaccination"})
      */
     private $statusVaccin;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"read:InterventionVaccination"})
      */
     private $datePriseVaccin;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="interventionVaccinations")
+     * @Groups({"read:InterventionVaccination"})
      */
     private $praticienPrescripteur;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="interventionExecutant")
+     * @Groups({"read:InterventionVaccination"})
      */
     private $praticienExecutant;
 
@@ -58,6 +71,18 @@ class InterventionVaccination
      * @ORM\OneToMany(targetEntity=CarnetVaccination::class, mappedBy="intervationVaccination")
      */
     private $carnetVaccinations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="interventionVaccinations")
+     * @Groups({"read:InterventionVaccination"})
+     */
+    private $patient;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:InterventionVaccination"})
+     */
+    private $etat;
 
     public function __construct()
     {
@@ -180,6 +205,30 @@ class InterventionVaccination
                 $carnetVaccination->setIntervationVaccination(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPatient(): ?Patient
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(?Patient $patient): self
+    {
+        $this->patient = $patient;
+
+        return $this;
+    }
+
+    public function getEtat(): ?int
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?int $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

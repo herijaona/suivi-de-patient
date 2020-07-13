@@ -19,7 +19,7 @@
                 <th>Date vaccination</th>
                 <th>Patient</th>
                 <th>Vaccin</th>
-                <th>Status</th>
+                <th>Etat Intervention</th>
             </tr>
             </thead>
             <tbody>
@@ -31,15 +31,11 @@
                     </td>
 
                     <td>{{ vac.firstName }} {{ vac.lastName }}</td>
-                    <td>{{vac.vaccinName }}</td>
+                    <td>{{vac.vaccinName }} </td>
+
                     <td>
-                        {% if vac.statusVaccin == 1 %}
-                            <span class="badge badge-success badge-style modif-status"> activé </span>
-                        {% elseif vac.statusVaccin == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">En attente</span>
-                        {% elseif vac.statusVaccin == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">Réjeter</span>
-                        {% endif %}
+                        <span class="badge badge-success badge-style modif-etat" data-type="vaccination" data-id="{{ vac.id }}" data-vaccin="{{vac.vaccin }}" data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}"  data-date="{{ vac.datePrise |date}}"   data-etat="{{ vac.etat }}" data-action="active">Fait</span>
+                        <span class="badge badge-danger badge-style modif-etat"  data-type="vaccination" data-id="{{ vac.id }}" data-vaccin="{{vac.vaccin }}" data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}"  data-date="{{ vac.datePrise  |date}}"   data-etat="{{ vac.etat }}" data-action="reject">Non Fait</span>
                     </td>
 
                 </tr>
@@ -56,6 +52,45 @@
             language: {
                 url: "{{ asset('vendor/datatables/lang.json') }}"
             }
+        });
+        $('.modif-etat').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var vaccin = $(this).data('vaccin');
+            var type = $(this).data('type');
+            var praticien = $(this).data('praticien');
+            var patient = $(this).data('patient');
+            var date = $(this).data('date');
+            var etat = $(this).data('etat');
+            var action = $(this).data('action');
+            $.ajax({
+                url: "{{ path('update_etat') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                    vaccin: vaccin,
+                    type: type,
+                    praticien: praticien,
+                    patient: patient,
+                    date: date,
+                    etat: etat,
+                    action: action
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $(".loadBody").css("display", "none");
+                    location.reload();
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+
+
+
         });
 
         $('.active_etat_rdv').on('click', function (e) {
