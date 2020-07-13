@@ -23,7 +23,7 @@ class Praticien
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read:VaccinPraticien","read:praticien"})
+     * @Groups({"read:VaccinPraticien","read:praticien","read:OrdoConsultation"})
      */
     private $id;
 

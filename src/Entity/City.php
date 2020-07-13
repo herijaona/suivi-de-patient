@@ -45,17 +45,17 @@ class City
     private $addresses;
 
     /**
-     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="patient")
+     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="address")
      */
     private $patient;
 
     /**
-     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="patients")
+     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="addressOnBorn")
      */
     private $patients;
 
     /**
-     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="praticien")
+     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="address")
      */
     private $praticien;
 
