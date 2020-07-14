@@ -6,7 +6,9 @@ use App\Entity\IntervationConsultation;
 use App\Entity\InterventionVaccination;
 use App\Entity\OrdoConsultation;
 use App\Entity\OrdoVaccination;
+use App\Entity\PropositionRdv;
 use App\Form\ConsultationPraticienType;
+use App\Form\PropositionRdvType;
 use App\Repository\FamilyRepository;
 use App\Repository\IntervationConsultationRepository;
 use App\Repository\InterventionVaccinationRepository;
@@ -14,6 +16,7 @@ use App\Repository\OrdoConsultationRepository;
 use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\PropositionRdvRepository;
 use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,11 +42,14 @@ class PraticienController extends AbstractController
     protected $vaccinRepository;
     protected $intervationConsultationRepository;
     protected $interventionVaccinationRepository;
+    protected $propositionRdvRepository;
+
 
 
     function __construct(
         VaccinGenerate $vaccinGenerate,
         PatientRepository $patientRepository,
+        PropositionRdvRepository $propositionRdvRepository,
         PraticienRepository $praticienRepository,
         FamilyRepository $familyRepository,
         OrdoConsultationRepository $ordoConsultationRepository,
@@ -58,6 +64,7 @@ class PraticienController extends AbstractController
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
         $this->familyRepository = $familyRepository;
+        $this->propositionRdvRepository= $propositionRdvRepository;
         $this->entityManager = $entityManager;
         $this->ordoConsultationRepository = $ordoConsultationRepository;
         $this->ordoVaccinationRepository = $ordoVaccinationRepository;
@@ -461,6 +468,105 @@ class PraticienController extends AbstractController
             return $this->redirectToRoute('rdv_praticien');
         }
 
+    }
+
+    /**
+     * @Route("/form-add-proposition", name="add_form_proposition_rdv", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function add_form_proposition (Request $request)
+    {
+        $action = $request->request->get('action');
+        $rdv = [];
+        if ($action == "new") {
+            $form = $this->createForm(PropositionRdvType::class, $rdv);
+            $response = $this->renderView('praticien/_form_proposition.html.twig', [
+                'new' => true,
+                'form' => $form->createView(),
+                'eventData' => $rdv,
+            ]);
+        } else {
+            $action = $request->request->get('id');
+            $rdv['id'] = $request->request->get('id');
+            $propos = $this->propositionRdvRepository->find($rdv['id']);
+            $rdv['description'] = $propos->getDescriptionProposition();
+            $rdv['dateRdv'] = $propos->getDateProposition();
+            if ($rdv['dateRdv'] != ''){
+                $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
+                $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
+                $rdv['heureRdv'] = explode(' ', $date)[1];
+            }
+            $form = $this->createForm(PropositionRdvType::class, $rdv);
+            $response = $this->renderView('praticien/_form_proposition.html.twig', [
+                'new' => false,
+                'form' => $form->createView(),
+                'eventData' => $rdv,
+            ]);
+        }
+        $form->handleRequest($request);
+        return new JsonResponse(['form_html' => $response]);
+    }
+
+    /**
+     * @Route("/proposition/in", name="rdv_proposition")
+     */
+    public  function rdv_proposition()
+    {
+        $user= $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $prop = $this->propositionRdvRepository->searchStatusPraticienEnValid($praticien);
+        return $this->render('praticien/proposition.html.twig',[
+            'proposition'=>$prop,
+        ]);
+    }
+
+    /**
+     * @Route("/register_proposition", name ="register_proposition")
+     */
+
+    public  function register_proposition(Request $request)
+    {
+        $propositionRequest=$request->request->get("proposition_rdv");
+        $description = $propositionRequest["description"];
+        $date =$propositionRequest["dateRdv"];
+        $heure = $propositionRequest["heureRdv"];
+        $Id = $propositionRequest["id"];
+
+        $user = $this->getUser();
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $praticien= $this->praticienRepository->findOneBy(['user'=>$user]);
+
+        if($Id !='')
+        {
+            $proposition = $this->propositionRdvRepository->find($Id);
+        }else {
+            $proposition= new PropositionRdv();
+        }
+
+        $proposition->setDescriptionProposition($description);
+        $proposition->setDateProposition($Date_Rdv);
+        $proposition->setPraticien($praticien);
+        $proposition->setStatusProposition(1);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($proposition);
+        $entityManager->flush();
+        return $this->redirectToRoute('rdv_proposition');
+    }
+
+    /**
+     * @Route("/proposition/remove", name="remove_proposition", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     */
+    public function remove_proposition(Request $request)
+    {
+            $Id = $request->request->get('id');
+            $propos = $this->propositionRdvRepository->find($Id);
+            $this->entityManager->remove($propos);
+            $this->entityManager->flush();
+            $delete = true;
+            $this->addFlash('success', 'La Proposition de rendez-vous à été supprimé avec succès !');
+        return new JsonResponse(['form_delete' => $delete]);
     }
 
 }

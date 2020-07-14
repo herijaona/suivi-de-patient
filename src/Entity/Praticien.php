@@ -161,6 +161,11 @@ class Praticien
      */
     private $city;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PropositionRdv::class, mappedBy="praticien")
+     */
+    private $propositionRdvs;
+
     public function __construct()
     {
         $this->updatedAt = new \DateTime('now');
@@ -176,6 +181,7 @@ class Praticien
         $this->vaccinPraticiens = new ArrayCollection();
         $this->praticienSpecialites = new ArrayCollection();
         $this->etat = false;
+        $this->propositionRdvs = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -662,6 +668,37 @@ class Praticien
     public function setCity(?City $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PropositionRdv[]
+     */
+    public function getPropositionRdvs(): Collection
+    {
+        return $this->propositionRdvs;
+    }
+
+    public function addPropositionRdv(PropositionRdv $propositionRdv): self
+    {
+        if (!$this->propositionRdvs->contains($propositionRdv)) {
+            $this->propositionRdvs[] = $propositionRdv;
+            $propositionRdv->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removePropositionRdv(PropositionRdv $propositionRdv): self
+    {
+        if ($this->propositionRdvs->contains($propositionRdv)) {
+            $this->propositionRdvs->removeElement($propositionRdv);
+            // set the owning side to null (unless already changed)
+            if ($propositionRdv->getPraticien() === $this) {
+                $propositionRdv->setPraticien(null);
+            }
+        }
 
         return $this;
     }
