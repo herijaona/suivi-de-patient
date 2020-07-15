@@ -270,8 +270,6 @@ class PraticienController extends AbstractController
                $praticien = $request->request->get('praticien');
                $patient = $request->request->get('patient');
                $date = $request->request->get('date');
-               $vaccin = $request->request->get('vaccin');
-               $vaccination= $this->vaccinRepository->find($vaccin);
                $patient =  $this->patientRepository->find($patient);
                $praticien=$this->praticienRepository->find($praticien);
                $ordoconsu=$this->ordoConsultationRepository->find($id);
@@ -296,6 +294,8 @@ class PraticienController extends AbstractController
                            $this->entityManager->flush();
                        }
                    }elseif($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
+                       $vaccin = $request->request->get('vaccin');
+                       $vaccination= $this->vaccinRepository->find($vaccin);
                        $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
                        if($ordoVacc != null){
                            $interVacc = new  InterventionVaccination();
@@ -335,6 +335,8 @@ class PraticienController extends AbstractController
                    }
                    elseif($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
                        $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
+                       $vaccin = $request->request->get('vaccin');
+                       $vaccination= $this->vaccinRepository->find($vaccin);
                        if($ordoVacc != null){
                            $interVacc = new  InterventionVaccination();
                            $interVacc->setPatient($patient);
