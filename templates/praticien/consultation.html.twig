@@ -39,13 +39,12 @@
                         {{ rdv.firstName }} {{ rdv.lastName }}
                     </td>
                     <td>
-
                             <span class="badge badge-success badge-style modif-etat" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-type="consultation" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" data-action="active">Fait</span>
                             <span class="badge badge-danger badge-style modif-etat" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-type="consultation" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" data-action="reject">Non Fait</span>
                     </td>
 
                 </tr>
-            {% endfor %}f
+            {% endfor %}
             </tbody>
         </table>
     </div>

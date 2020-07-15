@@ -194,6 +194,7 @@ class PatientController extends AbstractController
         ]);
     }
 
+
     /**
      * @Route("/group_family", name="group_patient")
      */
