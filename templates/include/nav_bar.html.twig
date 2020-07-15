@@ -59,9 +59,15 @@
         </ul>
         <ul class="logout_footer">
             <li>
+                {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('admin_logout') }}">
-                    <i class="fas fa-sign-out-alt"></i> Deconnexion
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
                 </a>
+                {% else %}
+                    <a href="{{ path('app_logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    </a>
+                {% endif %}
             </li>
         </ul>
     </div>

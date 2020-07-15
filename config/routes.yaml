@@ -17,6 +17,25 @@ test:
 api_login_check:
     path: /api/login_check
 
-api_ordovaccination:
-    path: /api/ordo_vaccinations
+api_ordovaccination_in_progress:
+    path: /api/ordo_vaccinations_in_progress
+    controller: App\Controller\Api\Vaccination\VaccinationController::inProgressAction
+api_ordovaccination_rejected:
+    path: /api/ordovaccination_rejected
+    controller: App\Controller\Api\Vaccination\VaccinationController::inRejectedAction
+api_ordoconsultation_in_progress:
+    path: /api/ordoconsultation_in_progress
+    controller: App\Controller\Api\Consultation\ConsultationController::inProgressAction
+api_ordoconsultation_rejected:
+    path: /api/ordoconsultation_rejected
+    controller: App\Controller\Api\Consultation\ConsultationController::inRejectedAction
+api_register_rdv_patient:
+    path: /api/register_rdv_patient
+    controller: App\Controller\Api\Vaccination\VaccinationController::registerRdvAction
+api_update_status_rdv:
+    path: /api/update_status_rdv
+    controller: App\Controller\Api\Vaccination\VaccinationController::updateStatusRdvAction
+api_update_etat_rdv:
+    path: /api/update_etat_rdv
+    controller: App\Controller\Api\Vaccination\VaccinationController::registerRdvAction
 
