@@ -16,6 +16,7 @@ use App\Repository\OrdonnaceRepository;
 use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\PropositionRdvRepository;
 use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
 use Carbon\Carbon;
@@ -41,6 +42,7 @@ class PatientController extends AbstractController
     protected $ordoConsultationRepository;
     protected $ordoVaccinationRepository;
     protected $vaccinRepository;
+    protected $propositionRdvRepository;
 
     function __construct(
         VaccinGenerate $vaccinGenerate,
@@ -48,6 +50,7 @@ class PatientController extends AbstractController
         PraticienRepository $praticienRepository,
         OrdoConsultationRepository $ordoConsultationRepository,
         OrdoVaccinationRepository $ordoVaccinationRepository,
+        PropositionRdvRepository $propositionRdvRepository,
         VaccinRepository $vaccinRepository,
         FamilyRepository $familyRepository,
         OrdonnaceRepository $ordonnaceRepository,
@@ -62,6 +65,7 @@ class PatientController extends AbstractController
         $this->ordonnaceRepository = $ordonnaceRepository;
         $this->ordoConsultationRepository = $ordoConsultationRepository;
         $this->ordoVaccinationRepository = $ordoVaccinationRepository;
+        $this->propositionRdvRepository = $propositionRdvRepository;
         $this->familyRepository = $familyRepository;
         $this->groupFamilyRepository = $groupFamilyRepository;
         $this->entityManager = $entityManager;
@@ -116,11 +120,13 @@ class PatientController extends AbstractController
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         if($patient){
             $type = $patient->getTypePatient()->getTypePatientName();
-            $state = $patient->getAdressOnBorn()->getRegion()->getState()->getNameState();
+
+            $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
             $birtday = $patient->getDateOnBorn();
             $dateNow = date('Y-m-d');
             //$praticien = $this->praticienRepository->find(1);
             $this->vaccinGenerate->generateCalendar($patient,$birtday,$type,$state, null, $dateNow);
+
             return new JsonResponse("ok");
         }
         return "error";
@@ -140,6 +146,18 @@ class PatientController extends AbstractController
             'consultation'=>$rvc,
             'Doctors'=>$doctor,
         ]);
+    }
+
+    /**
+     * @Route("/proposition/rdv" , name ="proposisition_rdv")
+     */
+    public function proposition_rdv()
+    {
+        $propos = $this->propositionRdvRepository->searchProposition();
+        return $this->render('patient/proposition.html.twig', [
+            'proposition'=>$propos,
+        ]);
+
     }
 
     /**
@@ -270,7 +288,7 @@ class PatientController extends AbstractController
             }else{
                 $ordoconsultation = new OrdoConsultation();
             }
-            $ordoconsultation->setDateRdv($Date_Rdv);
+            $ordoconsultation->setDatePriseInitiale($Date_Rdv);
             $ordoconsultation->setObjetConsultation($description);
             $ordoconsultation->setStatusConsultation(0);
             $ordoconsultation->setEtat(0);

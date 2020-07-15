@@ -4,6 +4,8 @@
 namespace App\Service;
 
 
+use App\Entity\CarnetVaccination;
+use App\Entity\OrdoVaccination;
 use App\Entity\RendezVous;
 use App\Repository\VaccinRepository;
 use Carbon\Carbon;
@@ -74,37 +76,38 @@ class VaccinGenerate
      * @param $etat
      * @param $praticien
      */
-    public function ca_vaccin_enfant($patient,$birthday,$vaccin_name,$_weeks,$etat,$praticien)
+    public function ca_vaccin_enfant($patient,$birthday,$vaccinName,$_weeks,$etat,$praticien)
     {
         $birth = Carbon::parse($birthday);
         $date_now = Carbon::now();
         $week = $birth->diffInWeeks($date_now);
-        $vacc = $this->vaccinRepository->findOneBy(['vaccin_name'=>$vaccin_name]);
+        $vacc = $this->vaccinRepository->findOneBy(['vaccinName'=>$vaccinName]);
+
         if($vacc){
             if ($week <= $_weeks){
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($vacc);
-                $rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
+                $rdv->setReferencePraticienExecutant($praticien);
                 if($week==$_weeks){
                     if(!$date_now->isWeekend()){
                         $tomorrow = $date_now->addDay();
                         if($tomorrow->day != 6){
-                            $rdv->setDateRdv($tomorrow);
+                            $rdv->setDatePrise($tomorrow);
                         }else{
                             $monday = $date_now->addDays(3);
-                            $rdv->setDateRdv($monday);
+                            $rdv->setDatePrise($monday);
                         }
                     }else{
                         $date = $date_now->addDays(2);
-                        $rdv->setDateRdv($date);
+                        $rdv->setDatePrise($date);
                     }
                 }else{
                     $week_ = $this->add_rdv_in_week($_weeks,$birthday);
-                    $rdv->setDateRdv($week_);
+                    $rdv->setDatePrise($week_);
                 }
-                $rdv->setStatus(false);
+                $rdv->setStatusVaccin(false);
                 $this->entityManager->persist($rdv);
                 $this->entityManager->flush();
             }
@@ -124,270 +127,269 @@ class VaccinGenerate
         $date_now = Carbon::now();
         $year = $birth->diffInYears($date_now);
 
-        $vaccin = $this->vaccinRepository->findOneBy(['vaccin_name'=>'Calendrier Vaccin Adulte']);
+        $vaccin = $this->vaccinRepository->findOneBy(['vaccinName'=>'Calendrier Vaccin Adulte']);
         if ($vaccin){
             if($year <= 25){
                 for ($i=1; $i<=7; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($vaccin);
-                    $rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($year == 25){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 4mois
+                                $rdv->setDatePrise($date);// 4mois
                             }
                         }else{
                             $year_25 = $this->add_rdv_in_year(25,$birthday);
-                            $rdv->setDateRdv($year_25);
+                            $rdv->setDatePrise($year_25);
                         }
                     }elseif ($i==2){
                         $year_45 = $this->add_rdv_in_year(45,$birthday);
-                        $rdv->setDateRdv($year_45);
+                        $rdv->setDatePrise($year_45);
                     }elseif ($i==3){
                         $year_65 = $this->add_rdv_in_year(65,$birthday);
-                        $rdv->setDateRdv($year_65);
+                        $rdv->setDatePrise($year_65);
                     }elseif ($i==4){
                         $year_75 = $this->add_rdv_in_year(75,$birthday);
-                        $rdv->setDateRdv($year_75);
+                        $rdv->setDatePrise($year_75);
                     }elseif ($i==5){
                         $year_85 = $this->add_rdv_in_year(85,$birthday);
-                        $rdv->setDateRdv($year_85);
+                        $rdv->setDatePrise($year_85);
                     }elseif ($i==6){
                         $year_95 = $this->add_rdv_in_year(95,$birthday);
-                        $rdv->setDateRdv($year_95);
+                        $rdv->setDatePrise($year_95);
                     }else{
                         $year_105 = $this->add_rdv_in_year(105,$birthday);
-                        $rdv->setDateRdv($year_105);
+                        $rdv->setDatePrise($year_105);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
 
             }elseif($year<=45){
                 for ($i=1; $i<=6; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($vaccin);
-                    $rdv->setPraticien($praticien);
+                    //$rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($year == 45){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 4mois
+                                $rdv->setDatePrise($date);// 4mois
                             }
                         }else{
                             $year_45 = $this->add_rdv_in_year(45,$birthday);
-                            $rdv->setDateRdv($year_45);
+                            $rdv->setDatePrise($year_45);
                         }
                     }elseif ($i==2){
                         $year_65 = $this->add_rdv_in_year(65,$birthday);
-                        $rdv->setDateRdv($year_65);
+                        $rdv->setDatePrise($year_65);
                     }elseif ($i==3){
                         $year_75 = $this->add_rdv_in_year(75,$birthday);
-                        $rdv->setDateRdv($year_75);
+                        $rdv->setDatePrise($year_75);
                     }elseif ($i==4){
                         $year_85 = $this->add_rdv_in_year(85,$birthday);
-                        $rdv->setDateRdv($year_85);
+                        $rdv->setDatePrise($year_85);
                     }elseif ($i==5){
                         $year_95 = $this->add_rdv_in_year(95,$birthday);
-                        $rdv->setDateRdv($year_95);
+                        $rdv->setDatePrise($year_95);
                     }else{
                         $year_105 = $this->add_rdv_in_year(105,$birthday);
-                        $rdv->setDateRdv($year_105);
+                        $rdv->setDatePrise($year_105);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($year<=65){
                 for ($i=1; $i<=5; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($vaccin);
-                    $rdv->setPraticien($praticien);
+                    //$rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($year == 65){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 4mois
+                                $rdv->setDatePrise($date);// 4mois
                             }
                         }else{
                             $year_65 = $this->add_rdv_in_year(65,$birthday);
-                            $rdv->setDateRdv($year_65);
+                            $rdv->setDatePrise($year_65);
                         }
                     }elseif ($i==2){
                         $year_75 = $this->add_rdv_in_year(75,$birthday);
-                        $rdv->setDateRdv($year_75);
+                        $rdv->setDatePrise($year_75);
                     }elseif ($i==3){
                         $year_85 = $this->add_rdv_in_year(85,$birthday);
-                        $rdv->setDateRdv($year_85);
+                        $rdv->setDatePrise($year_85);
                     }elseif ($i==4){
                         $year_95 = $this->add_rdv_in_year(95,$birthday);
-                        $rdv->setDateRdv($year_95);
+                        $rdv->setDatePrise($year_95);
                     }else{
                         $year_105 = $this->add_rdv_in_year(105,$birthday);
-                        $rdv->setDateRdv($year_105);
+                        $rdv->setDatePrise($year_105);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($year<=75){
                 for ($i=1; $i<=4; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($vaccin);
-                    $rdv->setPraticien($praticien);
+                    //$rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($year == 75){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 4mois
+                                $rdv->setDatePrise($date);// 4mois
                             }
                         }else{
                             $year_75 = $this->add_rdv_in_year(75,$birthday);
-                            $rdv->setDateRdv($year_75);
+                            $rdv->setDatePrise($year_75);
                         }
                     }elseif ($i==2){
                         $year_85 = $this->add_rdv_in_year(85,$birthday);
-                        $rdv->setDateRdv($year_85);
+                        $rdv->setDatePrise($year_85);
                     }elseif ($i==3){
                         $year_95 = $this->add_rdv_in_year(95,$birthday);
-                        $rdv->setDateRdv($year_95);
+                        $rdv->setDatePrise($year_95);
                     }else{
                         $year_105 = $this->add_rdv_in_year(105,$birthday);
-                        $rdv->setDateRdv($year_105);
+                        $rdv->setDatePrise($year_105);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($year<=85){
                 for ($i=1; $i<=3; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($vaccin);
-                    $rdv->setPraticien($praticien);
+                   // $rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($year == 85){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 4mois
+                                $rdv->setDatePrise($date);// 4mois
                             }
                         }else{
                             $year_85 = $this->add_rdv_in_year(85,$birthday);
-                            $rdv->setDateRdv($year_85);
+                            $rdv->setDatePrise($year_85);
                         }
                     }elseif ($i==2){
                         $year_95 = $this->add_rdv_in_year(95,$birthday);
-                        $rdv->setDateRdv($year_95);
+                        $rdv->setDatePrise($year_95);
                     }else{
                         $year_105 = $this->add_rdv_in_year(105,$birthday);
-                        $rdv->setDateRdv($year_105);
+                        $rdv->setDatePrise($year_105);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($year<=95){
                 for ($i=1; $i<=2; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($vaccin);
-                    $rdv->setPraticien($praticien);
+                    //$rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($year == 95){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 4mois
+                                $rdv->setDatePrise($date);// 4mois
                             }
                         }else{
                             $year_95 = $this->add_rdv_in_year(95,$birthday);
-                            $rdv->setDateRdv($year_95);
+                            $rdv->setDatePrise($year_95);
                         }
                     }else{
                         $year_105 = $this->add_rdv_in_year(105,$birthday);
-                        $rdv->setDateRdv($year_105);
+                        $rdv->setDatePrise($year_105);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($year<=105){
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($vaccin);
-                $rdv->setPraticien($praticien);
+                //$rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
                 if($year == 105){
                     if(!$date_now->isWeekend()){
                         $tomorrow = $date_now->addDay();
                         if($tomorrow->day != 6){
-                            $rdv->setDateRdv($tomorrow);
+                            $rdv->setDatePrise($tomorrow);
                         }else{
                             $monday = $date_now->addDays(3);
-                            $rdv->setDateRdv($monday);
+                            $rdv->setDatePrise($monday);
                         }
                     }else{
                         $date = $date_now->addDays(2);
-                        $rdv->setDateRdv($date);// 4mois
+                        $rdv->setDatePrise($date);// 4mois
                     }
                 }else{
                     $year_105 = $this->add_rdv_in_year(105,$birthday);
-                    $rdv->setDateRdv($year_105);
+                    $rdv->setDatePrise($year_105);
                 }
-                $rdv->setStatus(false);
+                $rdv->setEtat(false);
                 $this->entityManager->persist($rdv);
 
             }
@@ -398,43 +400,43 @@ class VaccinGenerate
      * generate vaccin Coqueluche acellulaire (ca),Zona for parent cameroun
      * @param $patient
      * @param $birthday
-     * @param $vaccin_name
+     * @param  $vaccinName
      * @param $_year
      * @param $etat
      * @param $praticien
      */
-    public function ca_vaccin_adult_age3($patient,$birthday,$vaccin_name,$_year,$etat,$praticien)
+    public function ca_vaccin_adult_age3($patient,$birthday,$vaccinName,$_year,$etat,$praticien)
     {
         $birth = Carbon::parse($birthday);
         $date_now = Carbon::now();
         $year = $birth->diffInYears($date_now);
 
-        $vaccin = $this->vaccinRepository->findOneBy(['vaccin_name'=>$vaccin_name]);
+        $vaccin = $this->vaccinRepository->findOneBy(['vaccinName'=>$vaccinName]);
         if ($vaccin){
             if($year <= $_year){
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($vaccin);
-                $rdv->setPraticien($praticien);
+                //$rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
                 if($year == $_year){
                     if(!$date_now->isWeekend()){
                         $tomorrow = $date_now->addDay();
                         if($tomorrow->day != 6){
-                            $rdv->setDateRdv($tomorrow);
+                            $rdv->setDatePrise($tomorrow);
                         }else{
                             $monday = $date_now->addDays(3);
-                            $rdv->setDateRdv($monday);
+                            $rdv->setDatePrise($monday);
                         }
                     }else{
                         $date = $date_now->addDays(2);
-                        $rdv->setDateRdv($date);// 4mois
+                        $rdv->setDatePrise($date);// 4mois
                     }
                 }else{
                     $year_ = $this->add_rdv_in_year($_year,$birthday);
-                    $rdv->setDateRdv($year_);
+                    $rdv->setDatePrise($year_);
                 }
-                $rdv->setStatus(false);
+                $rdv->setEtat(false);
                 $this->entityManager->persist($rdv);
             }
         }
@@ -453,18 +455,18 @@ class VaccinGenerate
         $date_now = Carbon::now();
         $year = $birth->diffInYears($date_now);
 
-        $vaccin = $this->vaccinRepository->findOneBy(['vaccin_name'=>'Grippe']);
+        $vaccin = $this->vaccinRepository->findOneBy(['vaccinName'=>'Grippe']);
         if ($vaccin){
             if($year >= 65){
                 for ($year;$year<=105;$year++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($vaccin);
-                    $rdv->setPraticien($praticien);
+                    //$rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     $year_ = $this->add_rdv_in_year($year,$birthday);
-                    $rdv->setDateRdv($year_);
-                    $rdv->setStatus(false);
+                    $rdv->setDatePrise($year_);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
                 $this->entityManager->flush();
@@ -477,38 +479,38 @@ class VaccinGenerate
      * generate vaccin VAT for parent enceinte
      * @param $patient
      * @param $day_preg
-     * @param $vaccin_name
+     * @param $vaccinName
      * @param $_month
      * @param $etat
      * @param $praticien
      * @param null $type
      */
-    public function ca_enceinte($patient,$day_preg,$vaccin_name,$_month,$etat,$praticien,$type=null)
+    public function ca_enceinte($patient,$day_preg,$vaccinName,$_month,$etat,$praticien,$type=null)
     {
         $preg = Carbon::parse($day_preg);
         $date_now = Carbon::now();
         $month = $preg->diffInMonths($date_now);
 
-        $vaccin = $this->vaccinRepository->findOneBy(['vaccin_name'=>$vaccin_name]);
+        $vaccin = $this->vaccinRepository->findOneBy(['vaccinName'=>$vaccinName]);
         if ($vaccin){
             if(!$type){
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($vaccin);
-                $rdv->setPraticien($praticien);
+                //$rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
-                $rdv->setStatus(false);
+                $rdv->setEtat(false);
                 $month_ = $this->add_rdv_in_month($_month,$preg);
-                $rdv->setDateRdv($month_);
+                $rdv->setDatePrise($month_);
                 $this->entityManager->persist($rdv);
             }else{
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($vaccin);
-                $rdv->setPraticien($praticien);
+                //$rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
-                $rdv->setDateRdv($preg);
-                $rdv->setStatus(false);
+                $rdv->setDatePrise($preg);
+                $rdv->setEtat(false);
                 $this->entityManager->persist($rdv);
             }
         }
@@ -525,49 +527,49 @@ class VaccinGenerate
         $date_now = Carbon::now();
         $month = $birth->diffInMonths($date_now);
 
-        $dtcap = $this->vaccinRepository->findOneBy(['vaccin_name'=>'DTCaP']);
+        $dtcap = $this->vaccinRepository->findOneBy(['vaccinName'=>'DTCaP']);
         if ($dtcap){
             if($month <= 4){
                 for ($i=1; $i<=4; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($dtcap);
-                    $rdv->setPraticien($praticien);
+                   // $rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($month == 4){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 4mois
+                                $rdv->setDatePrise($date);// 4mois
                             }
                         }else{
                             $month_4 = $this->add_rdv_in_month(4,$birthday);
-                            $rdv->setDateRdv($month_4);
+                            $rdv->setDatePrise($month_4);
                         }
                     }elseif ($i==2){
                         $month_5 = $this->add_rdv_in_month(5,$birthday);
-                        $rdv->setDateRdv($month_5);
+                        $rdv->setDatePrise($month_5);
                     }elseif ($i==3){
                         $month_12 = $this->add_rdv_in_month(12,$birthday);
-                        $rdv->setDateRdv($month_12);
+                        $rdv->setDatePrise($month_12);
                     }else{
                         $month_132 = $this->add_rdv_in_month(132,$birthday);
-                        $rdv->setDateRdv($month_132);
+                        $rdv->setDatePrise($month_132);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($month == 5){
                 for ($i=1; $i<=3; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($dtcap);
                     $rdv->setPraticien($praticien);
@@ -576,81 +578,81 @@ class VaccinGenerate
                         if(!$date_now->isWeekend()){
                             $tomorrow = $date_now->addDay();
                             if($tomorrow->day != 6){
-                                $rdv->setDateRdv($tomorrow);
+                                $rdv->setDatePrise($tomorrow);
                             }else{
                                 $monday = $date_now->addDays(3);
-                                $rdv->setDateRdv($monday);
+                                $rdv->setDatePrise($monday);
                             }
                         }else{
                             $date = $date_now->addDays(2);
-                            $rdv->setDateRdv($date);// 5mois
+                            $rdv->setDatePrise($date);// 5mois
                         }
                     }elseif ($i==2){
                         $month_12 = $this->add_rdv_in_month(12,$birthday);
-                        $rdv->setDateRdv($month_12);
+                        $rdv->setDatePrise($month_12);
                     }else{
                         $month_132 = $this->add_rdv_in_month(132,$birthday);
-                        $rdv->setDateRdv($month_132);
+                        $rdv->setDatePrise($month_132);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($month <= 12){
                 for ($i=1; $i<=2; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($dtcap);
-                    $rdv->setPraticien($praticien);
+                    //$rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($month == 12){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 12mois
+                                $rdv->setDatePrise($date);// 12mois
                             }
                         }else{
                             $month_12 = $this->add_rdv_in_month(12,$birthday);
-                            $rdv->setDateRdv($month_12);
+                            $rdv->setDatePrise($month_12);
                         }
                     }else{
                         $month_132 = $this->add_rdv_in_month(132,$birthday);
-                        $rdv->setDateRdv($month_132);
+                        $rdv->setDatePrise($month_132);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($month <= 132){
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($dtcap);
-                $rdv->setPraticien($praticien);
+                //$rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
                 if($month == 132){
                     if(!$date_now->isWeekend()){
                         $tomorrow = $date_now->addDay();
                         if($tomorrow->day != 6){
-                            $rdv->setDateRdv($tomorrow);
+                            $rdv->setDatePrise($tomorrow);
                         }else{
                             $monday = $date_now->addDays(3);
-                            $rdv->setDateRdv($monday);
+                            $rdv->setDatePrise($monday);
                         }
                     }else{
                         $date = $date_now->addDays(2);
-                        $rdv->setDateRdv($date);// 132mois
+                        $rdv->setDatePrise($date);// 132mois
                     }
                 }else{
                     $month_132 = $this->add_rdv_in_month(132,$birthday);
-                    $rdv->setDateRdv($month_132);
+                    $rdv->setDatePrise($month_132);
                 }
-                $rdv->setStatus(false);
+                $rdv->setEtat(false);
                 $this->entityManager->persist($rdv);
             }
             $this->entityManager->flush();
@@ -662,103 +664,103 @@ class VaccinGenerate
      * generate vaccin Hib, Hep B Pnc for child france
      * @param $patient
      * @param $birthday
-     * @param $vaccin_name
+     * @param $vaccinName
      * @param $etat
      * @param $praticien
      */
-    private function fr_Hib_hepb_pnc($patient,$birthday,$vaccin_name,$etat,$praticien){
+    private function fr_Hib_hepb_pnc($patient,$birthday,$vaccinName,$etat,$praticien){
         $birth = Carbon::parse($birthday);
         $date_now = Carbon::now();
         $month = $birth->diffInMonths($date_now);
 
-        $Hib = $this->vaccinRepository->findOneBy(['vaccin_name'=>$vaccin_name]);
+        $Hib = $this->vaccinRepository->findOneBy(['vaccinName'=>$vaccinName]);
         if ($Hib){
             if($month <= 4){
                 for ($i=1; $i<=3; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($Hib);
-                    $rdv->setPraticien($praticien);
+                   // $rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($month == 4){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 4mois
+                                $rdv->setDatePrise($date);// 4mois
                             }
                         }else{
                             $month_4 = $this->add_rdv_in_month(4,$birthday);
-                            $rdv->setDateRdv($month_4);
+                            $rdv->setDatePrise($month_4);
                         }
                     }elseif ($i==2){
                         $month_5 = $this->add_rdv_in_month(5,$birthday);
-                        $rdv->setDateRdv($month_5);
+                        $rdv->setDatePrise($month_5);
                     }else{
                         $month_12 = $this->add_rdv_in_month(12,$birthday);
-                        $rdv->setDateRdv($month_12);
+                        $rdv->setDatePrise($month_12);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($month == 5){
                 for ($i=1; $i<=2; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($Hib);
-                    $rdv->setPraticien($praticien);
+                   // $rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if(!$date_now->isWeekend()){
                             $tomorrow = $date_now->addDay();
                             if($tomorrow->day != 6){
-                                $rdv->setDateRdv($tomorrow);
+                                $rdv->setDatePrise($tomorrow);
                             }else{
                                 $monday = $date_now->addDays(3);
-                                $rdv->setDateRdv($monday);
+                                $rdv->setDatePrise($monday);
                             }
                         }else{
                             $date = $date_now->addDays(2);
-                            $rdv->setDateRdv($date);// 5mois
+                            $rdv->setDatePrise($date);// 5mois
                         }
                     }else{
                         $month_12 = $this->add_rdv_in_month(12,$birthday);
-                        $rdv->setDateRdv($month_12);
+                        $rdv->setDatePrise($month_12);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($month <= 12){
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($Hib);
-                $rdv->setPraticien($praticien);
+                //$rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
                 if($month == 12){
                     if(!$date_now->isWeekend()){
                         $tomorrow = $date_now->addDay();
                         if($tomorrow->day != 6){
-                            $rdv->setDateRdv($tomorrow);
+                            $rdv->setDatePrise($tomorrow);
                         }else{
                             $monday = $date_now->addDays(3);
-                            $rdv->setDateRdv($monday);
+                            $rdv->setDatePrise($monday);
                         }
                     }else{
                         $date = $date_now->addDays(2);
-                        $rdv->setDateRdv($date);// 12mois
+                        $rdv->setDatePrise($date);// 12mois
                     }
                 }else{
                     $month_12 = $this->add_rdv_in_month(12,$birthday);
-                    $rdv->setDateRdv($month_12);
+                    $rdv->setDatePrise($month_12);
                 }
-                $rdv->setStatus(false);
+                $rdv->setEtat(false);
                 $this->entityManager->persist($rdv);
 
             }
@@ -778,64 +780,64 @@ class VaccinGenerate
         $date_now = Carbon::now();
         $month = $birth->diffInMonths($date_now);
 
-        $Hib = $this->vaccinRepository->findOneBy(['vaccin_name'=>"MnC"]);
+        $Hib = $this->vaccinRepository->findOneBy(['vaccinName'=>"MnC"]);
         if ($Hib){
             if($month <= 11){
                 for ($i=1; $i<=2; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($Hib);
-                    $rdv->setPraticien($praticien);
+                    //$rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($month == 11){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 11mois
+                                $rdv->setDatePrise($date);// 11mois
                             }
                         }else{
                             $month_11 = $this->add_rdv_in_month(11,$birthday);
-                            $rdv->setDateRdv($month_11);
+                            $rdv->setDatePrise($month_11);
                         }
                     }else{
                         $month_16 = $this->add_rdv_in_month(16,$birthday);
-                        $rdv->setDateRdv($month_16);
+                        $rdv->setDatePrise($month_16);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($month <= 16){
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($Hib);
-                $rdv->setPraticien($praticien);
+                //$rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
                 if($month == 16){
                     if(!$date_now->isWeekend()){
                         $tomorrow = $date_now->addDay();
                         if($tomorrow->day != 6){
-                            $rdv->setDateRdv($tomorrow);
+                            $rdv->setDatePrise($tomorrow);
                         }else{
                             $monday = $date_now->addDays(3);
-                            $rdv->setDateRdv($monday);
+                            $rdv->setDatePrise($monday);
                         }
                     }else{
                         $date = $date_now->addDays(2);
-                        $rdv->setDateRdv($date);// 16mois
+                        $rdv->setDatePrise($date);// 16mois
                     }
                 }else{
                     $month_16 = $this->add_rdv_in_month(16,$birthday);
-                    $rdv->setDateRdv($month_16);
+                    $rdv->setDatePrise($month_16);
                 }
-                $rdv->setStatus(false);
+                $rdv->setEtat(false);
                 $this->entityManager->persist($rdv);
 
             }
@@ -855,64 +857,64 @@ class VaccinGenerate
         $date_now = Carbon::now();
         $month = $birth->diffInMonths($date_now);
 
-        $Hib = $this->vaccinRepository->findOneBy(['vaccin_name'=>"ROR"]);
+        $Hib = $this->vaccinRepository->findOneBy(['vaccinName'=>"ROR"]);
         if ($Hib){
             if($month <= 16){
                 for ($i=1; $i<=2; $i++){
-                    $rdv = new RendezVous();
+                    $rdv = new OrdoVaccination();
                     $rdv->setPatient($patient);
                     $rdv->setVaccin($Hib);
-                    $rdv->setPraticien($praticien);
+                    //$rdv->setPraticien($praticien);
                     $rdv->setEtat($etat);
                     if($i==1){
                         if($month == 16){
                             if(!$date_now->isWeekend()){
                                 $tomorrow = $date_now->addDay();
                                 if($tomorrow->day != 6){
-                                    $rdv->setDateRdv($tomorrow);
+                                    $rdv->setDatePrise($tomorrow);
                                 }else{
                                     $monday = $date_now->addDays(3);
-                                    $rdv->setDateRdv($monday);
+                                    $rdv->setDatePrise($monday);
                                 }
                             }else{
                                 $date = $date_now->addDays(2);
-                                $rdv->setDateRdv($date);// 16mois
+                                $rdv->setDatePrise($date);// 16mois
                             }
                         }else{
                             $month_16 = $this->add_rdv_in_month(16,$birthday);
-                            $rdv->setDateRdv($month_16);
+                            $rdv->setDatePrise($month_16);
                         }
                     }else{
                         $month_72 = $this->add_rdv_in_month(72,$birthday);
-                        $rdv->setDateRdv($month_72);
+                        $rdv->setDatePrise($month_72);
                     }
-                    $rdv->setStatus(false);
+                    $rdv->setEtat(false);
                     $this->entityManager->persist($rdv);
                 }
             }elseif($month <= 72){
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($Hib);
-                $rdv->setPraticien($praticien);
+                //$rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
                 if($month == 72){
                     if(!$date_now->isWeekend()){
                         $tomorrow = $date_now->addDay();
                         if($tomorrow->day != 6){
-                            $rdv->setDateRdv($tomorrow);
+                            $rdv->setDatePrise($tomorrow);
                         }else{
                             $monday = $date_now->addDays(3);
-                            $rdv->setDateRdv($monday);
+                            $rdv->setDatePrise($monday);
                         }
                     }else{
                         $date = $date_now->addDays(2);
-                        $rdv->setDateRdv($date);// 16mois
+                        $rdv->setDatePrise($date);// 16mois
                     }
                 }else{
                     $month_72 = $this->add_rdv_in_month(72,$birthday);
-                    $rdv->setDateRdv($month_72);
+                    $rdv->setDatePrise($month_72);
                 }
-                $rdv->setStatus(false);
+                $rdv->setEtat(false);
                 $this->entityManager->persist($rdv);
 
             }
@@ -932,32 +934,32 @@ class VaccinGenerate
         $date_now = Carbon::now();
         $month = $birth->diffInMonths($date_now);
 
-        $Hib = $this->vaccinRepository->findOneBy(['vaccin_name'=>"dTcaP-ado"]);
+        $Hib = $this->vaccinRepository->findOneBy(['vaccinName'=>"dTcaP-ado"]);
         if ($Hib){
             if($month <= 180){
-                $rdv = new RendezVous();
+                $rdv = new OrdoVaccination();
                 $rdv->setPatient($patient);
                 $rdv->setVaccin($Hib);
-                $rdv->setPraticien($praticien);
+                //$rdv->setPraticien($praticien);
                 $rdv->setEtat($etat);
                 if($month == 180){
                     if(!$date_now->isWeekend()){
                         $tomorrow = $date_now->addDay();
                         if($tomorrow->day != 6){
-                            $rdv->setDateRdv($tomorrow);
+                            $rdv->setDatePrise($tomorrow);
                         }else{
                             $monday = $date_now->addDays(3);
-                            $rdv->setDateRdv($monday);
+                            $rdv->setDatePrise($monday);
                         }
                     }else{
                         $date = $date_now->addDays(2);
-                        $rdv->setDateRdv($date);// 16mois
+                        $rdv->setDatePrise($date);// 16mois
                     }
                 }else{
                     $month_180 = $this->add_rdv_in_month(180,$birthday);
-                    $rdv->setDateRdv($month_180);
+                    $rdv->setDatePrise($month_180);
                 }
-                $rdv->setStatus(false);
+                $rdv->setEtat(false);
                 $this->entityManager->persist($rdv);
             }
             $this->entityManager->flush();

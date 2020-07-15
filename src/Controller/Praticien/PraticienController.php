@@ -455,7 +455,7 @@ class PraticienController extends AbstractController
         $rdv->setPraticien($praticien);
         $rdv->setDescription($description);
         $rdv->setType($type_id);
-        $rdv->setDateRdv($Date_Rdv);
+        $rdv->setDatePriseInitiale($Date_Rdv);
         $rdv->setPatient(null);
         $rdv->setVaccin(null);
         $this->entityManager->persist($rdv);
@@ -549,6 +549,7 @@ class PraticienController extends AbstractController
         $proposition->setDateProposition($Date_Rdv);
         $proposition->setPraticien($praticien);
         $proposition->setStatusProposition(1);
+        $proposition->setEtat(0);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($proposition);
         $entityManager->flush();

@@ -1,0 +1,69 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    Proposition Rendez-vous
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Proposition Rendez-vous</h4>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>Date Proposition rdv</th>
+                <th>Description </th>
+                <th>Docteur</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for propos in proposition  %}
+                <tr>
+                    <td class="text-left">
+                        {{ propos.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
+                    </td>
+                    <td>
+                        {{ propos.descriptionProposition }}
+                    </td>
+                    <td>
+                        {{ propos.firstName }}
+                        {{ propos.lastName }}
+                    </td>
+                    <td>
+                        <span class="badge badge-success badge-style modif-etat">Accepter</span>
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script>
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/lang.json') }}"
+                }
+            });
+            $('.mdb-select').materialSelect();
+
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            });
+        })
+
+    </script>
+{% endblock %}

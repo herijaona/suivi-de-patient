@@ -20,6 +20,18 @@ class PropositionRdvRepository extends ServiceEntityRepository
 
 
     }
+
+    public function searchProposition(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition, pr.firstName, pr.lastName
+            FROM App\Entity\PropositionRdv p
+            LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
+            WHERE p.dateProposition >= :now
+            ORDER BY p.dateProposition ASC')
+            ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+    }
     public function searchStatusPraticienEnValid($praticien = null, $status = 1){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition

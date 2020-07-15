@@ -37,6 +37,11 @@ class PropositionRdv
      */
     private $praticien;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $etat;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class PropositionRdv
     public function setPraticien(?Praticien $praticien): self
     {
         $this->praticien = $praticien;
+
+        return $this;
+    }
+
+    public function getEtat(): ?int
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?int $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

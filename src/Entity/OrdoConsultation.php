@@ -126,7 +126,7 @@ class OrdoConsultation
         return $this->dateRdv;
     }
 
-    public function setDateRdv(\DateTimeInterface $dateRdv): self
+    public function setDatePriseInitiale(\DateTimeInterface $dateRdv): self
     {
         $this->dateRdv = $dateRdv;
 
