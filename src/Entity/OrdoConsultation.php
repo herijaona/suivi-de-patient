@@ -16,9 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  *          "get"={
  *              "controller"=App\Controller\Api\Consultation\RetriveConsultation::class
  *          },
- *          "post"={
- *              "controller"=App\Controller\Api\Consultation\CreateConsultation::class
- *         }
+ *          "post"
  *     },
  *    itemOperations={
  *     "put",
