@@ -3,7 +3,7 @@ window.onload = function() {
     var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
         title: {
-            text: "Evolution de patients par an",
+            text: "Evolution des vaccinations par an",
             fontSize: 18,
         },
         axisY: {
@@ -84,8 +84,8 @@ window.onload = function() {
             yValueFormatString: "##",
             indexLabel: "{label} {y}",
             dataPoints: [
-                { y: 75, label: "Patient", },
-                { y: 15, label: "Praticien" },
+                { y: 2, label: "Patient", },
+                { y: 1, label: "Praticien" },
             ]
         }],
         color: colorPalette,

@@ -11,7 +11,8 @@
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="{{ (currentPath == path('admin')) ? 'active' :'' }}"><a href="{{ path('admin') }}">Dashboard</a></li>
                 <li class="{{ (currentPath == path('admin_member')) ? 'active' : '' }}"><a href="{{ path('admin_member') }}">Membres</a></li>
-                <li class="{{ (currentPath == path('vaccin_admin')) ? 'active' : '' }}"><a href="{{ path('vaccin_admin') }}">Calendrier Vaccination</a></li>
+                <li class="{{ (currentPath == path('vaccin_admin')) ? 'active' : '' }}"><a href="{{ path('vaccin_admin') }}">Vaccinations</a></li>
+                <li class="{{ (currentPath == path('consultation_admin')) ? 'active' : '' }}"><a href="{{ path('consultation_admin') }}">Consultations</a></li>
                 {#<li class="{{ (currentPath == path('praticiens_admin')) ? 'active' : '' }}"><a href="{{ path('praticiens_admin') }}">Liste des praticiens</a></li>
                 <li class="{{ (currentPath == path('patients_admin')) ? 'active' : '' }}"><a href="{{ path('patients_admin') }}">Liste des patients</a></li>#}
                 <li class="{{ (currentPath == path('admin_centre_health') or currentPath == path('admin_city') or currentPath == path('admin_region') or currentPath == path('admin_state') or currentPath == path('admin_vaccin') or currentPath == path('admin_type_vaccin'))  ? 'active' : '' }}">

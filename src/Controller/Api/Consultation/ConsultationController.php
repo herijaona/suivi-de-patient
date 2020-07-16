@@ -57,7 +57,7 @@ class ConsultationController extends  AbstractController
             $praticien = $this->praticienRepository->findOneBy(['user' => $CurrentUser]);
             $data = $this->ordoConsultationRepository->searchStatusPraticienEnValid($praticien->getId());
         } elseif ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            $data = $this->ordoConsultationRepository->find(['statusVaccin' => 0]);
+            $data = $this->ordoConsultationRepository->findBy(['statusVaccin' => 0]);
         }
 
         return new JsonResponse($data);
@@ -76,7 +76,7 @@ class ConsultationController extends  AbstractController
             $praticien = $this->praticienRepository->findOneBy(['user' => $CurrentUser]);
             $data = $this->ordoConsultationRepository->searchStatusPraticien($praticien->getId(), 2, 0);
         } elseif ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
-            $data = $this->ordoConsultationRepository->find(['statusVaccin' => 2]);
+            $data = $this->ordoConsultationRepository->findBy(['statusVaccin' => 2]);
         }
         return new JsonResponse($data);
     }

@@ -84,6 +84,7 @@
 
         $('.data-edit').on('click', function (e) {
             e.preventDefault();
+            $(".loadBody").css("display", "block");
             var id = $(this).data('id');
             $.ajax({
                 url: "{{ path('add_form_vaccin') }}",

@@ -6,6 +6,8 @@ use App\Entity\Vaccin;
 use App\Form\CenterHealthType;
 use App\Form\ChangePasswordType;
 use App\Form\VaccinType;
+use App\Repository\OrdoConsultationRepository;
+use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
 use App\Repository\TypeVaccinRepository;
@@ -33,6 +35,8 @@ class AdminController extends AbstractController
     protected $typeVaccinRepository;
     protected $userRepository;
     protected $entityManager;
+    protected $ordoVaccinationRepository;
+    protected $ordoConsultationRepository;
 
     function __construct(
         VaccinGenerate $vaccinGenerate,
@@ -41,7 +45,9 @@ class AdminController extends AbstractController
         VaccinRepository $vaccinRepository,
         TypeVaccinRepository $typeVaccinRepository,
         UserRepository $userRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        OrdoVaccinationRepository $ordoVaccinationRepository,
+        OrdoConsultationRepository $ordoConsultationRepository
     )
     {
         $this->vaccinGenerate = $vaccinGenerate;
@@ -51,14 +57,31 @@ class AdminController extends AbstractController
         $this->typeVaccinRepository = $typeVaccinRepository;
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
+        $this->ordoVaccinationRepository = $ordoVaccinationRepository;
+        $this->ordoConsultationRepository = $ordoConsultationRepository;
     }
     /**
      * @Route("/", name="admin")
      */
     public function index()
     {
+        $praticien = $this->praticienRepository->count(['etat' => 1]);
+        $patient = $this->patientRepository->count(['etat' => 1]);
+        $praticienReject = $this->praticienRepository->count(['etat' => 0]);
+        $patientReject = $this->patientRepository->count(['etat' => 0]);
+        $vacc = $this->ordoVaccinationRepository->count(['statusVaccin' => 1]);
+        $cons = $this->ordoConsultationRepository->count(['statusConsultation' => 1]);
+        $vaccInPr = $this->ordoVaccinationRepository->count(['statusVaccin' => 0]);
+        $consInPr = $this->ordoConsultationRepository->count(['statusConsultation' => 0]);
         return $this->render('admin/dashboard.html.twig', [
-            'controller_name' => 'AdminController',
+            'praticien' => $praticien,
+            'patient' => $patient,
+            'prtRej' => $praticienReject,
+            'patRej' => $patientReject,
+            'vacc' => $vacc,
+            'cons' => $cons,
+            'vaccInPr' => $vaccInPr,
+            'consInPr' => $consInPr,
         ]);
 
     }
@@ -71,10 +94,25 @@ class AdminController extends AbstractController
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('homepage');
         }
-        //$all_rdv = $this->rendezVousRepository->findRdvByAdmin(1);
-        $all_rdv = [];
-        return $this->render('admin/vaccin.html.twig', [
+        $all_rdv = $this->ordoVaccinationRepository->findBy(['statusVaccin' => 1]);
+        return $this->render('admin/vaccinnation.html.twig', [
             'Vaccinations' => $all_rdv,
+            'type' => 1
+        ]);
+    }
+
+    /**
+     * @Route("/consultation", name="consultation_admin")
+     */
+    public function consultation_admin()
+    {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('homepage');
+        }
+        $all_rdv = $this->ordoConsultationRepository->findBy(['statusConsultation' => 1]);
+
+        return $this->render('admin/consultation.html.twig', [
+            'consultations' => $all_rdv,
             'type' => 1
         ]);
     }
