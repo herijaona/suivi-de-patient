@@ -29,7 +29,7 @@ class IntervationConsultation
 
     /**
      * @ORM\ManyToOne(targetEntity=OrdoConsultation::class, inversedBy="intervationConsultations")
-     * @Groups({"read:IntervationConsultation"})
+     * @Groups({"read:IntervationConsultation"})u
      */
     private $ordoConsulataion;
 

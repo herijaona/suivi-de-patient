@@ -1,0 +1,60 @@
+<!--Header-->
+<style>
+    .md-form.row-check {
+        flex-direction: row;
+        display: flex;
+    }
+</style>
+<div class="modal-header text-center">
+    {% if new == true %}
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Nouveau Proposition de Rendez-Vous</h4>
+    {% else %}
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Modification du proposition de Rendez-Vous</h4>
+    {% endif %}
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="white-text">&times;</span>
+    </button>
+</div>
+<!--Content-->
+{{ form_start(form, {'attr': {'action': path('register_proposition') }}) }}
+<!--Body-->
+<div class="modal-body">
+    <div class="md-form">
+        <label class="active" for="form1">Date  Proposer </label>
+        {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control date_rdv' }}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">Heure Proposer </label>
+        {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">Nombre patient proposer </label>
+        {{ form_widget(form.PersonneAttendre, {'attr': { 'class': 'form-control' }}) }}
+    </div>
+    <div class="md-form ">
+        <label class="active" for="form1">Description du rendez-vous </label>
+        {{ form_widget(form.description, {'attr': { 'class': 'form-control' }}) }}
+    </div>
+
+
+</div>
+<div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" aria-label="Close"><i class="fas fa-remove ml-1"></i> Annuler </button>
+    <button type="submit" class="btn btn-outline-primary waves-effect submit_new_center_health"><i class="fas fa-save ml-1"></i> Enregistrer </button>
+</div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight:'TRUE',
+                startDate: '-0d',
+            });
+        });
+</script>
+
+
+{{ form_end(form) }}
+
+

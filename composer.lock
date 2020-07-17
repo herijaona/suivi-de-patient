@@ -2,7 +2,7 @@
     "_readme": [
         "This file locks the dependencies of your project to a known state",
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
-        "This file is @generated automatically"
+        "This file is @d automatically"
     ],
 
     "content-hash": "13fed008f67054602c97e0ab8a208f85",
@@ -221,7 +221,7 @@
                 "squizlabs/php_codesniffer": "^3.1"
             },
             "suggest": {
-                "ext-imagick": "to generate QR code images"
+                "ext-imagick": "to  QR code images"
             },
             "type": "library",
             "autoload": {
@@ -1298,7 +1298,7 @@
                 "symfony/yaml": "^3.4||^4.0||^5.0"
             },
             "suggest": {
-                "doctrine/sql-formatter": "Allows to generate formatted SQL with the diff command.",
+                "doctrine/sql-formatter": "Allows to  formatted SQL with the diff command.",
                 "symfony/yaml": "Allows the use of yaml for migration configuration files."
             },
             "bin": [
@@ -2650,7 +2650,7 @@
                 "squizlabs/php_codesniffer": "^2.9.1"
             },
             "suggest": {
-                "ocramius/generated-hydrator": "To have very fast object to array to object conversion for ghost objects",
+                "ocramius/d-hydrator": "To have very fast object to array to object conversion for ghost objects",
                 "zendframework/zend-json": "To have the JsonRpc adapter (Remote Object feature)",
                 "zendframework/zend-soap": "To have the Soap adapter (Remote Object feature)",
                 "zendframework/zend-xmlrpc": "To have the XmlRpc adapter (Remote Object feature)"
@@ -2677,7 +2677,7 @@
                     "homepage": "http://ocramius.github.io/"
                 }
             ],
-            "description": "A library providing utilities to generate, instantiate and generally operate with Object Proxies",
+            "description": "A library providing utilities to , instantiate and generally operate with Object Proxies",
             "homepage": "https://github.com/Ocramius/ProxyManager",
             "keywords": [
                 "aop",
@@ -3694,7 +3694,7 @@
                 "symfony/config": "",
                 "symfony/expression-language": "For using expressions in service container configuration",
                 "symfony/finder": "For using double-star glob patterns or when GLOB_BRACE portability is required",
-                "symfony/proxy-manager-bridge": "Generate service proxies to lazy load them",
+                "symfony/proxy-manager-bridge": " service proxies to lazy load them",
                 "symfony/yaml": ""
 =======
                 "symfony/polyfill-mbstring": "~1.0",
@@ -3842,7 +3842,7 @@
                 "symfony/config": "",
                 "symfony/expression-language": "For using expressions in service container configuration",
                 "symfony/finder": "For using double-star glob patterns or when GLOB_BRACE portability is required",
-                "symfony/proxy-manager-bridge": "Generate service proxies to lazy load them",
+                "symfony/proxy-manager-bridge": " service proxies to lazy load them",
                 "symfony/yaml": ""
 >>>>>>> 5d7802a2df7a65c5b9bc024eb3d4a31cc08e1167
             },

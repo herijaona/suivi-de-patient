@@ -15,9 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  *          "get"={
  *              "controller"=App\Controller\Api\Vaccination\RetriveVaccination::class
  *          },
- *          "post"={
- *              "controller"=App\Controller\Api\Vaccination\CreateVaccination::class
- *         }
+ *          "post"
  *      },
  *     itemOperations={
  *        "get",

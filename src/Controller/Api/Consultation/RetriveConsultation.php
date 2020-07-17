@@ -57,7 +57,7 @@ class RetriveConsultation extends AbstractController
             $praticien = $this->praticienRepository->findOneBy(['user' => $CurrentUser]);
             return $this->ordoConsultationRepository->searchStatusPraticien($praticien->getId(), 1,0);
         }elseif ($this->authorizationChecker->isGranted('ROLE_ADMIN')){
-            return $this->ordoConsultationRepository->find(['etat' => 1]);
+            return $this->ordoConsultationRepository->findBy(['etat' => 1]);
         }
     }
 

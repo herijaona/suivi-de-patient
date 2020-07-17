@@ -16,9 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  *          "get"={
  *              "controller"=App\Controller\Api\Consultation\RetriveConsultation::class
  *          },
- *          "post"={
- *              "controller"=App\Controller\Api\Consultation\CreateConsultation::class
- *         }
+ *          "post"
  *     },
  *    itemOperations={
  *     "put",
@@ -98,6 +96,11 @@ class OrdoConsultation
      */
     private $etat;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=PropositionRdv::class, inversedBy="ordoConsultations")
+     */
+    private $proposition;
+
     public function __construct()
     {
         $this->intervationConsultations = new ArrayCollection();
@@ -126,7 +129,7 @@ class OrdoConsultation
         return $this->dateRdv;
     }
 
-    public function setDateRdv(\DateTimeInterface $dateRdv): self
+    public function setDatePriseInitiale(\DateTimeInterface $dateRdv): self
     {
         $this->dateRdv = $dateRdv;
 
@@ -263,6 +266,18 @@ class OrdoConsultation
     public function setEtat(?int $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getProposition(): ?PropositionRdv
+    {
+        return $this->proposition;
+    }
+
+    public function setProposition(?PropositionRdv $proposition): self
+    {
+        $this->proposition = $proposition;
 
         return $this;
     }
