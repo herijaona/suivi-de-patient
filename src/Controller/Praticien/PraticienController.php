@@ -492,6 +492,7 @@ class PraticienController extends AbstractController
             $action = $request->request->get('id');
             $rdv['id'] = $request->request->get('id');
             $propos = $this->propositionRdvRepository->find($rdv['id']);
+            $rdv['PersonneAttendre'] = $propos->getPersonneAttendre();
             $rdv['description'] = $propos->getDescriptionProposition();
             $rdv['dateRdv'] = $propos->getDateProposition();
             if ($rdv['dateRdv'] != ''){
@@ -531,6 +532,7 @@ class PraticienController extends AbstractController
     {
         $propositionRequest=$request->request->get("proposition_rdv");
         $description = $propositionRequest["description"];
+        $Personne = $propositionRequest["PersonneAttendre"];
         $date =$propositionRequest["dateRdv"];
         $heure = $propositionRequest["heureRdv"];
         $Id = $propositionRequest["id"];
@@ -550,6 +552,7 @@ class PraticienController extends AbstractController
         $proposition->setDescriptionProposition($description);
         $proposition->setDateProposition($Date_Rdv);
         $proposition->setPraticien($praticien);
+        $proposition->setPersonneAttendre($Personne);
         $proposition->setStatusProposition(1);
         $proposition->setEtat(0);
         $entityManager = $this->getDoctrine()->getManager();

@@ -159,6 +159,43 @@ class PatientController extends AbstractController
         ]);
 
     }
+    /**
+     * @Route("/proposition/acccepted", name = "proposition")
+     */
+    public function proposition_accepted(Request $request)
+    {
+        $id = $request->request->get("id");
+        $personne = $request->request->get("personne");
+        $praticien = $request->request->get("praticien");
+        $date = $request->request->get("date");
+        $user = $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $description = $request->request->get("description");
+        $praticien = $this->praticienRepository->find($praticien);
+        $ordonance = $this->ordonnaceRepository->find($praticien);
+        $proposition = $this->propositionRdvRepository->find($id);
+        $Date_Rdv = new \DateTime($date);
+        $propos = $this->propositionRdvRepository->find($request->request->get('id'));
+        if($propos != null)
+        {
+            $ordoConsu = new OrdoConsultation();
+            $ordoConsu->setPatient($patient);
+            $ordoConsu->setObjetConsultation($description);
+            $ordoConsu->setDatePriseInitiale($Date_Rdv);
+            $ordoConsu->setProposition($proposition);
+            $ordoConsu->setStatusConsultation(1);
+            $ordoConsu->setEtat(0);
+            $ordoConsu->setOrdonnance($ordonance);
+            $this->entityManager->persist($ordoConsu);
+            $this->entityManager->flush();
+            $personne = $personne - 1; // patient attendue moins 1
+            $propos->setPersonneAttendre($personne);
+            $this->entityManager->persist($propos);
+            $this->entityManager->flush();
+        }
+        $this->addFlash('success', 'Changement effectué avec succès');
+        return new JsonResponse(['status' => 'OK']);
+    }
 
     /**
      * @Route("/vaccination", name="vaccination_patient")

@@ -23,10 +23,10 @@ class PropositionRdvRepository extends ServiceEntityRepository
 
     public function searchProposition(){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition, pr.firstName, pr.lastName
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition,p.PersonneAttendre, pr.firstName, pr.lastName, pr.id as praticien
             FROM App\Entity\PropositionRdv p
             LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
-            WHERE p.dateProposition >= :now
+            WHERE p.dateProposition >= :now AND p.PersonneAttendre > 0
             ORDER BY p.dateProposition ASC')
             ->setParameter('now', new \DateTime());
 
@@ -34,7 +34,7 @@ class PropositionRdvRepository extends ServiceEntityRepository
     }
     public function searchStatusPraticienEnValid($praticien = null, $status = 1){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition, p.PersonneAttendre
             FROM App\Entity\PropositionRdv p
             LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
             WHERE (pr.id = :praticien OR pr.id IS NULL) AND p.statusProposition = :status AND p.dateProposition >= :now

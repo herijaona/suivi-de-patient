@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PropositionRdvRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +43,21 @@ class PropositionRdv
      * @ORM\Column(type="integer", nullable=true)
      */
     private $etat;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $PersonneAttendre;
+
+    /**
+     * @ORM\OneToMany(targetEntity=OrdoConsultation::class, mappedBy="proposition")
+     */
+    private $ordoConsultations;
+
+    public function __construct()
+    {
+        $this->ordoConsultations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +120,49 @@ class PropositionRdv
     public function setEtat(?int $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getPersonneAttendre(): ?int
+    {
+        return $this->PersonneAttendre;
+    }
+
+    public function setPersonneAttendre(int $PersonneAttendre): self
+    {
+        $this->PersonneAttendre = $PersonneAttendre;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|OrdoConsultation[]
+     */
+    public function getOrdoConsultations(): Collection
+    {
+        return $this->ordoConsultations;
+    }
+
+    public function addOrdoConsultation(OrdoConsultation $ordoConsultation): self
+    {
+        if (!$this->ordoConsultations->contains($ordoConsultation)) {
+            $this->ordoConsultations[] = $ordoConsultation;
+            $ordoConsultation->setProposition($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdoConsultation(OrdoConsultation $ordoConsultation): self
+    {
+        if ($this->ordoConsultations->contains($ordoConsultation)) {
+            $this->ordoConsultations->removeElement($ordoConsultation);
+            // set the owning side to null (unless already changed)
+            if ($ordoConsultation->getProposition() === $this) {
+                $ordoConsultation->setProposition(null);
+            }
+        }
 
         return $this;
     }

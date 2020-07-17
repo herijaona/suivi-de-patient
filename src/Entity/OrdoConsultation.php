@@ -96,6 +96,11 @@ class OrdoConsultation
      */
     private $etat;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=PropositionRdv::class, inversedBy="ordoConsultations")
+     */
+    private $proposition;
+
     public function __construct()
     {
         $this->intervationConsultations = new ArrayCollection();
@@ -261,6 +266,18 @@ class OrdoConsultation
     public function setEtat(?int $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getProposition(): ?PropositionRdv
+    {
+        return $this->proposition;
+    }
+
+    public function setProposition(?PropositionRdv $proposition): self
+    {
+        $this->proposition = $proposition;
 
         return $this;
     }

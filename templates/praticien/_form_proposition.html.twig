@@ -27,6 +27,10 @@
         <label class="active" for="form1">Heure Proposer </label>
         {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
     </div>
+    <div class="md-form">
+        <label class="active" for="form1">Nombre patient proposer </label>
+        {{ form_widget(form.PersonneAttendre, {'attr': { 'class': 'form-control' }}) }}
+    </div>
     <div class="md-form ">
         <label class="active" for="form1">Description du rendez-vous </label>
         {{ form_widget(form.description, {'attr': { 'class': 'form-control' }}) }}

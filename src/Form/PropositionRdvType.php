@@ -19,6 +19,7 @@ class PropositionRdvType extends AbstractType
             ->add('id', HiddenType::class)
             ->add('dateRdv')
             ->add('heureRdv')
+            ->add('PersonneAttendre')
             ->add('description', null, [
                 'required' => true,
             ]);
