@@ -4,6 +4,7 @@
     <h2 class="profile-h2">Mon profile</h2>
     <div class="text-right w-50">
         <button type="submit " class="btn btn-info button-login btn-edit mb-3">
+            <i class="fas fa-pencil-alt mr-2"></i>
             Modifier
         </button>
     </div>
@@ -30,8 +31,7 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.dateBorn|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}">
                         </div>
                         <div class="col-lg-6">
-                            <label for="">Lieu de naissance</label> {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control form-show', 'value': values.user.lieuNaissance}}) }}
-                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.lieuNaissance }}">
+                            <label for="">Lieu de naissance</label> {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Lieu de Naissance'}}) }}
                         </div>
                     </div>
                     <div class="row form-group">
@@ -46,12 +46,11 @@
                     </div>
                     <div class="row form-group">
                         <div class="col-lg-6">
-                            <label for="">Fonction</label> {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control form-show', 'value': values.fonction}}) }}
-                            <input type="text" class="form-control form-edit" placeholder="{{ values.fonction }}">
+                            <label for="">Adresse</label> {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Adresse'}}) }}
                         </div>
                         <div class="col-lg-6">
-                            <label for="">Adresse</label> {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-show', 'value': values.user.address}}) }}
-                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.address }}">
+                            <label for="">Fonction</label> {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control form-show', 'value': values.fonction}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.fonction }}">
                         </div>
                     </div>
                     <div class="row form-group">
@@ -63,7 +62,13 @@
                             <label for="">Mot de passe</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
                         </div>
                     </div>
-                    <button type="submit " class="btn btn-info button-login mb-3">
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">Username</label> {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant'}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.username }}">
+                        </div>
+                    </div>
+                    <button type="submit " class="btn btn-info button-login mb-3 button-edit button-edit-class">
                         Sauvegarder
                     </button>
             </div>
@@ -76,16 +81,23 @@
 <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
 <script>
     $('.form-show').css('display', 'none');
-
     var i = 1;
     $(".btn-edit").click(function() {
         i++;
         if (i % 2 == 0) {
+            $('.button-edit-class').removeClass('button-edit-class');
             $('.form-edit').css('display', 'none');
             $('.form-show').css('display', 'block');
+            $(this).addClass('button-cancel');
+            $(this).children('span').html('<span>Annuler</span>');
+            $(this).children('i').remove();
         } else {
+            $('.button-edit').addClass('button-edit-class');
             $('.form-edit').css('display', 'block');
             $('.form-show').css('display', 'none');
+            $(this).removeClass('button-cancel');
+            $(this).children('span').html('<span>Modifier</span>');
+            $(this).prepend('<i class="fas fa-pencil-alt mr-2"></i>');
         }
     });
 </script>

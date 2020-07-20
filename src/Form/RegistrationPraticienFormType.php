@@ -22,6 +22,7 @@ class RegistrationPraticienFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('email')
             ->add('username')
             ->add('lastname')
             ->add('firstname')

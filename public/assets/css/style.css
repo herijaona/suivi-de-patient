@@ -87,7 +87,7 @@ ul {
 
 .img_profile {
     text-align: center;
-    border-bottom: 1px solid rgba(125, 122, 122, 0.11);
+    border-bottom: 2px solid rgb(170 206 222 / 16%);
     z-index: 9;
     padding-bottom: 26px;
 }
@@ -148,7 +148,7 @@ ul {
 }
 
 .logout_footer a {
-    color: #b7b2b2;
+    color: #ffffff;
 }
 
 .menu_up {
@@ -400,6 +400,7 @@ select.mdb-select.initialized {
     border-radius: 2px;
     top: 29px;
     line-height: 21px;
+    z-index: 9;
 }
 
 .profileTrigger div a {
@@ -439,4 +440,46 @@ select.mdb-select.initialized {
     width: 124px;
     margin-bottom: 13px;
     margin-top: 19px;
+}
+
+.form-control {
+    height: 38px;
+}
+
+.form-edit {
+    pointer-events: none;
+}
+
+.button-edit {
+    color: #fff;
+    border: 0;
+    background: linear-gradient(150deg, #077ef2 4%, #0786e4 100%);
+    width: 45%;
+    text-transform: capitalize;
+    font-size: 15px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.button-edit-class {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+}
+
+.lang-en {
+    width: 19px;
+    opacity: 0.6;
+    margin-left: 2px;
+}
+
+.table td,
+.table th {
+    font-family: "roboto-regular";
+    font-size: 13px;
+}
+
+.button-cancel {
+    background: #6b6b6b !important;
 }

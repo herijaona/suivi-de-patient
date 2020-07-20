@@ -28,9 +28,9 @@
                 </li>
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
-                <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li>
+                <!-- <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li> -->
+                <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Calendrier de Vaccination</a></li>
                 <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
-                <li class="{{  (currentPath == path('vaccination_praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Calendrier de Vaccination</a></li>
                 <li class="{{ (currentPath == path('rdv_praticien') or currentPath == path('rdv_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#rdv">Rendez-Vous</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
                         <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" >En attente de validation</a></li>

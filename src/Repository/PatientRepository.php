@@ -66,5 +66,25 @@ class PatientRepository extends ServiceEntityRepository
             ;
     }
 
+    public function findByPatientId($user){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT r.id
+            FROM App\Entity\Patient r
+            INNER JOIN App\Entity\User c with c.id = r.user 
+            WHERE (c.id = :user) ')
+            ->setParameter('user', $user);
+        return $query->getArrayResult();
+    }
+
+    public function findByPatientUser($user){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT r
+            FROM App\Entity\Patient r
+            INNER JOIN App\Entity\User c with c.id = r.user 
+            WHERE (c.id = :user) ')
+            ->setParameter('user', $user);
+        return $query->getResult();
+    }
+
 
 }

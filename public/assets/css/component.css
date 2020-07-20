@@ -223,9 +223,9 @@ table tbody tr td i {
 /* End navigation */
 
 .h4-content {
-    font-family: "roboto-bold";
+    font-family: "marvel-bold";
     font-weight: initial;
-    font-size: 13px;
+    font-size: 18px;
     color: #6c757d;
     letter-spacing: 1px;
 }
@@ -287,4 +287,16 @@ select {
     padding: 3px 7px;
     font-size: 14px;
     border-radius: .25rem;
+}
+
+div.dataTables_wrapper div.dataTables_length label {
+    font-family: "marvel-bold";
+}
+
+div.dataTables_wrapper div.dataTables_info {
+    font-family: "marvel-bold";
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    font-size: 12px;
 }
