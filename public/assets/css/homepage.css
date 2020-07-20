@@ -32,9 +32,9 @@ h1 {
     width: 100%;
     position: absolute;
     top: 0;
-    opacity: 0.8;
+    opacity: 0.9;
     height: 100%;
-    background: #352038;
+    background: linear-gradient(-12deg, #1cc888 -9%, #37af21 18%);
 }
 
 .btn-login {
@@ -48,8 +48,8 @@ h1 {
 .btn-register {
     font-family: "roboto-medium";
     border: 0;
-    color: #b30233;
-    background: #ffffff;
+    color: #ffffff;
+    background: #1cc888;
     width: 200px;
     padding: 9px;
 }
@@ -74,4 +74,15 @@ h1 {
     margin: 0 auto;
     margin-top: 26px;
     margin-bottom: 45px;
+}
+
+.logo-div {
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: -8rem;
+}
+
+.logo-div img {
+    width: 171px;
 }

@@ -7,6 +7,7 @@ use App\Entity\GroupFamily;
 use App\Entity\OrdoConsultation;
 use App\Entity\OrdoVaccination;
 use App\Entity\PatientOrdoConsultation;
+use App\Entity\PatientOrdoVaccination;
 use App\Form\RdvType;
 use App\Form\VaccinType;
 use App\Repository\FamilyRepository;
@@ -76,10 +77,10 @@ class PatientController extends AbstractController
      */
     public function patient()
     {
-        $user = $this->getUser();
-        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        $birtday = $patient->getDateOnBorn();
-        $event = [];
+        // $user = $this->getUser();
+        // $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        // $birtday = $patient->getDateOnBorn();
+        // $event = [];
 
         /*$all_rdv = $patient->getRendeVous();
 
@@ -105,9 +106,18 @@ class PatientController extends AbstractController
                 ];
             array_push($event,$element);
         }*/
-        return $this->render('patient/patient.html.twig', [
-            'controller_name' => 'PatientController',
-            'Events'=>$event
+        // return $this->render('patient/patient.html.twig', [
+        //     'controller_name' => 'PatientController',
+        //     'Events'=>$event
+        // ]);
+        $user = $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $doctor = $this->praticienRepository->findAll();
+        $rvc = $this->ordoVaccinationRepository->searchStatus($patient->getId(), 1);
+
+        return $this->render('patient/vaccination.html.twig', [
+            'vaccination'=>$rvc,
+            'Doctors'=>$doctor,
         ]);
     }
 
@@ -340,6 +350,7 @@ class PatientController extends AbstractController
                 $ordovaccination = $this->ordoVaccinationRepository->find($Id);
             }else{
                 $ordovaccination = new OrdoVaccination();
+                
             }
             $ordovaccination->setDatePrise($Date_Rdv);
             $ordovaccination->setOrdonnance($ordo);
@@ -351,6 +362,17 @@ class PatientController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ordovaccination);
             $entityManager->flush();
+
+
+            $patientordovaccination = new PatientOrdoVaccination();
+            $patientordovaccination->setPatient($patient);
+            $id = $patientordovaccination->getId();
+            $patientordovaccination->setOrdoVaccination($id);
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($patientordovaccination);
+            $entityManager->flush();
+
+            
         }
         return $this->redirectToRoute('rdv_patient');
 

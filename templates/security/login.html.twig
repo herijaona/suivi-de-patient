@@ -8,7 +8,7 @@
 <div class="background-img"></div>
 <div class="body-page">
     <div class="container text-center body-content">
-        <img width="88px" src="{{asset('assets/images/logo2.png')}}" alt="logo" id="logo">
+        <img class="logo-login" width="88px" src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
         <h3 class="main-title">Se connecter</h3>
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>

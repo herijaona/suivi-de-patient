@@ -46,8 +46,8 @@
                 <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}">Proposition Rendez-vous</a></li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
-                <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li>
-                <li {% if (currentPath == path('vaccination_patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">Calendrier de Vaccination</a></li>
+                <!--  <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li> -->
+                <li {% if (currentPath == path('vaccination_patient') or currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">Calendrier de Vaccination</a></li>
                 <li {% if (currentPath == path('consultation_patient')) ? 'active' :''  %} class="active" {% endif %} ><a href="{{ path('consultation_patient') }}">Consultation</a></li>
                 <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">Rendez-Vous</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
