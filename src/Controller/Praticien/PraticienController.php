@@ -73,42 +73,52 @@ class PraticienController extends AbstractController
         $this->vaccinRepository = $vaccinRepository;
     }
     /**
-     * @Route("/agenda", name="praticien")
+     * @Route("/", name="praticien")
      */
     public function praticien()
     {
+        // if (!$this->isGranted('ROLE_PRATICIEN')) {
+        //     return $this->redirectToRoute('homepage');
+        // }
+        // $user = $this->getUser();
+        // $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+       // $all_rdv = $this->rendezVousRepository->findCalendarPraticien($praticien->getId());
+        // $all_rdv = [];
+        // $event = [];
+        // foreach ($all_rdv as $rdv){
+        //     $color = '#fcb41d';
+        //     if($rdv->getEtat() == 0){
+        //         $color = '#fcb41d';
+        //     }else if ($rdv->getStatus() == 1){
+        //         $color = '#51c81c';
+        //     }else if($rdv->getType() == 1){
+        //         $color = '#3794fc';
+        //     }else if($rdv->getType() == 2){
+        //         $color = '#ec37fc';
+        //     }else if($rdv->getType() == 3){
+        //         $color = '#fc381d';
+        //     }
+        //     $element = [
+        //         'id' => $rdv->getId(),
+        //         'title' => ($rdv->getVaccin() != null && $rdv->getVaccin()->getVaccinName() != null) ? $rdv->getVaccin()->getVaccinName() : $rdv->getDescription() .' - '. (($rdv->getPatient() != null && $rdv->getPatient()->getFirstName() != null) ? $rdv->getPatient()->getFirstName() : 'Proposition Consultation'),
+        //         'start' => $rdv->getDateRdv()->format('Y-m-d'),
+        //         'id' => $rdv->getId(),
+        //         'color' => $color
+        //     ];
+        //     array_push($event,$element);
+        // }
+        // return $this->render('praticien/agenda.html.twig', [
+        //     'Events'=>$event
+        // ]);
         if (!$this->isGranted('ROLE_PRATICIEN')) {
             return $this->redirectToRoute('homepage');
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-       // $all_rdv = $this->rendezVousRepository->findCalendarPraticien($praticien->getId());
-        $all_rdv = [];
-        $event = [];
-        foreach ($all_rdv as $rdv){
-            $color = '#fcb41d';
-            if($rdv->getEtat() == 0){
-                $color = '#fcb41d';
-            }else if ($rdv->getStatus() == 1){
-                $color = '#51c81c';
-            }else if($rdv->getType() == 1){
-                $color = '#3794fc';
-            }else if($rdv->getType() == 2){
-                $color = '#ec37fc';
-            }else if($rdv->getType() == 3){
-                $color = '#fc381d';
-            }
-            $element = [
-                'id' => $rdv->getId(),
-                'title' => ($rdv->getVaccin() != null && $rdv->getVaccin()->getVaccinName() != null) ? $rdv->getVaccin()->getVaccinName() : $rdv->getDescription() .' - '. (($rdv->getPatient() != null && $rdv->getPatient()->getFirstName() != null) ? $rdv->getPatient()->getFirstName() : 'Proposition Consultation'),
-                'start' => $rdv->getDateRdv()->format('Y-m-d'),
-                'id' => $rdv->getId(),
-                'color' => $color
-            ];
-            array_push($event,$element);
-        }
-        return $this->render('praticien/agenda.html.twig', [
-            'Events'=>$event
+        $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId(), 1, 0 );
+
+        return $this->render('praticien/vaccination.html.twig', [
+            'vaccination' => $rvc,
         ]);
     }
 

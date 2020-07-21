@@ -62,7 +62,7 @@
 ####url pour lister consultation avec authorization Bearer token
         http://localhost:8000/api/ordo_consultations
         http://localhost:8000/api/ordo_vaccinations/{id}
-####url pour lister carnet vaccinations avec authorization Bearer token
+####url pour lister rod vaccinations avec authorization Bearer token
     http://localhost:8000/api/carnet_vaccinations
     http://localhost:8000/api/carnet_vaccinations/{id}
 ####url pour lister types de centre de santé avec authorization Bearer token
@@ -140,35 +140,3 @@
 ####url pour lister vaccin affecté à praticien avec authorization Bearer token
     http://localhost:8000/api/vaccin_praticiens
     http://localhost:8000/api/vaccin_praticiens/{id}
-    
-####url de register rdv avec authorization Bearer token
-    http://localhost:8000/api/register_rdv_patient
-    {
-        "typeRdv": "consultation",
-        "praticiens": 1,
-        "dateRdv": "12/12/2020",
-        "description": "description",
-        "heureRdv": "20:20",
-        "vaccin":"",
-        "id": ""
-    }
-####url de get rdv en entete de validation et réjeté avec authorization Bearer token
-    http://localhost:8000/api/ordovaccination_rejected
-    
-    http://localhost:8000/api/ordo_vaccinations_in_progress
-    
-    http://localhost:8000/api/ordoconsultation_rejected
-    
-    http://localhost:8000/api/ordoconsultation_in_progress
-
-####url de mise à jour de status rdv(activé/réjeté) avec authorization Bearer token
-    http://localhost:8000/api/update_status_rdv
-    {
-        "type": "consultation",
-        "action": 'active/reject',
-        "id": 1
-    }
-
-####url de mise à jour d'etat vaccination/consultation avec authorization Bearer token
-   
-    

@@ -26,11 +26,11 @@
     <div class="body-page">
         <div class="d-flex">
             <!--nav-->
-            {% block nav %} {{ include('patient/include/sidebar.html.twig') }} {% endblock %}
+            {% block nav %} {{ include('include/nav_bar.html.twig') }} {% endblock %}
             <!--nav-->
             <div class="col_exc_2">
                 <!---header-->
-                {% block header %} {{ include('patient/include/header.html.twig') }} {% endblock %}
+                {% block header %} {{ include('include/header.html.twig') }}{% endblock %}
 
                 <!---header-->
                 {% for message in app.flashes('error') %}

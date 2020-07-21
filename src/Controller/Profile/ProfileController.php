@@ -10,6 +10,7 @@ use App\Repository\PatientRepository;
 
 use Symfony\Component\Routing\Annotation\Route;
 
+use App\Form\RegistrationFormType;
 use App\Entity\Family;
 use App\Entity\GroupFamily;
 use App\Entity\RendezVous;
@@ -41,6 +42,11 @@ class ProfileController extends AbstractController
     protected $patientRepository;
     protected $praticienRepository;
     private $userCurrent;
+
+    const ROLE_PATIENT = 'ROLE_PATIENT';
+    const ROLE_PRATICIEN = 'ROLE_PRATICIEN';
+    const ROLE_ADMIN = 'ROLE_ADMIN';
+
     function __construct(
         PatientRepository $patientRepository,
         PraticienRepository $praticienRepository,
@@ -152,7 +158,9 @@ class ProfileController extends AbstractController
         $coprs = $this->praticienRepository->findByPraticienUser($currentUser->getId());
         
         $values;
-        foreach ( $coprs as $key => $val) { $values = $val; }
+        foreach ( $coprs as $key => $val) { 
+            $values = $val; 
+        }
 
         return $this->render('profile/editPraticien.html.twig', [
             'values' => $values,
@@ -160,6 +168,100 @@ class ProfileController extends AbstractController
             'registrationForm' => $form->createView(),
             'currentUser' => $currentUser
         ]);
+    }
+
+    
+    /**
+     * @Route("/patient/profile", name="editPatient")
+     * @return Response
+     */
+    public function editPatient(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator) : Response{
+        $user = [];
+        $form = $this->createForm(RegistrationFormType::class, $user);
+       
+        $form->handleRequest($request);
+
+        $currentUser = $this->getUser();
+        $user = $this->user->find($currentUser->getId());
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            // encode the plain password
+            $last_name = $form->get('lastname')->getData();
+            $first_name = $form->get('firstname')->getData();
+            
+            $user->setLastName($last_name);
+            $user->setFirstName($first_name);
+            $user->setUsername($form->get('username')->getData());
+            $user->setEmail($form->get('email')->getData());
+            $user->setRoles([self::ROLE_PATIENT]);
+            $user->setEtat(0);
+            // encode the plain password
+            $user->setPassword(
+                $passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                )
+            );
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+
+
+            $idPatient = $this->patientRepository->findByPatientId($currentUser->getId());
+            var_dump($idPatient);
+            $patient = $this->patientRepository->find($idPatient['0']['id']);
+
+            $patient->setFirstName($first_name);
+            $patient->setLastName($last_name);
+
+            $patient->setAddress($form->get('address')->getData());
+            $patient->setSexe($form->get('sexe')->getData());
+            $patient->setDateOnBorn($form->get('date_naissance')->getData());
+            $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
+
+            $patient->setTypePatient($form->get('type_patient')->getData());
+            $patient->setPhone($form->get('phone')->getData());
+            $patient->setFatherName($form->get('namedaddy')->getData());
+            $patient->setMotherName($form->get('namemonther')->getData());
+            $patient->setEtat(1);
+            $patient->setUser($user);
+            $entityManager->persist($patient);
+            $entityManager->flush();
+            $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
+            // do anything else you need here, like send an email
+
+            return $this->redirectToRoute('editPatient',['id'=>$currentUser->getId()]);
+        }
+
+        
+        $isuser = $this->patientRepository->findByPatient(['user'=>$user]);
+
+        $coprs = $this->patientRepository->findByPatientUser($currentUser->getId());
+        
+        $values;
+        foreach ( $coprs as $key => $val) { 
+            $values = $val;
+        }
+        
+        return $this->render('profile/profilePatient.html.twig', [
+            'values' => $values,
+            'isuser' => $isuser,
+            'registrationForm' => $form->createView(),
+            'currentUser' => $currentUser
+        ]);
+
+    } 
+
+    public function checkConnected(){
+        $securityContext = $this->container->get('security.authorization_checker');
+        if ($securityContext->isGranted(self::ROLE_PATIENT)) {
+            return 'patient';
+        }elseif($securityContext->isGranted(self::ROLE_PRATICIEN)){
+            return 'praticien';
+        }elseif($securityContext->isGranted(self::ROLE_ADMIN)){
+            return 'admin';
+        }
+        return false;
     }
 
 }
