@@ -124,9 +124,8 @@ class PatientController extends AbstractController
             $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
             $birtday = $patient->getDateOnBorn();
             $dateNow = date('Y-m-d');
-            //$praticien = $this->praticienRepository->find(1);
-            $this->vaccinGenerate->generateCalendar($patient,$birtday,$type,$state, null, $dateNow);
-
+            //dd($type, $state, $birtday,$dateNow);
+            $this->vaccinGenerate->generateCalendar($patient,$birtday,$type,$state,null, $dateNow);
             return new JsonResponse("ok");
         }
         return "error";
