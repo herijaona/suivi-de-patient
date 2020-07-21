@@ -1,4 +1,36 @@
 window.onload = function() {
+    var evolution = [];
+    var patientPraticien = [];
+
+    $.ajax({
+        url: "/admin/chart/evolutions_des_patients_praticiens",
+        type: 'get',
+        dataType: 'json',
+        success: (data) => {
+            console.log(data)
+            evolution = data;
+        },
+        error: (e) => {
+
+        }
+    }).done(() => {
+
+    });
+
+    $.ajax({
+        url: "/admin/chart/evolutions_des_vaccinations",
+        type: 'get',
+        dataType: 'json',
+        success: (data) => {
+            console.log(data)
+            evolution = data;
+        },
+        error: (e) => {
+
+        }
+    }).done(() => {
+
+    });
 
     var chart = new CanvasJS.Chart("chartContainer", {
         animationEnabled: true,
@@ -16,7 +48,7 @@ window.onload = function() {
             }]
         },
         data: [{
-            yValueFormatString: "#,### Units",
+            yValueFormatString: "#,### Nombre de vaccination",
             xValueFormatString: "YYYY",
             type: "spline",
             dataPoints: [
@@ -42,6 +74,8 @@ window.onload = function() {
     chart.render();
 
     // Chart 2
+
+
 
     var chart2 = new CanvasJS.Chart("chartContainer2", {
         animationEnabled: true,

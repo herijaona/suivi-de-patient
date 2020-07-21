@@ -118,6 +118,31 @@ class AdminController extends AbstractController
     }
 
     /**
+     * @Route("/chart/evolutions_des_vaccinations", name="evolutions_des_vaccinations")
+     */
+    public function evolutions_des_vaccinations()
+    {
+        $evolut_vacc = $this->ordoVaccinationRepository->getQueryVacc();
+        dd($evolut_vacc);
+        return new JsonResponse([
+            $evolut_vacc
+        ]);
+    }
+
+    /**
+     * @Route("/chart/evolutions_des_patients_praticiens", name="evolutions_des_patients_praticiens")
+     */
+    public function evolutions_des_patients_praticiens()
+    {
+        $patient = $this->patientRepository->count(["id"]);
+        $praticien = $this->praticienRepository->count(["id"]);
+        dd($patient, $praticien);
+        return new JsonResponse([
+            $evolut_vacc
+        ]);
+    }
+
+    /**
      * @Route("/praticien", name="praticiens_admin")
      */
     public function praticiens_admin()

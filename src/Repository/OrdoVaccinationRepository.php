@@ -137,4 +137,15 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getQueryVacc()
+    {
+        return $this->createQueryBuilder('o')
+            ->select(' COUNT(v.id) AS nb_devis')
+            ->join("o.vaccin", "v")
+            ->where('o.statusVaccin = 1')
+            ->groupBy('YEAR(o.datePrise)')
+            ->getQuery()
+            ->getResult();
+    }
 }
