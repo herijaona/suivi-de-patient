@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource(
  *    normalizationContext={"groups"={"read:state"}},
  *    collectionOperations={"get"},
- *    itemOperations={"get"}
+ *    itemOperations={"get"} 
  * )
  */
 class State

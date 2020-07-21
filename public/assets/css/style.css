@@ -66,7 +66,7 @@ ul {
 
 .col_exc_1 {
     /* background: linear-gradient(163deg, #3c023c 10%, #1c053a 57%); */
-    background: linear-gradient(163deg, #02273c 10%, #052749 57%);
+    background: linear-gradient(150deg, #077DF2 4%, #06CF7D 100%);
     min-height: 97.5vh;
     width: 18%;
     position: relative;
@@ -108,7 +108,7 @@ ul {
 
 .img_profile label {
     font-family: "roboto-medium";
-    color: #7d7a7a;
+    color: #aacede;
     font-size: 13px;
     margin-top: -15px;
 }
@@ -127,12 +127,12 @@ ul {
 }
 
 .menu_suivi .active {
-    border-right: 3px solid #54b3c9;
-    background: rgba(234, 234, 234, 0.031);
+    border-right: 3px solid #ffffff;
+    background: rgba(245, 245, 245, 0.1);
 }
 
 .menu_suivi a {
-    color: #b7b2b2;
+    color: #ffffff;
 }
 
 .logout_footer {
@@ -257,7 +257,7 @@ img#qrcode {
 .button-login {
     color: #fff;
     border: 0;
-    background: linear-gradient(163deg, #e90eec 10%, #5907bf 57%);
+    background: rgb(6, 207, 125);
     width: 45%;
 }
 
@@ -361,12 +361,12 @@ select.mdb-select.initialized {
 /* End Dashboard */
 
 .btn-class {
-    background: #c70053 !important;
-    border: none;
-    border-radius: 0;
-    font-family: "roboto-medium";
-    text-transform: none;
-    padding: 12px;
+    color: #fff;
+    background-color: #0789e2 !important;
+    border-color: #007bff;
+    padding: 3px 7px;
+    font-size: 14px;
+    border-radius: .25rem;
 }
 
 .btn-danger.active_etat_rdv {
@@ -433,4 +433,10 @@ select.mdb-select.initialized {
     font-family: "marvel-bold";
     font-size: 18px;
     margin-bottom: -1px;
+}
+
+.logo-login {
+    width: 124px;
+    margin-bottom: 13px;
+    margin-top: 19px;
 }

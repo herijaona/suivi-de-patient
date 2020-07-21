@@ -6,7 +6,7 @@
             <h5>{{ app.user.firstname }}</h5>
         </div>
         <ul class="menu_suivi">
-            <li {% if app.request.get('_route') == 'patient' %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li>
+            <!-- <li {% if app.request.get('_route') == 'patient' %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li> -->
             <li {% if app.request.get('_route') == 'vaccination_patient' %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">Calendrier de Vaccination</a></li>
             <li {% if app.request.get('_route') == 'consultaion_patient' %} class="active" {% endif %} ><a href="{{ path('consultaion_patient') }}">Consultation</a></li>
             <li {% if app.request.get('_route') == 'rdv_patient' %} class="active" {% endif %}><a href="{{ path('rdv_patient') }}">Rendez-Vous</a></li>
