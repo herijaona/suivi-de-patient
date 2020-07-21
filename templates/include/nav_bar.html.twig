@@ -3,7 +3,12 @@
     <h4 class="h4_patient">Espace {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %}</h4>
     <div class="mt-4">
         <div class="img_profile">
-            <img width="88px" src="{{ asset('assets/images/praticien.jpg') }}" alt="logo" id="logo">
+            <span>
+                <a class="edit-profile">
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+                <img width="88px" src="{{ asset('assets/images/praticien.jpg') }}" alt="logo" id="logo">
+            </span>
             <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
             <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Administrator{% endif %}</label>
         </div>
@@ -74,3 +79,14 @@
         </ul>
     </div>
 </div>
+
+
+
+{% block javascripts %}
+<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+<script>
+    $('.edit-profile').on('click', function(e) {
+        alert('ok');
+    });
+</script>
+{% endblock %}

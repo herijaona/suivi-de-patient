@@ -113,6 +113,18 @@ ul {
     margin-top: -15px;
 }
 
+.img_profile span {
+    position: relative;
+}
+
+.img_profile .edit-profile {
+    position: absolute;
+    right: 29px;
+    color: #e9e9e9 !important;
+    font-size: 17px;
+    top: 0px;
+}
+
 .menu_suivi {
     list-style: none;
     font-family: "roboto-regular";
