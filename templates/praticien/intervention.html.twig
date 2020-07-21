@@ -21,7 +21,6 @@
                 <th>Type</th>
                 <th>Objet de consultation </th>
                 <th>Patient</th>
-                <th>Praticien</th>
                 <th>Vaccin</th>
                 <th></th>
 
@@ -36,7 +35,6 @@
                     <td>Consultation</td>
                     <td>{{ icp.objetConsultation }}</td>
                     <td>{{ icp.patient_name }} {{ icp.patient_lastname }} </td>
-                    <td>{{ icp.firstName }} {{ icp.lastName }} </td>
                     <td></td>
                     <td><span  class="badge badge-success badge-style">Fait</span> </td>
                 </tr>
@@ -50,7 +48,6 @@
                     <td>Vaccination</td>
                     <td></td>
                     <td>{{ ivp.patient_name }} {{ ivp.patient_lastname }} </td>
-                    <td>{{ ivp.firstName }} {{ ivp.lastName }} </td>
                     <td>{{ ivp.vaccinName }}</td>
                     <td>
                        <span  class="badge badge-success badge-style">Fait</span>
