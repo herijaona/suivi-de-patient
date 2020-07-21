@@ -32,7 +32,7 @@ class CentreType
     private $typeName;
 
     /**
-     * @ORM\OneToMany(targetEntity=CentreHealth::class, mappedBy="centre_type")
+     * @ORM\OneToMany(targetEntity=CentreHealth::class, mappedBy="centreType")
      */
     private $centreHealths;
 
