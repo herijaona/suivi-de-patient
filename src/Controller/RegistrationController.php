@@ -136,7 +136,6 @@ class RegistrationController extends AbstractController
             $praticien->setFirstName($first_name);
             $praticien->setLastName($last_name);
             $praticien->setCreatedAt(new \DateTime('now'));
-            $praticien->setAdress($form->get('address')->getData());
             $praticien->setDateBorn($form->get('date_naissance')->getData());
             //$praticien->setAdressBorn($form->get('lieu_naissance')->getData());
             $praticien->setFonction($form->get('fonction')->getData());
@@ -174,9 +173,7 @@ class RegistrationController extends AbstractController
             $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
-            $patient->setAdress($form->get('address')->getData());
             $patient->setDateOnBorn($form->get('date_naissance')->getData());
-            $patient->setAdressOnBorn($form->get('lieu_naissance')->getData());
             $patient->setTypePatient($typePatient);
             $patient->setEtat(false);
             $patient->setPhone($form->get('phone')->getData());
