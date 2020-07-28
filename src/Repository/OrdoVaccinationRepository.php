@@ -140,12 +140,20 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
 
     public function getQueryVacc()
     {
-        return $this->createQueryBuilder('o')
-            ->select(' COUNT(v.id) AS nb_devis')
+
+        $qb = $this->createQueryBuilder('o');
+        return $qb->select('
+            COUNT(o.id)  AS nb_vaccin, 
+            MONTH(o.datePrise) AS month, 
+            YEAR(o.datePrise) AS year
+            ')
             ->join("o.vaccin", "v")
             ->where('o.statusVaccin = 1')
-            ->groupBy('YEAR(o.datePrise)')
+            ->groupBy('month')
+            ->addGroupBy('year')
+            ->orderBy('o.datePrise', 'ASC')
             ->getQuery()
             ->getResult();
+
     }
 }

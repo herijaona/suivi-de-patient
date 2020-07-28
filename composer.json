@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/api-pack": "^1.2",
+        "beberlei/doctrineextensions": "^1.2",
         "endroid/qrcode-bundle": "^3.4",
         "lexik/jwt-authentication-bundle": "^2.7.0",
         "namshi/jose": "^7.2",

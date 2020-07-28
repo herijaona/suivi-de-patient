@@ -118,28 +118,36 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/chart/evolutions_des_vaccinations", name="evolutions_des_vaccinations")
+     * @Route("/chart/evolutions_des_vaccinations", name="evolutions_des_vaccinations", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
     public function evolutions_des_vaccinations()
     {
         $evolut_vacc = $this->ordoVaccinationRepository->getQueryVacc();
-        dd($evolut_vacc);
-        return new JsonResponse([
-            $evolut_vacc
-        ]);
+        $evacc = [];
+        if (count($evolut_vacc) > 0){
+            $i = 0;
+            foreach ($evolut_vacc as $evolut_vac){
+                $evacc[$i]['x']= $evolut_vac['year'].'-'.$evolut_vac['month'].'-01';
+                $evacc[$i]['y']= intval($evolut_vac['nb_vaccin']);
+                $i++;
+            }
+        }
+
+        return new JsonResponse($evacc);
     }
 
     /**
-     * @Route("/chart/evolutions_des_patients_praticiens", name="evolutions_des_patients_praticiens")
+     * @Route("/chart/evolutions_des_patients_praticiens", name="evolutions_des_patients_praticiens", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
     public function evolutions_des_patients_praticiens()
     {
-        $patient = $this->patientRepository->count(["id"]);
-        $praticien = $this->praticienRepository->count(["id"]);
-        dd($patient, $praticien);
-        return new JsonResponse([
-            $evolut_vacc
-        ]);
+        $praticien = $this->praticienRepository->count(['etat' => 1]);
+        $patient = $this->patientRepository->count(['etat' => 1]);
+
+        $data =[];
+        $data['patient'] = $patient;
+        $data['praticien'] = $praticien;
+        return new JsonResponse($data);
     }
 
     /**
