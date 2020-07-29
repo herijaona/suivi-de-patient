@@ -2,16 +2,36 @@
 <div class="col_exc_1">
     <h4 class="h4_patient">Espace {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %}</h4>
     <div class="mt-4">
-        <div class="img_profile">
+        {% if is_granted('ROLE_PATIENT') %}
+            <div class="img_profile">
             <span>
-                <a class="edit-profile">
+               <a class="edit-profile">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
                 <img width="88px" src="{{ asset('assets/images/praticien.jpg') }}" alt="logo" id="logo">
             </span>
-            <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
-            <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Administrator{% endif %}</label>
-        </div>
+                <form method="post" action="upload.php" enctype="multipart/form-data" id="picUploadForm" target="uploadTarget">
+                    <input type="file" name="picture" id="fileInput"  style="display:none"/>
+                </form>
+                <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
+                <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Administrator{% endif %}</label>
+            </div>
+        {% endif %}
+        {% if is_granted('ROLE_PRATICIEN') %}
+            <div class="img_profile">
+            <span>
+               <a class="edit-profile">
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+                <img width="88px" src="{{ asset('assets/images/famille.jpg') }}" alt="logo" id="logo">
+            </span>
+                <form method="post" action="#" enctype="multipart/form-data" id="picUploadForm" target="uploadTarget">
+                    <input type="file" name="picture" id="fileInput"  style="display:none"/>
+                </form>
+                <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
+                <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Administrator{% endif %}</label>
+            </div>
+        {% endif %}
         <ul class="menu_suivi" id="side-bar-menu">
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="{{ (currentPath == path('admin')) ? 'active' :'' }}"><a href="{{ path('admin') }}">Dashboard</a></li>
@@ -87,6 +107,7 @@
 <script>
     $('.edit-profile').on('click', function(e) {
         alert('ok');
+
     });
 </script>
 {% endblock %}
