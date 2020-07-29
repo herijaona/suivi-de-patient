@@ -86,5 +86,20 @@ class PatientRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findNbrPatientGroupByType(){
+        $qb = $this->createQueryBuilder('p');
+        return $qb->select('
+            COUNT(p.id)  AS nb_patient, 
+            tp.id AS tpId, 
+            tp.typePatientName AS typePatientName
+            ')
+            ->join("p.typePatient", "tp")
+            ->where('p.etat = 1')
+            ->groupBy('tp.id')
+            ->orderBy('tp.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
 
 }

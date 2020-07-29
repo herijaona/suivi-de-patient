@@ -136,6 +136,27 @@ class AdminController extends AbstractController
         return new JsonResponse($evacc);
     }
 
+
+    /**
+     * @Route("/chart/evolutions_des_patiens", name="evolutions_des_patiens", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     */
+    public function evolutions_des_patiens()
+    {
+        $evolut_patient = $this->patientRepository->findNbrPatientGroupByType();
+
+        $epat = [];
+        if (count($evolut_patient) > 0){
+            $i = 0;
+            foreach ($evolut_patient as $evolut_pat){
+                $epat[$i]['label']= $evolut_pat['typePatientName'];
+                $epat[$i]['y']= intval($evolut_pat['nb_patient']);
+                $i++;
+            }
+        }
+
+        return new JsonResponse($epat);
+    }
+
     /**
      * @Route("/chart/evolutions_des_patients_praticiens", name="evolutions_des_patients_praticiens", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */

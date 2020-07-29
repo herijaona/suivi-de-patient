@@ -2,10 +2,14 @@ window.onload = function() {
 
     // Chart 2
     $.ajax({
-        url: "/admin/chart/evolutions_des_vaccinations",
+        url: "/admin/chart/evolutions_des_patiens",
         type: 'get',
         dataType: 'json',
         success: (data) => {
+            var epat = [];
+            $.each(data, function( index, value ) {
+                epat.push({label: value.label, y: value.y});
+            });
             var chart2 = new CanvasJS.Chart("chartContainer2", {
                 animationEnabled: true,
                 title: {
@@ -18,16 +22,9 @@ window.onload = function() {
                     startAngle: 60,
                     //innerRadius: 60,
                     indexLabelFontSize: 17,
-                    indexLabel: "{label} - #percent%",
+                    indexLabel: "{label} - {y}",
                     toolTipContent: "<b>{label}:</b> {y} (#percent%)",
-                    dataPoints: [
-                        { y: 67, label: "Inbox" },
-                        { y: 28, label: "Archives" },
-                        { y: 10, label: "Labels" },
-                        { y: 7, label: "Drafts" },
-                        { y: 15, label: "Trash" },
-                        { y: 6, label: "Spam" }
-                    ]
+                    dataPoints: epat
                 }]
             });
             chart2.render();
