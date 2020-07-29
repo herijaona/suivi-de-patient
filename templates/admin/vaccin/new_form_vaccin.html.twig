@@ -7,9 +7,9 @@
 </style>
 <div class="modal-header text-center">
     {% if new == true %}
-        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Nouveau Vaccin</h4>
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}New Vaccine{% endtrans %} </h4>
     {% else %}
-        <h4 class="modal-title white-text w-100 font-weight-bold py-2">Modification Vaccin</h4>
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}Modification vaccine{% endtrans %}</h4>
     {% endif %}
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" class="white-text">&times;</span>
@@ -20,7 +20,7 @@
 <!--Body-->
 <div class="modal-body">
     <div class="md-form">
-        <label class="active" for="form1">Nom </label>
+        <label class="active" for="form1">{% trans %}Name{% endtrans %}</label>
         {{ form_widget(form.vaccinName, {'attr': { 'class': 'form-control', 'required': 'required' }}) }}
     </div>
     <div class="md-form">
@@ -28,51 +28,51 @@
         {{ form_widget(form.vaccinDescription, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Type de vaccin </label>
+        <label class="active" for="form1">{% trans %}Type of vaccine{% endtrans %} </label>
         {{ form_widget(form.TypeVaccin, {'attr': { 'class': 'form-control chosen-select' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Date prise initial </label>
+        <label class="active" for="form1">{% trans %}Initial take date{% endtrans %} </label>
         {{ form_widget(form.datePriseInitiale, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 1 </label>
+        <label class="active" for="form1">{% trans %}Reminder 1{% endtrans %}</label>
         {{ form_widget(form.rappel1, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 2 </label>
+        <label class="active" for="form1">{% trans %}Reminder 2{% endtrans %}</label>
         {{ form_widget(form.rappel2, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 3</label>
+        <label class="active" for="form1">{% trans %}Reminder 3{% endtrans %}</label>
         {{ form_widget(form.rappel3, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 4 </label>
+        <label class="active" for="form1">{% trans %}Reminder 4{% endtrans %} </label>
         {{ form_widget(form.rappel4, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 5</label>
+        <label class="active" for="form1">{% trans %}Reminder 5{% endtrans %}</label>
         {{ form_widget(form.rappel5, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 6</label>
+        <label class="active" for="form1">{% trans %}Reminder 6{% endtrans %}</label>
         {{ form_widget(form.rappel6, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 7</label>
+        <label class="active" for="form1">{% trans %}Reminder 7{% endtrans %}</label>
         {{ form_widget(form.rappel7, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 8</label>
+        <label class="active" for="form1">{% trans %}Reminder 8{% endtrans %}</label>
         {{ form_widget(form.rappel8, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 9</label>
+        <label class="active" for="form1">{% trans %}Reminder 9{% endtrans %}</label>
         {{ form_widget(form.rappel9, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">Rappel 10</label>
+        <label class="active" for="form1">{% trans %}Reminder 10{% endtrans %}</label>
         {{ form_widget(form.rappel10, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form row-check">
@@ -81,8 +81,8 @@
     </div>
 </div>
 <div class="modal-footer justify-content-center">
-    <button type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" aria-label="Close"><i class="fas fa-remove ml-1"></i> Annuler </button>
-    <button type="submit" class="btn btn-outline-primary waves-effect submit_new_center_health"><i class="fas fa-save ml-1"></i> Enregistrer </button>
+    <button type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" aria-label="Close"><i class="fas fa-remove ml-1"></i> {% trans %}Cancel{% endtrans %}  </button>
+    <button type="submit" class="btn btn-outline-primary waves-effect submit_new_center_health"><i class="fas fa-save ml-1"></i> {% trans %}Save{% endtrans %} </button>
 </div>
 
 {{ form_end(form) }}

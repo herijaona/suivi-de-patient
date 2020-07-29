@@ -10,17 +10,17 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Tous les consultation</h4>
+            <h4 class="h4-content">{% trans %}All consultations{% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date Consultation</th>
-                <th>Objet de consultation </th>
+                <th>{% trans %}Consultation date{% endtrans %}</th>
+                <th>{% trans %}Object of consultation{% endtrans %}</th>
                 <th>Patient</th>
-                <th>Etat Intervention</th>
+                <th>{% trans %}State Intervention{% endtrans %}</th>
 
                 {# <th>More</th> #}
             </tr>
@@ -40,8 +40,8 @@
                     </td>
 
                     <td>
-                            <span class="badge badge-success badge-style modif-etat" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-type="consultation" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" data-action="active">Fait</span>
-                            <span class="badge badge-danger badge-style modif-etat" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-type="consultation" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" data-action="reject">Non Fait</span>
+                            <span class="badge badge-success badge-style modif-etat" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-type="consultation" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" data-action="active">{% trans %}Done{% endtrans %}</span>
+                            <span class="badge badge-danger badge-style modif-etat" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-type="consultation" data-id="{{ rdv.id }}" data-etat="{{ rdv.etat }}" data-action="reject">{% trans %}Not Done{% endtrans %}</span>
                     </td>
 
                 </tr>

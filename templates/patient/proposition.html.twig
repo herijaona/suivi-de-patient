@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Proposition Rendez-vous
+    {% trans %}Appointment proposal{% endtrans %}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -9,16 +9,17 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Proposition Rendez-vous</h4>
+            <h4 class="h4-content">{% trans %}
+                Appointment proposal {% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date Proposition rdv</th>
+                <th>{% trans %}Date Proposal appointment{% endtrans %}</th>
                 <th>Description</th>
-                <th>Nom du docteur</th>
+                <th>Praticien</th>
                 <th></th>
             </tr>
             </thead>
@@ -36,7 +37,7 @@
                         {{ propos.lastName }}
                     </td>
                     <td>
-                        <span class="badge badge-success badge-style modif-etat" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}" data-personne = "{{ propos.PersonneAttendre }}" >Accepter</span>
+                        <span class="badge badge-success badge-style modif-etat" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}" data-personne = "{{ propos.PersonneAttendre }}" >{% trans %}Accept{% endtrans %}</span>
                     </td>
 
                 </tr>

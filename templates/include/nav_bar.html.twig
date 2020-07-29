@@ -1,87 +1,77 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <div class="col_exc_1">
-    <h4 class="h4_patient">Espace {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %}</h4>
+    <h4 class="h4_patient"> {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %} {% trans %} Area {% endtrans %}
+    </h4>
     <div class="mt-4">
-        {% if is_granted('ROLE_PATIENT') %}
             <div class="img_profile">
             <span>
                <a class="edit-profile">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
-                <img width="88px" src="{{ asset('assets/images/praticien.jpg') }}" alt="logo" id="logo">
-            </span>
-                <form method="post" action="upload.php" enctype="multipart/form-data" id="picUploadForm" target="uploadTarget">
+                {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
+                <img  src="/{{ img }}" width="88px" alt="logo" id="imagePreview">
+                 <form method="post" action="{{path('modif_photo')}}" enctype="multipart/form-data" id="picUploadForm" >
                     <input type="file" name="picture" id="fileInput"  style="display:none"/>
                 </form>
-                <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
-                <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Administrator{% endif %}</label>
-            </div>
-        {% endif %}
-        {% if is_granted('ROLE_PRATICIEN') %}
-            <div class="img_profile">
-            <span>
-               <a class="edit-profile">
-                    <i class="fas fa-pencil-alt"></i>
-                </a>
-                <img width="88px" src="{{ asset('assets/images/famille.jpg') }}" alt="logo" id="logo">
             </span>
-                <form method="post" action="#" enctype="multipart/form-data" id="picUploadForm" target="uploadTarget">
-                    <input type="file" name="picture" id="fileInput"  style="display:none"/>
-                </form>
+
                 <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
-                <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Administrator{% endif %}</label>
+                <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %}{% trans %}Administrator{% endtrans %}{% endif %}</label>
             </div>
-        {% endif %}
+
+
         <ul class="menu_suivi" id="side-bar-menu">
             {% if is_granted('ROLE_ADMIN') %}
-                <li class="{{ (currentPath == path('admin')) ? 'active' :'' }}"><a href="{{ path('admin') }}">Dashboard</a></li>
-                <li class="{{ (currentPath == path('admin_member')) ? 'active' : '' }}"><a href="{{ path('admin_member') }}">Membres</a></li>
+                <li class="{{ (currentPath == path('admin')) ? 'active' :'' }}"><a href="{{ path('admin') }}">{% trans %} Dashboard {% endtrans %}</a></li>
+                <li class="{{ (currentPath == path('admin_member')) ? 'active' : '' }}"><a href="{{ path('admin_member') }}">{% trans %}Members{% endtrans %}</a></li>
                 <li class="{{ (currentPath == path('vaccin_admin')) ? 'active' : '' }}"><a href="{{ path('vaccin_admin') }}">Vaccinations</a></li>
                 <li class="{{ (currentPath == path('consultation_admin')) ? 'active' : '' }}"><a href="{{ path('consultation_admin') }}">Consultations</a></li>
                 {#<li class="{{ (currentPath == path('praticiens_admin')) ? 'active' : '' }}"><a href="{{ path('praticiens_admin') }}">Liste des praticiens</a></li>
                 <li class="{{ (currentPath == path('patients_admin')) ? 'active' : '' }}"><a href="{{ path('patients_admin') }}">Liste des patients</a></li>#}
                 <li class="{{ (currentPath == path('admin_centre_health') or currentPath == path('admin_city') or currentPath == path('admin_region') or currentPath == path('admin_state') or currentPath == path('admin_vaccin') or currentPath == path('admin_type_vaccin'))  ? 'active' : '' }}">
-                    <a href="#" data-toggle="collapse" data-target="#vacc"><span><i class="material-icons fs-16"></i>Paramètres</span></a>
+                    <a href="#" data-toggle="collapse" data-target="#vacc"><span><i class="material-icons fs-16"></i>{% trans %}Settings {% endtrans %}</span></a>
                     <ul id="vacc" class="collapse" aria-labelledby="vacc" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath == path('admin_centre_health')) ? 'active' : '' }}"><a href="{{ path('admin_centre_health') }}">Centre de Santé</a></li>
-                        <li class="{{ (currentPath == path('admin_type_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_type_vaccin') }}">Type de vaccin</a></li>
-                        <li class="{{ (currentPath == path('admin_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_vaccin') }}">Vaccin</a></li>
-                        <li class="{{ (currentPath == path('admin_state')) ? 'active' : '' }}"><a href="{{ path('admin_state') }}">Pays</a></li>
-                        <li class="{{ (currentPath == path('admin_region')) ? 'active' : '' }}"><a href="{{ path('admin_region') }}">Région</a></li>
-                        <li class="{{ (currentPath == path('admin_city')) ? 'active' : '' }}"><a href="{{ path('admin_city') }}">Ville</a></li>
+                        <li class="{{ (currentPath == path('admin_centre_health')) ? 'active' : '' }}"><a href="{{ path('admin_centre_health') }}">{% trans %}Health center {% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('admin_type_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_type_vaccin') }}">{% trans %}Vaccine Types{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('admin_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_vaccin') }}">{% trans %}Vaccine {% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('admin_state')) ? 'active' : '' }}"><a href="{{ path('admin_state') }}">{% trans %}Country{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('admin_region')) ? 'active' : '' }}"><a href="{{ path('admin_region') }}">{% trans %}Region{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('admin_city')) ? 'active' : '' }}"><a href="{{ path('admin_city') }}">{% trans %}City{% endtrans %}</a></li>
                     </ul>
                 </li>
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
                 <!-- <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li> -->
-                <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Calendrier de Vaccination</a></li>
+                <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">{% trans %}Vaccination schedule{% endtrans %}</a></li>
                 <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
-                <li class="{{ (currentPath == path('rdv_praticien') or currentPath == path('rdv_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#rdv">Rendez-Vous</a>
+                <li class="{{ (currentPath == path('rdv_praticien') or currentPath == path('rdv_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#rdv">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" >En attente de validation</a></li>
-                        <li class="{{ (currentPath == path('rdv_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien_reject') }}" >Réjeter</a></li>
+                        <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" >{% trans %}Awaiting validation {% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('rdv_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien_reject') }}" >{% trans %}Reject{% endtrans %}</a></li>
                     </ul>
                 </li>
                 <li class="{{ (currentPath == path('intervention_praticien') or currentPath == path('intervention_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#intervention">Intervention</a>
                     <ul id="intervention" class="collapse" aria-labelledby="intervention" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath ==  path('intervention_praticien')) ? 'active' :''  }}"> <a href="{{ path('intervention_praticien')}}" >Fait</a></li>
-                        <li class="{{ (currentPath == path('intervention_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('intervention_praticien_reject') }}" >Non Fait</a></li>
+                        <li class="{{ (currentPath ==  path('intervention_praticien')) ? 'active' :''  }}"> <a href="{{ path('intervention_praticien')}}" >{% trans %}done{% endtrans %}</a></li>
+
+                        <li class="{{ (currentPath == path('intervention_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('intervention_praticien_reject') }}" >{% trans %}Not done{% endtrans %}</a></li>
                     </ul>
                 </li>
-                <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}">Proposition Rendez-vous</a></li>
+                <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}">{% trans %}Appointment proposal{% endtrans %}</a></li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
                 <!--  <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li> -->
-                <li {% if (currentPath == path('vaccination_patient') or currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">Calendrier de Vaccination</a></li>
+                <li {% if (currentPath == path('vaccination_patient') or currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">{% trans %}Vaccination schedule{% endtrans %}</a></li>
                 <li {% if (currentPath == path('consultation_patient')) ? 'active' :''  %} class="active" {% endif %} ><a href="{{ path('consultation_patient') }}">Consultation</a></li>
-                <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">Rendez-Vous</a>
+                <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" >En attente de validation</a></li>
-                        <li class="{{ (currentPath == path('rdv_annuler')) ? 'active' :''  }}"> <a href="{{ path('rdv_annuler') }}" >Réjeter</a></li>
+                        <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" >{% trans %}Awaiting validation {% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('rdv_annuler')) ? 'active' :''  }}"> <a href="{{ path('rdv_annuler') }}" >{% trans %}Reject{% endtrans %}</a></li>
                     </ul>
                 </li>
-                <li {% if (currentPath == path('proposisition_rdv') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('proposisition_rdv') }}">Proposition Rendez-vous</a></li>
-                <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">Groupe Famille</a></li>
+                <li {% if (currentPath == path('proposisition_rdv') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('proposisition_rdv') }}">{% trans %}Appointment proposal{% endtrans %}</a></li>
+                <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">{% trans %}Family Group {% endtrans %}</a></li>
+
             {% endif %}
         </ul>
         <ul class="logout_footer">
@@ -105,9 +95,43 @@
 {% block javascripts %}
 <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
 <script>
-    $('.edit-profile').on('click', function(e) {
-        alert('ok');
+    $(document).ready(function () {
+        //If image edit link is clicked
+        $(".edit-profile").on('click', function(e){
+            e.preventDefault();
+            $("#fileInput:hidden").trigger('click');
+        });
 
+        //On select file to upload
+        $("#fileInput").on('change', function(){
+            var image = $('#fileInput').val();
+            var img_ex = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+
+            //validate file type
+            if(!img_ex.exec(image)){
+                alert('Please upload only .jpg/.jpeg/.png/.gif file.');
+                $('#fileInput').val('');
+                return false;
+            }else{
+                $('.uploadProcess').show();
+                $('#uploadForm').hide();
+                $( "#picUploadForm" ).submit();
+            }
+        });
     });
+
+    //After completion of image upload process
+    function completeUpload(success, fileName) {
+        if (success == 1) {
+            $('#imagePreview').attr("src", "");
+            $('#imagePreview').attr("src", fileName);
+            $('#fileInput').attr("value", fileName);
+            $('.uploadProcess').hide();
+        } else {
+            $('.uploadProcess').hide();
+            alert('There was an error during file upload!');
+        }
+        return true;
+    }
 </script>
 {% endblock %}

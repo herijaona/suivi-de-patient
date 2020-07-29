@@ -9,19 +9,19 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Tous les vaccinations</h4>
+            <h4 class="h4-content">{% trans %}All vaccinations{% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date vaccination</th>
-                <th>Détail</th>
-                <th>Patient</th>
-                <th>Praticien</th>
-                <th>Validation</th>
-                <th>Status</th>
+                <th>{% trans %}Vaccination date{% endtrans %}</th>
+                <th>{% trans %}Detail{% endtrans %}</th>
+                <th>{% trans %}Patient{% endtrans %}</th>
+                <th>{% trans %}Praticien{% endtrans %}</th>
+                <th>{% trans %}Validation{% endtrans %}</th>
+                <th>{% trans %}Status{% endtrans %}</th>
                 {# <th>More</th> #}
             </tr>
             </thead>
@@ -42,18 +42,18 @@
                     </td>
                     <td>
                         {% if rdv.statusVaccin == 0 %}
-                            <button class="btn btn-info validation_width" >En attente</button>
+                            <button class="btn btn-info validation_width" >{% trans %}waiting{% endtrans %}</button>
                         {% elseif rdv.statusVaccin == 1 %}
-                            <button class="btn btn-primary validation_width" >Validé</button>
+                            <button class="btn btn-primary validation_width" >{% trans %}Validate{% endtrans %}</button>
                         {% else %}
-                            <button class="btn btn-danger validation_width" >Réjeté</button>
+                            <button class="btn btn-danger validation_width" >{% trans %}Reject{% endtrans %}</button>
                         {% endif %}
                     </td>
                     <td>
                         {% if rdv.etat == 0 %}
-                            <button class="btn btn-deep-orange  validation_width" >Pas Fait</button>
+                            <button class="btn btn-deep-orange  validation_width" >{% trans %}Not Done{% endtrans %}</button>
                         {% else %}
-                            <button class="btn btn-primary validation_width" >Fait</button>
+                            <button class="btn btn-primary validation_width" >{% trans %}Done{% endtrans %}</button>
                         {% endif %}
                     </td>
                 </tr>

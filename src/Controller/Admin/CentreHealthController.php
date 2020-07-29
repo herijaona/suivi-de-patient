@@ -16,6 +16,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CentreHealthController extends AbstractController
@@ -149,7 +150,7 @@ class CentreHealthController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function register_center_health(Request $request)
+    public function register_center_health(Request $request,TranslatorInterface $translator)
     {
         $center_healthRequest = $request->request->get('center_health');
 
@@ -168,7 +169,8 @@ class CentreHealthController extends AbstractController
             $centreHealth->setQuartier($center_healthRequest['quartier']);
             $this->entityManager->persist($centreHealth);
             $this->entityManager->flush();
-            $this->addFlash('success', 'Le centre de santé à été modifié avec succès !');
+            $message = $translator->trans('The health center has been successfully modified!');
+            $this->addFlash('success', $message);
         }
         else{
             $centerHealth = new CentreHealth();
@@ -181,7 +183,8 @@ class CentreHealthController extends AbstractController
             $centerHealth->setQuartier($center_healthRequest['quartier']);
             $this->entityManager->persist($centerHealth);
             $this->entityManager->flush();
-            $this->addFlash('success', 'Le centre de santé à été enregistré avec succès !');
+            $message = $translator->trans('The health center has been successfully registered!');
+            $this->addFlash('success', $message);
         }
         return $this->redirectToRoute("admin_centre_health");
     }
@@ -189,7 +192,7 @@ class CentreHealthController extends AbstractController
     /**
      * @Route("/admin/center-health/remove", name="remove_center_health", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function remove_city(Request $request)
+    public function remove_city(Request $request,TranslatorInterface $translator)
     {
         $idCenterHealth = $request->request->get('id_center_health');
         $delete = false;
@@ -204,8 +207,9 @@ class CentreHealthController extends AbstractController
                 }else{
                     $this->entityManager->remove($CenterHealth);
                     $this->entityManager->flush();
+                    $message = $translator->trans('City has been successfully deleted!');
                     $delete = true;
-                    $this->addFlash('success', 'ville à été supprimé avec succès !');
+                    $this->addFlash('success', $message);
                 }
             }
         }
@@ -216,7 +220,7 @@ class CentreHealthController extends AbstractController
     /**
      * @Route("/admin/center-health/affected-vaccin", name="affected_center_health", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function affected_center_health(Request $request)
+    public function affected_center_health(Request $request,TranslatorInterface $translator)
     {
         $center_healths = $request->request->get('center_health');
         $vaccin_center_healths = $request->request->get('vaccin_center_health');
@@ -234,7 +238,8 @@ class CentreHealthController extends AbstractController
                             $vaccinCentreHealth->setVaccin($Vaccin);
                             $this->entityManager->persist($vaccinCentreHealth);
                             $this->entityManager->flush();
-                            $this->addFlash('success', 'Affectation avec succès !');
+                            $message = $translator->trans('Assignment successfully!');
+                            $this->addFlash('success', $message);
                         }
                     }
                 }

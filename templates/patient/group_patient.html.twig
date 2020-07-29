@@ -16,17 +16,19 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Tous les Groupes</h4>
+            <h4 class="h4-content">{% trans %}All Groups{% endtrans %}</h4>
+
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger btn-class" data-toggle="modal" data-target="#orangeModalSubscription">+ Nouveau Groupe Famille</button>
+            <button class="btn btn-danger btn-class" data-toggle="modal" data-target="#orangeModalSubscription">{% trans %}+ New Family Group{% endtrans %}</button>
+
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Nom de groupe</th>
+                <th>{% trans %}Group name {% endtrans %}</th>
                 <th>Membres</th>
                 <th></th>
             </tr>
@@ -57,7 +59,8 @@
                 <div class="modal-content">
                     <!--Header-->
                     <div class="modal-header text-center">
-                        <h4 class="modal-title white-text w-100 font-weight-bold py-2 title_modal">Création de nouveau groupe</h4>
+                        <h4 class="modal-title white-text w-100 font-weight-bold py-2 title_modal">{% trans %}Create new group{% endtrans %}</h4>
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true" class="white-text">&times;</span>
                         </button>
@@ -68,15 +71,17 @@
                     <div class="modal-body">
                         <input type="hidden" name="group_id" id="group_id" class="form-control" >
                         <div class="md-form mb-5">
-                            <label  for="group_name" class="active">Nom du groupe</label>
+                            <label  for="group_name" class="active">{% trans %}Name of the group{% endtrans %}</label>
+
                             <input type="text" id="group_name" name="group_name" class="form-control" required>
                         </div>
                     </div>
 
                     <!--Footer-->
                     <div class="modal-footer justify-content-center">
-                        <button  data-dismiss="modal" class="btn btn-outline-danger waves-effect close">Annuler <i class="fas fa-paper-plane-o ml-1"></i></button>
-                        <button type="submit" class="btn btn-outline-primary waves-effect">Enregistrer <i class="fas fa-paper-plane-o ml-1"></i></button>
+                        <button  data-dismiss="modal" class="btn btn-outline-danger waves-effect close">{% trans %}Cancel{%endtrans%}<i class="fas fa-paper-plane-o ml-1"></i></button>
+                        <button type="submit" class="btn btn-outline-primary waves-effect">{% trans %}Save{% endtrans %} <i class="fas fa-paper-plane-o ml-1"></i></button>
+
                     </div>
                 </div>
             </form>

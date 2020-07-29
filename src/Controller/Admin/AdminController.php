@@ -20,6 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 
 /**
@@ -249,7 +250,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function register_vaccin(Request $request)
+    public function register_vaccin(Request $request,TranslatorInterface $translator)
     {
         $vaccinRequest = $request->request->get('vaccin');
 
@@ -296,7 +297,9 @@ class AdminController extends AbstractController
             $Vaccin->setEtat($Status);
             $this->entityManager->persist($Vaccin);
             $this->entityManager->flush();
-            $this->addFlash('success', 'modification avec succès !');
+            $message = $translator->trans('modification successfully!');
+            $this->addFlash('success', $message);
+
         }else{
             $VaccinNew = new Vaccin();
             $VaccinNew->setVaccinName($VaccinName);
@@ -316,7 +319,9 @@ class AdminController extends AbstractController
             $VaccinNew->setEtat($Status);
             $this->entityManager->persist($VaccinNew);
             $this->entityManager->flush();
-            $this->addFlash('success', 'Le nom de ville à été enregistré avec succès !');
+            $message = $translator->trans('The city name has been registered successfully!');
+            $this->addFlash('success', $message);
+
         }
         return $this->redirectToRoute("admin_vaccin");
     }
@@ -324,7 +329,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/vaccin/remove", name="remove_vaccin", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function remove_vaccin(Request $request)
+    public function remove_vaccin(Request $request, TranslatorInterface $translator)
     {
         $idVaccin = $request->request->get('id_vaccin');
         $delete = false;
@@ -344,13 +349,15 @@ class AdminController extends AbstractController
                     ($VaccinPraticiens && count($VaccinPraticiens) > 0) ||
                     ($PatientVaccins && count($PatientVaccins) > 0))
                 {
+                    $message = $translator->trans('Error deleting this element!');
                     $delete = false;
-                    $this->addFlash('error', 'Erreur de suprimé de cet élément !');
+                    $this->addFlash('error', $message);
                 }else{
                     $this->entityManager->remove($Vaccin);
                     $this->entityManager->flush();
+                    $message = $translator->trans('city has been successfully deleted!');
                     $delete = true;
-                    $this->addFlash('success', 'ville à été supprimé avec succès !');
+                    $this->addFlash('success', $message);
                 }
             }
         }
@@ -361,7 +368,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/vaccin/edit-status", name="edit_status_vaccin", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function edit_status_vaccin(Request $request)
+    public function edit_status_vaccin(Request $request,TranslatorInterface $translator)
     {
         $idVaccin = $request->request->get('id_vaccin');
         $status = $request->request->get('status');
@@ -378,15 +385,17 @@ class AdminController extends AbstractController
             $this->entityManager->persist($Vaccin);
             $this->entityManager->flush();
             $modif = true;
-            $this->addFlash('success', 'Enregistrement effectuée !');
+            $message = $translator->trans('Registration completed!');
+            $this->addFlash('success', $message);
         }
         return new JsonResponse(['form_edit' => $modif]);
     }
 
+
     /**
      * @Route("/users/remove", name="remove_users", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function remove_users(Request $request)
+    public function remove_users(Request $request, TranslatorInterface $translator)
     {
         $id = $request->request->get('id');
         $type = $request->request->get('type');
@@ -408,7 +417,8 @@ class AdminController extends AbstractController
             }
             $this->entityManager->flush();
             $delete = true;
-            $this->addFlash('success', ' suppression avec succès !');
+            $message = $translator->trans('successfully removed!');
+            $this->addFlash('success', $message);
         }
 
         return new JsonResponse(['form_delete' => $delete]);
@@ -417,7 +427,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/users/edit-status", name="edit_status_users", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function edit_status_users(Request $request)
+    public function edit_status_users(Request $request,TranslatorInterface $translator)
     {
         $id = $request->request->get('id');
         $type = $request->request->get('type');
@@ -451,7 +461,8 @@ class AdminController extends AbstractController
             }
             $this->entityManager->flush();
             $modif = true;
-            $this->addFlash('success', ' Modification avec succès !');
+            $message = $translator->trans('Modification successfully!');
+            $this->addFlash('success', $message);
         }
 
         return new JsonResponse(['form_status' => $modif]);
@@ -507,9 +518,11 @@ class AdminController extends AbstractController
             $user->setPassword($password);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
-            $this->addFlash('success', 'Mot de passe mis à jour ');
+            $message = $translator->trans('Password updated');
+            $this->addFlash('success', $message);
         }else{
-            $this->addFlash('error', 'Erreur de changement mot de passe ');
+            $message = $translator->trans('Password change error');
+            $this->addFlash('error', $message);
         }
 
         return $this->redirectToRoute('admin_member');

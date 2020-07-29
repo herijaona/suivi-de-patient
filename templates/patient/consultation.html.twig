@@ -10,16 +10,16 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Tous les consultation</h4>
+            <h4 class="h4-content">{% trans %}All consultations{% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date Consultation</th>
-                <th>Objet de consultation </th>
-                <th>Docteur</th>
+                <th>{% trans %}Consultation date{% endtrans %}</th>
+                <th>{% trans %}Object of consultation{% endtrans %} </th>
+                <th>Praticien</th>
                 <th>Status</th>
 
                 {# <th>More</th> #}
@@ -40,11 +40,11 @@
                     </td>
                     <td>
                         {% if rdv.statusConsultation == 1 %}
-                            <span class="badge badge-success badge-style modif-status"> activé </span>
+                            <span class="badge badge-success badge-style modif-status">{% trans %}activate{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">En attente</span>
+                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">Réjeter</span>
+                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
 

@@ -1,12 +1,14 @@
 <div class="menu_up">
-    <ul class="menu_bar">
+    <ul class="menu_bar" >
+        {% for locale in locales if locale != app.request.locale%}
         <li>
-            <a href="">
-                <img class="lang-en" src="{{asset('assets/images/fr.png')}}" alt="logo" id="logo">
-                <img class="lang-en" src="{{asset('assets/images/en.png')}}" alt="logo" id="logo">
+            <a href="{{ path('change_locale', {'locale': locale})}}">
+                <img class="lang-en" src="{{asset('assets/images/'~locale~'.png')}}" alt="{{ locale }}" id="logo" >
 
             </a>
         </li>
+        {% endfor %}
+
     </ul>
     <ul class="menu_right">
         <li>

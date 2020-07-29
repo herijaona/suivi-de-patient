@@ -195,10 +195,7 @@ class Patient
      */
     private $city;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $avatar;
+
 
     public function __construct()
     {

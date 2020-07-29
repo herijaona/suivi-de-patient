@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Pays
+    {% trans %}Country{% endtrans %}
 {% endblock %}
 {% block stylesheets %}
 {% endblock %}
@@ -8,17 +8,17 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Tous les Pays</h4>
+            <h4 class="h4-content">{% trans %}All countries{% endtrans %}</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger new_state">+ Nouveau Pays </button>
+            <button class="btn btn-danger new_state">{% trans %}+ New Country{% endtrans %} </button>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Nom de Pays</th>
+                <th>{% trans %}Country Name{% endtrans %}</th>
                 <th></th>
             </tr>
             </thead>

@@ -14,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class CityController extends AbstractController
 {
@@ -84,8 +85,7 @@ class CityController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function register_city(Request $request)
-    {
+    public function register_city(Request $request,TranslatorInterface $translator){
         $cityRequest = $request->request->get('city');
         $nameCity = $cityRequest['nameCity'];
         $idRegion = $cityRequest['region'];
@@ -97,18 +97,22 @@ class CityController extends AbstractController
             $City->setRegion($Region);
             $this->entityManager->persist($City);
             $this->entityManager->flush();
-            $this->addFlash('success', 'modification avec succès !');
+            $message = $translator->trans('modification successfully!');
+            $this->addFlash('success', $message);
         }else{
             $CityExist = $this->cityRepository->findOneBy(['nameCity' => $nameCity, 'region' => $Region]);
             if($CityExist){
-                $this->addFlash('warning', 'Le nom de ville à été déjà enregistré  !');
+
+                $message = $translator->trans('The city name has already been registered!');
+                $this->addFlash('warning', $message);
             }else{
                 $cityNew = new City();
                 $cityNew->setNameCity($nameCity);
                 $cityNew->setRegion($Region);
                 $this->entityManager->persist($cityNew);
                 $this->entityManager->flush();
-                $this->addFlash('success', 'Le nom de ville à été enregistré avec succès !');
+                $message = $translator->trans('The city name has been registered successfully!');
+                $this->addFlash('success', $message);
             }
         }
         return $this->redirectToRoute("admin_city");
@@ -117,7 +121,7 @@ class CityController extends AbstractController
     /**
      * @Route("/admin/city/remove", name="remove_city", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function remove_city(Request $request)
+    public function remove_city(Request $request, TranslatorInterface $translator)
     {
         $idCity = $request->request->get('id_city');
         $delete = false;
@@ -127,12 +131,14 @@ class CityController extends AbstractController
                 $CentreHealths = $City->getCentreHealths();
                 if ($CentreHealths && count($CentreHealths) > 0){
                     $delete = false;
-                    $this->addFlash('error', 'Erreur de suprimé de cet élément !');
+                    $message = $translator->trans('Error deleting this element!');
+                    $this->addFlash('error', $message);
                 }else{
                     $this->entityManager->remove($City);
                     $this->entityManager->flush();
                     $delete = true;
-                    $this->addFlash('success', 'ville à été supprimé avec succès !');
+                    $message = $translator->trans('City has been successfully deleted!');
+                    $this->addFlash('success', $message);
                 }
             }
         }

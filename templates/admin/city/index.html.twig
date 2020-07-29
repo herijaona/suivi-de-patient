@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Ville
+    {% trans %}City{% endtrans %}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -9,19 +9,19 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Tous les Villes</h4>
+            <h4 class="h4-content">{% trans %}All Cities{% endtrans %}</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger new_city">+ Nouveau Ville </button>
+            <button class="btn btn-danger new_city">{% trans %}+ New City{% endtrans %}</button>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Ville</th>
-                <th>Région</th>
-                <th>Pays</th>
+                <th>{% trans %}city{% endtrans %}</th>
+                <th>{% trans %}Region{% endtrans %}</th>
+                <th>{% trans %}Country{% endtrans %}</th>
                 <th></th>
             </tr>
             </thead>

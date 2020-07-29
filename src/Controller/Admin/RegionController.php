@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegionController extends AbstractController
 {
@@ -78,7 +79,7 @@ class RegionController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function register_region(Request $request)
+    public function register_region(Request $request, TranslatorInterface $translator )
     {
         $regionRequest = $request->request->get('region');
         $nameRegion = $regionRequest['nameRegion'];
@@ -90,7 +91,8 @@ class RegionController extends AbstractController
             $Region->setState($State);
             $this->entityManager->persist($Region);
             $this->entityManager->flush();
-            $this->addFlash('success', 'modification avec succès !');
+            $message = $translator->trans('modification successfully!');
+            $this->addFlash('success', $message);
         }else{
             $RegionExist = $this->regionRepository->findOneBy(['nameRegion' => $nameRegion, 'state' => $State]);
             if($RegionExist){
@@ -101,7 +103,8 @@ class RegionController extends AbstractController
                 $regionNew->setState($State);
                 $this->entityManager->persist($regionNew);
                 $this->entityManager->flush();
-                $this->addFlash('success', 'Le nom de région à été enregistré avec succès !');
+                $message = $translator->trans('The region name has been registered successfully!');
+                $this->addFlash('success', $message);
             }
         }
         return $this->redirectToRoute("admin_region");
@@ -110,7 +113,7 @@ class RegionController extends AbstractController
     /**
      * @Route("/admin/region/remove", name="remove_region", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function remove_region(Request $request)
+    public function remove_region(Request $request, TranslatorInterface $translator)
     {
         $idRegion = $request->request->get('id_region');
         $delete = false;
@@ -124,8 +127,9 @@ class RegionController extends AbstractController
                 }else{
                     $this->entityManager->remove($Region);
                     $this->entityManager->flush();
+                    $message = $translator->trans('City has been successfully deleted!');
                     $delete = true;
-                    $this->addFlash('success', 'ville à été supprimé avec succès !');
+                    $this->addFlash('success', $message);
                 }
             }
         }

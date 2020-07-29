@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Rendez-Vous
+    {% trans %}appointment {% endtrans %}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -9,7 +9,7 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">rendez-vous en attente</h4>
+            <h4 class="h4-content">{% trans %}pending appointment{% trans %}</h4>
         </div>
 
     </div>
@@ -17,11 +17,11 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date rdv</th>
+                <th>{% trans %}Appointment date{%  endtrans %}</th>
                 <th>Type</th>
-                <th>Objet de consultation </th>
-                <th>Docteur</th>
-                <th>Vaccin</th>
+                <th>{% trans %}Object of consultation{% endtrans %} </th>
+                <th>Praticien</th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
                 <th>Status</th>
 
             </tr>

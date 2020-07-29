@@ -9,7 +9,7 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Intervention non fait</h4>
+            <h4 class="h4-content">Intervention </h4>
         </div>
 
     </div>
@@ -17,11 +17,11 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date d' Intervention</th>
+                <th>{% trans %}Intervention date{% endtrans %}</th>
                 <th>Type</th>
-                <th>Objet de consultation </th>
+                <th>{% trans %}Object of consultation{% endtrans %}</th>
                 <th>Patient</th>
-                <th>Vaccin</th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
                 <th></th>
 
             </tr>
@@ -50,7 +50,7 @@
                     <td>{{ ivp.patient_name }} {{ ivp.patient_lastname }} </td>
                     <td>{{ ivp.vaccinName }}</td>
                     <td>
-                       <span  class="badge badge-success badge-style">Fait</span>
+                       <span  class="badge badge-success badge-style">{% trans %}Done{% endtrans %}</span>
                     </td>
                 </tr>
             {% endfor %}

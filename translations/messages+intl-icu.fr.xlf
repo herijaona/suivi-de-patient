@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="file.ext">
+    <header>
+      <tool tool-id="symfony" tool-name="Symfony"/>
+    </header>
+    <body>
+      <trans-unit id="STZjHxT" resname="Calendrier de Vaccination">
+        <source>Calendrier de Vaccination </source>
+        <target>__Calendrier de Vaccination</target>
+      </trans-unit>
+      <trans-unit id="Ak3CBNe" resname="Area">
+        <source>Area</source>
+        <target>Espace</target>
+      </trans-unit>
+      <trans-unit id="59PnafP" resname="Administrator">
+        <source>Administrator</source>
+        <target>Administrateur</target>
+      </trans-unit>
+      <trans-unit id="Z7aWRoY" resname="Dashboard">
+        <source>Dashboard</source>
+        <target>Tableau de Bord</target>
+      </trans-unit>
+      <trans-unit id="EESkwFb" resname="Members">
+        <source>Members</source>
+        <target>Membres</target>
+      </trans-unit>
+      <trans-unit id="dKiDoDe" resname="Settings">
+        <source>Settings</source>
+        <target>Paramètres</target>
+      </trans-unit>
+      <trans-unit id="EW9qMQH" resname="Health center">
+        <source>Health center</source>
+        <target>Centre de Santé</target>
+      </trans-unit>
+      <trans-unit id="wm.iEX2" resname="Vaccine Types">
+        <source>Vaccine Types</source>
+        <target>Types de vaccin</target>
+      </trans-unit>
+      <trans-unit id="jHB.d3L" resname="Vaccine">
+        <source>Vaccine</source>
+        <target>Vaccin</target>
+      </trans-unit>
+      <trans-unit id="cB0CHQj" resname="Country">
+        <source>Country</source>
+        <target>Pays</target>
+      </trans-unit>
+      <trans-unit id="06AI7xM" resname="Region">
+        <source>Region</source>
+        <target>Région</target>
+      </trans-unit>
+      <trans-unit id=".DP3Mkb" resname="City">
+        <source>City</source>
+        <target>Ville</target>
+      </trans-unit>
+      <trans-unit id="WLNcOM3" resname="Vaccination schedule">
+        <source>Vaccination schedule</source>
+        <target>Calendrier de Vaccination</target>
+      </trans-unit>
+      <trans-unit id="ik_Vfgj" resname="Appointment">
+        <source>Appointment</source>
+        <target>Rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="hiZUy.8" resname="Awaiting validation">
+        <source>Awaiting validation</source>
+        <target>En attente de Validation</target>
+      </trans-unit>
+      <trans-unit id="q2BKNgd" resname="Reject">
+        <source>Reject</source>
+        <target>Rejeter</target>
+      </trans-unit>
+      <trans-unit id="pMPtBKl" resname="done">
+        <source>done</source>
+        <target>Fait</target>
+      </trans-unit>
+      <trans-unit id="DfKsvvZ" resname="Not done">
+        <source>Not done</source>
+        <target>Non fait</target>
+      </trans-unit>
+      <trans-unit id="ziKHIxY" resname="Appointment proposal">
+        <source>Appointment proposal</source>
+        <target>Proposition rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="8NHHxQJ" resname="Family Group">
+        <source>Family Group</source>
+        <target>Groupe Famille</target>
+      </trans-unit>
+      <trans-unit id="4LEcWKD" resname="All Family Members">
+        <source>All Family Members</source>
+        <target>Tous les membres de la famille</target>
+      </trans-unit>
+      <trans-unit id="KeaH1fy" resname="+ New Family">
+        <source>+ New Family</source>
+        <target></target>
+      </trans-unit>
+      <trans-unit id="9VVjs4a" resname="Last Name">
+        <source>Last Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="ls5uYZO" resname="First Name">
+        <source>First Name</source>
+        <target>Prénom</target>
+      </trans-unit>
+      <trans-unit id="TvBiAEI" resname="Add new member">
+        <source>Add new member</source>
+        <target>Ajouter un nouveau membre</target>
+      </trans-unit>
+      <trans-unit id="KCTXOgR" resname="Search for patient name ...">
+        <source>Search for patient name ...</source>
+        <target>Rechercher le nom du patient ...</target>
+      </trans-unit>
+      <trans-unit id="GE8Bf.3" resname="Choose new member">
+        <source>Choose new member</source>
+        <target>Choisissez un nouveau membre</target>
+      </trans-unit>
+      <trans-unit id="GXZu1sy" resname="Cancel">
+        <source>Cancel</source>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="FQn1YfJ" resname="Save">
+        <source>Save</source>
+        <target>Sauvegarder</target>
+      </trans-unit>
+      <trans-unit id="LxvGvNg" resname="All Groups">
+        <source>All Groups</source>
+        <target>Tous les groupes</target>
+      </trans-unit>
+      <trans-unit id="UxkUsWT" resname="+ New Family Group">
+        <source>+ New Family Group</source>
+        <target>+ Nouveau groupe de famille</target>
+      </trans-unit>
+      <trans-unit id="di67cO8" resname="Group name">
+        <source>Group name</source>
+        <target>Nom de groupe</target>
+      </trans-unit>
+      <trans-unit id="7Au8I9y" resname="Create new group">
+        <source>Create new group</source>
+        <target>Créer un nouveau groupe</target>
+      </trans-unit>
+      <trans-unit id="1pLOus3" resname="Name of the group">
+        <source>Name of the group</source>
+        <target>Nom du groupe</target>
+      </trans-unit>
+      <trans-unit id="nw1v1Ia" resname="Date Proposal appointment">
+        <source>Date Proposal appointment</source>
+        <target>Date Proposition de rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="iXE7nJw" resname="Accept">
+        <source>Accept</source>
+        <target>Accepter</target>
+      </trans-unit>
+      <trans-unit id=".Tf4da0" resname="appointment">
+        <source>appointment</source>
+        <target>rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="EkMeOJi" resname="Appointment date">
+        <source>Appointment date</source>
+        <target>Date de rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="_9xGBPo" resname="Object of consultation">
+        <source>Object of consultation</source>
+        <target>Objet de la consultation</target>
+      </trans-unit>
+      <trans-unit id="IAx_YiA" resname="activate">
+        <source>activate</source>
+        <target>activer</target>
+      </trans-unit>
+      <trans-unit id="gM_j5.K" resname="waiting">
+        <source>waiting</source>
+        <target>En Attente</target>
+      </trans-unit>
+      <trans-unit id="1aAdAPl" resname="+ Create an appointment">
+        <source>+ Create an appointment</source>
+        <target>+ Créer un rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="PtuTVRr" resname="All vaccinations">
+        <source>All vaccinations</source>
+        <target>Toutes les vaccinations</target>
+      </trans-unit>
+      <trans-unit id="NOdMaqt" resname="Vaccination date">
+        <source>Vaccination date</source>
+        <target>Date de vaccination</target>
+      </trans-unit>
+      <trans-unit id="_udRm3r" resname="All consultations">
+        <source>All consultations</source>
+        <target>Toutes les consultations</target>
+      </trans-unit>
+      <trans-unit id="5q0_BwB" resname="Consultation date">
+        <source>Consultation date</source>
+        <target>Date de consultation</target>
+      </trans-unit>
+      <trans-unit id="cwVBgj3" resname="New appointment">
+        <source>New appointment</source>
+        <target>Nouveau rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="Z9tly6k" resname="Appointment modification">
+        <source>Appointment modification</source>
+        <target>Modification de rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="QYcq2fn" resname="Type of appointment">
+        <source>Type of appointment</source>
+        <target>Type de rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="0QpjKA0" resname="appointment Time">
+        <source>appointment Time</source>
+        <target>Heure du rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="wJJ.Y4P" resname="Successful change">
+        <source>Successful change</source>
+        <target>Changement réussi</target>
+      </trans-unit>
+      <trans-unit id="196JYs1" resname="Error deleting this element!">
+        <source>Error deleting this element!</source>
+        <target>Erreur lors de la suppression de cet élément!</target>
+      </trans-unit>
+      <trans-unit id="3ROGDFw" resname="Appointment has been deleted successfully!">
+        <source>Appointment has been deleted successfully!</source>
+        <target>Le rendez-vous a été supprimé avec succès!</target>
+      </trans-unit>
+      <trans-unit id="mlD3m1g" resname="You do not have access to this event">
+        <source>You do not have access to this event</source>
+        <target>Vous n'avez pas accès à cet événement</target>
+      </trans-unit>
+      <trans-unit id="ZCQ6nop" resname="The Appointment proposal has been successfully deleted!">
+        <source>The Appointment proposal has been successfully deleted!</source>
+        <target>La proposition de rendez-vous a été supprimée avec succès!</target>
+      </trans-unit>
+      <trans-unit id="Myz6NPA" resname="The user has been registered successfully!">
+        <source>The user has been registered successfully!</source>
+        <target>L'utilisateur a été enregistré avec succès!</target>
+      </trans-unit>
+      <trans-unit id="9_xsIp_" resname="All Health Centers">
+        <source>All Health Centers</source>
+        <target>Tous les centres de santé</target>
+      </trans-unit>
+      <trans-unit id="r2qo5uJ" resname="+ New">
+        <source>+ New</source>
+        <target>+ Nouveau</target>
+      </trans-unit>
+      <trans-unit id="8PUM6D8" resname="+ Assign">
+        <source>+ Assign</source>
+        <target>+ Attribuer</target>
+      </trans-unit>
+      <trans-unit id="wDyFIZh" resname="Center Name">
+        <source>Center Name</source>
+        <target>Nom du centre</target>
+      </trans-unit>
+      <trans-unit id="S.jDRMq" resname="Center type">
+        <source>Center type</source>
+        <target>Type de centre</target>
+      </trans-unit>
+      <trans-unit id="Y9zriAC" resname="Phone">
+        <source>Phone</source>
+        <target>Téléphone</target>
+      </trans-unit>
+      <trans-unit id="_yuygYs" resname="in charge of">
+        <source>in charge of</source>
+        <target>responsable</target>
+      </trans-unit>
+      <trans-unit id="Vu_PIJV" resname="Address">
+        <source>Address</source>
+        <target>Adresse</target>
+      </trans-unit>
+      <trans-unit id="yqQkfMs" resname="New health center">
+        <source>New health center</source>
+        <target>Nouveau centre de santé</target>
+      </trans-unit>
+      <trans-unit id="kHaEAur" resname="Modification of the health center">
+        <source>Modification of the health center</source>
+        <target>Modification du centre de santé</target>
+      </trans-unit>
+      <trans-unit id="3NHVIj9" resname="Name">
+        <source>Name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="LZiB.BI" resname="Street number">
+        <source>Street number</source>
+        <target>Numéro de rue</target>
+      </trans-unit>
+      <trans-unit id="UPGHjST" resname="District">
+        <source>District</source>
+        <target>district</target>
+      </trans-unit>
+      <trans-unit id="t8cfDNY" resname="All Cities">
+        <source>All Cities</source>
+        <target>Toutes les villes</target>
+      </trans-unit>
+      <trans-unit id="J8IHFJo" resname="+ New City">
+        <source>+ New City</source>
+        <target>+ Nouvelle ville</target>
+      </trans-unit>
+      <trans-unit id="EaYsI0E" resname="city">
+        <source>city</source>
+        <target>ville</target>
+      </trans-unit>
+      <trans-unit id="AGUwBnc" resname="New city">
+        <source>New city</source>
+        <target>Nouvelle ville</target>
+      </trans-unit>
+      <trans-unit id="Xf.qD5j" resname="City modification">
+        <source>City modification</source>
+        <target>Modification de la ville</target>
+      </trans-unit>
+      <trans-unit id="QGEau92" resname="Validate">
+        <source>Validate</source>
+        <target>Valider</target>
+      </trans-unit>
+      <trans-unit id="KOlxhIm" resname="Not Done">
+        <source>Not Done</source>
+        <target>Non Fait</target>
+      </trans-unit>
+      <trans-unit id="EaZ2fVZ" resname="Done">
+        <source>Done</source>
+        <target>Fait</target>
+      </trans-unit>
+      <trans-unit id="Y0SEBdN" resname="List of all members">
+        <source>List of all members</source>
+        <target>Liste de tous les membres</target>
+      </trans-unit>
+      <trans-unit id="e0iIBJR" resname="Last name">
+        <source>Last name</source>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="cC75Ie0" resname="First name">
+        <source>First name</source>
+        <target>Prénom</target>
+      </trans-unit>
+      <trans-unit id="jKgbaAh" resname="Mother's name">
+        <source>Mother's name</source>
+        <target>Le nom de la mère</target>
+      </trans-unit>
+      <trans-unit id="bk0LHGc" resname="Creation date">
+        <source>Creation date</source>
+        <target>Date de création</target>
+      </trans-unit>
+      <trans-unit id="JEM8cOu" resname="Activate">
+        <source>Activate</source>
+        <target>Activer</target>
+      </trans-unit>
+      <trans-unit id="_x5vpVM" resname="Deactivate">
+        <source>Deactivate</source>
+        <target>Désactiver</target>
+      </trans-unit>
+      <trans-unit id="oPprrSd" resname="List of patients">
+        <source>List of patients</source>
+        <target>Liste des patients</target>
+      </trans-unit>
+      <trans-unit id="o3IY9eY" resname="+ Create patient">
+        <source>+ Create patient</source>
+        <target>+ Créer un patient</target>
+      </trans-unit>
+      <trans-unit id="G4NthoB" resname="first name">
+        <source>first name</source>
+        <target>Prénom</target>
+      </trans-unit>
+      <trans-unit id=".cc59SZ" resname="Date of Birth">
+        <source>Date of Birth</source>
+        <target>Date de naissance</target>
+      </trans-unit>
+      <trans-unit id="KV_Y.5k" resname="List of praticiens">
+        <source>List of praticiens</source>
+        <target>Liste des praticiens</target>
+      </trans-unit>
+      <trans-unit id="bC1Y_ld" resname="+ Create praticien">
+        <source>+ Create praticien</source>
+        <target>+ Créer praticien</target>
+      </trans-unit>
+      <trans-unit id="GmZOp.u" resname="New region">
+        <source>New region</source>
+        <target>Nouvelle région</target>
+      </trans-unit>
+      <trans-unit id="dhuHr_p" resname="Modification Region">
+        <source>Modification Region</source>
+        <target>Modification de Région </target>
+      </trans-unit>
+      <trans-unit id="sr0GuZn" resname="All countries">
+        <source>All countries</source>
+        <target>Tous les pays</target>
+      </trans-unit>
+      <trans-unit id="ysgAupD" resname="+ New Country">
+        <source>+ New Country</source>
+        <target>+ Nouveau pays</target>
+      </trans-unit>
+      <trans-unit id="aqGBDJU" resname="Country Name">
+        <source>Country Name</source>
+        <target>Nom du pays</target>
+      </trans-unit>
+      <trans-unit id="wrW.ATs" resname="New country">
+        <source>New country</source>
+        <target>Nouveau pays</target>
+      </trans-unit>
+      <trans-unit id="A.EeV_B" resname="Country modification">
+        <source>Country modification</source>
+        <target>Modification du pays</target>
+      </trans-unit>
+      <trans-unit id="m18xub5" resname="Vaccine type">
+        <source>Vaccine type</source>
+        <target>Type de vaccin</target>
+      </trans-unit>
+      <trans-unit id="MN8Dcj1" resname="All Types of Vaccine">
+        <source>All Types of Vaccine</source>
+        <target>Tous les types de vaccins</target>
+      </trans-unit>
+      <trans-unit id="J2NZYqg" resname="Vaccines">
+        <source>Vaccines</source>
+        <target>Vaccins</target>
+      </trans-unit>
+      <trans-unit id="rrqPnYo" resname="All Vaccines">
+        <source>All Vaccines</source>
+        <target>Tous les vaccins</target>
+      </trans-unit>
+      <trans-unit id="XzkzV6Y" resname="+ New Vaccine">
+        <source>+ New Vaccine</source>
+        <target>+ Nouveau vaccin</target>
+      </trans-unit>
+      <trans-unit id="Um4Ah8w" resname="Description">
+        <source>Description</source>
+        <target>Description</target>
+      </trans-unit>
+      <trans-unit id="VcMJuxb" resname="New Vaccine">
+        <source>New Vaccine</source>
+        <target>Nouveau vaccin</target>
+      </trans-unit>
+      <trans-unit id="M7zueKq" resname="Modification vaccine">
+        <source>Modification vaccine</source>
+        <target>Modification de Vaccin</target>
+      </trans-unit>
+      <trans-unit id="oiLfS0s" resname="Type of vaccine">
+        <source>Type of vaccine</source>
+        <target>Type de vaccin</target>
+      </trans-unit>
+      <trans-unit id="d2DFfWK" resname="Initial take date">
+        <source>Initial take date</source>
+        <target>Date de prise initiale</target>
+      </trans-unit>
+      <trans-unit id="20EOKon" resname="Reminder 1">
+        <source>Reminder 1</source>
+        <target>Rappel 1</target>
+      </trans-unit>
+      <trans-unit id="JI.HKL1" resname="Reminder 2">
+        <source>Reminder 2</source>
+        <target>Rappel 2</target>
+      </trans-unit>
+      <trans-unit id="5gV_02i" resname="Reminder 3">
+        <source>Reminder 3</source>
+        <target>Rappel 3</target>
+      </trans-unit>
+      <trans-unit id="8R18T1v" resname="Reminder 4">
+        <source>Reminder 4</source>
+        <target>Rappel 4</target>
+      </trans-unit>
+      <trans-unit id="1dKb9hz" resname="Reminder 5">
+        <source>Reminder 5</source>
+        <target>Rappel 5</target>
+      </trans-unit>
+      <trans-unit id="fmkpgOv" resname="Reminder 6">
+        <source>Reminder 6</source>
+        <target>Rappel 6</target>
+      </trans-unit>
+      <trans-unit id="0HE3p3." resname="Reminder 7">
+        <source>Reminder 7</source>
+        <target>Rappel 7</target>
+      </trans-unit>
+      <trans-unit id="0I.3YqV" resname="Reminder 8">
+        <source>Reminder 8</source>
+        <target>Rappel 8</target>
+      </trans-unit>
+      <trans-unit id="LowGt3D" resname="Reminder 9">
+        <source>Reminder 9</source>
+        <target>Rappel 9</target>
+      </trans-unit>
+      <trans-unit id="nu.9h8M" resname="Reminder 10">
+        <source>Reminder 10</source>
+        <target>Rappel 10</target>
+      </trans-unit>
+      <trans-unit id="_18n1UV" resname="Detail">
+        <source>Detail</source>
+        <target>__Detail</target>
+      </trans-unit>
+      <trans-unit id="g1BD7I5" resname="Patient">
+        <source>Patient</source>
+        <target>Patient</target>
+      </trans-unit>
+      <trans-unit id="0GBW63G" resname="Praticien">
+        <source>Praticien</source>
+        <target>Praticien</target>
+      </trans-unit>
+      <trans-unit id="aOHKV1K" resname="Validation">
+        <source>Validation</source>
+        <target>Validation</target>
+      </trans-unit>
+      <trans-unit id="kg5BPH1" resname="Status">
+        <source>Status</source>
+        <target>Status</target>
+      </trans-unit>
+      <trans-unit id="G.n1GyK" resname="State Intervention">
+        <source>State Intervention</source>
+        <target>Etat Intervention </target>
+      </trans-unit>
+      <trans-unit id="6rBDccG" resname="Intervention date">
+        <source>Intervention date</source>
+        <target>Date d'intervention</target>
+      </trans-unit>
+      <trans-unit id="daNJd3k" resname="+ Create appointment proposal">
+        <source>+ Create appointment proposal</source>
+        <target>+ Créer une proposition de rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="FiKm2wF" resname="Date of proposal appointment">
+        <source>Date of proposal appointment</source>
+        <target>Date de nomination de la proposition</target>
+      </trans-unit>
+      <trans-unit id="daSP_47" resname="Description Proposition">
+        <source>Description Proposition</source>
+        <target>Description Proposition</target>
+      </trans-unit>
+      <trans-unit id="tBi5vao" resname="Number of patients expected">
+        <source>Number of patients expected</source>
+        <target>Nombre de patients attendus</target>
+      </trans-unit>
+      <trans-unit id="YDB_yd5" resname="New Appointment Proposal">
+        <source>New Appointment Proposal</source>
+        <target>Nouvelle proposition de rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="mhmzpS4" resname="Modification of the appointment proposal">
+        <source>Modification of the appointment proposal</source>
+        <target>Modification de la proposition de rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="VIN_VTf" resname="Proposed Date">
+        <source>Proposed Date</source>
+        <target>Date proposée</target>
+      </trans-unit>
+      <trans-unit id="vt9CcBV" resname="Propose time">
+        <source>Propose time</source>
+        <target>Heure proposée</target>
+      </trans-unit>
+      <trans-unit id="FnzsAeA" resname="Number of patients to suggest">
+        <source>Number of patients to suggest</source>
+        <target>Nombre de patients à suggérer</target>
+      </trans-unit>
+      <trans-unit id="rkWNauL" resname="Description of the appointment">
+        <source>Description of the appointment</source>
+        <target>Description du rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="Z0guG9Q" resname="modification successfully!">
+        <source>modification successfully!</source>
+        <target>modification réussie!</target>
+      </trans-unit>
+      <trans-unit id="at.Yahr" resname="The city name has been registered successfully!">
+        <source>The city name has been registered successfully!</source>
+        <target>Le nom de la ville a été enregistré avec succès!</target>
+      </trans-unit>
+      <trans-unit id="w9huA8c" resname="city has been successfully deleted!">
+        <source>city has been successfully deleted!</source>
+        <target>la ville a été supprimée avec succès!</target>
+      </trans-unit>
+      <trans-unit id="fTNgldQ" resname="Registration completed!">
+        <source>Registration completed!</source>
+        <target>Inscription terminée!</target>
+      </trans-unit>
+      <trans-unit id="cT2MI8y" resname="successfully removed!">
+        <source>successfully removed!</source>
+        <target>supprimé avec succès!</target>
+      </trans-unit>
+      <trans-unit id="fUhoKWA" resname="Modification successfully!">
+        <source>Modification successfully!</source>
+        <target>Modification réussie!</target>
+      </trans-unit>
+      <trans-unit id="g2trm.R" resname="Password updated">
+        <source>Password updated</source>
+        <target>Mot de passe mis à jour</target>
+      </trans-unit>
+      <trans-unit id="y_l_ezy" resname="Password change error">
+        <source>Password change error </source>
+        <target>Erreur de changement de mot de passe</target>
+      </trans-unit>
+      <trans-unit id="9SJup_K" resname="The health center has been successfully modified!">
+        <source>The health center has been successfully modified!</source>
+        <target>Le centre de santé a été modifié avec succès!</target>
+      </trans-unit>
+      <trans-unit id="U4HIPIs" resname="The health center has been successfully registered!">
+        <source>The health center has been successfully registered!</source>
+        <target>Le centre de santé a été enregistré avec succès!</target>
+      </trans-unit>
+      <trans-unit id="gNA0Rm3" resname="City has been successfully deleted!">
+        <source>City has been successfully deleted!</source>
+        <target>La ville a été supprimée avec succès!</target>
+      </trans-unit>
+      <trans-unit id="TLXalS8" resname="Assignment successfully!">
+        <source>Assignment successfully!</source>
+        <target>Affectation réussie!</target>
+      </trans-unit>
+      <trans-unit id="CILoV1i" resname="The city name has already been registered!">
+        <source>The city name has already been registered!</source>
+        <target>Le nom de la ville a déjà été enregistré!</target>
+      </trans-unit>
+      <trans-unit id="TJnCMCq" resname="The region name has been registered successfully!">
+        <source>The region name has been registered successfully!</source>
+        <target>Le nom de la région a été enregistré avec succès!</target>
+      </trans-unit>
+      <trans-unit id="fBoA.28" resname="The country name has been changed successfully!">
+        <source>The country name has been changed successfully!</source>
+        <target>Le nom du pays a été changé avec succès!</target>
+      </trans-unit>
+      <trans-unit id="IYaUtSS" resname="The country name has been registered successfully!">
+        <source>The country name has been registered successfully!</source>
+        <target>Le nom du pays a été enregistré avec succès!</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

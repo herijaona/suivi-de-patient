@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Centre de Santé
+    {% trans %}Health center{% endtrans %}
 {% endblock %}
 {% block stylesheets %}
     <style>
@@ -17,12 +17,12 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-5 mt-4">
-            <h4 class="h4-content">Tous les Centre de Santé</h4>
+            <h4 class="h4-content">{% trans %}All Health Centers{% endtrans %}</h4>
         </div>
         <div class="col-md-7 form-row ">
 
             <div class="grid-edit-btn  mt-3 p-1">
-                <button class="btn btn-danger new_center_health">+ Nouveau </button>
+                <button class="btn btn-danger new_center_health">{% trans %}+ New{% endtrans %} </button>
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@
             </select>
         </div>
         <div class="grid-edit-btn  mt-3 col-md-2">
-            <button class="btn btn-danger affected_center_health">+ Affecter </button>
+            <button class="btn btn-danger affected_center_health">{% trans %}+ Assign{% endtrans %}</button>
         </div>
     </div>
     <div class="row-table table-content">
@@ -43,14 +43,14 @@
             <thead>
             <tr>
                 <th><input type="checkbox" name="select_all" value="1" id="example-select-all"></th>
-                <th>Nom de Centre</th>
-                <th>Type de centre</th>
-                <th>Téléphone</th>
-                <th>Responsable</th>
-                <th>Adresse</th>
-                <th>Ville</th>
-                <th>Région</th>
-                <th>Pays</th>
+                <th>{% trans %}Center Name{% endtrans %}</th>
+                <th>{% trans %}Center type{% endtrans %}</th>
+                <th>{% trans %}Phone{% endtrans %}</th>
+                <th>{% trans %}in charge of{% endtrans %}</th>
+                <th>{% trans %}Address{% endtrans %}</th>
+                <th>{% trans %}City{% endtrans %}</th>
+                <th>{% trans %}Region{% endtrans %}</th>
+                <th>{% trans %}Country{% endtrans %}</th>
                 <th></th>
             </tr>
             </thead>

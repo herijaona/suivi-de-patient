@@ -9,18 +9,18 @@
 {% endblock %} {% block body %}
 <div class="row head-table col-md-12">
     <div class="grid-title-table col-md-9 mt-4">
-        <h4 class="h4-content">Tous les membres de Famille</h4>
+        <h4 class="h4-content">{% trans %}All Family Members {% endtrans %}</h4>
     </div>
     <div class="grid-edit-btn col-md-3 mt-3">
-        <button class="btn btn-danger" data-toggle="modal" data-target="#orangeModalSubscription">+ Nouveau Famille</button>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#orangeModalSubscription">{% trans %}+ New Family{% endtrans %}</button>
     </div>
 </div>
 <div class="row-table table-content">
     <table class="table table-striped" id="example1">
         <thead>
             <tr>
-                <th>Nom </th>
-                <th>Prénoms</th>
+                <th>{% trans %}Last Name{% endtrans %} </th>
+                <th>{% trans %}First Name{% endtrans %}</th>
                 <th></th>
             </tr>
         </thead>
@@ -48,7 +48,8 @@
             <div class="modal-content">
                 <!--Header-->
                 <div class="modal-header text-center">
-                    <h4 class="modal-title white-text w-100 font-weight-bold py-2 title_modal">Ajouter nouveau membre</h4>
+                    <h4 class="modal-title white-text w-100 font-weight-bold py-2 title_modal">{% trans %}Add new member{% endtrans %}</h4>
+
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true" class="white-text">&times;</span>
                         </button>
@@ -59,9 +60,9 @@
                 <div class="modal-body">
                     <input type="hidden" name="group_id" id="group_id" class="form-control" value="{{ group.id }}">
                     <div class="md-form mb-5">
-                        <label for="group_name" class="active">Nouveau Membre</label>
-                        <select class="mdb-select md-form " name="patient" editable="true" searchable="Rechercher le nom du patient..." required>
-                                <option value="" disabled selected>Choisissez nouveau membre</option>
+                        <label for="group_name" class="active">New member</label>
+                        <select class="mdb-select md-form " name="patient" editable="true" searchable="{% trans %}Search for patient name ...{% endtrans %}" required>
+                                <option value="" disabled selected>{% trans %}Choose new member{% endtrans %}</option>
                                 {% for patient in patients %}
                                     <option value="{{ patient.id }}">{{patient.firstName}} {{patient.lastName}}</option>
                                 {% endfor %}
@@ -71,8 +72,8 @@
 
                 <!--Footer-->
                 <div class="modal-footer justify-content-center">
-                    <button data-dismiss="modal" class="btn btn-outline-danger waves-effect close">Annuler <i class="fas fa-paper-plane-o ml-1"></i></button>
-                    <button type="submit" class="btn btn-outline-primary waves-effect">Enregistrer <i class="fas fa-paper-plane-o ml-1"></i></button>
+                    <button data-dismiss="modal" class="btn btn-outline-danger waves-effect close">{% trans %}Cancel{%endtrans%} <i class="fas fa-paper-plane-o ml-1"></i></button>
+                    <button type="submit" class="btn btn-outline-primary waves-effect">{% trans %}Save{% endtrans %} <i class="fas fa-paper-plane-o ml-1"></i></button>
                 </div>
             </div>
         </form>

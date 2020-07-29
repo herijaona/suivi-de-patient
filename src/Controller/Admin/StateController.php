@@ -12,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class StateController extends AbstractController
 {
@@ -75,7 +76,7 @@ class StateController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function register_state(Request $request)
+    public function register_state(Request $request, TranslatorInterface $translator)
     {
         $stateRequest = $request->request->get('state');
         $nameState = $stateRequest['nameState'];
@@ -84,7 +85,8 @@ class StateController extends AbstractController
             $State->setNameState($nameState);
             $this->entityManager->persist($State);
             $this->entityManager->flush();
-            $this->addFlash('success', 'Le nom de pays à été modifié avec succès !');
+            $message = $translator->trans('The country name has been changed successfully!');
+            $this->addFlash('success', $message);
         }else{
             $StateExist = $this->stateRepository->findOneBy(['nameState' => $nameState]);
             if($StateExist){
@@ -94,7 +96,9 @@ class StateController extends AbstractController
                 $stateNew->setNameState($nameState);
                 $this->entityManager->persist($stateNew);
                 $this->entityManager->flush();
-                $this->addFlash('success', 'Le nom de pays à été enregistré avec succès !');
+
+                $message = $translator->trans('The country name has been registered successfully!');
+                $this->addFlash('success', $message);
             }
         }
         return $this->redirectToRoute("admin_state");
@@ -103,7 +107,7 @@ class StateController extends AbstractController
     /**
      * @Route("/admin/state/remove", name="remove_state", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function remove_state(Request $request)
+    public function remove_state(Request $request, TranslatorInterface $translator)
     {
         $idState = $request->request->get('id_state');
         $delete = false;
@@ -113,12 +117,15 @@ class StateController extends AbstractController
                 $Region = $State->getRegions();
                 if ($Region  && count($Region) > 0){
                     $delete = false;
-                    $this->addFlash('error', 'Erreur de suprimé de cet élément !');
+                    $message = $translator->trans('Error deleting this element!');
+                    $this->addFlash('error', $message);
                 }else{
                     $this->entityManager->remove($State);
                     $this->entityManager->flush();
                     $delete = true;
-                    $this->addFlash('success', 'ville à été supprimé avec succès !');
+                    $message = $translator->trans('City has been successfully deleted!');
+                    $this->addFlash('error', $message);
+
                 }
             }
         }

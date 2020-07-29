@@ -9,17 +9,17 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Tous les vaccinations</h4>
+            <h4 class="h4-content">{% trans %}All vaccinations {% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date vaccination</th>
+                <th>{% trans %}Vaccination date {% endtrans %}</th>
                 <th>Patient</th>
-                <th>Vaccin</th>
-                <th>Etat Intervention</th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
+                <th>{% trans %}State Intervention{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
@@ -34,8 +34,8 @@
                     <td>{{vac.vaccinName }} </td>
 
                     <td>
-                        <span class="badge badge-success badge-style modif-etat" data-type="vaccination" data-id="{{ vac.id }}" data-vaccin="{{vac.vaccin }}" data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}"  data-date="{{ vac.datePrise |date}}"   data-etat="{{ vac.etat }}" data-action="active">Fait</span>
-                        <span class="badge badge-danger badge-style modif-etat"  data-type="vaccination" data-id="{{ vac.id }}" data-vaccin="{{vac.vaccin }}" data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}"  data-date="{{ vac.datePrise  |date}}"   data-etat="{{ vac.etat }}" data-action="reject">Non Fait</span>
+                        <span class="badge badge-success badge-style modif-etat" data-type="vaccination" data-id="{{ vac.id }}" data-vaccin="{{vac.vaccin }}" data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}"  data-date="{{ vac.datePrise |date}}"   data-etat="{{ vac.etat }}" data-action="active">{% trans %}Done{% endtrans %}</span>
+                        <span class="badge badge-danger badge-style modif-etat"  data-type="vaccination" data-id="{{ vac.id }}" data-vaccin="{{vac.vaccin }}" data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}"  data-date="{{ vac.datePrise  |date}}"   data-etat="{{ vac.etat }}" data-action="reject">{% trans %}Not Done{% endtrans %}</span>
                     </td>
 
                 </tr>

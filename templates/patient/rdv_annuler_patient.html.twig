@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Rendez-Vous
+    {% trans %}appointment {% endtrans %}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -10,7 +10,8 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">rendez-vous annuler</h4>
+            <h4 class="h4-content">appointment cancel</h4>
+
         </div>
 
     </div>
@@ -18,11 +19,11 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date rdv</th>
+                <th>{% trans %}Appointment date{%  endtrans %}</th>
                 <th>Type</th>
-                <th>Objet de consultation </th>
-                <th>Docteur</th>
-                <th>Vaccin</th>
+                <th>{% trans %}Object of consultation{% endtrans %} </th>
+                <th>Praticien</th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
                 <th>Status</th>
 
             </tr>
@@ -44,12 +45,13 @@
                     <td></td>
                     <td>
                         {% if rdv.statusConsultation == 1 %}
-                            <span class="badge badge-success badge-style modif-status"> activé </span>
+                            <span class="badge badge-success badge-style modif-status">{% trans %}activate{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">En attente</span>
+                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">Réjeter</span>
+                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
+
                     </td>
 
                 </tr>

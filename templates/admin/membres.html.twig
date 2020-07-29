@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Membres
+    {% trans %}Members{% endtrans %}
 {% endblock %}
 {% block stylesheets %}
     <style>
@@ -58,13 +58,13 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Liste de tous les membres </h4>
+            <h4 class="h4-content">{% trans %}List of all members{% endtrans %} </h4>
         </div>
     </div>
     <div class="tab-wrap">
         <ul class="tab-list">
-            <li class="in"><a href="javascript:;"><span>Patients</span></a></li>
-            <li><a href="javascript:;"><span>Praticiens</span></a></li>
+            <li class="in"><a href="javascript:;"><span>Patient</span></a></li>
+            <li><a href="javascript:;"><span>Praticien</span></a></li>
         </ul>
         <div class="tab-items">
             <div class="tab-item in">
@@ -72,12 +72,12 @@
                     <table class="table table-striped" id="table-patients">
                         <thead>
                         <tr>
-                            <th>Nom</th>
-                            <th>Prénoms</th>
-                            <th>Nom du mère</th>
-                            <th>Téléphone</th>
-                            <th class="text-center">Date de création</th>
-                            <th class="text-center">Date de consultation</th>
+                            <th>{% trans %}Last name{% endtrans %}</th>
+                            <th>{% trans %}First name{% endtrans %}</th>
+                            <th>{% trans %}Mother's name{% endtrans %}</th>
+                            <th>{% trans %}Phone{% endtrans %}</th>
+                            <th class="text-center">{% trans %}Creation date{% endtrans %}</th>
+                            <th class="text-center">{% trans %}Consultation date{% endtrans %}</th>
                             <th>Status</th>
                             <th></th>
                         </tr>
@@ -105,9 +105,9 @@
                                 </td>
                                 <td>
                                     {% if patient.etat == 1 %}
-                                        <span class="badge badge-success badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient"> activé </span>
+                                    <span class="badge badge-success badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient"> {% trans %}Activate{% endtrans %} </span>
                                     {% else %}
-                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient">Desactivé</span>
+                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient">{% trans %}Deactivate{% endtrans %}</span>
                                     {% endif %}
                                 </td>
                                 <td>
@@ -125,11 +125,11 @@
                     <table class="table table-striped" id="table-praticiens">
                         <thead>
                         <tr>
-                            <th>Nom</th>
-                            <th>Prénoms</th>
-                            <th>Téléphone</th>
-                            <th class="text-center">Date de création</th>
-                            <th class="text-center">Date de consultation</th>
+                            <th>{% trans %}Last name{% endtrans %}</th>
+                            <th>{% trans %}First name{% endtrans %}</th>
+                            <th>{% trans %}Phone{% endtrans %}</th>
+                            <th class="text-center">{% trans %}Creation date{% endtrans %}</th>
+                            <th class="text-center">{% trans %}Consultation date{% endtrans %}</th>
                             <th>Status</th>
                             <th></th>
                         </tr>
@@ -154,9 +154,9 @@
                                 </td>
                                 <td>
                                     {% if praticien.etat == 1 %}
-                                        <span class="badge badge-success badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien"> activé </span>
+                                        <span class="badge badge-success badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien"> {% trans %}Activate{% endtrans %} </span>
                                     {% else %}
-                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien">Desactivé</span>
+                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien">{% trans %}Deactivate{% endtrans %}</span>
                                     {% endif %}
                                 </td>
                                 <td>

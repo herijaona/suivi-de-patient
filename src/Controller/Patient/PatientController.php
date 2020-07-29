@@ -18,6 +18,7 @@ use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
 use App\Repository\PropositionRdvRepository;
+use App\Repository\UserRepository;
 use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
 use Carbon\Carbon;
@@ -27,6 +28,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/patient")
@@ -44,6 +46,7 @@ class PatientController extends AbstractController
     protected $ordoVaccinationRepository;
     protected $vaccinRepository;
     protected $propositionRdvRepository;
+    protected $userRepository;
 
     function __construct(
         VaccinGenerate $vaccinGenerate,
@@ -55,10 +58,12 @@ class PatientController extends AbstractController
         VaccinRepository $vaccinRepository,
         FamilyRepository $familyRepository,
         OrdonnaceRepository $ordonnaceRepository,
+        UserRepository $userRepository,
         GroupFamilyRepository $groupFamilyRepository,
         EntityManagerInterface $entityManager
     )
     {
+        $this->userRepository= $userRepository;
         $this->vaccinGenerate = $vaccinGenerate;
         $this->vaccinRepository = $vaccinRepository;
         $this->patientRepository = $patientRepository;
@@ -171,7 +176,7 @@ class PatientController extends AbstractController
     /**
      * @Route("/proposition/acccepted", name = "proposition")
      */
-    public function proposition_accepted(Request $request)
+    public function proposition_accepted(Request $request,TranslatorInterface $translator)
     {
         $id = $request->request->get("id");
         $personne = $request->request->get("personne");
@@ -202,7 +207,8 @@ class PatientController extends AbstractController
             $this->entityManager->persist($propos);
             $this->entityManager->flush();
         }
-        $this->addFlash('success', 'Changement effectué avec succès');
+        $message = $translator->trans('Successful change');
+        $this->addFlash('success', $message);
         return new JsonResponse(['status' => 'OK']);
     }
 
@@ -557,7 +563,7 @@ class PatientController extends AbstractController
     /**
      * @Route("/rdv/remove", name="remove_rdv_patient", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function remove_vaccin(Request $request)
+    public function remove_vaccin(Request $request,TranslatorInterface $translator)
     {
         $Id = $request->request->get('id');
         $type = $request->request->get('type');
@@ -570,13 +576,15 @@ class PatientController extends AbstractController
                 if (($IntervationConsultations && count($IntervationConsultations) > 0) ||
                     ($PatientOrdoConsultations && count($PatientOrdoConsultations) > 0))
                 {
+                    $message = $translator->trans('Error deleting this element!');
                     $delete = false;
-                    $this->addFlash('error', 'Erreur de suprimé de cet élément !');
+                    $this->addFlash('error', $message );
                 }else{
                     $this->entityManager->remove($ordoCon);
                     $this->entityManager->flush();
+                    $message = $translator->trans('Appointment has been deleted successfully!');
                     $delete = true;
-                    $this->addFlash('success', 'Rdv à été supprimé avec succès !');
+                    $this->addFlash('success', $message);
                 }
             }
         }
@@ -588,17 +596,20 @@ class PatientController extends AbstractController
                 if (($PatientOrdoVaccinations && count($PatientOrdoVaccinations) > 0) ||
                     ($InterventionVaccinations && count($InterventionVaccinations) > 0))
                 {
+                    $message = $translator->trans('Error deleting this element!');
                     $delete = false;
-                    $this->addFlash('error', 'Erreur de suprimé de cet élément !');
+                    $this->addFlash('error', $message);
                 }else{
                     $this->entityManager->remove($ordoCon);
                     $this->entityManager->flush();
+                    $message = $translator->trans('Appointment has been deleted successfully!');
                     $delete = true;
-                    $this->addFlash('success', 'Rdv à été supprimé avec succès !');
+                    $this->addFlash('success', $message);
                 }
             }
         }
         return new JsonResponse(['form_delete' => $delete]);
     }
+
 
 }

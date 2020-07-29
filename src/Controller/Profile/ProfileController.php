@@ -30,6 +30,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use App\Form\RegistrationPraticienFormType;
@@ -104,7 +105,7 @@ class ProfileController extends AbstractController
      * @Route("/praticien/profile", name="editPraticien")
      * @return Response
      */
-    public function editPraticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator) : Response{
+    public function editPraticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator,TranslatorInterface $translator) : Response{
         $user = [];
         $form = $this->createForm(RegistrationPraticienFormType::class, $user);
 
@@ -148,8 +149,8 @@ class ProfileController extends AbstractController
             $praticien->setUser($user);
             $entityManager->persist($praticien);
             $entityManager->flush();
-            $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
-
+            $message = $translator->trans('The user has been registered successfully!');
+            $this->addFlash('success', $message);
             return $this->redirectToRoute('editPraticien',['id'=>$idPraticien['0']['id']]);
         }
 
@@ -175,7 +176,7 @@ class ProfileController extends AbstractController
      * @Route("/patient/profile", name="editPatient")
      * @return Response
      */
-    public function editPatient(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator) : Response{
+    public function editPatient(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, TranslatorInterface $translator) : Response{
         $user = [];
         $form = $this->createForm(RegistrationFormType::class, $user);
        
@@ -227,7 +228,8 @@ class ProfileController extends AbstractController
             $patient->setUser($user);
             $entityManager->persist($patient);
             $entityManager->flush();
-            $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
+            $message = $translator->trans('The user has been registered successfully!');
+            $this->addFlash('success', $message);
             // do anything else you need here, like send an email
 
             return $this->redirectToRoute('editPatient',['id'=>$currentUser->getId()]);

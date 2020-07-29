@@ -23,15 +23,17 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 
 class RegistrationController extends AbstractController
 {
-    protected $user;
+
     protected $typePatientRepository;
+    protected $userRepository;
+
     const ROLE_PATIENT = 'ROLE_PATIENT';
     const ROLE_PRATICIEN = 'ROLE_PRATICIEN';
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
     function __construct(UserRepository $userRepository, TypePatientRepository $typePatientRepository)
     {
-        $this->user = $userRepository;
+        $this->userRepository = $userRepository;
         $this->typePatientRepository = $typePatientRepository;
     }
 
@@ -286,4 +288,8 @@ class RegistrationController extends AbstractController
             'activationForm' => $form->createView(),
         ]);
     }
+
+
+
+
 }

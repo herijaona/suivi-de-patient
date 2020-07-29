@@ -11,11 +11,11 @@
 
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Liste des patients</h4>
+            <h4 class="h4-content">{% trans %}List of patients{% endtrans %}</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
             <button class="btn btn-info">+ Add membres</button>
-            <button class="btn btn-danger">+ Creer patient</button>
+            <button class="btn btn-danger">{% trans %}+ Create patient{% endtrans %}</button>
         </div>
     </div>
 
@@ -23,10 +23,11 @@
         <table class="table table-striped" id="patient">
             <thead>
             <tr>
-                <th>Nom et prenom</th>
-                <th>Telephone</th>
+                <th>{% trans %}Last name{% endtrans %} </th>
+                <th>{% trans %}first name{% endtrans %} </th>
+                <th>{% trans %}Phone{% endtrans %}</th>
                 <th>E-mail</th>
-                <th>Date de naissance</th>
+                <th>{% trans %}Date of Birth{% endtrans %}</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -35,6 +36,7 @@
                 <tr>
                     <td><a href="#">{{ patient.lastname }}</a></td>
                     <td>{{ patient.firstname }}</td>
+                    <td>{{ patient.phone }}</td>
                     <td>{{ patient.user.email }}</td>
 
                     <td>

@@ -87,7 +87,7 @@ ul {
 
 .img_profile {
     text-align: center;
-    border-bottom: 2px solid rgb(170 206 222 / 16%);
+    border-bottom: 2px solid rgb(170 206 222/16%);
     z-index: 9;
     padding-bottom: 26px;
 }
@@ -101,7 +101,8 @@ ul {
 }
 
 .img_profile img {
-    width: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 49%;
     text-align: center;
 }
@@ -481,8 +482,8 @@ select.mdb-select.initialized {
 }
 
 .lang-en {
-    width: 19px;
-    opacity: 0.6;
+    width: 45px;
+   
     margin-left: 2px;
 }
 

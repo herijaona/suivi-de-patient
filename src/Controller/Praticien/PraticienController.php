@@ -26,6 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @Route("/praticien")
@@ -228,7 +229,7 @@ class PraticienController extends AbstractController
     /**
      * @Route("/update/edit", name="change_status")
      */
-      public function  update( Request $request)
+      public function  update( Request $request, TranslatorInterface $translator)
       {
           if($request->request->get('action') == "active")
           {
@@ -247,7 +248,8 @@ class PraticienController extends AbstractController
                       $this->entityManager->flush();
                   }
               }
-              $this->addFlash('success', 'Changement effectué avec succès');
+              $message=$translator->trans('Successful change');
+              $this->addFlash('success', $message);
               return new JsonResponse(['status' => 'OK']);
           }
           elseif ($request->request->get('action') == "reject"){
@@ -266,7 +268,8 @@ class PraticienController extends AbstractController
                           $this->entityManager->flush();
                       }
                   }
-                  $this->addFlash('success', 'Changement effectué avec succès');
+                  $message=$translator->trans('Successful change');
+                  $this->addFlash('success', $message);
                   return new JsonResponse(['status' => 'OK']);
           }
       }
@@ -323,7 +326,8 @@ class PraticienController extends AbstractController
                            $this->entityManager->flush();
                        }
                    }
-                   $this->addFlash('success', 'Changement effectué avec succès');
+                   $message=$translator->trans('Successful change');
+                   $this->addFlash('success', $message);
                    return new JsonResponse(['status' => 'OK']);
                }elseif ($request->request->get('action')== "reject"){
                    if($request->request->get('type') == "consultation" && $request->request->get('etat') == 0){
@@ -364,7 +368,8 @@ class PraticienController extends AbstractController
                        }
                    }
                }
-               $this->addFlash('success', 'Changement effectué avec succès');
+               $message=$translator->trans('Successful change');
+               $this->addFlash('success', $message);
                return new JsonResponse(['status' => 'OK']);
 
 
@@ -390,7 +395,8 @@ class PraticienController extends AbstractController
         }
         $this->entityManager->persist($Rdv);
         $this->entityManager->flush();
-        $this->addFlash('success', 'Changement effectué avec succès');
+        $message=$translator->trans('Successful change');
+        $this->addFlash('success', $message);
         return new JsonResponse(['status' => 'OK']);
     }
 
@@ -411,9 +417,12 @@ class PraticienController extends AbstractController
             }
             $this->entityManager->persist($Rdv);
             $this->entityManager->flush();
-            $this->addFlash('success', 'Changement effectué avec succès');
+            $message=$translator->trans('Successful change');
+            $this->addFlash('success', $message);
+
         }else{
-            $this->addFlash('error', 'Vous n\'êtes pas d\'accès à cette évenement ');
+            $message=$translator->trans('You do not have access to this event');
+            $this->addFlash('error', $message);
         }
         return new JsonResponse(['status' => 'OK']);
     }
@@ -581,8 +590,9 @@ class PraticienController extends AbstractController
             $this->entityManager->remove($propos);
             $this->entityManager->flush();
             $delete = true;
-            $this->addFlash('success', 'La Proposition de rendez-vous à été supprimé avec succès !');
-        return new JsonResponse(['form_delete' => $delete]);
+            $message=$translator->trans('The Appointment proposal has been successfully deleted!');
+            $this->addFlash('success', $message);
+         return new JsonResponse(['form_delete' => $delete]);
     }
 
 }

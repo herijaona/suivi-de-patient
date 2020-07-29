@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Proposition Rendez-Vous
+    {% trans %}Appointment proposal{% endtrans %}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -9,19 +9,19 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Proposition rendez-vous</h4>
+            <h4 class="h4-content">{% trans %}Appointment proposal{% endtrans %}</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger add_form_rdv">+ Creer Proposition rendez-vous</button>
+            <button class="btn btn-danger add_form_rdv">{% trans %}+ Create appointment proposal{% endtrans %}</button>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Date de Proposition rdv</th>
-                <th>Description Proposition </th>
-                <th>Nombre patient attendue </th>
+                <th>{% trans %}Date of proposal appointment{% endtrans %}</th>
+                <th>{% trans %}Description Proposition{% endtrans %} </th>
+                <th>{% trans %}Number of patients expected{% endtrans %} </th>
                 <th></th>
 
             </tr>
