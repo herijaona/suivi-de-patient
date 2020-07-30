@@ -95,13 +95,13 @@
                     <div class="loadBody">
                         <div class="chargement alert-dismissable alert alert-warning alert-dismissable">
                             <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                            Merci de patienter!.. Chargement en cours..
+                            {% trans %}Please wait! .. Loading ..{% endtrans %}
                         </div>
                     </div>
 
                     <div class="alert alert-danger alert-dismissable chargementError">
                         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
-                        Le serveur a rencontré un problème interne ou un problème de configuration et ne peut pas satisfaire votre requête...
+                        {% trans %}The server has encountered an internal problem or a configuration problem and cannot satisfy your request ...{% endtrans %}
                     </div>
 
                     <div class="modal inmodal" id="modal_create_body" role="dialog" aria-hidden="true">

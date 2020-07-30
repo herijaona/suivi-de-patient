@@ -78,11 +78,11 @@
             <li>
                 {% if is_granted('ROLE_ADMIN') %}
                 <a href="{{ path('admin_logout') }}">
-                    <i class="fas fa-sign-out-alt"></i> Déconnexion
+                    <i class="fas fa-sign-out-alt"></i> {% trans %}Logout{% endtrans %}
                 </a>
                 {% else %}
                     <a href="{{ path('app_logout') }}">
-                        <i class="fas fa-sign-out-alt"></i> Déconnexion
+                        <i class="fas fa-sign-out-alt"></i> {% trans %}Logout{% endtrans %}
                     </a>
                 {% endif %}
             </li>

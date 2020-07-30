@@ -6,6 +6,7 @@ use App\Entity\OrdoConsultation;
 use App\Entity\Praticien;
 use App\Entity\Vaccin;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -13,12 +14,12 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+
 class RdvType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $typeRdvArrays = $options['typeRdvArrays'];
-
         $builder
             ->add('id', HiddenType::class)
             ->add('praticiens',EntityType::class,
@@ -30,7 +31,7 @@ class RdvType extends AbstractType
                     },
                     'class' => Praticien::class,
                     'attr' => ['class' => 'form-control chosen-select'],
-                    'placeholder' => 'Choisir un Médecin'
+                    'placeholder' => 'Choose a Praticien'
                 ])
             ->add('dateRdv')
             ->add('heureRdv')
@@ -49,7 +50,7 @@ class RdvType extends AbstractType
                     },
                     'class' => Vaccin::class,
                     'attr' => ['class' => 'form-control chosen-select'],
-                    'placeholder' => 'Choisir vaccin'
+                    'placeholder' => 'Choose vaccine'
                 ])
         ;
     }

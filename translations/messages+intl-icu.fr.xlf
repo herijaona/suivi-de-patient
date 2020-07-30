@@ -6,7 +6,7 @@
     </header>
     <body>
       <trans-unit id="STZjHxT" resname="Calendrier de Vaccination">
-        <source>Calendrier de Vaccination </source>
+        <source>Calendrier de Vaccination</source>
         <target>__Calendrier de Vaccination</target>
       </trans-unit>
       <trans-unit id="Ak3CBNe" resname="Area">
@@ -570,7 +570,7 @@
         <target>Mot de passe mis à jour</target>
       </trans-unit>
       <trans-unit id="y_l_ezy" resname="Password change error">
-        <source>Password change error </source>
+        <source>Password change error</source>
         <target>Erreur de changement de mot de passe</target>
       </trans-unit>
       <trans-unit id="9SJup_K" resname="The health center has been successfully modified!">
@@ -604,6 +604,30 @@
       <trans-unit id="IYaUtSS" resname="The country name has been registered successfully!">
         <source>The country name has been registered successfully!</source>
         <target>Le nom du pays a été enregistré avec succès!</target>
+      </trans-unit>
+      <trans-unit id="nDsKSgs" resname="Choose Region">
+        <source>Choose Region</source>
+        <target>Choisir Région </target>
+      </trans-unit>
+      <trans-unit id="60a3qJM" resname="Choose City">
+        <source>Choose City</source>
+        <target>Choisir Ville</target>
+      </trans-unit>
+      <trans-unit id="wNV.7Zn" resname="Please wait! .. Loading ..">
+        <source>Please wait! .. Loading ..</source>
+        <target> Merci de patienter!.. Chargement en cours..</target>
+      </trans-unit>
+      <trans-unit id="hUN0N3E" resname="The server has encountered an internal problem or a configuration problem and cannot satisfy your request ...">
+        <source>The server has encountered an internal problem or a configuration problem and cannot satisfy your request ...</source>
+        <target> Le serveur a rencontré un problème interne ou un problème de configuration et ne peut pas satisfaire votre requête...</target>
+      </trans-unit>
+      <trans-unit id="Jxxi_i3" resname="My profile">
+        <source>My profile</source>
+        <target>Mon profil</target>
+      </trans-unit>
+      <trans-unit id="0FJ_Sz1" resname="Logout">
+        <source>Logout</source>
+        <target>Se déconnecter</target>
       </trans-unit>
     </body>
   </file>

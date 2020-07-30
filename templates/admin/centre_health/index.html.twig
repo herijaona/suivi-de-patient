@@ -8,9 +8,7 @@
             align-items: center !important;
             justify-content: flex-end !important;
         }
-        #vaccin_center_health_chosen {
-            /*width: 170px !important;*/
-        }
+
     </style>
 {% endblock %}
 
@@ -108,7 +106,7 @@
                 success: function ($tabRegion) {
                     $("#center_health_region").empty();
                     var lastKey = Object.keys($tabRegion)[Object.keys($tabRegion).length - 1];
-                    $("#center_health_region").append('<option value=""> Choisir Région </option>');
+                    $("#center_health_region").append('<option value="">{% trans %}Choose Region{% endtrans %} </option>');
                     $.each($tabRegion, function (key, region) {
                         $("#center_health_region").append('<option value="' + key + '">' + region + '</option>');
                     });
@@ -135,7 +133,7 @@
                 success: function ($tabCity) {
                     $("#center_health_ville").empty();
                     var lastKey = Object.keys($tabCity)[Object.keys($tabCity).length - 1];
-                    $("#center_health_ville").append('<option value=""> Choisir Ville </option>');
+                    $("#center_health_ville").append('<option value=""> {% trans %}Choose City{% endtrans %} </option>');
                     $.each($tabCity, function (key, city) {
                         $("#center_health_ville").append('<option value="' + key + '">' + city + '</option>');
                     });
