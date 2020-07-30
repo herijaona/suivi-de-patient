@@ -1,4 +1,4 @@
-/* Fonts speciaux */
+menu_bar/* Fonts speciaux */
 
 @font-face {
     font-family: "marvel-bold";
@@ -482,7 +482,7 @@ select.mdb-select.initialized {
 }
 
 .lang-en {
-    width: 45px;
+    width: 30px;
    
     margin-left: 2px;
 }

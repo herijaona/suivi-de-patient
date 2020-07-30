@@ -153,6 +153,7 @@ class PatientController extends AbstractController
     public function consultation_patient()
     {
         $user = $this->getUser();
+
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
         $rvc = $this->ordoConsultationRepository->searchStatus($patient->getId(), 1);
