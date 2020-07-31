@@ -1,16 +1,16 @@
 <div class="menu_up">
-    <ul class="menu_bar" >
-        {% for locale in locales if locale != app.request.locale%}
-        <li>
-            <a href="{{ path('change_locale', {'locale': locale})}}">
-                <img class="lang-en" src="{{asset('assets/images/'~locale~'.png')}}" alt="{{ locale }}" id="logo" >
 
-            </a>
-        </li>
-        {% endfor %}
-
-    </ul>
     <ul class="menu_right">
+
+            {% for locale in locales if locale != app.request.locale%}
+                <li>
+                    <a href="{{ path('change_locale', {'locale': locale})}}">
+                        <img class="lang-en" src="{{asset('assets/images/'~locale~'.png')}}" alt="{{ locale }}" id="logo" >
+
+                    </a>
+                </li>
+            {% endfor %}
+
         <li>
             <a href="">
                 <i class="far fa-bell">
