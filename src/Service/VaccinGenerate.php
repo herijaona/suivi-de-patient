@@ -21,51 +21,278 @@ class VaccinGenerate
         $this->vaccinRepository = $vaccinRepository;
     }
 
-    public function generateCalendar($patient,$birthday,$type_patient,$state,$praticien=null, $dateNow)
+
+    public function generateCalendar($patient,$praticien=null, $dateNow)
     {
+        $type_patient = $patient->getTypePatient()->getTypePatientName();
+        $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
+        $birthday = $patient->getDateOnBorn();
+
         $etat = 0;
         if($praticien) $etat = 1;
         $day_preg =  $dateNow;
-        if($state=='FRANCE'){
+        if($state == 'FRANCE'){
             switch ($type_patient){
                 case 'ENFANT':
+
+                    $all = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
+                    
                   //  $this->ca_vaccin_enfant($patient,$birthday,'Antituberculeux : B.C.G',1, $etat, $praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'DTC – HepB + Hib 1',6, $etat, $praticien);
+                    /*$this->ca_vaccin_enfant($patient,$birthday,'DTC – HepB + Hib 1',6, $etat, $praticien);
                     $this->ca_vaccin_enfant($patient,$birthday,'DTC-HepB2 + Hib2',10, $etat, $praticien);
                     $this->ca_vaccin_enfant($patient,$birthday,'DTC-HepB2 + Hib3',14, $etat, $praticien);
                     $this->ca_vaccin_enfant($patient,$birthday,'Pneumo 13-1 (VPO-1 + Rota1)',6, $etat, $praticien);
                     $this->ca_vaccin_enfant($patient,$birthday,'Pneumo 13-2 (VPO-2 + Rota2)',10, $etat, $praticien);
                     $this->ca_vaccin_enfant($patient,$birthday,'Pneumo 13-3 (VPO-3)',14, $etat, $praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'VAR + VAA',36, $etat, $praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'VAR + VAA',36, $etat, $praticien);*/
                     break;
-               /* case 'ADULTE':
-                    $this->ca_vaccin_adulte($patient,$birthday,$etat,$patient);
+                case 'ADULTE':
+                $all = $this->vaccinRepository->findVaccinByTYpe('ADULTE', $state);
+                    /*$this->ca_vaccin_adulte($patient,$birthday,$etat,$patient);
                     $this->ca_vaccin_adult_age3($patient,$birthday,'Coqueluche acellulaire (ca)',25,$etat,$praticien);
                     $this->ca_vaccin_adult_age3($patient,$birthday,'Zona',65,$etat,$praticien);
-                    $this->ca_grippe($patient,$birthday,$etat,$praticien);
+                    $this->ca_grippe($patient,$birthday,$etat,$praticien);*/
                     break;
                 case 'FEMME ENCEINTE':
-                    $this->ca_enceinte($patient,$day_preg,'VAT1',0,$etat,$praticien,1);
+                $all = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE', $state);
+                    /*$this->ca_enceinte($patient,$day_preg,'VAT1',0,$etat,$praticien,1);
                     $this->ca_enceinte($patient,$day_preg,'VAT2',1,$etat,$praticien);
                     $this->ca_enceinte($patient,$day_preg,'VAT3',7,$etat,$praticien);
                     $this->ca_enceinte($patient,$day_preg,'VAT4',19,$etat,$praticien);
-                    $this->ca_enceinte($patient,$day_preg,'VAT5',31,$etat,$praticien);
-                    break;*/
+                    $this->ca_enceinte($patient,$day_preg,'VAT5',31,$etat,$praticien);*/
+                    break;
             }
-        }/*else{
+
+        }else{
             switch ($type_patient){
                 case 'ENFANT':
-                    $this->fr_DTCaP($patient,$birthday,$etat,$praticien);
+                    $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
+
+                    /*$this->fr_DTCaP($patient,$birthday,$etat,$praticien);
                     $this->fr_Hib_hepb_pnc($patient,$birthday,'Hib',$etat,$praticien);
                     $this->fr_Hib_hepb_pnc($patient,$birthday,'Hep B',$etat,$praticien);
                     $this->fr_Hib_hepb_pnc($patient,$birthday,'Pnc',$etat,$praticien);
                     $this->fr_dTcaP_ado($patient,$birthday,$etat,$praticien);
                     $this->fr_ROR($patient,$birthday,$etat,$praticien);
                     $this->fr_MnC($patient,$birthday,$etat,$praticien);
-                    $this->ca_vaccin_enfant($patient,$birthday,'/Antituberculeux : B.C.G/',1,$etat,$praticien);
+                    $this->ca_vaccin_enfant($patient,$birthday,'/Antituberculeux : B.C.G/',1,$etat,$praticien);*/
                     break;
             }
-        }*/
+            dd($alls);
+        }
+    }
+
+    /**
+     * generate vaccin Antituberculeux : B.C.G,DTC – HepB + Hib 1, for child cameroun
+     * @param $patient
+     * @param $birthday
+     * @param $etat
+     * @param $praticien
+     */
+    public function ca_vaccin_enfants($patient,$birthday,$vaccinAll,$_weeks,$etat,$praticien)
+    {
+        $birth = Carbon::parse($birthday);
+        $date_now = Carbon::now();
+        $week = $birth->diffInWeeks($date_now);
+
+        $birth = Carbon::parse($birthday);
+        $date_now = Carbon::now();
+        $month = $birth->diffInMonths($date_now);
+
+        $dtcap = $this->vaccinRepository->findOneBy(['vaccin_name'=>'DTCaP']);
+        if ($dtcap){
+            if($month <= 4){
+                for ($i=1; $i<=4; $i++){
+                    $rdv = new RendezVous();
+                    $rdv->setPatient($patient);
+                    $rdv->setVaccin($dtcap);
+                    $rdv->setPraticien($praticien);
+                    $rdv->setEtat($etat);
+                    if($i==1){
+                        if($month == 4){
+                            if(!$date_now->isWeekend()){
+                                $tomorrow = $date_now->addDay();
+                                if($tomorrow->day != 6){
+                                    $rdv->setDateRdv($tomorrow);
+                                }else{
+                                    $monday = $date_now->addDays(3);
+                                    $rdv->setDateRdv($monday);
+                                }
+                            }else{
+                                $date = $date_now->addDays(2);
+                                $rdv->setDateRdv($date);// 4mois
+                            }
+                        }else{
+                            $month_4 = $this->add_rdv_in_month(4,$birthday);
+                            $rdv->setDateRdv($month_4);
+                        }
+                    }elseif ($i==2){
+                        $month_5 = $this->add_rdv_in_month(5,$birthday);
+                        $rdv->setDateRdv($month_5);
+                    }elseif ($i==3){
+                        $month_12 = $this->add_rdv_in_month(12,$birthday);
+                        $rdv->setDateRdv($month_12);
+                    }else{
+                        $month_132 = $this->add_rdv_in_month(132,$birthday);
+                        $rdv->setDateRdv($month_132);
+                    }
+                    $rdv->setStatus(false);
+                    $this->entityManager->persist($rdv);
+                }
+            }elseif($month == 5){
+                for ($i=1; $i<=3; $i++){
+                    $rdv = new RendezVous();
+                    $rdv->setPatient($patient);
+                    $rdv->setVaccin($dtcap);
+                    $rdv->setPraticien($praticien);
+                    $rdv->setEtat($etat);
+                    if($i==1){
+                        if(!$date_now->isWeekend()){
+                            $tomorrow = $date_now->addDay();
+                            if($tomorrow->day != 6){
+                                $rdv->setDateRdv($tomorrow);
+                            }else{
+                                $monday = $date_now->addDays(3);
+                                $rdv->setDateRdv($monday);
+                            }
+                        }else{
+                            $date = $date_now->addDays(2);
+                            $rdv->setDateRdv($date);// 5mois
+                        }
+                    }elseif ($i==2){
+                        $month_12 = $this->add_rdv_in_month(12,$birthday);
+                        $rdv->setDateRdv($month_12);
+                    }else{
+                        $month_132 = $this->add_rdv_in_month(132,$birthday);
+                        $rdv->setDateRdv($month_132);
+                    }
+                    $rdv->setStatus(false);
+                    $this->entityManager->persist($rdv);
+                }
+            }elseif($month <= 12){
+                for ($i=1; $i<=2; $i++){
+                    $rdv = new RendezVous();
+                    $rdv->setPatient($patient);
+                    $rdv->setVaccin($dtcap);
+                    $rdv->setPraticien($praticien);
+                    $rdv->setEtat($etat);
+                    if($i==1){
+                        if($month == 12){
+                            if(!$date_now->isWeekend()){
+                                $tomorrow = $date_now->addDay();
+                                if($tomorrow->day != 6){
+                                    $rdv->setDateRdv($tomorrow);
+                                }else{
+                                    $monday = $date_now->addDays(3);
+                                    $rdv->setDateRdv($monday);
+                                }
+                            }else{
+                                $date = $date_now->addDays(2);
+                                $rdv->setDateRdv($date);// 12mois
+                            }
+                        }else{
+                            $month_12 = $this->add_rdv_in_month(12,$birthday);
+                            $rdv->setDateRdv($month_12);
+                        }
+                    }else{
+                        $month_132 = $this->add_rdv_in_month(132,$birthday);
+                        $rdv->setDateRdv($month_132);
+                    }
+                    $rdv->setStatus(false);
+                    $this->entityManager->persist($rdv);
+                }
+            }elseif($month <= 132){
+                $rdv = new RendezVous();
+                $rdv->setPatient($patient);
+                $rdv->setVaccin($dtcap);
+                $rdv->setPraticien($praticien);
+                $rdv->setEtat($etat);
+                if($month == 132){
+                    if(!$date_now->isWeekend()){
+                        $tomorrow = $date_now->addDay();
+                        if($tomorrow->day != 6){
+                            $rdv->setDateRdv($tomorrow);
+                        }else{
+                            $monday = $date_now->addDays(3);
+                            $rdv->setDateRdv($monday);
+                        }
+                    }else{
+                        $date = $date_now->addDays(2);
+                        $rdv->setDateRdv($date);// 132mois
+                    }
+                }else{
+                    $month_132 = $this->add_rdv_in_month(132,$birthday);
+                    $rdv->setDateRdv($month_132);
+                }
+                $rdv->setStatus(false);
+                $this->entityManager->persist($rdv);
+            }
+            $this->entityManager->flush();
+        }
+
+        foreach ( $vaccinAll as $vacc){
+
+            if($vacc){
+                $datePriseInitiale = $vacc->getDatePriseInitiale();
+                $rappel1 = $vacc->getRappel1();
+                $rappel2 = $vacc->getRappel2();
+                $rappel3 = $vacc->getRappel3();
+                $rappel4 = $vacc->getRappel4();
+                $rappel5 = $vacc->getRappel5();
+                $rappel6 = $vacc->getRappel6();
+                $rappel7 = $vacc->getRappel7();
+                $rappel8 = $vacc->getRappel8();
+                $rappel9 = $vacc->getRappel9();
+                $rappel10 = $vacc->getRappel10();
+
+                if($datePriseInitiale){
+                    $datePriseInitiales = explode(" ", $datePriseInitiale);
+                }
+                elseif ($vacc->getRappel1() != null){
+
+                }elseif ($vacc->getRappel2() != null){
+
+                }elseif ( $vacc->getRappel3() != null){
+
+                }
+
+
+                $month = $birth->diffInMonths($date_now);
+
+                if ($week <= $_weeks){
+
+                    $rdv = new OrdoVaccination();
+                    $rdv->setPatient($patient);
+                    $rdv->setVaccin($vacc);
+                    $rdv->setReferencePraticienExecutant($praticien);
+
+                    //$rdv->setOrdonnance($ordonance);
+                    $rdv->setEtat($etat);
+                    if($week==$_weeks){
+                        if(!$date_now->isWeekend()){
+                            $tomorrow = $date_now->addDay();
+                            if($tomorrow->day != 6){
+                                $rdv->setDatePrise($tomorrow);
+                            }else{
+                                $monday = $date_now->addDays(3);
+                                $rdv->setDatePrise($monday);
+                            }
+                        }else{
+                            $date = $date_now->addDays(2);
+                            $rdv->setDatePrise($date);
+                        }
+                    }else{
+                        $week_ = $this->add_rdv_in_week($_weeks,$birthday);
+                        $rdv->setDatePrise($week_);
+                    }
+                    $rdv->setStatusVaccin(0);
+
+                    $this->entityManager->persist($rdv);
+                    $this->entityManager->flush();
+                }
+            }
+
+        }
     }
 
     /**
@@ -81,6 +308,7 @@ class VaccinGenerate
         $date_now = Carbon::now();
         $week = $birth->diffInWeeks($date_now);
         $vacc = $this->vaccinRepository->findOneBy(['vaccinName'=>$vaccinName]);
+
 
         if($vacc){
             if ($week <= $_weeks){

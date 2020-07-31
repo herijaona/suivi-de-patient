@@ -248,8 +248,8 @@ class PraticienController extends AbstractController
                       $this->entityManager->flush();
                   }
               }
-              $message=$translator->trans('Successful change');
-              $this->addFlash('success', $message);
+              //$message=$translator->trans('Successful change');
+              //$this->addFlash('success', $message);
               return new JsonResponse(['status' => 'OK']);
           }
           elseif ($request->request->get('action') == "reject"){
@@ -268,8 +268,8 @@ class PraticienController extends AbstractController
                           $this->entityManager->flush();
                       }
                   }
-                  $message=$translator->trans('Successful change');
-                  $this->addFlash('success', $message);
+                  //$message=$translator->trans('Successful change');
+                  //$this->addFlash('success', $message);
                   return new JsonResponse(['status' => 'OK']);
           }
       }
@@ -326,8 +326,8 @@ class PraticienController extends AbstractController
                            $this->entityManager->flush();
                        }
                    }
-                   $message=$translator->trans('Successful change');
-                   $this->addFlash('success', $message);
+                   //$message=$translator->trans('Successful change');
+                   //$this->addFlash('success', $message);
                    return new JsonResponse(['status' => 'OK']);
                }elseif ($request->request->get('action')== "reject"){
                    if($request->request->get('type') == "consultation" && $request->request->get('etat') == 0){
@@ -368,8 +368,8 @@ class PraticienController extends AbstractController
                        }
                    }
                }
-               $message=$translator->trans('Successful change');
-               $this->addFlash('success', $message);
+               //$message=$translator->trans('Successful change');
+               //:$this->addFlash('success', $message);
                return new JsonResponse(['status' => 'OK']);
 
 
@@ -395,8 +395,8 @@ class PraticienController extends AbstractController
         }
         $this->entityManager->persist($Rdv);
         $this->entityManager->flush();
-        $message=$translator->trans('Successful change');
-        $this->addFlash('success', $message);
+        //$message=$translator->trans('Successful change');
+        //$this->addFlash('success', $message);
         return new JsonResponse(['status' => 'OK']);
     }
 
@@ -417,12 +417,12 @@ class PraticienController extends AbstractController
             }
             $this->entityManager->persist($Rdv);
             $this->entityManager->flush();
-            $message=$translator->trans('Successful change');
-            $this->addFlash('success', $message);
+            //$message=$translator->trans('Successful change');
+            //$this->addFlash('success', $message);
 
         }else{
-            $message=$translator->trans('You do not have access to this event');
-            $this->addFlash('error', $message);
+            //$message=$translator->trans('You do not have access to this event');
+            //$this->addFlash('error', $message);
         }
         return new JsonResponse(['status' => 'OK']);
     }

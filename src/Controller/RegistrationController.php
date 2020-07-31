@@ -214,7 +214,7 @@ class RegistrationController extends AbstractController
             $case = mt_rand(0,count($dico[$option])-1);
             $text .= $dico[$option][$case];
         }
-        $user = $this->user->findBy(['activatorId'=>$text]);
+        $user = $this->userRepository->findBy(['activatorId'=>$text]);
         if($user) {
             return $this->generate_code();
         }
@@ -229,7 +229,7 @@ class RegistrationController extends AbstractController
 
         $username = trim($firstPart).trim($secondPart).trim($nrRand);
         // $username;
-        $user = $this->user->findBy(['username'=>$username]);
+        $user = $this->userRepository->findBy(['username'=>$username]);
         if($user) {
             return $this->random_username($string);
         }
