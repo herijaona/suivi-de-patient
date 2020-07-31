@@ -6,16 +6,16 @@
 <div class="container">
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">Liste des patients</h4>
+            <h4 class="h4-content">{% trans %}List of patients{% endtrans %}</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
             <button class="btn btn-info">+ Add membres</button>
-            <button class="btn btn-danger">+ Creer patient</button>
+            <button class="btn btn-danger">{% trans %}+ Create patient{% endtrans %}</button>
         </div>
     </div>
     <div class="d-flex table-input-up">
         <div class="form-group d-flex pr-4">
-            <label for="exampleFormControlSelect1">Afficher :</label>
+            <label for="exampleFormControlSelect1">{% trans %}Display :{% endtrans %}</label>
             <select class="form-control select1" id="exampleFormControlSelect1">
               <option>1</option>
               <option>5</option>
@@ -23,11 +23,11 @@
             </select>
         </div>
         <div class="form-group d-flex">
-            <label for="exampleFormControlSelect1">Trier par :</label>
+            <label for="exampleFormControlSelect1">{% trans %}Sort by :{% endtrans %}</label>
             <select class="form-control select1" id="exampleFormControlSelect1">
-                <option>Femme enceinte</option>
-                <option>Nouveaux-nees</option>
-                <option>Homme</option>
+                <option>{% trans %}Pregnant woman{% endtrans %}</option>
+                <option>{% trans %}Newborns{% endtrans %}</option>
+                <option>{% trans %}Man{% endtrans %}</option>
             </select>
         </div>
     </div>
@@ -35,19 +35,23 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Nom et prenom</th>
-                    <th>Telephone</th>
+                    <th>{% trans %} Last name {% endtrans %}</th>
+                    <th>{% trans %} First name {% endtrans %}</th>
+                    <th>{% trans %}Phone{% endtrans %}</th>
                     <th>Type</th>
-                    <th>Sexe</th>
-                    <th>Date de naissance</th>
-                    <th>Calendrier vaccinal</th>
+                    <th>E-mail</th>
+                    <th>{% trans %}Sex{% endtrans %}</th>
+                    <th>{% trans %}Date of Birth{% endtrans %}</th>
+                    <th>{% trans %}Vaccination schedule{% endtrans %}</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><a href="#">Gomez Maria</a></td>
+                    <td><a href="#">Gomez</a></td>
                     <td>Maria</td>
+                    <td></td>
+                    <td></td>
                     <td>Maria@gmail.com</td>
                     <td>Femme</td>
                     <td>05/04/2020</td>
