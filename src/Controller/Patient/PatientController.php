@@ -134,13 +134,10 @@ class PatientController extends AbstractController
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         if($patient){
-            $type = $patient->getTypePatient()->getTypePatientName();
 
-            $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
-            $birtday = $patient->getDateOnBorn();
             $dateNow = date('Y-m-d');
 
-            $this->vaccinGenerate->generateCalendar($patient,$birtday,$type,$state,null, $dateNow);
+            $this->vaccinGenerate->generateCalendar($patient,null, $dateNow);
             return new JsonResponse("ok");
         }
         return "error";
