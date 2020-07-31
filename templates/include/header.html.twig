@@ -22,15 +22,15 @@
             {% if is_granted('ROLE_PATIENT') %}
             <a class="clickTr"> <i class="fas fa-user-circle"></i></a>
             <div class="menu_">
-                <a href="{{ path('editPatient') }}">Mon Profile</a>
-                <a href="{{ path('app_logout') }}">Deconnexion</a>
+                <a href="{{ path('editPatient') }}">{% trans %}My profile{% endtrans %}</a>
+                <a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
             </div>
             {% endif %} {% if is_granted('ROLE_PRATICIEN') %}
             <a class="clickTr"> <i class="fas fa-user-circle"></i>
             </a>
             <div class="menu_">
-                <a href="{{ path('editPraticien') }}">Mon Profile</a>
-                <a href="{{ path('app_logout') }}">Deconnexion</a>
+                <a href="{{ path('editPraticien') }}">{% trans %}My profile{% endtrans %}</a>
+                <a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
             </div>
             {% endif %}
         </li>
