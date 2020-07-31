@@ -629,6 +629,10 @@
         <source>Logout</source>
         <target>Se déconnecter</target>
       </trans-unit>
+      <trans-unit id="vxmxB8v" resname="Update Image">
+        <source>Update Image</source>
+        <target>Mettre à jour l'image</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
