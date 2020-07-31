@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    {% trans %}appointment {% endtrans %}
+    {% trans %}Appointment {% endtrans %}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -9,7 +9,7 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content"> {% trans %}appointment {% endtrans %}</h4>
+            <h4 class="h4-content"> {% trans %}Appointment {% endtrans %}</h4>
         </div>
 
     </div>
@@ -69,11 +69,11 @@
                     <td>{{ vac.vaccinName }}</td>
                     <td>
                         {% if vac.statusVaccin == 1 %}
-                            <span class="badge badge-success badge-style modif-status"> activé </span>
+                            <span class="badge badge-success badge-style modif-status"> {% trans %}activate{% endtrans %}</span>
                         {% elseif vac.statusVaccin == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">En attente</span>
+                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
                         {% elseif vac.statusVaccin == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">Réjeter</span>
+                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
 

@@ -633,6 +633,94 @@
         <source>Update Image</source>
         <target>Mettre à jour l'image</target>
       </trans-unit>
+      <trans-unit id="T1dsGX_" resname="All Region">
+        <source>All Region</source>
+        <target>Toutes les régions</target>
+      </trans-unit>
+      <trans-unit id="RvjqsC9" resname="+ New region">
+        <source>+ New region</source>
+        <target>+ Nouvelle région</target>
+      </trans-unit>
+      <trans-unit id="r.ZOT9U" resname="country">
+        <source>country</source>
+        <target>pays</target>
+      </trans-unit>
+      <trans-unit id="va8XkU8" resname="Group - Family">
+        <source>Group - Family</source>
+        <target>Groupe - Famille</target>
+      </trans-unit>
+      <trans-unit id="_OnL2YE" resname="+ Create an Appointment">
+        <source>+ Create an Appointment</source>
+        <target>+ Créer un rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="2U.YgLH" resname="Display :">
+        <source>Display :</source>
+        <target>Afficher :</target>
+      </trans-unit>
+      <trans-unit id="c6C7GO8" resname="Sort by :">
+        <source>Sort by :</source>
+        <target>Trier par :</target>
+      </trans-unit>
+      <trans-unit id="nb9SWzC" resname="Pregnant woman">
+        <source>Pregnant woman</source>
+        <target>Femme enceinte</target>
+      </trans-unit>
+      <trans-unit id="LngYRP0" resname="Newborns">
+        <source>Newborns</source>
+        <target>Les nouveau-nés</target>
+      </trans-unit>
+      <trans-unit id="IP4b0gH" resname="Man">
+        <source>Man</source>
+        <target>Homme</target>
+      </trans-unit>
+      <trans-unit id="lT3W8rR" resname="Sex">
+        <source>Sex</source>
+        <target>Sexe</target>
+      </trans-unit>
+      <trans-unit id="RkxP.QG" resname="Edit">
+        <source>Edit</source>
+        <target>Modifier</target>
+      </trans-unit>
+      <trans-unit id="He0x9dP" resname="Place of birth">
+        <source>Place of birth</source>
+        <target>Lieu de naissance</target>
+      </trans-unit>
+      <trans-unit id="wzaSdZd" resname="Professional phone">
+        <source>Professional phone</source>
+        <target>Téléphone professionnel</target>
+      </trans-unit>
+      <trans-unit id="yANxAwL" resname="Function">
+        <source>Function</source>
+        <target>Fonction</target>
+      </trans-unit>
+      <trans-unit id="588_9PF" resname="Password">
+        <source>Password</source>
+        <target>Mot de passe</target>
+      </trans-unit>
+      <trans-unit id="47ienTP" resname="Username">
+        <source>Username</source>
+        <target>Nom d'utilisateur</target>
+      </trans-unit>
+      <trans-unit id="NFww6iF" resname="Patient type">
+        <source>Patient type</source>
+        <target>Type de patient</target>
+      </trans-unit>
+      <trans-unit id="oEYw74v" resname="Gender">
+        <source>Gender</source>
+        <target>Sexe</target>
+      </trans-unit>
+      <trans-unit id="qavSkTQ" resname="Name of the Father">
+        <source>Name of the Father</source>
+        <target>Nom du père</target>
+      </trans-unit>
+      <trans-unit id="wacaKo7" resname="Mother's Name">
+        <source>Mother's Name</source>
+        <target>Le nom de la mère</target>
+      </trans-unit>
+      <trans-unit id="uleluUH" resname="Register patient">
+        <source>Register patient</source>
+        <target>Enregistrer le patient</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

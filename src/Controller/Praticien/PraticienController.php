@@ -277,7 +277,7 @@ class PraticienController extends AbstractController
     /**
      * @Route("/update/etat", name="update_etat")
      */
-       public function update_etat(Request $request)
+       public function update_etat(Request $request, TranslatorInterface $translator)
            {
                $id= $request->request->get('id');
                $praticien = $request->request->get('praticien');
@@ -377,7 +377,7 @@ class PraticienController extends AbstractController
     /**
      * @Route("/update-rdv", name="update_etat_rdv")
      */
-    public function update_etat_rdv(Request $request)
+    public function update_etat_rdv(Request $request, TranslatorInterface $translator)
     {
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
@@ -403,7 +403,7 @@ class PraticienController extends AbstractController
     /**
      * @Route("/update-rdv-status", name="update_status_rdv")
      */
-    public function update_status_rdv(Request $request)
+    public function update_status_rdv(Request $request, TranslatorInterface $translator)
     {
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
@@ -583,7 +583,7 @@ class PraticienController extends AbstractController
     /**
      * @Route("/proposition/remove", name="remove_proposition", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function remove_proposition(Request $request)
+    public function remove_proposition(Request $request, TranslatorInterface $translator)
     {
             $Id = $request->request->get('id');
             $propos = $this->propositionRdvRepository->find($Id);
