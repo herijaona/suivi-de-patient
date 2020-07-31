@@ -36,7 +36,7 @@
                     <td>{{ icp.objetConsultation }}</td>
                     <td>{{ icp.patient_name }} {{ icp.patient_lastname }} </td>
                     <td></td>
-                    <td><span  class="badge badge-success badge-style">Fait</span> </td>
+                    <td><span  class="badge badge-success badge-style">{% trans %}Realized{% endtrans %}</span> </td>
                 </tr>
             {% endfor %}
 
@@ -50,7 +50,7 @@
                     <td>{{ ivp.patient_name }} {{ ivp.patient_lastname }} </td>
                     <td>{{ ivp.vaccinName }}</td>
                     <td>
-                       <span  class="badge badge-success badge-style">{% trans %}Done{% endtrans %}</span>
+                       <span  class="badge badge-success badge-style">{% trans %}Realized{% endtrans %}</span>
                     </td>
                 </tr>
             {% endfor %}

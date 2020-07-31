@@ -721,6 +721,30 @@
         <source>Register patient</source>
         <target>Enregistrer le patient</target>
       </trans-unit>
+      <trans-unit id="ioMYMd2" resname="Realize">
+        <source>Realize</source>
+        <target>Réaliser</target>
+      </trans-unit>
+      <trans-unit id="8KnBPsz" resname="No Realize">
+        <source>No Realize</source>
+        <target>Non Réaliser</target>
+      </trans-unit>
+      <trans-unit id="N6iUpMv" resname="realized">
+        <source>realized</source>
+        <target>Réalisée</target>
+      </trans-unit>
+      <trans-unit id="uiFCESh" resname="unaccomplished">
+        <source>unaccomplished</source>
+        <target>inachevée</target>
+      </trans-unit>
+      <trans-unit id="bik6jAC" resname="Waiting">
+        <source>Waiting</source>
+        <target>En attente</target>
+      </trans-unit>
+      <trans-unit id="O.LmalU" resname="Realized">
+        <source>Realized</source>
+        <target>Réalisée</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
