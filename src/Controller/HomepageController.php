@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -63,18 +64,19 @@ class HomepageController extends AbstractController
     {
         $user = $this->getUser();
         $users= $this->userRepository->find($user);
-        $file = $request->files->get('picture');
-
-        if(!empty($file)){
-            $filename = $file->getClientOriginalName();
-            $file->move($this->getParameter('images_directory'), $filename);
-            $users->setPhoto($filename);
+        $image = $request->request->get('image');
+        $data = $image;
+        list(, $data)      = explode(',', $data);
+        $data = base64_decode($data);
+        $imageName = time().'.png';
+        file_put_contents('uploads/'.$imageName, $data);
+        if(!empty($imageName)){
+            $users->setPhoto($imageName);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($users);
             $entityManager->flush();
-
         }
-        return $this->redirect($request->headers->get('referer'));
+        return new JsonResponse(array("data" => "OK"));
 
     }
 }

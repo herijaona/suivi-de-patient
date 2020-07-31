@@ -1,23 +1,56 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <div class="col_exc_1">
+    <link href="{{ asset('assets/css/croppie.css') }}" rel="stylesheet" type="text/css">
     <h4 class="h4_patient"> {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %} {% trans %} Area {% endtrans %}
     </h4>
     <div class="mt-4">
             <div class="img_profile">
-            <span>
-               <a class="edit-profile">
+
+                {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
+                <img  src="/{{ img }}"   >
+                <a class="edit-profile">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
-                {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
-                <img  src="/{{ img }}" width="88px" alt="logo" id="imagePreview">
-                 <form method="post" action="{{path('modif_photo')}}" enctype="multipart/form-data" id="picUploadForm" >
-                    <input type="file" name="picture" id="fileInput"  style="display:none"/>
-                </form>
+                <input type="file"   id="upload_image" name="upload_image"  accept="image/*" style="display: none"/>
+                <div id="uploaded_image"></div>
+            <span>
+
             </span>
 
                 <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
                 <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %}{% trans %}Administrator{% endtrans %}{% endif %}</label>
             </div>
+        <div>
+
+
+            <div id="uploadimageModal" class="modal" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">{% trans %}Update Image {% endtrans %}</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-8 text-center">
+                                    <div id="image_demo" style="width:350px; margin-top:30px"></div>
+                                </div>
+                                <div class="col-md-4" style="padding-top:30px;">
+                                    <br />
+                                    <br />
+                                    <br/>
+                                    <button class="btn btn-success crop_image">{% trans %}Update Image{% endtrans %}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
 
         <ul class="menu_suivi" id="side-bar-menu">
@@ -93,45 +126,60 @@
 
 
 {% block javascripts %}
-<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+    <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/croppie.js') }}" type="text/javascript"></script>
 <script>
-    $(document).ready(function () {
-        //If image edit link is clicked
-        $(".edit-profile").on('click', function(e){
-            e.preventDefault();
-            $("#fileInput:hidden").trigger('click');
-        });
-
-        //On select file to upload
-        $("#fileInput").on('change', function(){
-            var image = $('#fileInput').val();
-            var img_ex = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-
-            //validate file type
-            if(!img_ex.exec(image)){
-                alert('Please upload only .jpg/.jpeg/.png/.gif file.');
-                $('#fileInput').val('');
-                return false;
-            }else{
-                $('.uploadProcess').show();
-                $('#uploadForm').hide();
-                $( "#picUploadForm" ).submit();
-            }
-        });
+    $image_crop = $('#image_demo').croppie({
+        enableExif: true,
+        viewport: {
+            width:200,
+            height:200,
+            type:'circle' //circle
+        },
+        boundary:{
+            width:300,
+            height:300
+        }
+    });
+    $(".edit-profile").on('click', function(e){
+        e.preventDefault();
+        $("#upload_image:hidden").trigger('click');
+    });
+    $('#upload_image').on('change', function(){
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            $image_crop.croppie('bind', {
+                url: event.target.result
+            }).then(function(){
+                console.log('jQuery bind complete');
+            });
+        }
+        reader.readAsDataURL(this.files[0]);
+        $('#uploadimageModal').modal('show');
     });
 
-    //After completion of image upload process
-    function completeUpload(success, fileName) {
-        if (success == 1) {
-            $('#imagePreview').attr("src", "");
-            $('#imagePreview').attr("src", fileName);
-            $('#fileInput').attr("value", fileName);
-            $('.uploadProcess').hide();
-        } else {
-            $('.uploadProcess').hide();
-            alert('There was an error during file upload!');
-        }
-        return true;
-    }
+
+    $('.crop_image').click(function(event){
+        $image_crop.croppie('result', {
+            type: 'canvas',
+            size: 'viewport'
+        }).then(function(response){
+            $.ajax({
+                url:"{{ path('modif_photo') }}",
+                type: "POST",
+                data:{"image": response},
+                success:function(data)
+                {
+                    console.log(data)
+                    $('#uploadimageModal').modal('hide');
+                    location.reload();
+                    //$('#uploaded_image').html(data);
+                }
+            });
+        })
+    });
+
+
 </script>
 {% endblock %}
