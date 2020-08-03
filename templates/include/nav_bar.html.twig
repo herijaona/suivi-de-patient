@@ -75,21 +75,10 @@
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
                 <!-- <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li> -->
-                <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">{% trans %}Vaccination schedule{% endtrans %}</a></li>
+                <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Vaccination</a></li>
                 <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
-                <li class="{{ (currentPath == path('rdv_praticien') or currentPath == path('rdv_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#rdv">{% trans %} Appointment {% endtrans %}</a>
-                    <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" >{% trans %}Awaiting validation {% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('rdv_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien_reject') }}" >{% trans %}Reject{% endtrans %}</a></li>
-                    </ul>
-                </li>
-                <li class="{{ (currentPath == path('intervention_praticien') or currentPath == path('intervention_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#intervention">Intervention</a>
-                    <ul id="intervention" class="collapse" aria-labelledby="intervention" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath ==  path('intervention_praticien')) ? 'active' :''  }}"> <a href="{{ path('intervention_praticien')}}" >{% trans %}Realize{% endtrans %}</a></li>
-
-                        <li class="{{ (currentPath == path('intervention_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('intervention_praticien_reject') }}" >{% trans %}Waiting{% endtrans %}</a></li>
-                    </ul>
-                </li>
+                <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :'' }}"><a href="{{ path('rdv_praticien') }}" >{% trans %} Appointment {% endtrans %}</a></li>
+                <li class="{{ (currentPath == path('intervention_praticien') ) ? 'active' :'' }}"><a href="{{ path('intervention_praticien')}}">Intervention</a></li>
                 <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}">{% trans %}Appointment proposal{% endtrans %}</a></li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}

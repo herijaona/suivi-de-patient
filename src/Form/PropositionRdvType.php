@@ -3,6 +3,7 @@
 namespace App\Form;
 
 
+use App\Entity\Patient;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -19,7 +20,17 @@ class PropositionRdvType extends AbstractType
             ->add('id', HiddenType::class)
             ->add('dateRdv')
             ->add('heureRdv')
-            ->add('PersonneAttendre')
+            ->add('patient',EntityType::class,
+                ['required' => false,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('p')
+                            ->orderBy('p.firstName')
+                            ->orderBy('p.lastName');
+                    },
+                    'class' => Patient::class,
+                    'attr' => ['class' => 'form-control chosen-select'],
+                    'placeholder' => 'Choose a Patient'
+                ])
             ->add('description', null, [
                 'required' => true,
             ]);

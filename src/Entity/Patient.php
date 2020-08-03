@@ -195,6 +195,11 @@ class Patient
      */
     private $city;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PropositionRdv::class, mappedBy="patient")
+     */
+    private $propositionRdvs;
+
 
 
     public function __construct()
@@ -217,6 +222,7 @@ class Patient
         $this->patientVaccins = new ArrayCollection();
         $this->etat = false;
         $this->interventionVaccinations = new ArrayCollection();
+        $this->propositionRdvs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -883,6 +889,37 @@ class Patient
     public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PropositionRdv[]
+     */
+    public function getPropositionRdvs(): Collection
+    {
+        return $this->propositionRdvs;
+    }
+
+    public function addPropositionRdv(PropositionRdv $propositionRdv): self
+    {
+        if (!$this->propositionRdvs->contains($propositionRdv)) {
+            $this->propositionRdvs[] = $propositionRdv;
+            $propositionRdv->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removePropositionRdv(PropositionRdv $propositionRdv): self
+    {
+        if ($this->propositionRdvs->contains($propositionRdv)) {
+            $this->propositionRdvs->removeElement($propositionRdv);
+            // set the owning side to null (unless already changed)
+            if ($propositionRdv->getPatient() === $this) {
+                $propositionRdv->setPatient(null);
+            }
+        }
 
         return $this;
     }

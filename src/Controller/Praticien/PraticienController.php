@@ -133,7 +133,7 @@ class PraticienController extends AbstractController
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $rvc = $this->ordoConsultationRepository->searchStatusPraticien($praticien->getId(), 1,0);
+        $rvc = $this->ordoConsultationRepository->searchStatusPraticien($praticien->getId());
 
         return $this->render('praticien/consultation.html.twig', [
             'consultation' => $rvc,
@@ -157,7 +157,7 @@ class PraticienController extends AbstractController
         ]);
     }
     /**
-     * @Route("/intervention/actived", name="intervention_praticien")
+     * @Route("/intervention", name="intervention_praticien")
      */
     public function intervention_active()
     {
@@ -231,47 +231,97 @@ class PraticienController extends AbstractController
      */
       public function  update( Request $request, TranslatorInterface $translator)
       {
-          if($request->request->get('action') == "active")
-          {
-              if($request->request->get('type') == "vaccination" && $request->request->get('status') == 0){
+            $id= $request->request->get('id');
+            $praticien = $request->request->get('praticien');
+            $patient = $request->request->get('patient');
+            $date = $request->request->get('date');
+            $patient =  $this->patientRepository->find($patient);
+            $praticien=$this->praticienRepository->find($praticien);
+            $ordoconsu=$this->ordoConsultationRepository->find($id);
+            $ordovacc=$this->ordoVaccinationRepository->find($id);
+            $Date_Rdv = new \DateTime($date);
+          if($request->request->get('action')== "active"){
+              if($request->request->get('type') == "consultation" && $request->request->get('etat') == 0){
+                  $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
+                  if($ordoConsu != null){
+                      $interConsu = new IntervationConsultation();
+                      $interConsu->setPatient($patient);
+                      $interConsu->setPraticienPrescripteur($praticien);
+                      $interConsu->setDateConsultation( $Date_Rdv);
+                      $interConsu->setOrdoConsulataion($ordoconsu);
+                      $interConsu->setPraticienConsultant($praticien);
+                      $interConsu->setEtat(0);
+                      $this->entityManager->persist($interConsu);
+                      $this->entityManager->flush();
+                      $ordoConsu->setStatusConsultation(1);
+                      $this->entityManager->persist($ordoConsu);
+                      $this->entityManager->flush();
+                  }
+              }elseif($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
+                  $vaccin = $request->request->get('vaccin');
+                  $vaccination= $this->vaccinRepository->find($vaccin);
                   $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
                   if($ordoVacc != null){
+                      $interVacc = new  InterventionVaccination();
+                      $interVacc->setPatient($patient);
+                      $interVacc->setPraticienPrescripteur($praticien);
+                      $interVacc->setEtat(0);
+                      $interVacc->setVaccin($vaccination);
+                      $interVacc->setDatePriseVaccin( $Date_Rdv);
+                      $interVacc->setPraticienExecutant($praticien);
+                      $interVacc->setOrdoVaccination($ordovacc);
+                      $this->entityManager->persist($interVacc);
+                      $this->entityManager->flush();
                       $ordoVacc->setStatusVaccin(1);
                       $this->entityManager->persist($ordoVacc);
                       $this->entityManager->flush();
                   }
-              }else{
+              }
+              $message=$translator->trans('Successful change');
+              $this->addFlash('success', $message);
+              return new JsonResponse(['status' => 'OK']);
+          }elseif ($request->request->get('action')== "reject"){
+              if($request->request->get('type') == "consultation" && $request->request->get('etat') == 0){
                   $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
                   if($ordoConsu != null){
-                      $ordoConsu->setstatusConsultation(1);
+                      $interCons = new IntervationConsultation();
+                      $interCons->setPatient($patient);
+                      $interCons->setPraticienPrescripteur($praticien);
+                      $interCons->setDateConsultation( $Date_Rdv);
+                      $interCons->setOrdoConsulataion($ordoconsu);
+                      $interCons->setPraticienConsultant($praticien);
+                      $interCons->setEtat(0);
+                      $this->entityManager->persist($interCons);
+                      $this->entityManager->flush();
+                      $ordoConsu->setStatusConsultation(1);
                       $this->entityManager->persist($ordoConsu);
                       $this->entityManager->flush();
                   }
               }
-              //$message=$translator->trans('Successful change');
-              //$this->addFlash('success', $message);
-              return new JsonResponse(['status' => 'OK']);
-          }
-          elseif ($request->request->get('action') == "reject"){
-                  if($request->request->get('type') == "vaccination" && $request->request->get('status')== 0){
-                      $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
-                      if($ordoVacc != null){
-                          $ordoVacc->setStatusVaccin(2);
-                          $this->entityManager->persist($ordoVacc);
-                          $this->entityManager->flush();
-                      }
-                  }else{
-                      $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
-                      if($ordoConsu != null){
-                          $ordoConsu->setstatusConsultation(2);
-                          $this->entityManager->persist($ordoConsu);
-                          $this->entityManager->flush();
-                      }
+              elseif($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
+                  $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
+                  $vaccin = $request->request->get('vaccin');
+                  $vaccination= $this->vaccinRepository->find($vaccin);
+                  if($ordoVacc != null){
+                      $interVacc = new  InterventionVaccination();
+                      $interVacc->setPatient($patient);
+                      $interVacc->setPraticienPrescripteur($praticien);
+                      $interVacc->setEtat(0);
+                      $interVacc->setVaccin($vaccination);
+                      $interVacc->setDatePriseVaccin( $Date_Rdv);
+                      $interVacc->setPraticienExecutant($praticien);
+                      $interVacc->setOrdoVaccination($ordovacc);
+                      $this->entityManager->persist($interVacc);
+                      $this->entityManager->flush();
+                      $ordoVacc->setStatusVaccin(1);
+                      $this->entityManager->persist($ordoVacc);
+                      $this->entityManager->flush();
                   }
-                  //$message=$translator->trans('Successful change');
-                  //$this->addFlash('success', $message);
-                  return new JsonResponse(['status' => 'OK']);
+              }
           }
+          $message=$translator->trans('Successful change');
+          $this->addFlash('success', $message);
+          return new JsonResponse(['status' => 'OK']);
       }
 
     /**
@@ -279,101 +329,30 @@ class PraticienController extends AbstractController
      */
        public function update_etat(Request $request, TranslatorInterface $translator)
            {
-               $id= $request->request->get('id');
-               $praticien = $request->request->get('praticien');
-               $patient = $request->request->get('patient');
-               $date = $request->request->get('date');
-               $patient =  $this->patientRepository->find($patient);
-               $praticien=$this->praticienRepository->find($praticien);
-               $ordoconsu=$this->ordoConsultationRepository->find($id);
-               $ordovacc=$this->ordoVaccinationRepository->find($id);
-               $Date_Rdv = new \DateTime($date);
+               if($request->request->get('action') == "active")
+               {
+                   if($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
+                       $intervention = $this->interventionVaccinationRepository->find($request->request->get('id'));
+                       if($intervention != null){
+                           $intervention->setEtat(1);
+                           $this->entityManager->persist($intervention);
+                           $this->entityManager->flush();
+                       }
+                   }else{
+                       $inter = $this->intervationConsultationRepository->find($request->request->get('id'));
+                       if($inter != null){
+                           $inter->setEtat(1);
+                           $this->entityManager->persist($inter);
+                           $this->entityManager->flush();
+                       }
+                   }
 
-               if($request->request->get('action')== "active"){
-                   if($request->request->get('type') == "consultation" && $request->request->get('etat') == 0){
-                       $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
-                       if($ordoConsu != null){
-                           $interConsu = new IntervationConsultation();
-                           $interConsu->setPatient($patient);
-                           $interConsu->setPraticienPrescripteur($praticien);
-                           $interConsu->setDateConsultation( $Date_Rdv);
-                           $interConsu->setOrdoConsulataion($ordoconsu);
-                           $interConsu->setPraticienConsultant($praticien);
-                           $interConsu->setEtat(1);
-                           $this->entityManager->persist($interConsu);
-                           $this->entityManager->flush();
-                           $ordoConsu->setEtat(1);
-                           $this->entityManager->persist($ordoConsu);
-                           $this->entityManager->flush();
-                       }
-                   }elseif($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
-                       $vaccin = $request->request->get('vaccin');
-                       $vaccination= $this->vaccinRepository->find($vaccin);
-                       $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
-                       if($ordoVacc != null){
-                           $interVacc = new  InterventionVaccination();
-                           $interVacc->setPatient($patient);
-                           $interVacc->setPraticienPrescripteur($praticien);
-                           $interVacc->setEtat(1);
-                           $interVacc->setVaccin($vaccination);
-                           $interVacc->setDatePriseVaccin( $Date_Rdv);
-                           $interVacc->setPraticienExecutant($praticien);
-                           $interVacc->setOrdoVaccination($ordovacc);
-                           $this->entityManager->persist($interVacc);
-                           $this->entityManager->flush();
-                           $ordoVacc->setEtat(1);
-                           $this->entityManager->persist($ordoVacc);
-                           $this->entityManager->flush();
-                       }
-                   }
-                   //$message=$translator->trans('Successful change');
-                   //$this->addFlash('success', $message);
-                   return new JsonResponse(['status' => 'OK']);
-               }elseif ($request->request->get('action')== "reject"){
-                   if($request->request->get('type') == "consultation" && $request->request->get('etat') == 0){
-                       $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
-                       if($ordoConsu != null){
-                           $interCons = new IntervationConsultation();
-                           $interCons->setPatient($patient);
-                           $interCons->setPraticienPrescripteur($praticien);
-                           $interCons->setDateConsultation( $Date_Rdv);
-                           $interCons->setOrdoConsulataion($ordoconsu);
-                           $interCons->setPraticienConsultant($praticien);
-                           $interCons->setEtat(0);
-                           $this->entityManager->persist($interCons);
-                           $this->entityManager->flush();
-                           $ordoConsu->setEtat(1);
-                           $this->entityManager->persist($ordoConsu);
-                           $this->entityManager->flush();
-                       }
-                   }
-                   elseif($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
-                       $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
-                       $vaccin = $request->request->get('vaccin');
-                       $vaccination= $this->vaccinRepository->find($vaccin);
-                       if($ordoVacc != null){
-                           $interVacc = new  InterventionVaccination();
-                           $interVacc->setPatient($patient);
-                           $interVacc->setPraticienPrescripteur($praticien);
-                           $interVacc->setEtat(0);
-                           $interVacc->setVaccin($vaccination);
-                           $interVacc->setDatePriseVaccin( $Date_Rdv);
-                           $interVacc->setPraticienExecutant($praticien);
-                           $interVacc->setOrdoVaccination($ordovacc);
-                           $this->entityManager->persist($interVacc);
-                           $this->entityManager->flush();
-                           $ordoVacc->setEtat(1);
-                           $this->entityManager->persist($ordoVacc);
-                           $this->entityManager->flush();
-                       }
-                   }
                }
-               //$message=$translator->trans('Successful change');
-               //:$this->addFlash('success', $message);
+               $message=$translator->trans('Successful change');
+               $this->addFlash('success', $message);
                return new JsonResponse(['status' => 'OK']);
-
-
            }
+
     /**
      * @Route("/update-rdv", name="update_etat_rdv")
      */
@@ -511,7 +490,6 @@ class PraticienController extends AbstractController
             $action = $request->request->get('id');
             $rdv['id'] = $request->request->get('id');
             $propos = $this->propositionRdvRepository->find($rdv['id']);
-            $rdv['PersonneAttendre'] = $propos->getPersonneAttendre();
             $rdv['description'] = $propos->getDescriptionProposition();
             $rdv['dateRdv'] = $propos->getDateProposition();
             if ($rdv['dateRdv'] != ''){
@@ -551,7 +529,7 @@ class PraticienController extends AbstractController
     {
         $propositionRequest=$request->request->get("proposition_rdv");
         $description = $propositionRequest["description"];
-        $Personne = $propositionRequest["PersonneAttendre"];
+        $patient = $propositionRequest["patient"];
         $date =$propositionRequest["dateRdv"];
         $heure = $propositionRequest["heureRdv"];
         $Id = $propositionRequest["id"];
@@ -560,6 +538,10 @@ class PraticienController extends AbstractController
         $rdv_date = str_replace("/", "-", $date);
         $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
         $praticien= $this->praticienRepository->findOneBy(['user'=>$user]);
+        if($patient != ''){
+            $patient =  $this->patientRepository->find($patient);
+
+        }
 
         if($Id !='')
         {
@@ -571,8 +553,8 @@ class PraticienController extends AbstractController
         $proposition->setDescriptionProposition($description);
         $proposition->setDateProposition($Date_Rdv);
         $proposition->setPraticien($praticien);
-        $proposition->setPersonneAttendre($Personne);
-        $proposition->setStatusProposition(1);
+        $proposition->setPatient($patient);
+        $proposition->setStatusProposition(0);
         $proposition->setEtat(0);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($proposition);

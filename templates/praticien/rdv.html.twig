@@ -43,8 +43,8 @@
                     </td>
                     <td></td>
                     <td>
-                        <span  class="badge badge-success badge-style modif-status" data-id="{{ rdv.id }}" data-type="consultation" data-action="active" data-status="{{rdv.statusConsultation}}">activé </span>
-                        <span class="badge badge-danger badge-style modif-status" data-id="{{ rdv.id }}" data-type="consultation" data-action="reject" data-status="{{rdv .statusConsultation}}">Réjeter</span>
+                        <span  class="badge badge-success badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="active" data-status="{{rdv.statusConsultation}}">{% trans %}Realize{% endtrans %}</span>
+                        <span class="badge badge-danger badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="reject" data-status="{{rdv.statusConsultation}}">{% trans %}Reject{% endtrans %}</span>
                     </td>
                     <td>
                         <span class="btn btn-primary data-edit" data-id="{{ rdv.id }}" data-type="consultation"><i class="fa fa-pencil"></i></span>
@@ -69,8 +69,9 @@
                     </td>
                     <td>{{ vac.vaccinName }}</td>
                     <td>
-                        <span class="badge badge-success badge-style modif-status" data-type="vaccination" data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}">{% trans %}activate{% endtrans %}</span>
-                        <span  class="badge badge-danger badge-style modif-status" data-type="vaccination" data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}">{% trans %}Reject{% endtrans %}</span>
+
+                        <span class="badge badge-success badge-style modif-status"  data-type="vaccination" data-vaccin="{{vac.vaccin }}"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Realize{% endtrans %}</span>
+                        <span  class="badge badge-danger badge-style modif-status" data-type="vaccination" data-vaccin="{{vac.vaccin }}"  data-type="vaccination" data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Reject{% endtrans %}</span>
                     </td>
                     <td>
                         <span class="btn btn-primary data-edit" data-id="{{ vac.id }}" data-type="vaccination"><i class="fa fa-pencil"></i></span>
@@ -126,6 +127,10 @@
             var type = $(this).data('type');
             var status = $(this).data('status');
             var action = $(this).data('action');
+            var date = $(this).data('date');
+            var praticien = $(this).data('praticien');
+            var patient = $(this).data('patient');
+            var vaccin = $(this).data('vaccin');
 
             $.ajax({
                 url: "{{ path('change_status') }}",
@@ -134,6 +139,10 @@
                     id: id,
                     type: type,
                     status: status,
+                    date: date,
+                    praticien: praticien,
+                    patient: patient,
+                    vaccin:vaccin,
                     action: action
                 },
                 dataType: "json",
