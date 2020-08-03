@@ -12,6 +12,7 @@ use App\Form\RdvType;
 use App\Form\VaccinType;
 use App\Repository\FamilyRepository;
 use App\Repository\GroupFamilyRepository;
+use App\Repository\InterventionVaccinationRepository;
 use App\Repository\OrdoConsultationRepository;
 use App\Repository\OrdonnaceRepository;
 use App\Repository\OrdoVaccinationRepository;
@@ -134,11 +135,10 @@ class PatientController extends AbstractController
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         if($patient){
-
             $dateNow = date('Y-m-d');
-
-            $this->vaccinGenerate->generateCalendar($patient,null, $dateNow);
-            return new JsonResponse("ok");
+            $listVacc = $this->vaccinGenerate->generateCalendar($patient,$dateNow);
+            dd($listVacc);
+            //return new JsonResponse("ok");
         }
         return "error";
        // $this->vaccinGenerate->
