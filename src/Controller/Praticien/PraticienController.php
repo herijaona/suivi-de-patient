@@ -195,21 +195,20 @@ class PraticienController extends AbstractController
         ]);
     }
     /**
-     * @Route("/see-calendar/{vac_id}", name="see_calendar")
+     * @Route("/see-calendar/{patient_id}", name="see_calendar")
      */
-    public function see_calendar(Request $request , $vac_id, VaccinRepository $vacRepo, PatientRepository $patientRepo)
+    public function see_calendar(Request $request, $patient_id, VaccinRepository $vacRepo, PatientRepository $patientRepo)
     {
         $user= $this->getUser();
-        $vaccin = $vacRepo->find($vac_id);
 
-        // $patient = $patientRepo->find($request->request->get('patient'));
-        $patientId = $request->request->get('patient');
-        dump($patientId);
+        $patient = $patientRepo->find($patient_id);
 
-        // return $this->render("praticien/carnet.html.twig",[
-        //   'vaccin' => $vaccin,
-        //   'patient' => $patient
-        // ]);
+        $vaccin = $vacRepo->findVaccinByTYpe($patient->getTypePatient());
+
+        return $this->render("praticien/carnet.html.twig",[
+          'vaccin' => $vaccin,
+          'patient' => $patient
+        ]);
     }
 
     /**

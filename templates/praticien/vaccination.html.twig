@@ -54,7 +54,7 @@
                     </td>
                     <td>
                         {% if vac.etat == 1 %}
-                            <a href="{{ path('see_calendar', {'vac_id': vac.id}) }}" class="badge badge-success badge-style">{% trans %}See{% endtrans %}</a>
+                            <a href="{{ path('see_calendar', {'patient_id' : vac.patient}) }}" class="badge badge-success badge-style">{% trans %}See{% endtrans %}</a>
                         {% endif %}
                     </td>
 
