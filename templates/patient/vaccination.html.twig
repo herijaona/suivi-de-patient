@@ -19,7 +19,7 @@
             <tr>
                 <th>{% trans %}Vaccination date {% endtrans %}</th>
                 <th>Praticien</th>
-                <th>{% trans %}Vaccine{% endtrans %}</th>
+                {# <th>{% trans %}Vaccine{% endtrans %}</th> #}
                 <th>Status</th>
             </tr>
             </thead>
@@ -32,7 +32,7 @@
                     </td>
 
                     <td>{{ vac.firstName }} {{ vac.lastName }}</td>
-                    <td>{{vac.vaccinName }}</td>
+                    {# <td>{{vac.vaccinName }}</td> #}
                     <td>
                         {% if vac.statusVaccin == 1 %}
                             <span class="badge badge-success badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
