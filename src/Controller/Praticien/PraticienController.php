@@ -2,6 +2,7 @@
 
 namespace App\Controller\Praticien;
 
+use App\Entity\CarnetVaccination;
 use App\Entity\IntervationConsultation;
 use App\Entity\InterventionVaccination;
 use App\Entity\OrdoConsultation;
@@ -260,6 +261,7 @@ class PraticienController extends AbstractController
               }elseif($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
                   $vaccin = $request->request->get('vaccin');
                   $vaccination= $this->vaccinRepository->find($vaccin);
+
                   $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
                   if($ordoVacc != null){
                       $interVacc = new  InterventionVaccination();
@@ -275,9 +277,60 @@ class PraticienController extends AbstractController
                       $ordoVacc->setStatusVaccin(1);
                       $this->entityManager->persist($ordoVacc);
                       $this->entityManager->flush();
+
+                      $carnetVaccination = new CarnetVaccination();
+
+                      $carnetVaccination->setIntervationVaccination($interVacc)
+                                        ->setPatient($patient)
+                                        ->setVaccin($vaccination);
+
+                      // Date 6 months => 2021:02:04 H:i:s (if we are 2020:08:04)
+                      $datePriseInitiale = $vaccination->getDatePriseInitiale();
+                      
+                      if($datePriseInitiale !== "" && $datePriseInitiale !== null){
+                        $date = date('Y-m-d H:i:s', strtotime($datePriseInitiale));
+                        $date = new \DateTime($date);
+
+                        $carnetVaccination->setDatePriseInitiale($date)
+                                          ->setEtat(1);
+
+                        $this->entityManager->persist($carnetVaccination);
+                        $this->entityManager->flush();
+                      }
+
+                      // Get list of vaccination->rappel() methods
+                      $vaccMethods = get_class_methods($vaccination);
+
+                      // $thereIsRappel = False;
+
+                      foreach($vaccMethods as $getRappel){
+
+                        // If $getRappel contains "getRappel" in its value
+                        if(strpos($getRappel, "getRappel") !== false){
+
+                          $rappel = $vaccination->$getRappel();
+
+                          if($rappel !== "" && $rappel !== null){
+                            $carnetVaccination = new CarnetVaccination();
+
+                            $carnetVaccination->setIntervationVaccination($interVacc)
+                                              ->setPatient($patient)
+                                              ->setVaccin($vaccination)
+                                              ->setEtat(1);
+
+                            $rappel = new \DateTime(date('Y-m-d H:i:s', strtotime($rappel)));
+
+                            $carnetVaccination->setRappelVaccin($rappel);
+
+                            $this->entityManager->persist($carnetVaccination);
+                            $this->entityManager->flush();
+                          }
+                        }
+                      }
                   }
               }
               $message=$translator->trans('Successful change');
+              // $message = "Successful change";
               $this->addFlash('success', $message);
               return new JsonResponse(['status' => 'OK']);
           }elseif ($request->request->get('action')== "reject"){

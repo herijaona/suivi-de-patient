@@ -201,7 +201,7 @@
         "version": "2.2.3"
     },
     "php": {
-        "version": "7.4"
+        "version": "7.2"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.1.0"
@@ -450,6 +450,9 @@
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.17.0"
+    },
+    "symfony/polyfill-intl-messageformatter": {
+        "version": "v1.18.1"
     },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.17.0"
