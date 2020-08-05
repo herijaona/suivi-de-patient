@@ -346,6 +346,54 @@ class PraticienController extends AbstractController
                       $ordoVacc->setStatusVaccin(1);
                       $this->entityManager->persist($ordoVacc);
                       $this->entityManager->flush();
+                      $carnetVaccination = new CarnetVaccination();
+
+                      $carnetVaccination->setIntervationVaccination($interVacc)
+                          ->setPatient($patient)
+                          ->setVaccin($vaccination);
+
+                      // Date 6 months => 2021:02:04 H:i:s (if we are 2020:08:04)
+                      $datePriseInitiale = $vaccination->getDatePriseInitiale();
+
+                      if($datePriseInitiale !== "" && $datePriseInitiale !== null){
+                          $date = date('Y-m-d H:i:s', strtotime($datePriseInitiale));
+                          $date = new \DateTime($date);
+
+                          $carnetVaccination->setDatePriseInitiale($date)
+                              ->setEtat(1);
+
+                          $this->entityManager->persist($carnetVaccination);
+                          $this->entityManager->flush();
+                      }
+
+                      // Get list of vaccination->rappel() methods
+                      $vaccMethods = get_class_methods($vaccination);
+
+                      // Add new line in CarnetVaccin foreach rappel of vaccin
+                      foreach($vaccMethods as $getRappel) {
+
+                          // If $getRappel contains "getRappel" in its value
+                          if (strpos($getRappel, "getRappel") !== false) {
+
+                              $rappel = $vaccination->$getRappel();
+
+                              if ($rappel !== "" && $rappel !== null) {
+                                  $carnetVaccination = new CarnetVaccination();
+
+                                  $carnetVaccination->setIntervationVaccination($interVacc)
+                                      ->setPatient($patient)
+                                      ->setVaccin($vaccination)
+                                      ->setEtat(1);
+
+                                  $rappel = new \DateTime(date('Y-m-d H:i:s', strtotime($rappel)));
+
+                                  $carnetVaccination->setRappelVaccin($rappel);
+
+                                  $this->entityManager->persist($carnetVaccination);
+                                  $this->entityManager->flush();
+                              }
+                          }
+                      }
                   }
               }
           }
