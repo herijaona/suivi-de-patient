@@ -307,7 +307,7 @@ class PraticienController extends AbstractController
                   }
               }
               $message=$translator->trans('Successful change');
-              // $message = "Successful change";
+              
               $this->addFlash('success', $message);
               return new JsonResponse(['status' => 'OK']);
           }elseif ($request->request->get('action')== "reject"){
