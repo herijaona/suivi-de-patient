@@ -119,7 +119,7 @@ class PraticienController extends AbstractController
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId(), 1, 0 );
+        $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId() );
 
         return $this->render('praticien/vaccination.html.twig', [
             'vaccination' => $rvc,
@@ -353,6 +353,54 @@ class PraticienController extends AbstractController
                       $ordoVacc->setStatusVaccin(1);
                       $this->entityManager->persist($ordoVacc);
                       $this->entityManager->flush();
+                      $carnetVaccination = new CarnetVaccination();
+
+                      $carnetVaccination->setIntervationVaccination($interVacc)
+                          ->setPatient($patient)
+                          ->setVaccin($vaccination);
+
+                      // Date 6 months => 2021:02:04 H:i:s (if we are 2020:08:04)
+                      $datePriseInitiale = $vaccination->getDatePriseInitiale();
+
+                      if($datePriseInitiale !== "" && $datePriseInitiale !== null){
+                          $date = date('Y-m-d H:i:s', strtotime($datePriseInitiale));
+                          $date = new \DateTime($date);
+
+                          $carnetVaccination->setDatePriseInitiale($date)
+                              ->setEtat(1);
+
+                          $this->entityManager->persist($carnetVaccination);
+                          $this->entityManager->flush();
+                      }
+
+                      // Get list of vaccination->rappel() methods
+                      $vaccMethods = get_class_methods($vaccination);
+
+                      // Add new line in CarnetVaccin foreach rappel of vaccin
+                      foreach($vaccMethods as $getRappel) {
+
+                          // If $getRappel contains "getRappel" in its value
+                          if (strpos($getRappel, "getRappel") !== false) {
+
+                              $rappel = $vaccination->$getRappel();
+
+                              if ($rappel !== "" && $rappel !== null) {
+                                  $carnetVaccination = new CarnetVaccination();
+
+                                  $carnetVaccination->setIntervationVaccination($interVacc)
+                                      ->setPatient($patient)
+                                      ->setVaccin($vaccination)
+                                      ->setEtat(1);
+
+                                  $rappel = new \DateTime(date('Y-m-d H:i:s', strtotime($rappel)));
+
+                                  $carnetVaccination->setRappelVaccin($rappel);
+
+                                  $this->entityManager->persist($carnetVaccination);
+                                  $this->entityManager->flush();
+                              }
+                          }
+                      }
                   }
               }
           }
@@ -370,17 +418,28 @@ class PraticienController extends AbstractController
                {
                    if($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
                        $intervention = $this->interventionVaccinationRepository->find($request->request->get('id'));
+                       $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
                        if($intervention != null){
                            $intervention->setEtat(1);
                            $this->entityManager->persist($intervention);
                            $this->entityManager->flush();
+                           $ordoVacc->setEtat(1);
+                           $this->entityManager->persist($ordoVacc);
+                           $this->entityManager->flush();
+
                        }
                    }else{
                        $inter = $this->intervationConsultationRepository->find($request->request->get('id'));
+                       $ordoCons = $this->ordoConsultationRepository->find($request->request->get('id'));
                        if($inter != null){
                            $inter->setEtat(1);
                            $this->entityManager->persist($inter);
                            $this->entityManager->flush();
+                           $ordoCons->setEtat(1);
+                           $this->entityManager->persist($ordoCons);
+                           $this->entityManager->flush();
+
+
                        }
                    }
 
@@ -612,6 +671,31 @@ class PraticienController extends AbstractController
             $message=$translator->trans('The Appointment proposal has been successfully deleted!');
             $this->addFlash('success', $message);
          return new JsonResponse(['form_delete' => $delete]);
+    }
+
+    /**
+     * @Route("/dashboard", name ="dashboard")
+     */
+    public function dashboard()
+    {
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $patientCons = $this->intervationConsultationRepository->searchPatient($praticien);
+        $patientVacc = $this->interventionVaccinationRepository->searchPatient($praticien);
+        foreach ($patientCons as $patientt){
+        foreach ($patientVacc as $patient)
+            {
+            $patientv = $patient[1];
+            $patientc = $patientt[1];
+            $patient = $patientv + $patientc;
+
+             }
+        }
+        return $this->render('praticien/dashboard.html.twig', [
+            "patient"=>$patient
+
+
+        ]);
     }
 
 }

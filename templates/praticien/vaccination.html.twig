@@ -19,7 +19,7 @@
                 <th>{% trans %}Vaccination date {% endtrans %}</th>
                 <th>Patient</th>
                 <th>{% trans %}Vaccine{% endtrans %}</th>
-                <th>Status</th>
+                <th>{% trans %}State{% endtrans %}</th>
                 <th>{% trans %}Vaccination schedule {% endtrans %}</th>
 
             </tr>
@@ -36,16 +36,14 @@
                     <td>{{vac.vaccinName }} </td>
 
                     <td>
-                        {% if vac.statusVaccin == 1 %}
+                        {% if vac.etat == 1 %}
                             <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-                        {% elseif vac.statusVaccin == 0 %}
+                        {% elseif vac.etat == 0 %}
                             <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
-                        {% elseif vac.statusVaccin == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
                     <td>
-                        {% if vac.statusVaccin == 1 %}
+                        {% if vac.etat == 1 %}
                             <a href="{{ path('see_calendar', {'vac_id': vac.id}) }}" class="badge badge-success badge-style">{% trans %}See{% endtrans %}</a>
                         {% endif %}
                     </td>

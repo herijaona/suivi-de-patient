@@ -20,6 +20,7 @@ class PraticienRepository extends ServiceEntityRepository
         parent::__construct($registry, Praticien::class);
     }
 
+
     // /**
     //  * @return Praticien[] Returns an array of Praticien objects
     //  */

@@ -74,6 +74,7 @@
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
                 <!-- <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li> -->
+                <li class="{{ (currentPath == path('dashboard')) ? 'active' :'' }}"><a href="{{ path('dashboard') }}">{% trans %} Dashboard {% endtrans %}</a></li>
                 <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Vaccination</a></li>
                 <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
                 <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :'' }}"><a href="{{ path('rdv_praticien') }}" >{% trans %} Appointment {% endtrans %}</a></li>

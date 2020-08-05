@@ -33,6 +33,20 @@ class IntervationConsultationRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    public function searchPatient($praticien = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT count(p.id)
+            FROM App\Entity\IntervationConsultation i 
+            INNER JOIN App\Entity\Patient p with p.id = i.patient
+            LEFT JOIN App\Entity\OrdoConsultation o with o.id = i.ordoConsulataion
+            LEFT JOIN App\Entity\Praticien pr with pr.id = i.praticienPrescripteur
+            WHERE pr.id = :praticien
+            ORDER BY i.dateConsultation ASC')
+            ->setParameter('praticien', $praticien);
+
+        return $query->getResult();
+    }
+
 
     // /**
     //  * @return IntervationConsultation[] Returns an array of IntervationConsultation objects

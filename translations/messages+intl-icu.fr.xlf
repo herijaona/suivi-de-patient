@@ -745,6 +745,10 @@
         <source>See</source>
         <target>Voir</target>
       </trans-unit>
+      <trans-unit id="o7UMR2c" resname="State">
+        <source>State</source>
+        <target>Etat</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

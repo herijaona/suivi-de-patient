@@ -35,7 +35,7 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function searchStatusPraticien($praticien = null, $status = 0, $etat=0){
+    public function searchStatusPraticien($praticien = null){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT o.id, o.datePrise,o.etat,  o.statusVaccin, p.firstName, p.lastName,v.id as vaccin,v.vaccinName, pr.id as praticien, p.id as patient FROM App\Entity\OrdoVaccination o 
         INNER JOIN App\Entity\Patient p with p.id= o.patient
