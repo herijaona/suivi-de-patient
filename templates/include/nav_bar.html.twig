@@ -1,13 +1,12 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
-<div class="col_exc_1">
+<div class="col_exc_1" style="position: relative">
     <link href="{{ asset('assets/css/croppie.css') }}" rel="stylesheet" type="text/css">
     <h4 class="h4_patient"> {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %} {% trans %} Area {% endtrans %}
     </h4>
-    <div class="mt-4">
+    <div class="mt-4" style="position: relative">
             <div class="img_profile">
-
                 {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
-                <img  src="/{{ img }}"   >
+                <img style="position: relative" src="/{{ img }}">
                 <a class="edit-profile">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
@@ -102,10 +101,6 @@
                 <a href="{{ path('admin_logout') }}">
                     <i class="fas fa-sign-out-alt"></i> {% trans %}Logout{% endtrans %}
                 </a>
-                {% else %}
-                    <a href="{{ path('app_logout') }}">
-                        <i class="fas fa-sign-out-alt"></i> {% trans %}Logout{% endtrans %}
-                    </a>
                 {% endif %}
             </li>
         </ul>

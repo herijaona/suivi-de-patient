@@ -19,6 +19,8 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
         parent::__construct($registry, CarnetVaccination::class);
     }
 
+
+
     // /**
     //  * @return CarnetVaccination[] Returns an array of CarnetVaccination objects
     //  */

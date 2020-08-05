@@ -20,6 +20,7 @@
                 <th>Patient</th>
                 <th>{% trans %}Vaccine{% endtrans %}</th>
                 <th>Status</th>
+                <th>{% trans %}Vaccination schedule {% endtrans %}</th>
 
             </tr>
             </thead>
@@ -43,9 +44,11 @@
                             <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
-
-
-
+                    <td>
+                        {% if vac.statusVaccin == 1 %}
+                            <a href="{{ path('see_calendar', {'vac_id': vac.id}) }}" class="badge badge-success badge-style">{% trans %}See{% endtrans %}</a>
+                        {% endif %}
+                    </td>
 
                 </tr>
             {% endfor %}

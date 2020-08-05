@@ -5,10 +5,6 @@
       <tool tool-id="symfony" tool-name="Symfony"/>
     </header>
     <body>
-      <trans-unit id="STZjHxT" resname="Calendrier de Vaccination">
-        <source>Calendrier de Vaccination</source>
-        <target>__Calendrier de Vaccination</target>
-      </trans-unit>
       <trans-unit id="Ak3CBNe" resname="Area">
         <source>Area</source>
         <target>Espace</target>
@@ -744,6 +740,10 @@
       <trans-unit id="O.LmalU" resname="Realized">
         <source>Realized</source>
         <target>Réalisée</target>
+      </trans-unit>
+      <trans-unit id="aGMGfrC" resname="See">
+        <source>See</source>
+        <target>Voir</target>
       </trans-unit>
     </body>
   </file>
