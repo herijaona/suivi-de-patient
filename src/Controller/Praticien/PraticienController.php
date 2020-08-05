@@ -197,12 +197,19 @@ class PraticienController extends AbstractController
     /**
      * @Route("/see-calendar/{vac_id}", name="see_calendar")
      */
-    public function see_calendar(Request $request , $vac_id)
+    public function see_calendar(Request $request , $vac_id, VaccinRepository $vacRepo, PatientRepository $patientRepo)
     {
         $user= $this->getUser();
+        $vaccin = $vacRepo->find($vac_id);
 
+        // $patient = $patientRepo->find($request->request->get('patient'));
+        $patientId = $request->request->get('patient');
+        dump($patientId);
 
-
+        // return $this->render("praticien/carnet.html.twig",[
+        //   'vaccin' => $vaccin,
+        //   'patient' => $patient
+        // ]);
     }
 
     /**
@@ -307,7 +314,7 @@ class PraticienController extends AbstractController
                   }
               }
               $message=$translator->trans('Successful change');
-              
+
               $this->addFlash('success', $message);
               return new JsonResponse(['status' => 'OK']);
           }elseif ($request->request->get('action')== "reject"){
