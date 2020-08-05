@@ -254,12 +254,12 @@ class PatientController extends AbstractController
         $rce = $this->ordoConsultationRepository->searchStatus($patient->getId());
         $rve = $this->ordoVaccinationRepository->searchStatus($patient->getId());
         $doctor = $this->praticienRepository->findAll();
-        $vaccin= $this->vaccinRepository->findAll();
+
         return $this->render('patient/rdv_patient.html.twig', [
             'consultation'=>$rce,
             'vaccination'=>$rve,
             'Doctors'=>$doctor,
-            'Vaccin'=>$vaccin
+
         ]);
     }
 
@@ -306,7 +306,7 @@ class PatientController extends AbstractController
         $rdvRequest = $request->request->get("rdv");
         $type = $rdvRequest["typeRdv"];
         $doctor = $rdvRequest["praticiens"];
-        $vaccin = $rdvRequest["vaccin"];
+
         $date = $rdvRequest["dateRdv"];
         $description = $rdvRequest["description"];
         $heure = $rdvRequest["heureRdv"];
@@ -327,9 +327,7 @@ class PatientController extends AbstractController
             $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
         }
 
-        if($vaccin != ''){
-            $vaccination= $this->vaccinRepository->find($vaccin);
-        }
+
 
         $patient =  $this->patientRepository->findOneBy(['user' => $user]);
 
@@ -359,7 +357,6 @@ class PatientController extends AbstractController
             $ordovaccination->setDatePrise($Date_Rdv);
             $ordovaccination->setOrdonnance($ordo);
             $ordovaccination->setReferencePraticienExecutant($praticien);
-            $ordovaccination->setVaccin($vaccination);
             $ordovaccination->setPatient($patient);
             $ordovaccination->setStatusVaccin(0);
             $ordovaccination->setEtat(0);

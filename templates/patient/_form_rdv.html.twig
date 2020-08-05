@@ -32,10 +32,7 @@
         <label class="active" for="form1">Description </label>
         {{ form_widget(form.description, {'attr': { 'class': 'form-control' }}) }}
     </div>
-    <div class="md-form vaccin_hidden">
-        <label class="active" for="form1">{% trans %}Vaccine {% endtrans %} </label>
-        {{ form_widget(form.vaccin, {'attr': { 'class': 'form-control chosen-select' }}) }}
-    </div>
+
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Appointment date{%  endtrans %} </label>
         {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control date_rdv' }}) }}
