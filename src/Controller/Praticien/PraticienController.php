@@ -267,7 +267,8 @@ class PraticienController extends AbstractController
 
                       $carnetVaccination->setIntervationVaccination($interVacc)
                                         ->setPatient($patient)
-                                        ->setVaccin($vaccination);
+                                        ->setVaccin($vaccination)
+                                        ->setEtat(0);
 
                       // Date 6 months => 2021:02:04 H:i:s (if we are 2020:08:04)
                       $datePriseInitiale = $vaccination->getDatePriseInitiale();
@@ -276,8 +277,7 @@ class PraticienController extends AbstractController
                         $date = date('Y-m-d H:i:s', strtotime($datePriseInitiale));
                         $date = new \DateTime($date);
 
-                        $carnetVaccination->setDatePriseInitiale($date)
-                                          ->setEtat(1);
+                        $carnetVaccination->setDatePriseInitiale($date);
 
                         $this->entityManager->persist($carnetVaccination);
                         $this->entityManager->flush();
@@ -300,7 +300,7 @@ class PraticienController extends AbstractController
                             $carnetVaccination->setIntervationVaccination($interVacc)
                                               ->setPatient($patient)
                                               ->setVaccin($vaccination)
-                                              ->setEtat(1);
+                                              ->setEtat(0);
 
                             $rappel = new \DateTime(date('Y-m-d H:i:s', strtotime($rappel)));
 
