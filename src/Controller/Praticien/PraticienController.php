@@ -118,7 +118,7 @@ class PraticienController extends AbstractController
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId(), 1, 0 );
+        $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId() );
 
         return $this->render('praticien/vaccination.html.twig', [
             'vaccination' => $rvc,
@@ -311,17 +311,28 @@ class PraticienController extends AbstractController
                {
                    if($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
                        $intervention = $this->interventionVaccinationRepository->find($request->request->get('id'));
+                       $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
                        if($intervention != null){
                            $intervention->setEtat(1);
                            $this->entityManager->persist($intervention);
                            $this->entityManager->flush();
+                           $ordoVacc->setEtat(1);
+                           $this->entityManager->persist($ordoVacc);
+                           $this->entityManager->flush();
+
                        }
                    }else{
                        $inter = $this->intervationConsultationRepository->find($request->request->get('id'));
+                       $ordoCons = $this->ordoConsultationRepository->find($request->request->get('id'));
                        if($inter != null){
                            $inter->setEtat(1);
                            $this->entityManager->persist($inter);
                            $this->entityManager->flush();
+                           $ordoCons->setEtat(1);
+                           $this->entityManager->persist($ordoCons);
+                           $this->entityManager->flush();
+
+
                        }
                    }
 
@@ -553,6 +564,31 @@ class PraticienController extends AbstractController
             $message=$translator->trans('The Appointment proposal has been successfully deleted!');
             $this->addFlash('success', $message);
          return new JsonResponse(['form_delete' => $delete]);
+    }
+
+    /**
+     * @Route("/dashboard", name ="dashboard")
+     */
+    public function dashboard()
+    {
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $patientCons = $this->intervationConsultationRepository->searchPatient($praticien);
+        $patientVacc = $this->interventionVaccinationRepository->searchPatient($praticien);
+        foreach ($patientCons as $patientt){
+        foreach ($patientVacc as $patient)
+            {
+            $patientv = $patient[1];
+            $patientc = $patientt[1];
+            $patient = $patientv + $patientc;
+
+             }
+        }
+        return $this->render('praticien/dashboard.html.twig', [
+            "patient"=>$patient
+
+
+        ]);
     }
 
 }
