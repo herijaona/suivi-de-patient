@@ -279,8 +279,7 @@ class PraticienController extends AbstractController
                       // Get list of vaccination->rappel() methods
                       $vaccMethods = get_class_methods($vaccination);
 
-                      // $thereIsRappel = False;
-
+                      // Add new line in CarnetVaccin foreach rappel of vaccin
                       foreach($vaccMethods as $getRappel){
 
                         // If $getRappel contains "getRappel" in its value
