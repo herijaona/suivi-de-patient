@@ -4,6 +4,7 @@ namespace App\Controller\Patient;
 
 use App\Entity\Family;
 use App\Entity\GroupFamily;
+use App\Entity\IntervationConsultation;
 use App\Entity\OrdoConsultation;
 use App\Entity\OrdoVaccination;
 use App\Entity\PatientOrdoConsultation;
@@ -12,6 +13,7 @@ use App\Form\RdvType;
 use App\Form\VaccinType;
 use App\Repository\FamilyRepository;
 use App\Repository\GroupFamilyRepository;
+use App\Repository\InterventionVaccinationRepository;
 use App\Repository\OrdoConsultationRepository;
 use App\Repository\OrdonnaceRepository;
 use App\Repository\OrdoVaccinationRepository;
@@ -134,14 +136,10 @@ class PatientController extends AbstractController
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         if($patient){
-            $type = $patient->getTypePatient()->getTypePatientName();
-
-            $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
-            $birtday = $patient->getDateOnBorn();
             $dateNow = date('Y-m-d');
-
-            $this->vaccinGenerate->generateCalendar($patient,$birtday,$type,$state,null, $dateNow);
-            return new JsonResponse("ok");
+            $listVacc = $this->vaccinGenerate->generateCalendar($patient,$dateNow);
+            dd($listVacc);
+            //return new JsonResponse("ok");
         }
         return "error";
        // $this->vaccinGenerate->
@@ -168,7 +166,9 @@ class PatientController extends AbstractController
      */
     public function proposition_rdv()
     {
-        $propos = $this->propositionRdvRepository->searchProposition();
+        $user = $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $propos = $this->propositionRdvRepository->searchProposition($patient);
         return $this->render('patient/proposition.html.twig', [
             'proposition'=>$propos,
         ]);
@@ -180,31 +180,29 @@ class PatientController extends AbstractController
     public function proposition_accepted(Request $request,TranslatorInterface $translator)
     {
         $id = $request->request->get("id");
-        $personne = $request->request->get("personne");
+
         $praticien = $request->request->get("praticien");
+        $patient = $request->request->get("patient");
         $date = $request->request->get("date");
-        $user = $this->getUser();
-        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $description = $request->request->get("description");
+        $patient = $this->patientRepository->find($patient);
         $praticien = $this->praticienRepository->find($praticien);
-        $ordonance = $this->ordonnaceRepository->find($praticien);
+
         $proposition = $this->propositionRdvRepository->find($id);
         $Date_Rdv = new \DateTime($date);
         $propos = $this->propositionRdvRepository->find($request->request->get('id'));
         if($propos != null)
         {
-            $ordoConsu = new OrdoConsultation();
-            $ordoConsu->setPatient($patient);
-            $ordoConsu->setObjetConsultation($description);
-            $ordoConsu->setDatePriseInitiale($Date_Rdv);
-            $ordoConsu->setProposition($proposition);
-            $ordoConsu->setStatusConsultation(1);
-            $ordoConsu->setEtat(0);
-            $ordoConsu->setOrdonnance($ordonance);
-            $this->entityManager->persist($ordoConsu);
+            $interCons = new IntervationConsultation();
+            $interCons->setPatient($patient);
+            $interCons->setPraticienPrescripteur($praticien);
+            $interCons->setDateConsultation($Date_Rdv);
+            $interCons->setPraticienConsultant($praticien);
+            $interCons->setEtat(0);
+            $interCons->setProposition($proposition);
+            $this->entityManager->persist($interCons);
             $this->entityManager->flush();
-            $personne = $personne - 1; // patient attendue moins 1
-            $propos->setPersonneAttendre($personne);
+            $propos->setStatusProposition(1);
             $this->entityManager->persist($propos);
             $this->entityManager->flush();
         }

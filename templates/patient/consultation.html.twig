@@ -40,11 +40,11 @@
                     </td>
                     <td>
                         {% if rdv.statusConsultation == 1 %}
-                            <span class="badge badge-success badge-style modif-status">{% trans %}activate{% endtrans %}</span>
+                            <span class="badge badge-success badge-style">{% trans %}Realized{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
 

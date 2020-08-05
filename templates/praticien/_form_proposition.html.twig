@@ -20,16 +20,16 @@
 <!--Body-->
 <div class="modal-body">
     <div class="md-form">
+        <label class="active" for="form1">Patient </label>
+        {{ form_widget(form.patient, {'attr': { 'class': 'form-control chosen-select' }}) }}
+    </div>
+    <div class="md-form">
         <label class="active" for="form1">{% trans %}Proposed Date{% endtrans %}</label>
         {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control date_rdv' }}) }}
     </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Propose time{% endtrans %} </label>
         {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
-    </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Number of patients to suggest{% endtrans %} </label>
-        {{ form_widget(form.PersonneAttendre, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form ">
         <label class="active" for="form1">{% trans %}Description of the appointment {% endtrans %}  </label>
@@ -51,6 +51,8 @@
                 todayHighlight:'TRUE',
                 startDate: '-0d',
             });
+            $('.chosen-select').chosen({width: "100%"});
+            $('.chosen-select').trigger('chosen:updated');
         });
 </script>
 

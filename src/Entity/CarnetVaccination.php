@@ -52,7 +52,7 @@ class CarnetVaccination
     private $datePriseInitiale;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $rappelVaccin;
 
@@ -131,12 +131,12 @@ class CarnetVaccination
         return $this;
     }
 
-    public function getRappelVaccin(): ?string
+    public function getRappelVaccin(): ?\DateTimeInterface
     {
         return $this->rappelVaccin;
     }
 
-    public function setRappelVaccin(?string $rappelVaccin): self
+    public function setRappelVaccin(?\DateTimeInterface $rappelVaccin): self
     {
         $this->rappelVaccin = $rappelVaccin;
 

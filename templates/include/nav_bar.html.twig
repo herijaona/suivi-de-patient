@@ -1,4 +1,5 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+
 <div class="col_exc_1" style="position: relative;">
     <link href="{{ asset('assets/css/croppie.css') }}" rel="stylesheet" type="text/css">
     <div class="d-flex justify-content-between">
@@ -10,10 +11,10 @@
 
     </div>
     <div class="mt-4 menu-container">
-            <div class="img_profile">
 
+            <div class="img_profile">
                 {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
-                <img  src="/{{ img }}"   >
+                <img style="position: relative" src="/{{ img }}">
                 <a class="edit-profile">
                     <i class="fas fa-pencil-alt"></i>
                 </a>
@@ -44,7 +45,7 @@
                                     <br />
                                     <br />
                                     <br/>
-                                    <button class="btn btn-success crop_image">{% trans %}Update Image{% endtrans %}</button>
+                                    <button class="btn btn-success crop_image" style="margin-right: 60px">{% trans %}Update Image{% endtrans %}</button>
                                 </div>
                             </div>
                         </div>
@@ -80,21 +81,11 @@
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
                 <!-- <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li> -->
-                <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">{% trans %}Vaccination schedule{% endtrans %}</a></li>
+                <li class="{{ (currentPath == path('dashboard')) ? 'active' :'' }}"><a href="{{ path('dashboard') }}">{% trans %} Dashboard {% endtrans %}</a></li>
+                <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Vaccination</a></li>
                 <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
-                <li class="{{ (currentPath == path('rdv_praticien') or currentPath == path('rdv_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#rdv">{% trans %} Appointment {% endtrans %}</a>
-                    <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" >{% trans %}Awaiting validation {% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('rdv_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien_reject') }}" >{% trans %}Reject{% endtrans %}</a></li>
-                    </ul>
-                </li>
-                <li class="{{ (currentPath == path('intervention_praticien') or currentPath == path('intervention_praticien_reject')) ? 'active' :'' }}"><a href="#"  data-toggle="collapse" data-target="#intervention">Intervention</a>
-                    <ul id="intervention" class="collapse" aria-labelledby="intervention" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath ==  path('intervention_praticien')) ? 'active' :''  }}"> <a href="{{ path('intervention_praticien')}}" >{% trans %}done{% endtrans %}</a></li>
-
-                        <li class="{{ (currentPath == path('intervention_praticien_reject')) ? 'active' :''  }}"> <a href="{{ path('intervention_praticien_reject') }}" >{% trans %}Not done{% endtrans %}</a></li>
-                    </ul>
-                </li>
+                <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :'' }}"><a href="{{ path('rdv_praticien') }}" >{% trans %} Appointment {% endtrans %}</a></li>
+                <li class="{{ (currentPath == path('intervention_praticien') ) ? 'active' :'' }}"><a href="{{ path('intervention_praticien')}}">Intervention</a></li>
                 <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}">{% trans %}Appointment proposal{% endtrans %}</a></li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
@@ -118,10 +109,6 @@
                 <a href="{{ path('admin_logout') }}">
                     <i class="fas fa-sign-out-alt"></i> {% trans %}Logout{% endtrans %}
                 </a>
-                {% else %}
-                    <a href="{{ path('app_logout') }}">
-                        <i class="fas fa-sign-out-alt"></i> {% trans %}Logout{% endtrans %}
-                    </a>
                 {% endif %}
             </li>
         </ul>
@@ -147,8 +134,8 @@
             type:'circle' //circle
         },
         boundary:{
-            width:300,
-            height:300
+            width:250,
+            height:250
         }
     });
     $(".edit-profile").on('click', function(e){

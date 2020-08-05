@@ -21,23 +21,27 @@ class PropositionRdvRepository extends ServiceEntityRepository
 
     }
 
-    public function searchProposition(){
+    public function searchProposition($patient= null, $status = 0){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition,p.PersonneAttendre, pr.firstName, pr.lastName, pr.id as praticien
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition, pr.firstName, pr.lastName, pr.id as praticien, pa.firstName as patientfirst, pa.lastName as patientlast, pa.id as patient 
             FROM App\Entity\PropositionRdv p
             LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
-            WHERE p.dateProposition >= :now AND p.PersonneAttendre > 0
+            LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
+            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now  AND p.statusProposition = :status
             ORDER BY p.dateProposition ASC')
-            ->setParameter('now', new \DateTime());
+            ->setParameter('now', new \DateTime())
+            ->setParameter('patient', $patient)
+            ->setParameter('status', $status);
 
         return $query->getResult();
     }
-    public function searchStatusPraticienEnValid($praticien = null, $status = 1){
+    public function searchStatusPraticienEnValid($praticien = null, $status = 0){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition, p.PersonneAttendre
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition, pa.lastName, pa.firstName
             FROM App\Entity\PropositionRdv p
             LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
-            WHERE (pr.id = :praticien OR pr.id IS NULL) AND p.statusProposition = :status AND p.dateProposition >= :now AND p.PersonneAttendre > 0
+            LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
+            WHERE (pr.id = :praticien OR pr.id IS NULL) AND p.statusProposition = :status AND p.dateProposition >= :now 
             ORDER BY p.dateProposition ASC')
             ->setParameter('status', $status)
             ->setParameter('praticien', $praticien)

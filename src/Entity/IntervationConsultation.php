@@ -72,6 +72,11 @@ class IntervationConsultation
      */
     private $etat;
 
+    /**
+     * @ORM\OneToOne(targetEntity=PropositionRdv::class, inversedBy="intervationConsultation", cascade={"persist", "remove"})
+     */
+    private $proposition;
+
     public function __construct()
     {
         $this->patientIntervationConsultations = new ArrayCollection();
@@ -193,6 +198,18 @@ class IntervationConsultation
     public function setEtat(?int $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getProposition(): ?PropositionRdv
+    {
+        return $this->proposition;
+    }
+
+    public function setProposition(?PropositionRdv $proposition): self
+    {
+        $this->proposition = $proposition;
 
         return $this;
     }

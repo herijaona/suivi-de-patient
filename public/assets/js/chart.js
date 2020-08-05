@@ -13,7 +13,7 @@ window.onload = function() {
             var chart2 = new CanvasJS.Chart("chartContainer2", {
                 animationEnabled: true,
                 title: {
-                    text: "Email Categories",
+                    text: "Nombres patients par type patient",
                     horizontalAlign: "left",
                     fontSize: 16,
                 },
@@ -22,8 +22,8 @@ window.onload = function() {
                     startAngle: 60,
                     //innerRadius: 60,
                     indexLabelFontSize: 17,
-                    indexLabel: "{label} - {y}",
-                    toolTipContent: "<b>{label}:</b> {y} (#percent%)",
+                    indexLabel: "{y} {label} ",
+                    toolTipContent: "<b> {y} {label}:</b> (#percent%)",
                     dataPoints: epat
                 }]
             });
@@ -92,7 +92,7 @@ window.onload = function() {
                     type: "pie",
                     startAngle: 240,
                     yValueFormatString: "##",
-                    indexLabel: "{label} {y}",
+                    indexLabel: " {y} {label}",
                     dataPoints: [
                         { y: data.patient, label: "Patient", },
                         { y: data.praticien, label: "Praticien" },

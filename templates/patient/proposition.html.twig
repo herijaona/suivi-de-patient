@@ -20,6 +20,7 @@
                 <th>{% trans %}Date Proposal appointment{% endtrans %}</th>
                 <th>Description</th>
                 <th>Praticien</th>
+                <th>Patient</th>
                 <th></th>
             </tr>
             </thead>
@@ -37,7 +38,11 @@
                         {{ propos.lastName }}
                     </td>
                     <td>
-                        <span class="badge badge-success badge-style modif-etat" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}" data-personne = "{{ propos.PersonneAttendre }}" >{% trans %}Accept{% endtrans %}</span>
+                        {{ propos.patientfirst }}
+                        {{ propos.patientlast }}
+                    </td>
+                    <td>
+                        <span class="badge badge-success badge-style modif-etat" data-patient="{{ propos.patient }}" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}"  >{% trans %}Accept{% endtrans %}</span>
                     </td>
 
                 </tr>
@@ -55,18 +60,20 @@
         $('.modif-etat').one('click', function () {
             var id = $(this).data('id');
             var praticien = $(this).data('praticien');
+            var patient = $(this).data('patient');
             var date = $(this).data('date');
             var description = $(this).data('description');
-            var personne = $(this).data('personne');
+
             $.ajax({
                 url: "{{ path('proposition') }}",
                 type: 'post',
                 data: {
                     id: id,
                     praticien: praticien,
+                    patient: patient,
                     date: date,
-                    description: description,
-                    personne: personne
+                    description: description
+
                 },
                 dataType: "json",
                 success: (data) =>{
