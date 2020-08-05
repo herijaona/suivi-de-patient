@@ -749,6 +749,10 @@
         <source>State</source>
         <target>Etat</target>
       </trans-unit>
+      <trans-unit id="oA_wxQd" resname="Accepted">
+        <source>Accepted</source>
+        <target>Accepté</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

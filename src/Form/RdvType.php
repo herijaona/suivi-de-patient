@@ -42,16 +42,6 @@ class RdvType extends AbstractType
                 'choices' => array_flip($typeRdvArrays),
                 'required' => true,
             ])
-            ->add('vaccin', EntityType::class,
-                ['required' => false,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('v')
-                            ->orderBy('v.vaccinName');
-                    },
-                    'class' => Vaccin::class,
-                    'attr' => ['class' => 'form-control chosen-select'],
-                    'placeholder' => 'Choose vaccine'
-                ])
         ;
     }
 
