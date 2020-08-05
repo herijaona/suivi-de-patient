@@ -203,11 +203,13 @@ class PraticienController extends AbstractController
 
         $patient = $patientRepo->find($patient_id);
 
-        $vaccin = $vacRepo->findVaccinByTYpe($patient->getTypePatient());
+        $typePatient = $patient->getTypePatient();
+
+        $vaccins = $vacRepo->findVaccinByTYpe($typePatient);
 
         return $this->render("praticien/carnet.html.twig",[
-          'vaccin' => $vaccin,
-          'patient' => $patient
+          'vaccins' => $vaccins,
+          'patient' => $patient,
         ]);
     }
 

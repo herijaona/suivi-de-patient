@@ -367,8 +367,9 @@ class PatientController extends AbstractController
 
             $patientordovaccination = new PatientOrdoVaccination();
             $patientordovaccination->setPatient($patient);
-            $id = $patientordovaccination->getId();
-            $patientordovaccination->setOrdoVaccination($id);
+            // $id = $patientordovaccination->getId();
+            // $patientordovaccination->setOrdoVaccination($id);
+            $patientordovaccination->setOrdoVaccination($ordovaccination);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($patientordovaccination);
             $entityManager->flush();
