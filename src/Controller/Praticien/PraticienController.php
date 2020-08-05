@@ -201,6 +201,7 @@ class PraticienController extends AbstractController
         $user= $this->getUser();
 
 
+
     }
 
     /**
