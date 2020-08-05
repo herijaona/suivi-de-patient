@@ -32,7 +32,7 @@
         "quartier": "Mahazoarivo"
     }
 
- ####url pour ajouter utilisateur en tant que patient:
+ ### url pour ajouter utilisateur en tant que patient:
     http://localhost:8000/api/users 
         params : {
         "first_name":"dev",
@@ -47,11 +47,11 @@
         "type_patient": "1",
         "sexe":"femme"
     }
-##Centre de santé
+## Centre de santé
     http://localhost:8000/api/centre_healths
     http://localhost:8000/api/centre_healths/{id}
 ##Vaccin 
-####url pour lister vaccin avec authorization Bearer token
+#### url pour lister vaccin avec authorization Bearer token
     http://localhost:8000/api/vaccins
     http://localhost:8000/api/vaccins/{id}
 ## Vaccination

@@ -19,6 +19,9 @@
     "bacon/bacon-qr-code": {
         "version": "2.0.0"
     },
+    "beberlei/doctrineextensions": {
+        "version": "v1.2.7"
+    },
     "dasprid/enum": {
         "version": "1.0.0"
     },
@@ -254,7 +257,7 @@
         "version": "2.2.3"
     },
     "php": {
-        "version": "7.4"
+        "version": "7.3"
     },
     "phpdocumentor/reflection-common": {
         "version": "2.1.0"
@@ -503,6 +506,9 @@
     },
     "symfony/polyfill-intl-idn": {
         "version": "v1.17.0"
+    },
+    "symfony/polyfill-intl-messageformatter": {
+        "version": "v1.18.0"
     },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.17.0"
