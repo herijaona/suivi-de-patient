@@ -18,18 +18,31 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, InterventionVaccination::class);
     }
-    public function searchIntervationPraticien($praticien = null, $etat = 1){
+    public function searchIntervationPraticien($praticien = null){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT i.id, i.datePriseVaccin,i.etat,p.firstName as patient_name,v.vaccinName, p.lastName as patient_lastname, pr.firstName,pr.lastName
             FROM App\Entity\InterventionVaccination i 
             INNER JOIN App\Entity\Patient p with p.id = i.patient
             LEFT JOIN App\Entity\Praticien pr with pr.id = i.praticienPrescripteur
             INNER JOIN App\Entity\Vaccin v with v.id = i.vaccin
-            WHERE pr.id = :praticien  AND i.etat = :etat  AND i.datePriseVaccin >= :now
+            WHERE pr.id = :praticien   AND i.datePriseVaccin >= :now
             ORDER BY i.datePriseVaccin ASC')
-            ->setParameter('etat', $etat)
             ->setParameter('praticien', $praticien)
             ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+    }
+
+    public function searchPatient($praticien = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT count(p.id)
+            FROM App\Entity\InterventionVaccination i 
+            INNER JOIN App\Entity\Patient p with p.id = i.patient
+            LEFT JOIN App\Entity\Praticien pr with pr.id = i.praticienPrescripteur
+            WHERE pr.id = :praticien  
+            ORDER BY i.datePriseVaccin ASC')
+
+            ->setParameter('praticien', $praticien);
 
         return $query->getResult();
     }

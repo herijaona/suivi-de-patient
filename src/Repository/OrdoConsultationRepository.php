@@ -21,7 +21,7 @@ class OrdoConsultationRepository extends ServiceEntityRepository
 
     public function searchStatus($patient = null, $status = 0 ){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,pr.firstName, pr.lastName 
+        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation,o.etat, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,pr.firstName, pr.lastName 
             FROM App\Entity\OrdoConsultation o 
             INNER JOIN App\Entity\Patient p with p.id = o.patient
             LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
@@ -35,26 +35,25 @@ class OrdoConsultationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function searchStatusPraticien($praticien = null, $status = 0, $etat = 0){
+    public function searchStatusPraticien($praticien = null){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation,o.etat,o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,p.firstName, p.lastName,p.id as patient, pr.id as praticien
             FROM App\Entity\OrdoConsultation o 
             INNER JOIN App\Entity\Patient p with p.id = o.patient
             LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
             LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
-            WHERE pr.id = :praticien AND o.statusConsultation = :status AND o.etat = :etat  AND o.dateRdv >= :now
+            WHERE pr.id = :praticien 
             ORDER BY o.dateRdv ASC')
-            ->setParameter('status', $status)
-            ->setParameter('etat', $etat)
-            ->setParameter('praticien', $praticien)
-            ->setParameter('now', new \DateTime());
+            ->setParameter('praticien', $praticien);
+
+
 
         return $query->getResult();
     }
 
     public function searchStatusPraticienEnValid($praticien = null, $status = 0){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,p.firstName, p.lastName 
+        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,p.firstName, p.lastName,p.id as patient, pr.id as praticien
             FROM App\Entity\OrdoConsultation o 
             INNER JOIN App\Entity\Patient p with p.id = o.patient
             LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
@@ -67,6 +66,7 @@ class OrdoConsultationRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+
 
 
 

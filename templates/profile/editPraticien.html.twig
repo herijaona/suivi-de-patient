@@ -1,4 +1,4 @@
-{% extends 'profile/include/basePraticien.html.twig' %} {% block body %}
+{% extends 'include/base.html.twig' %} {% block body %}
 
 <div class="d-flex w-100">
     <h2 class="profile-h2">{% trans %}My profile{% endtrans %}</h2>
@@ -69,7 +69,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-info button-login mb-3 button-edit button-edit-class">
-                        {% trans %}Save{% endtrans %}{% trans %}Save{% endtrans %}
+                        {% trans %}Save{% endtrans %}
                     </button>
                 </form>
             </div>
@@ -90,14 +90,14 @@
             $('.form-edit').css('display', 'none');
             $('.form-show').css('display', 'block');
             $(this).addClass('button-cancel');
-            $(this).children('span').html('<span>Annuler</span>');
+            $(this).children('span').html('<span>{% trans %}Cancel{% endtrans %}</span>');
             $(this).children('i').remove();
         } else {
             $('.button-edit').addClass('button-edit-class');
             $('.form-edit').css('display', 'block');
             $('.form-show').css('display', 'none');
             $(this).removeClass('button-cancel');
-            $(this).children('span').html('<span>Modifier</span>');
+            $(this).children('span').html('<span>{% trans %}Edit{% endtrans %}</span>');
             $(this).prepend('<i class="fas fa-pencil-alt mr-2"></i>');
         }
     });

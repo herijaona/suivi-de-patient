@@ -44,15 +44,21 @@ class PropositionRdv
      */
     private $etat;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $PersonneAttendre;
 
     /**
      * @ORM\OneToMany(targetEntity=OrdoConsultation::class, mappedBy="proposition")
      */
     private $ordoConsultations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="propositionRdvs")
+     */
+    private $patient;
+
+    /**
+     * @ORM\OneToOne(targetEntity=IntervationConsultation::class, mappedBy="proposition", cascade={"persist", "remove"})
+     */
+    private $intervationConsultation;
 
     public function __construct()
     {
@@ -123,18 +129,7 @@ class PropositionRdv
 
         return $this;
     }
-
-    public function getPersonneAttendre(): ?int
-    {
-        return $this->PersonneAttendre;
-    }
-
-    public function setPersonneAttendre(int $PersonneAttendre): self
-    {
-        $this->PersonneAttendre = $PersonneAttendre;
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection|OrdoConsultation[]
@@ -162,6 +157,36 @@ class PropositionRdv
             if ($ordoConsultation->getProposition() === $this) {
                 $ordoConsultation->setProposition(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getPatient(): ?Patient
+    {
+        return $this->patient;
+    }
+
+    public function setPatient(?Patient $patient): self
+    {
+        $this->patient = $patient;
+
+        return $this;
+    }
+
+    public function getIntervationConsultation(): ?IntervationConsultation
+    {
+        return $this->intervationConsultation;
+    }
+
+    public function setIntervationConsultation(?IntervationConsultation $intervationConsultation): self
+    {
+        $this->intervationConsultation = $intervationConsultation;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newProposition = null === $intervationConsultation ? null : $this;
+        if ($intervationConsultation->getProposition() !== $newProposition) {
+            $intervationConsultation->setProposition($newProposition);
         }
 
         return $this;
