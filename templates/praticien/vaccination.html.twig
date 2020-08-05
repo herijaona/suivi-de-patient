@@ -19,7 +19,8 @@
                 <th>{% trans %}Vaccination date {% endtrans %}</th>
                 <th>Patient</th>
                 <th>{% trans %}Vaccine{% endtrans %}</th>
-                <th>{% trans %}State{% endtrans %}</th>
+                <th>Status</th>
+                <th>Intervention</th>
                 <th>{% trans %}Vaccination schedule {% endtrans %}</th>
 
             </tr>
@@ -34,6 +35,15 @@
 
                     <td>{{ vac.firstName }} {{ vac.lastName }}</td>
                     <td>{{vac.vaccinName }} </td>
+                    <td>
+                        {% if vac.statusVaccin == 1 %}
+                            <span class="badge badge-info badge-style ">{% trans %}Accepted{% endtrans %}</span>
+                        {% elseif vac.vac.statusVaccin == 0 %}
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                        {% elseif vac.vac.statusVaccin == 2 %}
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                        {% endif %}
+                    </td>
 
                     <td>
                         {% if vac.etat == 1 %}

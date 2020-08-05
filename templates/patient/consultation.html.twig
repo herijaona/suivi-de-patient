@@ -21,6 +21,7 @@
                 <th>{% trans %}Object of consultation{% endtrans %} </th>
                 <th>Praticien</th>
                 <th>Status</th>
+                <th>Intervention</th>
 
                 {# <th>More</th> #}
             </tr>
@@ -40,11 +41,18 @@
                     </td>
                     <td>
                         {% if rdv.statusConsultation == 1 %}
-                            <span class="badge badge-success badge-style">{% trans %}Realized{% endtrans %}</span>
+                            <span class="badge badge-info badge-style">{% trans %}Accepted{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
                             <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 2 %}
                             <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rdv.etat == 1 %}
+                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                        {% elseif rdv.etat == 0 %}
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
 

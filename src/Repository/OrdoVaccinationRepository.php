@@ -21,11 +21,10 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
 
     public function searchStatus($patient = null, $status = 0){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id, o.datePrise,  o.statusVaccin, pr.firstName, pr.lastName,v.vaccinName FROM App\Entity\OrdoVaccination o 
+        $query = $entityManager->createQuery('SELECT o.id, o.datePrise,  o.statusVaccin, pr.firstName, pr.lastName FROM App\Entity\OrdoVaccination o 
         INNER JOIN App\Entity\Patient p with p.id= o.patient
         LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
         LEFT JOIN App\Entity\Praticien pr with pr.id=d.praticien
-        INNER JOIN App\Entity\Vaccin v with v.id = o.vaccin
          WHERE p.id= :patient AND o.statusVaccin= :status AND o.datePrise >= :now
             ORDER BY o.datePrise ASC')
             ->setParameter('status', $status)
@@ -37,7 +36,7 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
 
     public function searchStatusPraticien($praticien = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id, o.datePrise,o.etat,  o.statusVaccin, p.firstName, p.lastName,v.id as vaccin,v.vaccinName, pr.id as praticien, p.id as patient FROM App\Entity\OrdoVaccination o 
+        $query = $entityManager->createQuery('SELECT o.id, o.datePrise,o.etat,  o.statusVaccin, p.firstName, p.lastName,v.id as vaccin, pr.id as praticien, p.id as patient FROM App\Entity\OrdoVaccination o 
         INNER JOIN App\Entity\Patient p with p.id= o.patient
         LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
         LEFT JOIN App\Entity\Praticien pr with pr.id=d.praticien
@@ -51,7 +50,7 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
 
     public function searchStatusPraticienEnValid($praticien = null, $status = 0, $etat = 0){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id, o.datePrise,o.etat,  o.statusVaccin, p.firstName, p.lastName,v.id as vaccin,v.vaccinName, pr.id as praticien, p.id as patient FROM App\Entity\OrdoVaccination o 
+        $query = $entityManager->createQuery('SELECT o.id, o.datePrise,o.etat,  o.statusVaccin, p.firstName, p.lastName,v.id as vaccin, pr.id as praticien, p.id as patient FROM App\Entity\OrdoVaccination o 
         INNER JOIN App\Entity\Patient p with p.id= o.patient
         LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
         LEFT JOIN App\Entity\Praticien pr with pr.id=d.praticien
