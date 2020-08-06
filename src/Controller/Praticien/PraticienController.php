@@ -148,8 +148,8 @@ class PraticienController extends AbstractController
     {
         $user =$this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $icp= $this->intervationConsultationRepository->searchIntervationPraticien($praticien->getId(),0);
-        $ivp= $this->interventionVaccinationRepository->searchIntervationPraticien($praticien->getId(),0);
+        $icp= $this->intervationConsultationRepository->searchIntervationPraticien($praticien->getId());
+        $ivp= $this->interventionVaccinationRepository->searchIntervationPraticien($praticien->getId());
         return $this->render('praticien/intervention_reject.html.twig', [
             'consultation'=>$icp,
             'vaccination'=>$ivp,
@@ -166,8 +166,8 @@ class PraticienController extends AbstractController
     {
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $rce = $this->ordoConsultationRepository->searchStatusPraticien($praticien->getId(), 2);
-        $rve = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId(), 2);
+        $rce = $this->ordoConsultationRepository->searchStatusPraticien($praticien->getId());
+        $rve = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId());
         return $this->render('praticien/rdv_annuler_patient.html.twig',[
             'consultation'=> $rce,
             'vaccination'=>$rve
