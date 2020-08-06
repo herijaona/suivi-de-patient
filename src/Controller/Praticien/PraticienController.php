@@ -195,14 +195,22 @@ class PraticienController extends AbstractController
         ]);
     }
     /**
-     * @Route("/see-calendar/{vac_id}", name="see_calendar")
+     * @Route("/see-calendar/{patient_id}", name="see_calendar")
      */
-    public function see_calendar(Request $request , $vac_id)
+    public function see_calendar(Request $request, $patient_id, VaccinRepository $vacRepo, PatientRepository $patientRepo)
     {
         $user= $this->getUser();
 
+        $patient = $patientRepo->find($patient_id);
 
+        $typePatient = $patient->getTypePatient();
 
+        $vaccins = $vacRepo->findVaccinByTYpe($typePatient);
+
+        return $this->render("praticien/carnet.html.twig",[
+          'vaccins' => $vaccins,
+          'patient' => $patient,
+        ]);
     }
 
     /**
@@ -260,7 +268,8 @@ class PraticienController extends AbstractController
 
                       $carnetVaccination->setIntervationVaccination($interVacc)
                                         ->setPatient($patient)
-                                        ->setVaccin($vaccination);
+                                        ->setVaccin($vaccination)
+                                        ->setEtat(0);
 
                       // Date 6 months => 2021:02:04 H:i:s (if we are 2020:08:04)
                       $datePriseInitiale = $vaccination->getDatePriseInitiale();
@@ -269,8 +278,7 @@ class PraticienController extends AbstractController
                         $date = date('Y-m-d H:i:s', strtotime($datePriseInitiale));
                         $date = new \DateTime($date);
 
-                        $carnetVaccination->setDatePriseInitiale($date)
-                                          ->setEtat(1);
+                        $carnetVaccination->setDatePriseInitiale($date);
 
                         $this->entityManager->persist($carnetVaccination);
                         $this->entityManager->flush();
@@ -293,7 +301,7 @@ class PraticienController extends AbstractController
                             $carnetVaccination->setIntervationVaccination($interVacc)
                                               ->setPatient($patient)
                                               ->setVaccin($vaccination)
-                                              ->setEtat(1);
+                                              ->setEtat(0);
 
                             $rappel = new \DateTime(date('Y-m-d H:i:s', strtotime($rappel)));
 
@@ -307,7 +315,7 @@ class PraticienController extends AbstractController
                   }
               }
               $message=$translator->trans('Successful change');
-              
+
               $this->addFlash('success', $message);
               return new JsonResponse(['status' => 'OK']);
           }elseif ($request->request->get('action')== "reject"){
