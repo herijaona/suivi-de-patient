@@ -199,8 +199,11 @@ class PraticienController extends AbstractController
     /**
      * @Route("/see-calendar/{patient_id}", name="see_calendar")
      */
-    public function see_calendar(Request $request, $patient_id, VaccinRepository $vacRepo, PatientRepository $patientRepo)
-    {
+    public function see_calendar(
+      Request $request, $patient_id, 
+      VaccinRepository $vacRepo, 
+      PatientRepository $patientRepo
+    ){
         $user= $this->getUser();
 
         $patient = $patientRepo->find($patient_id);
@@ -247,17 +250,12 @@ class PraticienController extends AbstractController
                       $this->entityManager->flush();
                   }
               }elseif($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
-                  // $vaccin = $request->request->get('vaccin');
-                  // dump($vaccin);
-                  // $vaccination= $this->vaccinRepository->find($vaccin);
-
                   $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
                   if($ordoVacc != null){
                       $interVacc = new  InterventionVaccination();
                       $interVacc->setPatient($patient);
                       $interVacc->setPraticienPrescripteur($praticien);
                       $interVacc->setEtat(0);
-                      // $interVacc->setVaccin($vaccination);
                       $interVacc->setDatePriseVaccin( $Date_Rdv);
                       $interVacc->setPraticienExecutant($praticien);
                       $interVacc->setOrdoVaccination($ordovacc);
@@ -290,74 +288,18 @@ class PraticienController extends AbstractController
                         switch ($type_patient){
                           case 'ENFANT':
                             $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
-                            // dump($alls);
                             $listVaccin = $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
                           break;
                           case 'ADULTE':
                             $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE');
-                            // dump($alls);
                             $listVaccin = $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
                           break;
                           case 'FEMME ENCEINTE':
                             $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE');
-                            // dump($alls);
                             $listVaccin = $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
                           break;
                         }
-                        // dump($type_patient);
                       }
-
-                      // $listVaccin = $vaccGen->generate_vaccin($patient, $birthday, )
-
-
-                      // $carnetVaccination = new CarnetVaccination();
-
-                      // $carnetVaccination->setIntervationVaccination($interVacc)
-                      //                   ->setPatient($patient)
-                      //                   ->setVaccin($vaccination)
-                      //                   ->setEtat(0);
-
-                      // // Date 6 months => 2021:02:04 H:i:s (if we are 2020:08:04)
-                      // $datePriseInitiale = $vaccination->getDatePriseInitiale();
-                      
-                      // if($datePriseInitiale !== "" && $datePriseInitiale !== null){
-                      //   $date = date('Y-m-d H:i:s', strtotime($datePriseInitiale));
-                      //   $date = new \DateTime($date);
-
-                      //   $carnetVaccination->setDatePriseInitiale($date);
-
-                      //   $this->entityManager->persist($carnetVaccination);
-                      //   $this->entityManager->flush();
-                      // }
-
-                      // // Get list of vaccination->rappel() methods
-                      // $vaccMethods = get_class_methods($vaccination);
-
-                      // // Add new line in CarnetVaccin foreach rappel of vaccin
-                      // foreach($vaccMethods as $getRappel){
-
-                      //   // If $getRappel contains "getRappel" in its value
-                      //   if(strpos($getRappel, "getRappel") !== false){
-
-                      //     $rappel = $vaccination->$getRappel();
-
-                      //     if($rappel !== "" && $rappel !== null){
-                      //       $carnetVaccination = new CarnetVaccination();
-
-                      //       $carnetVaccination->setIntervationVaccination($interVacc)
-                      //                         ->setPatient($patient)
-                      //                         ->setVaccin($vaccination)
-                      //                         ->setEtat(0);
-
-                      //       $rappel = new \DateTime(date('Y-m-d H:i:s', strtotime($rappel)));
-
-                      //       $carnetVaccination->setRappelVaccin($rappel);
-
-                      //       $this->entityManager->persist($carnetVaccination);
-                      //       $this->entityManager->flush();
-                      //     }
-                      //   }
-                      // }
                   }
               }
               $message=$translator->trans('Successful change');
@@ -400,25 +342,6 @@ class PraticienController extends AbstractController
                       $ordoVacc->setStatusVaccin(1);
                       $this->entityManager->persist($ordoVacc);
                       $this->entityManager->flush();
-                      $carnetVaccination = new CarnetVaccination();
-
-                      $carnetVaccination->setIntervationVaccination($interVacc)
-                          ->setPatient($patient)
-                          ->setVaccin($vaccination);
-
-                      // Date 6 months => 2021:02:04 H:i:s (if we are 2020:08:04)
-                      $datePriseInitiale = $vaccination->getDatePriseInitiale();
-
-                      if($datePriseInitiale !== "" && $datePriseInitiale !== null){
-                          $date = date('Y-m-d H:i:s', strtotime($datePriseInitiale));
-                          $date = new \DateTime($date);
-
-                          $carnetVaccination->setDatePriseInitiale($date)
-                              ->setEtat(1);
-
-                          $this->entityManager->persist($carnetVaccination);
-                          $this->entityManager->flush();
-                      }
 
                       // Get list of vaccination->rappel() methods
                       $vaccMethods = get_class_methods($vaccination);
