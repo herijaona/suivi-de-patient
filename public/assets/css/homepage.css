@@ -18,12 +18,12 @@ h1 {
 }
 
 .bg-home-h1 {
-    background: url(../images/img.jpg);
+    background: url(../images/bg.jpg);
     height: 100%;
     position: absolute;
     width: 100%;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: top left;
     background-size: cover;
 }
 
@@ -32,28 +32,34 @@ h1 {
     width: 100%;
     position: absolute;
     top: 0;
-    opacity: 0.9;
+    opacity: 1;
     height: 100%;
-    background: linear-gradient(-12deg, #1cc888 -9%, #37af21 18%);
+    background: linear-gradient(-12deg, #064d58 -9%, #488598bd 18%);
 }
 
 .btn-login {
+    font-size: .9rem;
     color: white;
     background: transparent;
     width: 200px;
     padding: 9px;
     border: 2px solid white;
+    line-height: 1rem;
 }
 
 .btn-register {
+    font-size: .9rem;
     font-family: "roboto-medium";
     border: 0;
     color: #ffffff;
-    background: #1cc888;
+    background: rgb(6, 186, 113);
     width: 200px;
     padding: 9px;
 }
 
+.btn-login:hover {
+    background: #ffffff33;
+}
 .btn-register:hover {
     color: #b30233;
     background: #ffffff;
@@ -66,6 +72,13 @@ h1 {
     color: white;
     text-align: center;
     margin-top: 17%;
+    text-transform: uppercase;
+}
+.bg-content-h1 h1{
+    font-size: 1.6rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
 }
 
 .bg-content-h1 h3 {
@@ -84,5 +97,28 @@ h1 {
 }
 
 .logo-div img {
-    width: 171px;
+    width: 15rem;
 }
+
+@media (max-width: 700px){
+    .logo-div{
+        top:0;
+    }
+    .bg-content-h1{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        padding: 2px 0;
+    }
+    .bg-content-h1 h1{
+        letter-spacing: 5px;
+        margin-top:9rem;
+    }
+    .bg-btn a{
+        margin-bottom: 2rem;
+    }
+    .btn-register, .btn-login{
+        font-size: .9rem;
+    }
+}
+

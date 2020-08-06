@@ -1,9 +1,17 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
-<div class="col_exc_1" style="position: relative">
+
+<div class="col_exc_1" style="position: relative;">
     <link href="{{ asset('assets/css/croppie.css') }}" rel="stylesheet" type="text/css">
-    <h4 class="h4_patient"> {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %} {% trans %} Area {% endtrans %}
-    </h4>
-    <div class="mt-4" style="position: relative">
+    <div class="d-flex justify-content-between">
+        <h4 class="h4_patient"> {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %} {% trans %} Area {% endtrans %}
+        </h4>
+        <div class="bar-container">
+            <i class="fas fa-bars bar-icon"></i>
+        </div>
+
+    </div>
+    <div class="mt-4 menu-container">
+
             <div class="img_profile">
                 {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                 <img style="position: relative" src="/{{ img }}">
@@ -12,16 +20,15 @@
                 </a>
                 <input type="file"   id="upload_image" name="upload_image"  accept="image/*" style="display: none"/>
                 <div id="uploaded_image"></div>
-            <span>
+                <span>
 
-            </span>
+                </span>
 
                 <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
                 <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %}{% trans %}Administrator{% endtrans %}{% endif %}</label>
             </div>
-        <div>
 
-
+        <div class="upload-image-container">
             <div id="uploadimageModal" class="modal" role="dialog">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -115,6 +122,10 @@
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/croppie.js') }}" type="text/javascript"></script>
 <script>
+
+    $('.bar-container').click(function(){
+        $('.menu-container').toggle('show');
+    })
     $image_crop = $('#image_demo').croppie({
         enableExif: true,
         viewport: {
@@ -156,7 +167,6 @@
                 data:{"image": response},
                 success:function(data)
                 {
-                    console.log(data)
                     $('#uploadimageModal').modal('hide');
                     location.reload();
                     //$('#uploaded_image').html(data);

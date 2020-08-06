@@ -66,6 +66,22 @@ class OrdoConsultationRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    public function searchStatusPraticienNotif($praticien = null, $status = 0,$statusNotif = 0){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT count(o.id), o.id,p.firstName, p.lastName,p.id as patient, pr.id as praticien
+            FROM App\Entity\OrdoConsultation o 
+            INNER JOIN App\Entity\Patient p with p.id = o.patient
+            LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
+            LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
+            WHERE (pr.id = :praticien OR pr.id IS NULL) AND o.statusConsultation = :status AND o.dateRdv >= :now AND o.statusNotif =:etat
+            ORDER BY o.dateRdv ASC')
+            ->setParameter('status', $status)
+            ->setParameter('etat', $statusNotif)
+            ->setParameter('praticien', $praticien)
+            ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+    }
 
 
 

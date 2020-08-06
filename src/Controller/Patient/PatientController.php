@@ -343,6 +343,7 @@ class PatientController extends AbstractController
             $ordoconsultation->setEtat(0);
             $ordoconsultation->setPatient($patient);
             $ordoconsultation->setOrdonnance($ordo);
+            $ordoconsultation->setStatusNotif(0);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ordoconsultation);
             $entityManager->flush();
@@ -360,6 +361,7 @@ class PatientController extends AbstractController
             $ordovaccination->setPatient($patient);
             $ordovaccination->setStatusVaccin(0);
             $ordovaccination->setEtat(0);
+            $ordovaccination->setStatusNotif(0);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ordovaccination);
             $entityManager->flush();

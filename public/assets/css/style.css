@@ -1,4 +1,5 @@
-menu_bar/* Fonts speciaux */
+
+/* Fonts speciaux */
 
 @font-face {
     font-family: "marvel-bold";
@@ -65,11 +66,11 @@ ul {
 }
 
 .col_exc_1 {
-    /* background: linear-gradient(163deg, #3c023c 10%, #1c053a 57%); */
     background: linear-gradient(150deg, #077DF2 4%, #06CF7D 100%);
     min-height: 97.5vh;
     width: 18%;
     position: relative;
+    box-sizing: border-box;
 }
 
 .col_exc_2 {
@@ -101,8 +102,8 @@ ul {
 }
 
 .img_profile img {
-    width: 125px;
-    height: 125px;
+    width: 6rem;
+    height: 6rem;
     border-radius: 49%;
     text-align: center;
 }
@@ -130,7 +131,7 @@ ul {
 .menu_suivi {
     list-style: none;
     font-family: "roboto-regular";
-    font-size: 13px;
+    font-size: 14px;
     line-height: 38px;
     margin-top: 20px;
     padding: 0;
@@ -213,10 +214,12 @@ ul {
 }
 
 .register .body-content {
+    position:relative;
     width: 534px;
 }
 
 .body-content {
+    postion:relative;
     padding-top: 20px;
     width: 360px;
     background: white;
@@ -225,6 +228,21 @@ ul {
     border-radius: 7px;
     padding-bottom: 8px;
 }
+
+.container-login {
+    width: 100%;  
+    min-height: 100vh;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    background: #e9faff;
+  }
 
 h3.main-title {
     font-family: "marvel-bold";
@@ -260,18 +278,18 @@ img#qrcode {
     top: 0;
     position: fixed;
     width: 100%;
-    background: url(../images/img.jpg);
+    background: url(../images/bg.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
-    background-position: center;
+    background-position: top left;
     filter: blur(0px);
 }
 
 .button-login {
     color: #fff;
     border: 0;
-    background: rgb(6, 207, 125);
+    background: rgb(6, 186, 113);
     width: 45%;
 }
 
@@ -325,6 +343,7 @@ select.mdb-select.initialized {
     font-family: "roboto-medium";
     font-size: 16px;
     margin: 0;
+    word-break: break-word;
 }
 
 .admin .card-admin h3 {
@@ -356,7 +375,7 @@ select.mdb-select.initialized {
 }
 
 .card-admin .note-green {
-    background: green;
+    background: #269313;
 }
 
 .card-admin .in-card {
@@ -387,6 +406,24 @@ select.mdb-select.initialized {
     padding: 7px;
     width: 193px !important;
 }
+.btn-back{
+    position: absolute;
+    left: 15px;
+
+}
+.btn-back a{
+    text-decoration: none;
+    background-color: rgb(6, 186, 113);
+    padding: 0.6rem 1.2rem;
+    color:#fff;
+    border-radius: 4px;
+
+}
+.btn-back a:hover{
+    background-color: #17a2b8;
+}
+
+
 
 .profile-h2 {
     width: 50%;
@@ -451,7 +488,7 @@ select.mdb-select.initialized {
 }
 
 .logo-login {
-    width: 124px;
+    width: 130px;
     margin-bottom: 13px;
     margin-top: 19px;
 }
@@ -497,3 +534,107 @@ select.mdb-select.initialized {
 .button-cancel {
     background: #6b6b6b !important;
 }
+
+#body-page-container{
+    display: flex;
+}
+
+.edit-profile{
+    diplay:flex;
+    justify-content: center;
+}
+
+.bar-icon{
+    padding: .8rem 1rem;
+    background-color:transparent;
+}
+.bar-container{
+    display:none;
+}
+.active-menu{
+    display: block;
+}
+
+
+@media (max-width: 700px){
+    .menu-container{
+        display: none;
+    }
+    .bar-container{
+        display:block;
+    }
+
+    .img_profile, .upload-image-container{
+        display: none;
+    }
+
+    .col_exc_1{
+        position:absolute;
+        top:100%;
+        left:0;
+        width: 100%;
+        min-height: 100%;
+    }
+    .col_exc_2{
+            width: 100%;
+    }
+
+    .logout_footer {
+        position:relative;
+    }
+
+    #body-page-container{
+        display: block;
+    }
+    .table thead{
+        display: none;
+    }
+    .table{
+        border:none;
+        box-shadow: none;
+    }
+
+    .table tr{
+        background-color: #eee;
+        border:none;
+        display: block;
+        margin-bottom: 40px;
+        border-radius: 5px 5px 10px 10px;
+
+    }
+    .table tr td{
+        border-botom: 1px solid #ddd;
+    }
+
+    .table tbody td:first-child, .table tbody td:nth-child(2){
+        font-weight: bold;
+    }
+
+
+    .table td {
+        display: block;
+        text-align: left;
+    }
+
+
+    .table td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+    }
+
+
+
+}
+
+
+@media (max-width: 990px){
+    .col-lg-6 .form-control{
+        margin-bottom: 1rem;
+    }
+
+}
+
+
+
+
