@@ -85,7 +85,7 @@ class PraticienController extends AbstractController
         }
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId(), 1, 0 );
+        $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId());
 
         return $this->render('praticien/vaccination.html.twig', [
             'vaccination' => $rvc,
@@ -187,11 +187,11 @@ class PraticienController extends AbstractController
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $rce = $this->ordoConsultationRepository->searchStatusPraticienEnValid($praticien->getId());
         $rve = $this->ordoVaccinationRepository->searchStatusPraticienEnValid($praticien->getId());
-        $vaccin= $this->vaccinRepository->findAll();
+
+
         return $this->render('praticien/rdv.html.twig', [
             'consultation'=>$rce,
             'vaccination'=>$rve,
-            'Vaccin'=>$vaccin
         ]);
     }
     /**
@@ -691,4 +691,26 @@ class PraticienController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/notification" , name ="notif")
+     */
+    public function notif()
+    {
+        $user= $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $cons= $this->ordoConsultationRepository->searchStatusPraticienNotif($praticien);
+       foreach ($cons as $notif){
+           $count = $notif[1];
+           $nom = $notif["lastName"];
+           $prenom = $notif["firstName"];
+           if($count > 0){
+               $patient ='
+           <li> <a href="#"> '.$nom.''. ''.$prenom.'</a></li>
+           ';
+           }
+       }
+
+        return new JsonResponse(['unseen_notification'=>$count, 'notification'=>$patient]);
+
+    }
 }
