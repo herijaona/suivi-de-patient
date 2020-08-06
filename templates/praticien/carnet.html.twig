@@ -29,7 +29,7 @@
             			<td>{{vaccin.vaccin}}</td>
             			<td>
                             {% if vaccin.datePriseInitiale %}
-                                {{vaccin.datePriseInitiale | date("d-m-Y")}}
+                                {{vaccin.datePriseInitiale | date("d-m-Y à H:i")}}
                             {% else %}
                                 -
                             {% endif %}

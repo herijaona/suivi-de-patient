@@ -93,17 +93,18 @@ class VaccinGenerate
                     }
                 }
 
-                // For each date (datePriseInitiale Or Rappel)
-                // Calculate the exact date (date format) of the comming appointments
+                // Calculate the exact date for each string formatted date
                 foreach($getDateMethods as $getDate){
 
                     $crnV = new CarnetVaccination();
+
                     $crnV->setPatient($patient)
                          ->setVaccin($vacc)
                          ->setEtat(false)
                          ->setIntervationVaccination($intervention);
 
                     $getVAcc = $vacc->$getDate();
+                    
                     if($getVAcc !== "" && $getVAcc !== null){
                         $interval = date_interval_create_from_date_string($getVAcc);
                         $rappelOrDateInit = new \Datetime($birthday->format('Y-m-d H:i:s'));
