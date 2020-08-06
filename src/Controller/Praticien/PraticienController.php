@@ -275,30 +275,30 @@ class PraticienController extends AbstractController
                         switch ($type_patient){
                           case 'ENFANT':
                             $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
-                            $listVaccin = $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
+                            $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
                           break;
                           case 'ADULTE':
                             $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE');
-                            $listVaccin = $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
+                            $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
                           break;
                           case 'FEMME ENCEINTE':
                             $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE');
-                            $listVaccin = $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
+                            $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
                           break;
                         }
                       }else{
                         switch ($type_patient){
                           case 'ENFANT':
                             $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
-                            $listVaccin = $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
+                            $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
                           break;
                           case 'ADULTE':
                             $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE');
-                            $listVaccin = $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
+                            $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
                           break;
                           case 'FEMME ENCEINTE':
                             $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE');
-                            $listVaccin = $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
+                            $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
                           break;
                         }
                       }
