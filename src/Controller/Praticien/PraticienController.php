@@ -11,6 +11,7 @@ use App\Entity\PropositionRdv;
 use App\Form\ConsultationPraticienType;
 use App\Form\PropositionRdvType;
 use App\Repository\FamilyRepository;
+use App\Repository\CarnetVaccinationRepository;
 use App\Repository\IntervationConsultationRepository;
 use App\Repository\InterventionVaccinationRepository;
 use App\Repository\OrdoConsultationRepository;
@@ -209,12 +210,13 @@ class PraticienController extends AbstractController
         $patient = $patientRepo->find($patient_id);
 
         $typePatient = $patient->getTypePatient();
-
-        $vaccins = $vacRepo->findVaccinByTYpe($typePatient);
+        $carnetRepo = $this->getDoctrine()->getRepository(CarnetVaccination::class);
+        // $listVaccins = $carnetRepo->findBy(['patient' => $patient]);
+        $listVaccins = $carnetRepo->findListVaccinsInCarnet($patient);
 
         return $this->render("praticien/carnet.html.twig",[
-          'vaccins' => $vaccins,
           'patient' => $patient,
+          'listVaccins' => $listVaccins
         ]);
     }
 
