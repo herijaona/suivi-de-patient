@@ -707,15 +707,17 @@ class PraticienController extends AbstractController
         $user= $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $cons= $this->ordoConsultationRepository->searchStatusPraticienNotif($praticien);
+        $patient ='';
        foreach ($cons as $notif){
            $count = $notif[1];
            $nom = $notif["lastName"];
            $prenom = $notif["firstName"];
            if($count > 0){
-               $patient ='
-           <li> <a href="#"> '.$nom.''. ''.$prenom.'</a></li>
+               $patient .='
+           <li><a style="display: inline" href="#"> demande de consultation de  '.$prenom.''.'</a></li>
            ';
            }
+           dd($cons);
        }
 
         return new JsonResponse(['unseen_notification'=>$count, 'notification'=>$patient]);
