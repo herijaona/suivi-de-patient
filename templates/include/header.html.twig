@@ -2,13 +2,13 @@
 
     <ul class="menu_right">
 
-            {% for locale in locales if locale != app.request.locale%}
-                <li>
-                    <a href="{{ path('change_locale', {'locale': locale})}}">
-                        <img class="lang-en" src="{{asset('assets/images/'~locale~'.png')}}" alt="{{ locale }}" id="logo" >
-                    </a>
-                </li>
-            {% endfor %}
+        {% for locale in locales if locale != app.request.locale%}
+            <li>
+                <a href="{{ path('change_locale', {'locale': locale})}}">
+                    <img class="lang-en" src="{{asset('assets/images/'~locale~'.png')}}" alt="{{ locale }}" id="logo" >
+                </a>
+            </li>
+        {% endfor %}
 
         <li class="dropdown">
             {% if is_granted('ROLE_PATIENT') %}
@@ -25,7 +25,7 @@
                     <i  class="far fa-bell"></i>
                     <span class="label label-pill label-danger count"></span>
                 </a>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu test">
                 </ul>
             {% endif %}
 
@@ -73,10 +73,9 @@
                     dataType:"json",
                     success:function (data) {
                         if(data.unseen_notification > 0){
-                            $('.dropdown-menu').html(data.notification);
+                            $('.test').html(data.notification);
                             $('.count').html(data.unseen_notification);
                         }
-
                     }
                 });
             }

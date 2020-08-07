@@ -20,6 +20,7 @@
                 <th>{% trans %}Vaccination date {% endtrans %}</th>
                 <th>Praticien</th>
                 <th>Status</th>
+                <th>Intervention</th>
             </tr>
             </thead>
             <tbody>
@@ -33,11 +34,18 @@
                     <td>{{ vac.firstName }} {{ vac.lastName }}</td>
                     <td>
                         {% if vac.statusVaccin == 1 %}
-                            <span class="badge badge-success badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
+                            <span class="badge badge-info badge-style">{% trans %}Accepted{% endtrans %}</span>
                         {% elseif vac.statusVaccin == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
-                        {% elseif vac.statusVaccin == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                        {% elseif vac.statusVaccin  == 2 %}
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if vac.etat == 1 %}
+                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                        {% elseif vac.etat == 0 %}
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
 
