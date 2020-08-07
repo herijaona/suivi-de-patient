@@ -187,8 +187,6 @@ class PraticienController extends AbstractController
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $rce = $this->ordoConsultationRepository->searchStatusPraticienEnValid($praticien->getId());
         $rve = $this->ordoVaccinationRepository->searchStatusPraticienEnValid($praticien->getId());
-
-
         return $this->render('praticien/rdv.html.twig', [
             'consultation'=>$rce,
             'vaccination'=>$rve,
@@ -653,6 +651,7 @@ class PraticienController extends AbstractController
         $proposition->setPatient($patient);
         $proposition->setStatusProposition(0);
         $proposition->setEtat(0);
+        $proposition->setStatusNotif(0);
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($proposition);
         $entityManager->flush();
@@ -702,25 +701,58 @@ class PraticienController extends AbstractController
     /**
      * @Route("/notification" , name ="notif")
      */
-    public function notif()
+    public function notif( Request $request)
     {
         $user= $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $cons= $this->ordoConsultationRepository->searchStatusPraticienNotif($praticien);
-        $patient ='';
-       foreach ($cons as $notif){
-           $count = $notif[1];
+        $co= $this->ordoConsultationRepository->searchStatusPraticienAll($praticien);
+        $vacc = $this->ordoVaccinationRepository->searchStatusPraticienNotif($praticien);
+        $vac = $this->ordoVaccinationRepository->searchStatusPraticienAll($praticien);
+
+        $consultation ='';
+        $vaccination ='';
+        foreach ($vacc as $row){
+            $te = $row[1];
+            foreach ($vac as $noti) {
+                $nom = $noti["lastName"];
+                $prenom = $noti["firstName"];
+                $vaccination .='
+           <li class="dropdown-item" style="width: 100%; ">
+           <a href="rdv-prat">
+           <strong> Demande de Vaccination </strong><br/>
+           <small><em>'.$nom.' a envoyé demande vaccination </em></small>
+           </a>
+           </li>
+           ';
+
+            }
+
+        }
+        foreach ($cons as $rows){
+       foreach ($co as $notif){
+           $tes = $rows[1];
            $nom = $notif["lastName"];
            $prenom = $notif["firstName"];
-           if($count > 0){
-               $patient .='
-           <li><a style="display: inline" href="#"> demande de consultation de  '.$prenom.''.'</a></li>
+           $consultation .='
+           <li class="dropdown-item" style="width: 100%; ">
+           <a href="rdv-prat">
+           <strong> Demande de Consultation </strong><br/>
+           <small><em>'.$nom.' a envoyé demande consultation </em></small>
+           </a>
+           </li>
            ';
-           }
-           dd($cons);
        }
+    }
 
-        return new JsonResponse(['unseen_notification'=>$count, 'notification'=>$patient]);
+
+
+        $count= $tes + $te;
+        $notifig= $consultation . $vaccination;
+
+
+        return new JsonResponse(['unseen_notification'=>$count,'notification'=>$notifig]);
 
     }
+
 }

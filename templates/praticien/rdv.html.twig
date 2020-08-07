@@ -22,7 +22,7 @@
                 <th>{% trans %}Object of consultation{% endtrans %} </th>
                 <th>Patient</th>
                 <th>Status</th>
-                <th></th>
+
 
             </tr>
             </thead>
@@ -45,10 +45,11 @@
                         <span  class="badge badge-success badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="active" data-status="{{rdv.statusConsultation}}">{% trans %}Accept{% endtrans %}</span>
                         <span class="badge badge-danger badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="reject" data-status="{{rdv.statusConsultation}}">{% trans %}Reject{% endtrans %}</span>
                     </td>
-                    <td>
+                   {# <td>
                         <span class="btn btn-primary data-edit" data-id="{{ rdv.id }}" data-type="consultation"><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ rdv.id }}" data-type="consultation"><i class="fa fa-trash-o"></i></span>
                     </td>
+                    #}
 
                 </tr>
             {% endfor %}
@@ -71,10 +72,7 @@
                         <span class="badge badge-success badge-style modif-status"  data-type="vaccination" data-vaccin="{{vac.vaccin }}"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Accept{% endtrans %}</span>
                         <span  class="badge badge-danger badge-style modif-status" data-type="vaccination" data-vaccin="{{vac.vaccin }}"  data-type="vaccination" data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Reject{% endtrans %}</span>
                     </td>
-                    <td>
-                        <span class="btn btn-primary data-edit" data-id="{{ vac.id }}" data-type="vaccination"><i class="fa fa-pencil"></i></span>
-                        <span class="btn btn-danger data-remove" data-id="{{ vac.id }}" data-type="vaccination"><i class="fa fa-trash-o"></i></span>
-                    </td>
+
                 </tr>
             {% endfor %}
 

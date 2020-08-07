@@ -20,6 +20,37 @@ class PropositionRdvRepository extends ServiceEntityRepository
 
 
     }
+    public function searchStatusPatientNotif($patient = null, $status = 0,$statusNotif = 0){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT count(p.id) as count
+            FROM App\Entity\PropositionRdv p
+            LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
+            LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
+            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now  AND p.statusProposition = :status AND p.statusNotif =:etat
+            ORDER BY p.dateProposition ASC')
+            ->setParameter('status', $status)
+            ->setParameter('etat', $statusNotif)
+            ->setParameter('patient', $patient)
+            ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+    }
+
+    public function searchPropositio($patient = null, $status = 0, $statusNotif = 0){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition, pr.firstName, pr.lastName, pr.id as praticien
+            FROM App\Entity\PropositionRdv p
+            LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
+            LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
+            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now  AND p.statusProposition = :status AND p.statusNotif =:etat
+            ORDER BY p.dateProposition ASC')
+            ->setParameter('status', $status)
+            ->setParameter('patient', $patient)
+            ->setParameter('etat', $statusNotif)
+            ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+    }
 
     public function searchProposition($patient= null, $status = 0){
         $entityManager = $this->getEntityManager();

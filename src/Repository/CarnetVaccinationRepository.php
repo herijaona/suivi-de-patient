@@ -19,6 +19,18 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
         parent::__construct($registry, CarnetVaccination::class);
     }
 
+    public function searchCarnet($patient = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT c.id,c.datePriseInitiale,c.rappelVaccin, c.etat, p.firstName, p.lastName,v.vaccinName
+            FROM App\Entity\CarnetVaccination c 
+            INNER JOIN App\Entity\Patient p with p.id = c.patient
+            LEFT JOIN App\Entity\Vaccin v with v.id = c.vaccin
+            WHERE (p.id = :patient OR p.id IS NULL) 
+            ORDER BY c.datePriseInitiale DESC')
+            ->setParameter('patient', $patient);
+
+        return $query->getResult();
+    }
 
 
     // /**
