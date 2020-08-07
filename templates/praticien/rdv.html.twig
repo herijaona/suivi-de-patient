@@ -54,6 +54,8 @@
                 </tr>
             {% endfor %}
 
+            {# {{dump(vaccination)}} #}
+
             {% for vac in vaccination  %}
                 <tr>
                     <td>
@@ -69,8 +71,8 @@
                     </td>
                     <td>
 
-                        <span class="badge badge-success badge-style modif-status"  data-type="vaccination" data-vaccin="{{vac.vaccin }}"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Accept{% endtrans %}</span>
-                        <span  class="badge badge-danger badge-style modif-status" data-type="vaccination" data-vaccin="{{vac.vaccin }}"  data-type="vaccination" data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Reject{% endtrans %}</span>
+                        <span class="badge badge-success badge-style modif-status"  data-type="vaccination" data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Accept{% endtrans %}</span>
+                        <span  class="badge badge-danger badge-style modif-status" data-type="vaccination" data-type="vaccination" data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Reject{% endtrans %}</span>
                     </td>
 
                 </tr>

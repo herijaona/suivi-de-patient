@@ -5,14 +5,13 @@
 {% endblock %}
 
 {% block body %}
-	{# {{dump(vaccin)}} #}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
             <h4 class="h4-content">{% trans %} Vaccination Record {% endtrans %}</h4>
         </div>
     </div>
 
-    <div class="row-table table-content">
+    <div class="row-table table-content text-center">
         <table class="table table-striped" id="example1">
             <thead>
 	            <tr>
@@ -24,230 +23,51 @@
 	            </tr>
             </thead>
             <tbody>
-            	{% for vaccin in vaccins %}
+            	{% for vaccin in listVaccins %}
             		<tr>
-            			<td rowspan="4">{{patient.firstName}} {{patient.lastName}}</td>
-            			<td rowspan="4">{{vaccin.vaccinName}}</td>
-            			<td rowspan="4">
-            				{{vaccin.datePriseInitiale |format_datetime('full', 'short', locale=app.request.locale)}}
+            			<td>{{vaccin.firstname}} {{vaccin.lastname}}</td>
+            			<td>{{vaccin.vaccin}}</td>
+            			<td>
+                            {% if vaccin.datePriseInitiale %}
+                                {{ vaccin.datePriseInitiale |format_datetime('full', 'short', locale=app.request.locale) }}
+                            {% else %}
+                                -
+                            {% endif %}
             			</td>
-            			<td>Rappel</td>
-            			<td rowspan="4">
-            				{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
+            			<td>
+                            {% if vaccin.rappel %}
+                                {# {{vaccin.rappel | date("d-m-Y")}} #}
+                                {{ vaccin.rappel |format_datetime('full', 'short', locale=app.request.locale) }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+            			<td>
+            				{% if vaccin.vaccinState %}
+	                            <span class="text-success font-weight-bold modif-status">{% trans %}Realized{% endtrans %}</span>
 	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
+	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
 	                        {% endif %}
             			</td>
-            		</tr>
-            		<tr>
-            			<td>{{vaccin.rappel1}}</td>
-            		</tr>
-            		<tr>
-            			<td>{{vaccin.rappel2}}</td>
-            		</tr>
-            		<tr>
-            			<td>{{vaccin.rappel3}}</td>
             		</tr>
             	{% endfor %}
-            	{# {% if vaccin.rappel1 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel1}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% else %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>Sans rappel</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %}
-            	{% if vaccin.rappel2 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel2}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %}
-            	{% if vaccin.rappel3 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel3}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %}
-            	{% if vaccin.rappel4 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel4}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %}
-            	{% if vaccin.rappel5 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel5}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %}
-            	{% if vaccin.rappel6 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel6}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %}
-            	{% if vaccin.rappel7 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel7}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %}
-            	{% if vaccin.rappel8 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel8}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %}
-            	{% if vaccin.rappel9 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel9}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %}
-            	{% if vaccin.rappel10 != "" %}
-            		<tr>
-            			<td>Muriel Rémi Cyr</td>
-            			<td>{{vaccin.vaccinName}}</td>
-            			<td>{{vaccin.datePriseInitiale}}</td>
-            			<td>{{vaccin.rappel10}}</td>
-            			<td>
-	            			{% if vaccin.etat %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
-            	{% endif %} #}
-
-
-            {# {% for vac in vaccination  %}
-                <tr>
-                    <td>
-                        {{ vac.datePrise |format_datetime('full', 'short', locale=app.request.locale) }} #}
-                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
-                    {# </td>
-
-                    <td>{{ vac.firstName }} {{ vac.lastName }}</td>
-                    <td>{{vac.vaccinName }} </td>
-
-                    <td>
-                        {% if vac.statusVaccin == 1 %}
-                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-                        {% elseif vac.statusVaccin == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
-                        {% elseif vac.statusVaccin == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if vac.statusVaccin == 1 %}
-                            <a href="{{ path('see_calendar', {'vac_id': vac.id}) }}" class="badge badge-success badge-style">{% trans %}See{% endtrans %}</a>
-                        {% endif %}
-                    </td>
-
-                </tr>
-            {% endfor %} #}
-
             </tbody>
         </table>
     </div>
-
 {% endblock %}
 
-{% block javascript %}{% endblock %}
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/English.json') }}"
+
+                }
+            });
+        });
+    </script>
+{% endblock %}
