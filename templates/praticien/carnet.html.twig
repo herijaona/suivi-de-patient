@@ -29,6 +29,7 @@
             			<td>{{vaccin.vaccin}}</td>
             			<td>
                             {% if vaccin.datePriseInitiale %}
+                                {# {{vaccin.datePriseInitiale | date("d-m-Y")}} #}
                                 {{ vaccin.datePriseInitiale |format_datetime('full', 'short', locale=app.request.locale) }}
                             {% else %}
                                 -
@@ -44,7 +45,7 @@
                         </td>
             			<td>
             				{% if vaccin.vaccinState %}
-	                            <span class="text-success font-weight-bold modif-status">{% trans %}Realized{% endtrans %}</span>
+	                            <span class="badge badge-success badge-style  modif-status">{% trans %}Realized{% endtrans %}</span>
 	                        {% else %}
 	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
 	                        {% endif %}
