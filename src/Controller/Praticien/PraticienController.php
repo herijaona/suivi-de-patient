@@ -366,11 +366,13 @@ class PraticienController extends AbstractController
      */
        public function update_etat(Request $request, TranslatorInterface $translator)
            {
+               $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
+               $ordoCons = $this->ordoConsultationRepository->find($request->request->get('id'));
                if($request->request->get('action') == "active")
                {
                    if($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
                        $intervention = $this->interventionVaccinationRepository->find($request->request->get('id'));
-                       $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
+
                        if($intervention != null){
                            $intervention->setEtat(1);
                            $this->entityManager->persist($intervention);
@@ -382,7 +384,7 @@ class PraticienController extends AbstractController
                        }
                    }else{
                        $inter = $this->intervationConsultationRepository->find($request->request->get('id'));
-                       $ordoCons = $this->ordoConsultationRepository->find($request->request->get('id'));
+
                        if($inter != null){
                            $inter->setEtat(1);
                            $this->entityManager->persist($inter);

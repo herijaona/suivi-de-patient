@@ -56,6 +56,14 @@
 {% block javascripts %}
     <!-- DataTables -->
     <script>
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/English.json') }}"
+
+                }
+            });
+            $('.mdb-select').materialSelect();
 
         $('.modif-etat').one('click', function () {
             var id = $(this).data('id');
@@ -92,14 +100,7 @@
         });
 
 
-        $(document).ready(function () {
-            $("#example1").DataTable({
-                language: {
-                    url: "{{ asset('vendor/datatables/English.json') }}"
 
-                }
-            });
-            $('.mdb-select').materialSelect();
 
             $('.date_rdv').datepicker({
                 format: 'dd/mm/yyyy',
