@@ -67,12 +67,13 @@
 {% block javascripts %}
     <!-- DataTables -->
     <script>
-        $("#example1").DataTable({
-            language: {
-                url: "{{ asset('vendor/datatables/English.json') }}"
-
-            }
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/English.json') }}"
+                }
+            });
+            $('.mdb-select').materialSelect();
         });
-        $('.mdb-select').materialSelect();
     </script>
 {% endblock %}

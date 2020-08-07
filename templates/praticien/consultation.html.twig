@@ -74,13 +74,15 @@
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
 
-        $("#example1").DataTable({
-            language: {
-                url: "{{ asset('vendor/datatables/English.json') }}"
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/English.json') }}"
 
-            }
+                }
+            });
+            $('.mdb-select').materialSelect();
         });
-        $('.mdb-select').materialSelect();
         $('.active_etat_rdv').on('click', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
