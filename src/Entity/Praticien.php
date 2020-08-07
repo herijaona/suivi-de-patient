@@ -29,13 +29,13 @@ class Praticien
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:VaccinPraticien","read:praticien"})
+     * @Groups({"read:VaccinPraticien","read:praticien", "read:carnetvaccination"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:VaccinPraticien", "read:praticien"})
+     * @Groups({"read:VaccinPraticien", "read:praticien", "read:carnetvaccination"})
      */
     private $lastName;
 

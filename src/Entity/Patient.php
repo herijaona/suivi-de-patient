@@ -30,13 +30,13 @@ class Patient
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:patient"})
+     * @Groups({"read:patient", "read:carnetvaccination"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups("read:patient")
+     * @Groups({"read:patient", "read:carnetvaccination"})
      */
     private $lastName;
 

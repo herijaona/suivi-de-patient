@@ -45,11 +45,13 @@ class ConsultationController extends  AbstractController
     }
 
     public function inProgressAction(Request $request){
+        dd($request);
         if ($this->tokenService->getTokenStorage() == null) {
             return new JsonResponse(['status' => 'KO', 'message' => 'Vous étes deconnecter']);
         }
         $CurrentUser = $this->tokenService->getCurrentUser();
         $data = [];
+
         if ($this->authorizationChecker->isGranted('ROLE_PATIENT')) {
             $patient = $this->patientRepository->findOneBy(['user' => $CurrentUser]);
             $data = $this->ordoConsultationRepository->searchStatus($patient->getId(), 0);
