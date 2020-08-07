@@ -89,15 +89,11 @@
 
 {% block javascripts %}
     <script>
+        $(document).ready(function() {
+
+        });
         $(document).ready(function () {
-            $("#example1").DataTable({
-                language: {
-                    url: "{{ asset('vendor/datatables/English.json') }}"
-
-                }
-            });
-            $('.mdb-select').materialSelect();
-
+            $('#example1').DataTable();
             $('.date_rdv').datepicker({
                 format: 'dd/mm/yyyy',
                 autoclose: true,

@@ -685,8 +685,8 @@ class PraticienController extends AbstractController
 
         }
         foreach ($cons as $rows){
+            $tes = $rows[1];
        foreach ($co as $notif){
-           $tes = $rows[1];
            $nom = $notif["lastName"];
            $prenom = $notif["firstName"];
            $consultation .='

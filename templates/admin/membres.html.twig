@@ -182,6 +182,14 @@
 
 {% block javascripts %}
     <script>
+        $(document).ready(function () {
+            $('#table-patients').DataTable();
+            $("#table-praticiens").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/English.json') }}"
+                }
+            });
+        });
         $(".new_vaccin").on('click' , function(e) {
             $(".loadBody").css("display", "block");
             e.preventDefault();
@@ -300,21 +308,7 @@
             $tabList.next().children().eq(_idx).addClass('in').siblings().removeClass('in');
         });
 
-        $(document).ready(function () {
-            $("#table-patients").DataTable({
-                language: {
-                    url: "{{ asset('vendor/datatables/English.json') }}"
 
-                }
-            });
-            $("#table-praticiens").DataTable({
-                language: {
-                    url: "{{ asset('vendor/datatables/English.json') }}"
-
-                }
-            });
-            //$('.mdb-select').materialSelect();
-        });
 
     </script>
 {% endblock %}

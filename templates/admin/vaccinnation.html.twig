@@ -66,11 +66,8 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        $("#example1").DataTable({
-            language: {
-                url: "{{ asset('vendor/datatables/English.json') }}"
-
-            }
+        $(document).ready(function () {
+            $('#example1').DataTable();
         });
 
         $('.active_etat_rdv').on('click', function (e) {

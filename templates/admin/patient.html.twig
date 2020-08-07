@@ -58,11 +58,8 @@
     <!-- DataTables -->
     {{ parent() }}
     <script>
-        $("#patient").DataTable({
-            language: {
-                url: "{{ asset('vendor/datatables/English.json') }}"
-
-            }
+        $(document).ready(function () {
+            $('#patient').DataTable();
         });
     </script>
 {% endblock %}

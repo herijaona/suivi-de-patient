@@ -589,8 +589,9 @@ class PatientController extends AbstractController
         $propos = $this->propositionRdvRepository->searchPropositio($patient);
         $pro ='';
         foreach ($proposition as $rows){
+            $tes = $rows["count"];
             foreach ($propos as $notif){
-                $tes = $rows["count"];
+
                 $nom = $notif["lastName"];
                 $prenom = $notif["firstName"];
                 $pro .='
@@ -603,9 +604,6 @@ class PatientController extends AbstractController
            ';
             }
         }
-
-
-
         return new JsonResponse(['unseen_notification'=>$tes,'notification'=>$pro]);
 
     }
