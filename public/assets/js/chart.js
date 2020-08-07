@@ -36,6 +36,42 @@ window.onload = function() {
 
     });
 
+    // Chart 2
+    $.ajax({
+        url: "/praticien/chart/evolutions_des_patiens",
+        type: 'get',
+        dataType: 'json',
+        success: (data) => {
+            var epat = [];
+            $.each(data, function( index, value ) {
+                epat.push({label: value.label, y: value.y});
+            });
+            var chart4 = new CanvasJS.Chart("chartContainer4", {
+                animationEnabled: true,
+                title: {
+                    text: "Nombres patients par type patient",
+                    horizontalAlign: "left",
+                    fontSize: 16,
+                },
+                data: [{
+                    type: "doughnut",
+                    startAngle: 60,
+                    //innerRadius: 60,
+                    indexLabelFontSize: 17,
+                    indexLabel: "{y} {label} ",
+                    toolTipContent: "<b> {y} {label}:</b> (#percent%)",
+                    dataPoints: epat
+                }]
+            });
+            chart4.render();
+        },
+        error: (e) => {
+
+        }
+    }).done(() => {
+
+    });
+
     $.ajax({
         url: "/admin/chart/evolutions_des_vaccinations",
         type: 'get',

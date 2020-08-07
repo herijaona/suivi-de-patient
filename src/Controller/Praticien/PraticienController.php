@@ -637,19 +637,23 @@ class PraticienController extends AbstractController
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $patientCons = $this->intervationConsultationRepository->searchPatient($praticien);
         $patientVacc = $this->interventionVaccinationRepository->searchPatient($praticien);
+
+        // Get Number of both Unrealized and Realized Vaccination
+        $nbUnrealizedVacc = $this->interventionVaccinationRepository->countUnrealizedVacc($praticien);
+        $nbRealizedVacc = $this->interventionVaccinationRepository->countRealizedVacc($praticien);
+
         foreach ($patientCons as $patientt){
-        foreach ($patientVacc as $patient)
-            {
+          foreach ($patientVacc as $patient){
             $patientv = $patient[1];
             $patientc = $patientt[1];
             $patient = $patientv + $patientc;
-
-             }
+          }
         }
         return $this->render('praticien/dashboard.html.twig', [
-            "patient"=>$patient
-
-
+            "nbPatient"=>$patient,
+            "nbUnrealizedVacc" => $nbUnrealizedVacc[0][1],
+            "nbRealizedVacc" => $nbRealizedVacc[0][1],
+            "nbConsultation" => $patientCons[0][1]
         ]);
     }
 
@@ -710,4 +714,20 @@ class PraticienController extends AbstractController
 
     }
 
+    /**
+    * @Route("/chart/evolution_des_patients", name="evolution_des_patients")
+    */
+    public function evolution_des_patients(){
+      // $evolut_patient = $this->patientRepository->findNbrPatientGroupByType();
+
+      // $epat = [];
+      // if (count($evolut_patient) > 0){
+      //   $i = 0;
+      //   foreach ($evolut_patient as $evolut_pat){
+      //       $epat[$i]['label']= $evolut_pat['typePatientName'];
+      //       $epat[$i]['y']= intval($evolut_pat['nb_patient']);
+      //       $i++;
+      //   }
+      // }
+    }
 }
