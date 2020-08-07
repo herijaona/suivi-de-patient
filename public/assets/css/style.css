@@ -283,7 +283,7 @@ img#qrcode {
     background-repeat: no-repeat;
     height: 100%;
     background-position: top left;
-    filter: blur(0px);
+    opacity: 0.2;
 }
 
 .button-login {
