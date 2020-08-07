@@ -20,11 +20,11 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
     }
     public function searchIntervationPraticien($praticien = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT i.id, i.datePriseVaccin,i.etat,p.firstName as patient_name,v.vaccinName, p.lastName as patient_lastname, pr.firstName,pr.lastName
+        $query = $entityManager->createQuery('SELECT i.id, i.datePriseVaccin,i.etat,p.firstName as patient_name, p.lastName as patient_lastname, pr.firstName,pr.lastName
             FROM App\Entity\InterventionVaccination i 
             INNER JOIN App\Entity\Patient p with p.id = i.patient
             LEFT JOIN App\Entity\Praticien pr with pr.id = i.praticienPrescripteur
-            INNER JOIN App\Entity\Vaccin v with v.id = i.vaccin
+            LEFT JOIN App\Entity\Vaccin v with v.id = i.vaccin
             WHERE pr.id = :praticien   AND i.datePriseVaccin >= :now
             ORDER BY i.datePriseVaccin ASC')
             ->setParameter('praticien', $praticien)

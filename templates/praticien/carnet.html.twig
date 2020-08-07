@@ -1,0 +1,73 @@
+{% extends 'include/base.html.twig' %}
+
+{% block title %}
+	Vaccination Record
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %} Vaccination Record {% endtrans %}</h4>
+        </div>
+    </div>
+
+    <div class="row-table table-content text-center">
+        <table class="table table-striped" id="example1">
+            <thead>
+	            <tr>
+	                <th>{% trans %} Patient {% endtrans %}</th>
+	                <th> Vaccin </th>
+	                <th>{% trans %}Date Prise Initiale {% endtrans %}</th>
+	                <th> Rappel </th>
+	                <th>{% trans %} State {% endtrans %}</th>
+	            </tr>
+            </thead>
+            <tbody>
+            	{% for vaccin in listVaccins %}
+            		<tr>
+            			<td>{{vaccin.firstname}} {{vaccin.lastname}}</td>
+            			<td>{{vaccin.vaccin}}</td>
+            			<td>
+                            {% if vaccin.datePriseInitiale %}
+                                {{ vaccin.datePriseInitiale |format_datetime('full', 'short', locale=app.request.locale) }}
+                            {% else %}
+                                -
+                            {% endif %}
+            			</td>
+            			<td>
+                            {% if vaccin.rappel %}
+                                {# {{vaccin.rappel | date("d-m-Y")}} #}
+                                {{ vaccin.rappel |format_datetime('full', 'short', locale=app.request.locale) }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+            			<td>
+            				{% if vaccin.vaccinState %}
+	                            <span class="text-success font-weight-bold modif-status">{% trans %}Realized{% endtrans %}</span>
+	                        {% else %}
+	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
+	                        {% endif %}
+            			</td>
+            		</tr>
+            	{% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/English.json') }}"
+
+                }
+            });
+        });
+    </script>
+{% endblock %}

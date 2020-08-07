@@ -53,20 +53,9 @@ class VaccinRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('v')
             ->distinct(true)
             ->join('v.TypeVaccin', 'tv')
-            ->leftJoin('v.vaccinCentreHealths', 'ch')
-            ->leftJoin('ch.centreHealth', 'ct')
-            ->leftJoin('ct.city', 'c')
-            ->leftJoin('c.region', 'r')
-            ->leftJoin('r.state', 's')
             ->where('tv.typeName = :tpv')
-            ->setParameter('tpv', $typeVAcccin);
-
-            if ($State != null){
-                $query->andWhere('s.nameState = :ns')
-                    ->setParameter('ns', $State);
-            }
-
-            $query->orderBy('v.id', 'ASC');
+            ->setParameter('tpv', $typeVAcccin)
+            ->orderBy('v.id', 'ASC');
         return $query->getQuery()->getResult();
     }
 }

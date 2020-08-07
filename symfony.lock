@@ -201,7 +201,11 @@
         "version": "2.2.3"
     },
     "php": {
+<<<<<<< HEAD
+        "version": "7.3"
+=======
         "version": "7.2"
+>>>>>>> f21d273c6a9bee3b256b26cbb7119f8a17b74806
     },
     "phpdocumentor/reflection-common": {
         "version": "2.1.0"
@@ -452,7 +456,11 @@
         "version": "v1.17.0"
     },
     "symfony/polyfill-intl-messageformatter": {
+<<<<<<< HEAD
+        "version": "v1.18.0"
+=======
         "version": "v1.18.1"
+>>>>>>> f21d273c6a9bee3b256b26cbb7119f8a17b74806
     },
     "symfony/polyfill-intl-normalizer": {
         "version": "v1.17.0"

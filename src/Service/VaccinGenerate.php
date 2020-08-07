@@ -78,113 +78,59 @@ class VaccinGenerate
      * @param $vaccinAll
      * @param $IntervationVaccination
      */
-    public function generate_vaccin($patient, $birthday, $vaccinAll)
+    public function generate_vaccin($patient, $birthday, $vaccinAll, $intervention)
     {
-        $listVaccin = [];
-        $birth = Carbon::parse($birthday);
-        $date_now = Carbon::now();
         foreach ( $vaccinAll as $vacc){
             if($vacc != null){
                 $datePriseInitiale = $vacc->getDatePriseInitiale();
-                $rappel1 = $vacc->getRappel1();
-                $rappel2 = $vacc->getRappel2();
-                $rappel3 = $vacc->getRappel3();
-                $rappel4 = $vacc->getRappel4();
-                $rappel5 = $vacc->getRappel5();
-                $rappel6 = $vacc->getRappel6();
-                $type_ins = 'week';
-                $diffIn = 1;
-                if($datePriseInitiale != null){
-                    $type_ins = explode(" ", $datePriseInitiale)[1];
-                }
-                elseif ($rappel1 != null){
-                    $type_ins = explode(" ", $rappel1)[1];
-                }elseif ($rappel2 != null){
-                    $type_ins = explode(" ", $rappel2)[1];
-                }elseif ( $rappel3 != null){
-                    $type_ins = explode(" ", $rappel3)[1];
-                }elseif ( $rappel4 != null){
-                    $type_ins = explode(" ", $rappel4)[1];
-                }elseif ( $rappel5 != null){
-                    $type_ins = explode(" ", $rappel5)[1];
-                }elseif ( $rappel6 != null){
-                    $type_ins = explode(" ", $rappel6)[1];
-                }
 
-                for ($j = 0; $j <= 10; $j++){
-
-                    if ($j == 0){
-                        $getVAcc = $datePriseInitiale;
-                    }else{
-                        $getVAcc = $vacc->getRappel.$j.'()';
+                // Get Vaccin Methods that return datePriseInitiale and rappels
+                $vaccMethods = get_class_methods($vacc);
+                $getDateMethods = array();
+                foreach ($vaccMethods as $meth) {
+                    if(strpos($meth, "getRappel") === 0 || $meth === "getDatePriseInitiale"){
+                        array_push($getDateMethods, $meth);
                     }
+                }
 
-
-                    $intervation = $this->interventionVaccinationRepository->findOneBy(['patient'=>$patient, 'vaccin' => $vacc]);
+                // Calculate the exact date for each string formatted date
+                foreach($getDateMethods as $getDate){
 
                     $crnV = new CarnetVaccination();
-                    $crnV->setPatient($patient);
-                    $crnV->setVaccin($vacc);
-                    $crnV->setEtat(false);
-                    $crnV->setIntervationVaccination($intervation);
 
-                    switch ($type_ins){
-                        case 'week':
-                            $diffIn = $birth->diffInWeeks($date_now);
-                            break;
-                        case 'month':
-                            $diffIn = $birth->diffInMonths($date_now);
-                            break;
-                        case 'year':
-                            $diffIn = $birth->diffInYears($date_now);
-                            break;
-                        default:
-                            break;
-                    }
+                    $crnV->setPatient($patient)
+                         ->setVaccin($vacc)
+                         ->setEtat(false)
+                         ->setIntervationVaccination($intervention);
 
-                    if ($getVAcc != null){
-                        if($diffIn < intval(explode(" ", $getVAcc)[1])) {
-                            switch ($type_ins){
-                                case 'week':
-                                    $date = $this->add_rdv_in_week($diffIn,$birthday);
-                                    break;
-                                case 'month':
-                                    $date = $this->add_rdv_in_month($diffIn,$birthday);
-                                    break;
-                                case 'year':
-                                    $date = $this->add_rdv_in_year($diffIn,$birthday);
-                                    break;
-                            }
-                            $crnV->setDatePriseInitiale($date);
-                            //$crnV->setRappelVaccin($date);
+                    $getVAcc = $vacc->$getDate();
+                    
+                    if($getVAcc !== "" && $getVAcc !== null){
+                        $interval = date_interval_create_from_date_string($getVAcc);
+                        $rappelOrDateInit = new \Datetime($birthday->format('Y-m-d H:i:s'));
+                        date_add($rappelOrDateInit, $interval);
 
-                        }elseif ($diffIn == intval(explode(" ", $getVAcc)[1])){
-                            if(!$date_now->isWeekend()){
-                                $tomorrow = $date_now->addDay();
-                                if($tomorrow->day != 6){
-                                    $crnV->setDatePriseInitiale($tomorrow);
-                                }else{
-                                    $monday = $date_now->addDays(3);
-                                    $crnV->setDatePriseInitiale($monday);
-                                }
-                            }else{
-                                $date = $date_now->addDays(2);
-                                $crnV->setDatePriseInitiale($date);
-                            }
+                        // Reporter la date si elle tombe en week-end
+                        $weekday = date('N', $rappelOrDateInit->getTimestamp());
+                        if($weekday == 0){
+                            date_add($rappelOrDateInit, date_interval_create_from_date_string("1 day"));
+                        }
+                        elseif($weekday == 6){
+                            date_add($rappelOrDateInit, date_interval_create_from_date_string("2 days"));
                         }
 
-                        /*if ($j+1 <= 10){
-                            if ($vacc->getRappel. $j+1 .'()' != null)
-                                $dateR = $this->add_rdv_in_week($diffIn,$birthday);
-                        }*/
+                        if($getDate === "getDatePriseInitiale"){
+                            $crnV->setDatePriseInitiale($rappelOrDateInit);
+                        }
+                        else{
+                            $crnV->setRappelVaccin($rappelOrDateInit);
+                        }
                         $this->entityManager->persist($crnV);
                         $this->entityManager->flush();
-                        array_push($listVaccin, $crnV);
                     }
                 }
             }
         }
-        return $listVaccin;
     }
 
     /**

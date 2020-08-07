@@ -84,39 +84,7 @@ class PatientController extends AbstractController
      */
     public function patient()
     {
-        // $user = $this->getUser();
-        // $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        // $birtday = $patient->getDateOnBorn();
-        // $event = [];
 
-        /*$all_rdv = $patient->getRendeVous();
-
-
-        foreach ($all_rdv as $rdv){
-            $color = '#fcb41d';
-            if($rdv->getEtat() == 0){
-                $color = '#fcb41d';
-            }else if ($rdv->getStatus() == 1){
-                $color = '#51c81c';
-            }else if($rdv->getType() == 1){
-                $color = '#3794fc';
-            }else if($rdv->getType() == 2){
-                $color = '#ec37fc';
-            }else if($rdv->getType() == 3){
-                $color = '#fc381d';
-            }
-            $element = [
-                    'title'=>($rdv->getVaccin() != null && $rdv->getVaccin()->getVaccinName() != null) ? $rdv->getVaccin()->getVaccinName() : ($rdv->getType() == 2 ? "Demander de consultation" : ($rdv->getType() == 3 ? 'Demander de Rendez-vous': '')),
-                    'start'=>$rdv->getDateRdv()->format('Y-m-d'),
-                    'id'=>$rdv->getId(),
-                    'color'=> $color
-                ];
-            array_push($event,$element);
-        }*/
-        // return $this->render('patient/patient.html.twig', [
-        //     'controller_name' => 'PatientController',
-        //     'Events'=>$event
-        // ]);
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
@@ -124,7 +92,7 @@ class PatientController extends AbstractController
 
         return $this->render('patient/vaccination.html.twig', [
             'vaccination'=>$rvc,
-            'Doctors'=>$doctor,
+            'Doctors'=>$doctor
         ]);
     }
 
@@ -157,7 +125,7 @@ class PatientController extends AbstractController
         $rvc = $this->ordoConsultationRepository->searchStatus($patient->getId(), 1);
         return $this->render('patient/consultation.html.twig', [
             'consultation'=>$rvc,
-            'Doctors'=>$doctor,
+            'Doctors'=>$doctor
         ]);
     }
 
@@ -220,7 +188,6 @@ class PatientController extends AbstractController
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
         $rvc = $this->ordoVaccinationRepository->searchStatus($patient->getId(), 1);
-
         return $this->render('patient/vaccination.html.twig', [
             'vaccination'=>$rvc,
             'Doctors'=>$doctor,
@@ -343,6 +310,7 @@ class PatientController extends AbstractController
             $ordoconsultation->setEtat(0);
             $ordoconsultation->setPatient($patient);
             $ordoconsultation->setOrdonnance($ordo);
+            $ordoconsultation->setStatusNotif(0);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ordoconsultation);
             $entityManager->flush();
@@ -360,6 +328,7 @@ class PatientController extends AbstractController
             $ordovaccination->setPatient($patient);
             $ordovaccination->setStatusVaccin(0);
             $ordovaccination->setEtat(0);
+            $ordovaccination->setStatusNotif(0);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ordovaccination);
             $entityManager->flush();
@@ -367,8 +336,9 @@ class PatientController extends AbstractController
 
             $patientordovaccination = new PatientOrdoVaccination();
             $patientordovaccination->setPatient($patient);
-            $id = $patientordovaccination->getId();
-            $patientordovaccination->setOrdoVaccination($id);
+            // $id = $patientordovaccination->getId();
+            // $patientordovaccination->setOrdoVaccination($id);
+            $patientordovaccination->setOrdoVaccination($ordovaccination);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($patientordovaccination);
             $entityManager->flush();

@@ -21,7 +21,7 @@ class OrdoConsultationRepository extends ServiceEntityRepository
 
     public function searchStatus($patient = null, $status = 0 ){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation,o.etat, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,pr.firstName, pr.lastName 
+        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv,o.statusNotif, o.objetConsultation,o.etat, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,pr.firstName, pr.lastName 
             FROM App\Entity\OrdoConsultation o 
             INNER JOIN App\Entity\Patient p with p.id = o.patient
             LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
@@ -61,6 +61,22 @@ class OrdoConsultationRepository extends ServiceEntityRepository
             WHERE (pr.id = :praticien OR pr.id IS NULL) AND o.statusConsultation = :status AND o.dateRdv >= :now
             ORDER BY o.dateRdv ASC')
             ->setParameter('status', $status)
+            ->setParameter('praticien', $praticien)
+            ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+    }
+    public function searchStatusPraticienNotif($praticien = null, $status = 0,$statusNotif = 0){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT count(o.id), o.id,p.firstName, p.lastName,p.id as patient, pr.id as praticien
+            FROM App\Entity\OrdoConsultation o 
+            INNER JOIN App\Entity\Patient p with p.id = o.patient
+            LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
+            LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
+            WHERE (pr.id = :praticien OR pr.id IS NULL) AND o.statusConsultation = :status AND o.dateRdv >= :now AND o.statusNotif =:etat
+            ORDER BY o.dateRdv ASC')
+            ->setParameter('status', $status)
+            ->setParameter('etat', $statusNotif)
             ->setParameter('praticien', $praticien)
             ->setParameter('now', new \DateTime());
 

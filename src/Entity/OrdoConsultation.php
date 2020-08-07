@@ -101,6 +101,11 @@ class OrdoConsultation
      */
     private $proposition;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $statusNotif;
+
     public function __construct()
     {
         $this->intervationConsultations = new ArrayCollection();
@@ -278,6 +283,18 @@ class OrdoConsultation
     public function setProposition(?PropositionRdv $proposition): self
     {
         $this->proposition = $proposition;
+
+        return $this;
+    }
+
+    public function getStatusNotif(): ?int
+    {
+        return $this->statusNotif;
+    }
+
+    public function setStatusNotif(int $statusNotif): self
+    {
+        $this->statusNotif = $statusNotif;
 
         return $this;
     }

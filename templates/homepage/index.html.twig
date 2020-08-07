@@ -2,6 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}" />
@@ -12,19 +13,16 @@
     <body>
         <div class="bg-home-h1">
             <div class="bg-content-h1">
-            <div class="logo-div">
-             <img src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
-            </div>
-            <h1>Suivi de patient</h1>
-            <p class="paragraph">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Dignissimos atque maxime quidem rerum, iste magnam eius repudiandae 
-                similique sint dolore deserunt veniam veritatis natus
-                sequi error debitis dolor autem! Doloremque.
-            </p>
-            <a href="{{ path('app_login') }}" class="btn btn-login" type="button">Se connecter</a>
-            <a href="{{ path('app_register') }}" class="btn btn-register ml-2">S'inscrire patient</a>
-            <a href="{{ path('app_register_praticien') }}" class="btn btn-register ml-2">S'inscrire praticient</a>
+                <div class="logo-div">
+                 <img src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
+                </div>
+                <h1>Suivi de patient</h1>
+                <div class="bg-btn">
+                    <a href="{{ path('app_login') }}" class="btn btn-login" type="button">Se connecter</a>
+                    <a href="{{ path('app_register') }}" class="btn btn-register ml-2">S'inscrire patient</a>
+                    <a href="{{ path('app_register_praticien') }}" class="btn btn-register ml-2">S'inscrire praticien</a>
+                </div>
+
             </div>
         </div>
     </body>

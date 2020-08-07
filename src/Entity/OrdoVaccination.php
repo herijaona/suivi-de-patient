@@ -94,6 +94,11 @@ class OrdoVaccination
      */
     private $etat;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $statusNotif;
+
     public function __construct()
     {
         $this->interventionVaccinations = new ArrayCollection();
@@ -247,6 +252,18 @@ class OrdoVaccination
     public function setEtat(?int $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getStatusNotif(): ?int
+    {
+        return $this->statusNotif;
+    }
+
+    public function setStatusNotif(int $statusNotif): self
+    {
+        $this->statusNotif = $statusNotif;
 
         return $this;
     }
