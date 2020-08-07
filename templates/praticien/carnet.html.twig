@@ -29,23 +29,24 @@
             			<td>{{vaccin.vaccin}}</td>
             			<td>
                             {% if vaccin.datePriseInitiale %}
-                                {{vaccin.datePriseInitiale | date("d-m-Y à H:i")}}
+                                {{ vaccin.datePriseInitiale |format_datetime('full', 'short', locale=app.request.locale) }}
                             {% else %}
                                 -
                             {% endif %}
             			</td>
             			<td>
                             {% if vaccin.rappel %}
-                                {{vaccin.rappel | date("d-m-Y")}}
+                                {# {{vaccin.rappel | date("d-m-Y")}} #}
+                                {{ vaccin.rappel |format_datetime('full', 'short', locale=app.request.locale) }}
                             {% else %}
                                 -
                             {% endif %}
                         </td>
             			<td>
-            				{% if true %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
+            				{% if vaccin.vaccinState %}
+	                            <span class="text-success font-weight-bold modif-status">{% trans %}Realized{% endtrans %}</span>
 	                        {% else %}
-	                            <span class="badge badge-danger badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
+	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
 	                        {% endif %}
             			</td>
             		</tr>
