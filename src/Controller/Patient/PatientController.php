@@ -11,6 +11,7 @@ use App\Entity\PatientOrdoConsultation;
 use App\Entity\PatientOrdoVaccination;
 use App\Form\RdvType;
 use App\Form\VaccinType;
+use App\Repository\CarnetVaccinationRepository;
 use App\Repository\FamilyRepository;
 use App\Repository\GroupFamilyRepository;
 use App\Repository\InterventionVaccinationRepository;
@@ -49,6 +50,7 @@ class PatientController extends AbstractController
     protected $vaccinRepository;
     protected $propositionRdvRepository;
     protected $userRepository;
+    protected $carnetVaccinationRepository;
 
     function __construct(
         VaccinGenerate $vaccinGenerate,
@@ -57,6 +59,7 @@ class PatientController extends AbstractController
         OrdoConsultationRepository $ordoConsultationRepository,
         OrdoVaccinationRepository $ordoVaccinationRepository,
         PropositionRdvRepository $propositionRdvRepository,
+        CarnetVaccinationRepository $carnetVaccinationRepository,
         VaccinRepository $vaccinRepository,
         FamilyRepository $familyRepository,
         OrdonnaceRepository $ordonnaceRepository,
@@ -69,6 +72,7 @@ class PatientController extends AbstractController
         $this->vaccinGenerate = $vaccinGenerate;
         $this->vaccinRepository = $vaccinRepository;
         $this->patientRepository = $patientRepository;
+        $this->carnetVaccinationRepository= $carnetVaccinationRepository;
         $this->praticienRepository = $praticienRepository;
         $this->ordonnaceRepository = $ordonnaceRepository;
         $this->ordoConsultationRepository = $ordoConsultationRepository;
@@ -84,15 +88,13 @@ class PatientController extends AbstractController
      */
     public function patient()
     {
-
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
-        $rvc = $this->ordoVaccinationRepository->searchStatus($patient->getId(), 1);
-
+        $rvc = $this->carnetVaccinationRepository->searchCarnet($patient);
         return $this->render('patient/vaccination.html.twig', [
             'vaccination'=>$rvc,
-            'Doctors'=>$doctor
+            'Doctors'=>$doctor,
         ]);
     }
 
@@ -187,7 +189,7 @@ class PatientController extends AbstractController
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
-        $rvc = $this->ordoVaccinationRepository->searchStatus($patient->getId(), 1);
+        $rvc = $this->carnetVaccinationRepository->searchCarnet($patient);
         return $this->render('patient/vaccination.html.twig', [
             'vaccination'=>$rvc,
             'Doctors'=>$doctor,
@@ -575,6 +577,37 @@ class PatientController extends AbstractController
             }
         }
         return new JsonResponse(['form_delete' => $delete]);
+    }
+    /**
+     * @Route("/notification" , name ="noti")
+     */
+    public function notif( Request $request)
+    {
+        $user= $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $proposition = $this->propositionRdvRepository->searchStatusPatientNotif($patient);
+        $propos = $this->propositionRdvRepository->searchPropositio($patient);
+        $pro ='';
+        foreach ($proposition as $rows){
+            foreach ($propos as $notif){
+                $tes = $rows["count"];
+                $nom = $notif["lastName"];
+                $prenom = $notif["firstName"];
+                $pro .='
+                <li class="dropdown-item" style="width: 100%; ">
+                 <a href="proposition/rdv">
+                 <strong> Proposition Rendez-vous </strong><br/>
+                <small><em>'.$nom.' a envoyé proposition </em></small>
+                </a>
+                </li>
+           ';
+            }
+        }
+
+
+
+        return new JsonResponse(['unseen_notification'=>$tes,'notification'=>$pro]);
+
     }
 
 

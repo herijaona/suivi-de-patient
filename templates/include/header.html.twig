@@ -1,9 +1,9 @@
-<div class="menu_up">
+ <div class="menu_up">
 
     <ul class="menu_right">
 
         {% for locale in locales if locale != app.request.locale%}
-            <li>
+            <li style="margin-top: 4%">
                 <a href="{{ path('change_locale', {'locale': locale})}}">
                     <img class="lang-en" src="{{asset('assets/images/'~locale~'.png')}}" alt="{{ locale }}" id="logo" >
                 </a>
@@ -12,20 +12,21 @@
 
         <li class="dropdown">
             {% if is_granted('ROLE_PATIENT') %}
-                <a class="dropdown-toggle"  data-toggle="dropdown" >
-                    <i class="far fa-bell"></i>
-                    <span class="label label-pill label-danger count1"></span>
-
+                <a class="btn btn-default dropdown-toggle pat" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-hidden="true" aria-expanded="true">
+                    <i  class="far fa-bell"> <span class="label label-pill label-danger cont"></span></i>
+                    <span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu1 ">
+                <ul class="dropdown-menu patient dropdown-menu-right">
+
                 </ul>
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
-                <a href="#" class="dropdown-toggle"  data-toggle="dropdown"  >
-                    <i  class="far fa-bell"></i>
-                    <span class="label label-pill label-danger count"></span>
+                <a class="btn btn-default dropdown-toggle prat" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-hidden="true" aria-expanded="true">
+                    <i  class="far fa-bell"> <span class="label label-pill label-danger count"></span></i>
+                    <span class="caret"></span>
                 </a>
-                <ul class="dropdown-menu test">
+                <ul class="dropdown-menu test dropdown-menu-right">
+
                 </ul>
             {% endif %}
 
@@ -37,10 +38,11 @@
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                     <img style=" position: absolute; height: 30px" src="/{{ img }}" width="30px">
                     <img style=" position: absolute; height: 30px" src="/uploads/{{ app.user.photo }}" width="30px">
+                    <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
                     <li class="dropdown-item"><a href="{{ path('editPatient') }}">{% trans %}My profile{% endtrans %}</a></li>
-                    <hr>
+
                     <li class="dropdown-item"><a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a></li>
                 </ul>
             {% endif %}
@@ -48,10 +50,11 @@
                 <a class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-hidden="true" aria-expanded="true" >
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                     <img style=" position: absolute; height: 30px" src="/{{ img }}" width="30px">
+                    <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right">
                     <li class="dropdown-item"><a href="{{ path('editPraticien') }}">{% trans %}My profile{% endtrans %}</a></li>
-                    <hr>
+
                     <li class="dropdown-item" ><a href="{{ path('app_logout') }}" >{% trans %}Logout{% endtrans %}</a></li>
                 </ul>
 
@@ -72,14 +75,45 @@
                     data:{view:view},
                     dataType:"json",
                     success:function (data) {
-                        if(data.unseen_notification > 0){
                             $('.test').html(data.notification);
+                        if(data.unseen_notification > 0){
                             $('.count').html(data.unseen_notification);
                         }
                     }
                 });
             }
+
             load_unseen_notification();
+            $(document).on('click','.prat', function () {
+                $('.count').html(0);
+                load_unseen_notification('yes');
+
+            });
+            function load_unseen_notificatio(view = '') {
+                $.ajax({
+                    url:"{{ path('noti') }}",
+                    method : "POST",
+                    data:{view:view},
+                    dataType:"json",
+                    success:function (data) {
+                        $('.patient').html(data.notification);
+                        if(data.unseen_notification > 0){
+                            $('.cont').html(data.unseen_notification);
+                        }
+                    }
+                });
+            }
+            load_unseen_notificatio();
+            $(document).on('click','.pat', function () {
+                $('.count').html(0);
+                load_unseen_notification('yes');
+
+            });
+
+            setInterval(function () {
+                load_unseen_notification();
+                load_unseen_notificatio();
+            },5000);
         });
     </script>
 

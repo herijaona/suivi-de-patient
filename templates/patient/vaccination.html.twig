@@ -17,9 +17,9 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>{% trans %}Vaccination date {% endtrans %}</th>
-                <th>Praticien</th>
-                <th>Status</th>
+                <th>Vaccine</th>
+                <th>Date Prise Initiale</th>
+                <th>Date Rappel</th>
                 <th>Intervention</th>
             </tr>
             </thead>
@@ -27,18 +27,18 @@
             {% for vac in vaccination  %}
                 <tr>
                     <td>
-                        {{ vac.datePrise |format_datetime('full', 'short', locale=app.request.locale) }}
-                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                        {{ vac.vaccinName }}
                     </td>
-
-                    <td>{{ vac.firstName }} {{ vac.lastName }}</td>
                     <td>
-                        {% if vac.statusVaccin == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Accepted{% endtrans %}</span>
-                        {% elseif vac.statusVaccin == 0 %}
-                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
-                        {% elseif vac.statusVaccin  == 2 %}
-                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                        {% if vac.datePriseInitiale != null %}
+                            {{ vac.datePriseInitiale |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {% elseif vac.datePriseInitiale == null %}
+                        {% endif %}</td>
+                    <td>
+
+                        {% if vac.rappelVaccin != null %}
+                        {{ vac.rappelVaccin |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {% elseif vac.rappelVaccin == null %}
                         {% endif %}
                     </td>
                     <td>
@@ -68,6 +68,7 @@
 
                 }
             });
+            $('.mdb-select').materialSelect();
         });
     </script>
 {% endblock %}

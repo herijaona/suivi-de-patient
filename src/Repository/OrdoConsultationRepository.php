@@ -68,7 +68,7 @@ class OrdoConsultationRepository extends ServiceEntityRepository
     }
     public function searchStatusPraticienNotif($praticien = null, $status = 0,$statusNotif = 0){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT count(o.id), o.id,p.firstName, p.lastName,p.id as patient, pr.id as praticien
+        $query = $entityManager->createQuery('SELECT count(o.id)
             FROM App\Entity\OrdoConsultation o 
             INNER JOIN App\Entity\Patient p with p.id = o.patient
             LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
@@ -83,6 +83,20 @@ class OrdoConsultationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function searchStatusPraticienAll($praticien = null, $statusNotif = 0){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT o.id,p.firstName, p.lastName,p.id as patient, pr.id as praticien
+            FROM App\Entity\OrdoConsultation o 
+            INNER JOIN App\Entity\Patient p with p.id = o.patient
+            LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
+            LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
+            WHERE (pr.id = :praticien OR pr.id IS NULL) AND o.statusNotif =:etat
+            ORDER BY o.dateRdv ASC')
+            ->setParameter('praticien', $praticien)
+            ->setParameter('etat', $statusNotif);
+
+        return $query->getResult();
+    }
 
 
 

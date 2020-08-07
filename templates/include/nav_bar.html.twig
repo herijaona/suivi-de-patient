@@ -6,7 +6,7 @@
         <h4 class="h4_patient"> {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %} {% trans %} Area {% endtrans %}
         </h4>
         <div class="bar-container">
-            <i class="fas fa-bars bar-icon"></i>
+            <i style="position: absolute" class="fas fa-bars bar-icon"></i>
         </div>
 
     </div>
@@ -16,9 +16,10 @@
                 {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                 <img style="position: relative" src="/{{ img }}">
                 <a class="edit-profile">
-                    <i class="fas fa-pencil-alt"></i>
+                    <i style="position: relative" class="fas fa-pencil-alt"></i>
                 </a>
                 <input type="file"   id="upload_image" name="upload_image"  accept="image/*" style="display: none"/>
+
                 <div id="uploaded_image"></div>
                 <span>
 
@@ -81,7 +82,7 @@
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
                 <!-- <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li> -->
-                <li class="{{ (currentPath == path('dashboard')) ? 'active' :'' }}"><a href="{{ path('dashboard') }}">{% trans %} Dashboard {% endtrans %}</a></li>
+                <!--<li class="{{ (currentPath == path('dashboard')) ? 'active' :'' }}"><a href="{{ path('dashboard') }}">{% trans %} Dashboard {% endtrans %}</a></li>-->
                 <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Vaccination</a></li>
                 <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
                 <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :'' }}"><a href="{{ path('rdv_praticien') }}" >{% trans %} Appointment {% endtrans %}</a></li>

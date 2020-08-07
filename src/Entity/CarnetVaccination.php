@@ -2,7 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\CarnetVaccinationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -23,36 +27,46 @@ class CarnetVaccination
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:carnetvaccination"})
+     * @ApiFilter(SearchFilter::class, properties={"patient": "exact"})
+     * @ApiFilter(DateFilter::class, properties={"datePriseInitiale": DateFilter::PARAMETER_AFTER})
+     * @ApiFilter(OrderFilter::class, properties={"datePriseInitiale"}, arguments={"orderParameterName"="order"}))
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=InterventionVaccination::class, inversedBy="carnetVaccinations")
+     * @Groups({"read:carnetvaccination"})
      */
     private $intervationVaccination;
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="carnetVaccinations")
+     * @Groups({"read:carnetvaccination"})
      */
     private $patient;
 
     /**
      * @ORM\ManyToOne(targetEntity=Vaccin::class, inversedBy="carnetVaccinations")
+     * @Groups({"read:carnetvaccination"})
      */
     private $vaccin;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups({"read:carnetvaccination"})
      */
     private $etat;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"read:carnetvaccination"})
      */
     private $datePriseInitiale;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"read:carnetvaccination"})
      */
     private $rappelVaccin;
 

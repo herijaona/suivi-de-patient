@@ -542,7 +542,9 @@ select.mdb-select.initialized {
 .edit-profile{
     diplay:flex;
     justify-content: center;
+
 }
+
 
 .bar-icon{
     padding: .8rem 1rem;
