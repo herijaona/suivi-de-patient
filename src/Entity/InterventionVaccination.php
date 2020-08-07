@@ -47,13 +47,13 @@ class InterventionVaccination
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="interventionVaccinations")
-     * @Groups({"read:InterventionVaccination"})
+     * @Groups({"read:InterventionVaccination", "read:carnetvaccination"})
      */
     private $praticienPrescripteur;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="interventionExecutant")
-     * @Groups({"read:InterventionVaccination"})
+     * @Groups({"read:InterventionVaccination", "read:carnetvaccination"})
      */
     private $praticienExecutant;
 

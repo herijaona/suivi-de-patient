@@ -29,7 +29,7 @@ class Vaccin
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:center","read:vaccin","ordovaccination:read", "read:VaccinPraticien"})
+     * @Groups({"read:center","read:vaccin","ordovaccination:read", "read:VaccinPraticien", "read:carnetvaccination"})
      */
     private $vaccinName;
 
