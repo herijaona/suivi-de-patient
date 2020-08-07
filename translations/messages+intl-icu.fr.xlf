@@ -471,7 +471,7 @@
       </trans-unit>
       <trans-unit id="_18n1UV" resname="Detail">
         <source>Detail</source>
-        <target>__Detail</target>
+        <target>Détail</target>
       </trans-unit>
       <trans-unit id="g1BD7I5" resname="Patient">
         <source>Patient</source>
