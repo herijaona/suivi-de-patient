@@ -111,8 +111,13 @@ class VaccinGenerate
                         date_add($rappelOrDateInit, $interval);
 
                         // Reporter la date si elle tombe en week-end
-                        // $weekDay = date("I", $rappelOrDateInit);
-                        // dump($weekday);
+                        $weekday = date('N', $rappelOrDateInit->getTimestamp());
+                        if($weekday == 0){
+                            date_add($rappelOrDateInit, date_interval_create_from_date_string("1 day"));
+                        }
+                        elseif($weekday == 6){
+                            date_add($rappelOrDateInit, date_interval_create_from_date_string("2 days"));
+                        }
 
                         if($getDate === "getDatePriseInitiale"){
                             $crnV->setDatePriseInitiale($rappelOrDateInit);
