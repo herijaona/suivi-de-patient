@@ -24,32 +24,35 @@
             </thead>
             <tbody>
             	{% for vaccin in listVaccins %}
-            		<tr>
-            			<td>{{vaccin.firstname}} {{vaccin.lastname}}</td>
-            			<td>{{vaccin.vaccin}}</td>
-            			<td>
-                            {% if vaccin.datePriseInitiale %}
-                                {{ vaccin.datePriseInitiale |format_datetime('full', 'short', locale=app.request.locale) }}
-                            {% else %}
-                                -
-                            {% endif %}
-            			</td>
-            			<td>
-                            {% if vaccin.rappel %}
-                                {# {{vaccin.rappel | date("d-m-Y")}} #}
-                                {{ vaccin.rappel |format_datetime('full', 'short', locale=app.request.locale) }}
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-            			<td>
-            				{% if vaccin.vaccinState %}
-	                            <span class="text-success font-weight-bold modif-status">{% trans %}Realized{% endtrans %}</span>
-	                        {% else %}
-	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-	                        {% endif %}
-            			</td>
-            		</tr>
+                    {% if vaccin.datePriseInitiale >= date("now") b-or vaccin.rappel >= date("now") %}
+                		<tr>
+                			<td>{{vaccin.firstname}} {{vaccin.lastname}}</td>
+                			<td>{{vaccin.vaccin}}</td>
+                			<td>
+                                {% if vaccin.datePriseInitiale %}
+                                    {# {{vaccin.datePriseInitiale | date("d-m-Y")}} #}
+                                    {{ vaccin.datePriseInitiale |localizeddate('long', 'short') }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                			</td>
+                			<td>
+                                {% if vaccin.rappel %}
+                                    {# {{vaccin.rappel | date("d-m-Y")}} #}
+                                    {{ vaccin.rappel |localizeddate('long', 'short') }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
+                			<td>
+                				{% if vaccin.vaccinState %}
+    	                            <span class="badge badge-success badge-style  modif-status">{% trans %}Realized{% endtrans %}</span>
+    	                        {% else %}
+    	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
+    	                        {% endif %}
+                			</td>
+                		</tr>
+                    {% endif %}
             	{% endfor %}
             </tbody>
         </table>
