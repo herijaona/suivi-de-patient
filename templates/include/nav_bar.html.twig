@@ -2,14 +2,14 @@
 
 <div class="col_exc_1" style="position: relative;">
     <link href="{{ asset('assets/css/croppie.css') }}" rel="stylesheet" type="text/css">
-    <div class="d-flex justify-content-between">
+
         <h4 class="h4_patient"> {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %} {% trans %} Area {% endtrans %}
         </h4>
         <div class="bar-container">
             <i style="position: absolute" class="fas fa-bars bar-icon"></i>
         </div>
 
-    </div>
+
     <div class="mt-4 menu-container">
 
             <div class="img_profile">

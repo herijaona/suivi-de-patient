@@ -27,12 +27,12 @@
     </div>
     <div class="col-6 col-md-3">
         <div class="card-admin">
-            <i class="fa fa-user"></i>
+            <img src="/assets/images/prat.jpg" style="width: 50px; height: 60px;"/>
             <div class="in-card">
-                <h5>
+                <h5 style="padding-left: 18px;">
                     Praticien
                 </h5>
-                <h3 >
+                <h3 style="padding-left: 25px;">
                     {{ praticien }}
                 </h3>
                 <span class="note-red">
@@ -43,12 +43,12 @@
     </div>
     <div class="col-6 col-md-3">
         <div class="card-admin">
-            <i class="fa fa-user"></i>
+            <img src="/assets/images/vaccination.jpg" style="width: 50px; height: 60px;"/>
             <div class="in-card">
-                <h5>
+                <h5 style="padding-left: 8px;">
                     Vaccination
                 </h5>
-                <h3>
+                <h3 style="padding-left: 23px;">
                     {{ vacc }}
                 </h3>
                 <span class="note-red">
@@ -59,7 +59,7 @@
     </div>
     <div class="col-6 col-md-3">
         <div class="card-admin">
-            <i class="fa fa-user"></i>
+            <img src="/assets/images/consultation.jpg" style="width: 50px; height: 60px;"/>
             <div class="in-card">
                 <h5>
                     Consultation
@@ -96,11 +96,8 @@
 <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
 <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
 <script>
-    $("#patient").DataTable({
-        language: {
-            url: "{{ asset('vendor/datatables/English.json') }}"
-
-        }
+    $(document).ready(function() {
+        $('#patient').DataTable();
     });
 </script>
 {% endblock %}

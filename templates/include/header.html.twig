@@ -89,6 +89,7 @@
                 load_unseen_notification('yes');
 
             });
+
             function load_unseen_notificatio(view = '') {
                 $.ajax({
                     url:"{{ path('noti') }}",
@@ -106,14 +107,17 @@
             load_unseen_notificatio();
             $(document).on('click','.pat', function () {
                 $('.count').html(0);
-                load_unseen_notification('yes');
+                load_unseen_notificatio('yes');
 
             });
 
             setInterval(function () {
                 load_unseen_notification();
                 load_unseen_notificatio();
+
             },5000);
+
+
         });
     </script>
 

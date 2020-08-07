@@ -64,13 +64,9 @@
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
         $(document).ready(function () {
-            $("#example1").DataTable({
-                language: {
-                    url: "{{ asset('vendor/datatables/English.json') }}"
-
-                }
-            });
-            $('.mdb-select').materialSelect();
+            $(document).ready(function() {
+                $('#example1').DataTable();
+            } );
         });
     </script>
 {% endblock %}

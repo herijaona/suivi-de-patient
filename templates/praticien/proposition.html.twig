@@ -55,15 +55,13 @@
 {% block javascripts %}
     <!-- DataTables -->
     <script>
-        $(document).ready(function () {
-            $("#example1").DataTable({
-                language: {
-                    url: "{{ asset('vendor/datatables/English.json') }}"
-                }
-            });
-            $('.mdb-select').materialSelect();
+        $(document).ready(function() {
+            $('#example1').DataTable()
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            })
         });
-        $('.mdb-select').materialSelect();
         $(".add_form_rdv").on('click' , function(e) {
             $(".loadBody").css("display", "block");
             e.preventDefault();
@@ -159,12 +157,7 @@
             }
         });
 
-        $(document).ready(function () {
-            $('.date_rdv').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-            });
-        })
+
 
     </script>
 {% endblock %}

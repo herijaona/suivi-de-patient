@@ -95,6 +95,37 @@
 
 {% block javascripts %}
     <script>
+
+        $(document).ready(function () {
+            var table = $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/lang.json') }}"
+                }
+            });
+            $('.chosen-select').chosen({width: "100%"});
+            $('#example-select-all').on('click', function(){
+                var rows = table.rows({ 'search': 'applied' }).nodes();
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            });
+
+            $('#example1 tbody').on('change', 'input[type="checkbox"]', function(){
+                if(!this.checked){
+                    var el = $('#example-select-all').get(0);
+                    if(el && el.checked && ('indeterminate' in el)){
+                        el.indeterminate = true;
+                    }
+                }
+                /*if ($('input[name="checkbox_centre"]').is(':checked')){
+                    $(".id_vaccin_center_health").css("display", "block");
+                    $(".affected_center_health").css("display", "block");
+                }else {
+                    $(".id_vaccin_center_health").css("display", "none");
+                    $(".affected_center_health").css("display", "none");
+                }*/
+
+            });
+
+        });
         function changeState(e) {
             $(".loadBody").css("display", "block");
             let idState = $(e).val();
@@ -267,46 +298,6 @@
         });
 
 
-        $(document).ready(function () {
-            var table = $("#example1").DataTable({
-                language: {
-                    url: "{{ asset('vendor/datatables/lang.json') }}"
-                }
-            });
-            $('.chosen-select').chosen({width: "100%"});
-            //$(".id_vaccin_center_health").css("display", "none");
-            //$(".affected_center_health").css("display", "none");
-
-            $('#example-select-all').on('click', function(){
-                var rows = table.rows({ 'search': 'applied' }).nodes();
-                $('input[type="checkbox"]', rows).prop('checked', this.checked);
-                /*if ($('input[name="checkbox_centre"]').is(':checked')){
-                    $(".id_vaccin_center_health").css("display", "block");
-                    $(".affected_center_health").css("display", "block");
-                }else {
-                    $(".id_vaccin_center_health").css("display", "none");
-                    $(".affected_center_health").css("display", "none");
-                }*/
-            });
-
-            $('#example1 tbody').on('change', 'input[type="checkbox"]', function(){
-                if(!this.checked){
-                    var el = $('#example-select-all').get(0);
-                    if(el && el.checked && ('indeterminate' in el)){
-                        el.indeterminate = true;
-                    }
-                }
-                /*if ($('input[name="checkbox_centre"]').is(':checked')){
-                    $(".id_vaccin_center_health").css("display", "block");
-                    $(".affected_center_health").css("display", "block");
-                }else {
-                    $(".id_vaccin_center_health").css("display", "none");
-                    $(".affected_center_health").css("display", "none");
-                }*/
-
-            });
-
-        });
 
     </script>
 {% endblock %}
