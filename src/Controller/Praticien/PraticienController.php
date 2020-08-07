@@ -689,8 +689,8 @@ class PraticienController extends AbstractController
 
         }
         foreach ($cons as $rows){
-            $tes = $rows[1];
        foreach ($co as $notif){
+           $tes = $rows[1];
            $nom = $notif["lastName"];
            $prenom = $notif["firstName"];
            $consultation .='
@@ -714,20 +714,4 @@ class PraticienController extends AbstractController
 
     }
 
-    /**
-    * @Route("/chart/evolution_des_patients", name="evolution_des_patients")
-    */
-    public function evolution_des_patients(){
-      // $evolut_patient = $this->patientRepository->findNbrPatientGroupByType();
-
-      // $epat = [];
-      // if (count($evolut_patient) > 0){
-      //   $i = 0;
-      //   foreach ($evolut_patient as $evolut_pat){
-      //       $epat[$i]['label']= $evolut_pat['typePatientName'];
-      //       $epat[$i]['y']= intval($evolut_pat['nb_patient']);
-      //       $i++;
-      //   }
-      // }
-    }
 }

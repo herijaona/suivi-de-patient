@@ -38,7 +38,7 @@ window.onload = function() {
 
     // Chart 2
     $.ajax({
-        url: "/praticien/chart/evolutions_des_patiens",
+        url: "/praticien/chart/nb_prise_type_vacc",
         type: 'get',
         dataType: 'json',
         success: (data) => {
