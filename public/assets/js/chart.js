@@ -60,7 +60,7 @@ window.onload = function() {
                     startAngle: 60,
                     //innerRadius: 60,
                     indexLabelFontSize: 17,
-                    indexLabel: "{nb} Prise Pour {typeVaccin} ",
+                    indexLabel: "{nb} {typeVaccin} ",
                     toolTipContent: "<b> {nb} {typeVaccin}:</b> (#percent%)",
                     dataPoints: epat
                 }]
