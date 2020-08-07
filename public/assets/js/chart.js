@@ -10,6 +10,7 @@ window.onload = function() {
             $.each(data, function( index, value ) {
                 epat.push({label: value.label, y: value.y});
             });
+            console.log(epat);
             var chart2 = new CanvasJS.Chart("chartContainer2", {
                 animationEnabled: true,
                 title: {
@@ -36,7 +37,7 @@ window.onload = function() {
 
     });
 
-    // Chart 2
+    // Chart 4
     $.ajax({
         url: "/praticien/chart/nb_prise_type_vacc",
         type: 'get',
@@ -44,12 +45,13 @@ window.onload = function() {
         success: (data) => {
             var epat = [];
             $.each(data, function( index, value ) {
-                epat.push({label: value.label, y: value.y});
+                epat.push({typeVaccin: value.typeVaccin, nb: value.nb});
             });
+            console.log(epat);
             var chart4 = new CanvasJS.Chart("chartContainer4", {
                 animationEnabled: true,
                 title: {
-                    text: "Nombres patients par type patient",
+                    text: "Nombre de Prise de Vaccin selon le type",
                     horizontalAlign: "left",
                     fontSize: 16,
                 },
@@ -58,8 +60,8 @@ window.onload = function() {
                     startAngle: 60,
                     //innerRadius: 60,
                     indexLabelFontSize: 17,
-                    indexLabel: "{y} {label} ",
-                    toolTipContent: "<b> {y} {label}:</b> (#percent%)",
+                    indexLabel: "{nb} Prise Pour {typeVaccin} ",
+                    toolTipContent: "<b> {nb} {typeVaccin}:</b> (#percent%)",
                     dataPoints: epat
                 }]
             });

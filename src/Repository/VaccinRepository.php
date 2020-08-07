@@ -58,4 +58,16 @@ class VaccinRepository extends ServiceEntityRepository
             ->orderBy('v.id', 'ASC');
         return $query->getQuery()->getResult();
     }
+
+    public function countPriseVaccinParType(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            SELECT tv.typeName as typeVaccin, COUNT(tv.id) as nb
+            FROM App\Entity\TypeVaccin tv
+            INNER JOIN App\Entity\Vaccin v WITH v.TypeVaccin = tv.id
+            INNER JOIN App\Entity\CarnetVaccination cv WITH cv.vaccin = v.id
+            GROUP BY tv.id
+        ');
+        return $query->getResult();
+    }
 }
