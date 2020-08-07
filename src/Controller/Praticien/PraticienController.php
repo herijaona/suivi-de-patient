@@ -714,4 +714,19 @@ class PraticienController extends AbstractController
 
     }
 
+    /**
+    * @Route("/chart/nb_prise_type_vacc", name="chart/nb_prise_typeVacc")
+    */
+    public function evolution_des_patients(){
+      $evolut_patient = $this->patientRepository->findNbrPatientGroupByType();
+      $epat = [];
+      if (count($evolut_patient) > 0){
+        $i = 0;
+        foreach ($evolut_patient as $evolut_pat){
+            $epat[$i]['label']= $evolut_pat['typePatientName'];
+            $epat[$i]['y']= intval($evolut_pat['nb_patient']);
+            $i++;
+        }
+      }
+    }
 }
