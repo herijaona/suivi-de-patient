@@ -59,15 +59,76 @@ class VaccinRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-    public function countPriseVaccinParType(){
+    
+
+
+// -------------------------------------------------------------------------------------------
+// If count should not depend on praticien
+// -------------------------------------------------------------------------------------------
+// SELECT type_vaccin.type_name as "Type de vaccin", COUNT(type_vaccin.id) as "Nombre"
+// FROM type_vaccin
+// INNER JOIN vaccin
+// INNER JOIN carnet_vaccination
+// INNER JOIN intervention_vaccination
+// INNER JOIN praticien
+// WHERE vaccin.type_vaccin_id = type_vaccin.id
+// AND carnet_vaccination.vaccin_id = vaccin.id
+// AND intervention_vaccination.id = carnet_vaccination.intervation_vaccination_id
+// AND praticien.id = intervention_vaccination.praticien_prescripteur_id
+// AND praticien.id = 1
+// GROUP BY type_vaccin.id
+// -------------------------------------------------------------------------------------------
+    // public function countPriseVaccinParType(){
+    //     $entityManager = $this->getEntityManager();
+    //     $query = $entityManager->createQuery('
+    //         SELECT tv.typeName as typeVaccin, COUNT(tv.id) as nb
+    //         FROM App\Entity\TypeVaccin tv
+    //         INNER JOIN App\Entity\Vaccin v WITH v.TypeVaccin = tv.id
+    //         INNER JOIN App\Entity\CarnetVaccination cv WITH cv.vaccin = v.id
+    //         GROUP BY tv.id
+    //     ');
+    //     return $query->getResult();
+    // }
+// -------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------
+// If count should depend on praticien (by using its user id)
+// -------------------------------------------------------------------------------------------
+// SELECT type_vaccin.type_name, COUNT(type_vaccin.id)
+// FROM type_vaccin
+// INNER JOIN vaccin
+// INNER JOIN carnet_vaccination
+// INNER JOIN intervention_vaccination
+// INNER JOIN praticien
+// INNER JOIN user
+// WHERE vaccin.type_vaccin_id = type_vaccin.id
+// AND carnet_vaccination.vaccin_id = vaccin.id
+// AND intervention_vaccination.id = carnet_vaccination.intervation_vaccination_id
+// AND praticien.id = intervention_vaccination.praticien_prescripteur_id
+// AND user.id = praticien.user_id
+// AND user.id = 2
+// GROUP BY type_vaccin.id
+// -------------------------------------------------------------------------------------------
+    public function countPriseVaccinParType($userId){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('
             SELECT tv.typeName as typeVaccin, COUNT(tv.id) as nb
             FROM App\Entity\TypeVaccin tv
             INNER JOIN App\Entity\Vaccin v WITH v.TypeVaccin = tv.id
             INNER JOIN App\Entity\CarnetVaccination cv WITH cv.vaccin = v.id
+            INNER JOIN App\Entity\InterventionVaccination iv WITH iv.id = cv.intervationVaccination
+            INNER JOIN App\Entity\Praticien pr WITH pr.id = iv.praticienPrescripteur
+            INNER JOIN App\Entity\User u WITH u.id = pr.user
+            WHERE u.id = :user
             GROUP BY tv.id
-        ');
+        ')->setParameter('user', $userId);
         return $query->getResult();
     }
+// -------------------------------------------------------------------------------------------
+
+// -------------------------------------------------------------------------------------------
+// The count should be done with 
+// -------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------
 }
+

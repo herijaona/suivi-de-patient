@@ -188,6 +188,7 @@ class PraticienController extends AbstractController
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $rce = $this->ordoConsultationRepository->searchStatusPraticienEnValid($praticien->getId());
+        dump($praticien);
         $rve = $this->ordoVaccinationRepository->searchStatusPraticienEnValid($praticien->getId());
 
 
@@ -715,11 +716,12 @@ class PraticienController extends AbstractController
     }
 
     /**
-    * @Route("/chart/nb_prise_type_vacc", name="chart/nb_prise_type_vacc")
+    * @Route("/chart/nb_prise_type_vacc", name="chart/nb_prise_type_vacc"), methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
     */
     public function nb_prise_type_vacc(){
-      $praticien = 1;
-      $queryResult = $this->vaccinRepository->countPriseVaccinParType($praticien);
+      $userId = $this->getUser()->getId();
+
+      $queryResult = $this->vaccinRepository->countPriseVaccinParType($userId);
 
       // dump($nb);
     //   $evolut_patient = $this->patientRepository->findNbrPatientGroupByType();

@@ -57,7 +57,7 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
             FROM App\Entity\OrdoVaccination o 
             INNER JOIN App\Entity\Patient p with p.id= o.patient
             LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
-            LEFT JOIN App\Entity\Praticien pr with pr.id=d.praticien
+            LEFT JOIN App\Entity\Praticien pr with pr.id=o.referencePraticienExecutant
             WHERE (pr.id= :praticien OR pr.id IS NULL) AND o.statusVaccin= :status AND o.etat= :etat AND o.datePrise >= :now
             ORDER BY o.datePrise ASC
         ')->setParameter('etat', $etat)
