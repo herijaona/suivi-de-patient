@@ -150,4 +150,33 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
             ->getResult();
 
     }
+
+// --------------------------------------------------------------------------------------------
+// Get current user/praticien patients birthday
+// --------------------------------------------------------------------------------------------
+    // SELECT patient.date_on_born
+    // FROM patient
+    // INNER JOIN ordo_vaccination
+    // INNER JOIN praticien
+    // INNER JOIN user
+    // WHERE ordo_vaccination.patient_id = patient.id
+    // AND praticien.id = ordo_vaccination.reference_praticien_executant_id
+    // AND user.id = praticien.user_id
+    // AND user.id = 2
+// --------------------------------------------------------------------------------------------
+    public function findPatientsBirthday($userId){
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery("
+            SELECT p.dateOnBorn as birthday
+            FROM App\Entity\Patient p
+            INNER JOIN App\Entity\OrdoVaccination o WITH o.patient = p.id
+            INNER JOIN App\Entity\Praticien pr WITH pr.id = o.referencePraticienExecutant
+            INNER JOIN App\Entity\User u WITH u.id = pr.user
+            WHERE u.id = :userId
+        ")->setParameter('userId', $userId);
+
+        return $query->getResult();
+    }
+// --------------------------------------------------------------------------------------------
 }

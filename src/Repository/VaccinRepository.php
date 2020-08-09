@@ -130,5 +130,39 @@ class VaccinRepository extends ServiceEntityRepository
 // The count should be done with 
 // -------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------------------
+// Get statistic of vaccin according to the current user/praticien
+// --------------------------------------------------------------------------------------------
+    // SELECT vaccin.vaccin_name, COUNT(vaccin.id)
+    // FROM vaccin
+    // INNER JOIN carnet_vaccination
+    // INNER JOIN intervention_vaccination
+    // INNER JOIN praticien
+    // INNER JOIN user
+    // WHERE carnet_vaccination.vaccin_id = vaccin.id
+    // AND intervention_vaccination.id = carnet_vaccination.intervation_vaccination_id
+    // AND praticien.id = intervention_vaccination.praticien_prescripteur_id
+    // AND user.id = praticien.user_id
+    // AND user.id = 2
+    // GROUP BY vaccin.id
+// --------------------------------------------------------------------------------------------
+    public function getVaccStat($userId){
+        $entityManager = $this->getEntityManager();
+
+        $query = $entityManager->createQuery("
+            SELECT v.vaccinName as label, COUNT(v.id) as y
+            FROM App\Entity\Vaccin v
+            INNER JOIN App\Entity\CarnetVaccination cv WITH cv.vaccin = v.id
+            INNER JOIN App\Entity\InterventionVaccination iv WITH iv.id = cv.intervationVaccination
+            INNER JOIN App\Entity\Praticien pr WITH pr.id = iv.praticienPrescripteur
+            INNER JOIN App\Entity\User u WITH u.id = pr.user
+            WHERE u.id = :userId
+            GROUP BY v.id
+        ")->setParameter('userId', $userId);
+
+        return $query->getResult();
+    }
+// --------------------------------------------------------------------------------------------
 }
 

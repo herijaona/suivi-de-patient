@@ -723,25 +723,63 @@ class PraticienController extends AbstractController
 
       $queryResult = $this->vaccinRepository->countPriseVaccinParType($userId);
 
-      // dump($nb);
-    //   $evolut_patient = $this->patientRepository->findNbrPatientGroupByType();
-    //   $epat = [];
-    //   if (count($evolut_patient) > 0){
-    //     $i = 0;
-    //     foreach ($evolut_patient as $evolut_pat){
-    //         $epat[$i]['label']= $evolut_pat['typePatientName'];
-    //         $epat[$i]['y']= intval($evolut_pat['nb_patient']);
-    //         $i++;
-    //     }
-    //   }
       $result = [];
       foreach($queryResult as $res){
         array_push($result, array(
-          "typeVaccin" => $res["typeVaccin"],
-          "nb" => intval($res["nb"])
+          "label" => $res["typeVaccin"],
+          "y" => intval($res["nb"])
         ));
       }
 
       return new JsonResponse($result);
+    }
+
+    /**
+    * @Route("/chart/age_range", name="age_range")
+    */
+    public function age_range(){
+      $userId = $this->getUser()->getId();
+
+      // Get the current user/praticien patients birthday
+      $patientsBirthday = $this->ordoVaccinationRepository->findPatientsBirthday($userId);
+
+      $patientsAgeRange = array();
+      // Count each range of 10
+      foreach($patientsBirthday as $birthday){
+        for($i=10; $i<=100; $i+=10){
+          if(intval($birthday["birthday"]->diff(new \Datetime())->format("%y")) < $i && intval($birthday["birthday"]->diff(new \Datetime())->format("%y")) >= $i-10){
+            if(array_key_exists((string)$i-10 . " to " . (string)($i-1), $patientsAgeRange)){
+              $patientsAgeRange[(string)$i-10 . " to " . (string)($i-1)]++;
+            }
+            else{
+              $patientsAgeRange[(string)$i-10 . " to " . (string)($i-1)] = 1;
+            }
+          }
+          else{
+            if(!array_key_exists((string)$i-10 . " to " . (string)($i-1), $patientsAgeRange)){
+              $patientsAgeRange[(string)$i-10 . " to " . (string)($i-1)] = 0;
+            }
+          }
+        }
+      }
+      $result = [];
+      foreach ($patientsAgeRange as $key => $value) {
+        $age = [];
+        $age["label"] = $key;
+        $age["y"] = $value;
+        array_push($result, $age);
+      }
+
+      return new JsonResponse($result);
+    }
+
+    /**
+    * @Route("/chart/vaccin_stat", name="vaccin_stat")
+    */
+    public function vaccin_stat(){
+      $userId = $this->getUser()->getId();
+
+      $queryResult = $this->vaccinRepository->getVaccStat($userId);
+      return new JsonResponse($queryResult);
     }
 }
