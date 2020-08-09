@@ -90,6 +90,15 @@ window.onload = function() {
                     horizontalAlign: "left",
                     fontSize: 16,
                 },
+                axisX : {
+                    title : "Tranche d'age par 10",
+                    horizontalAlign : "right",
+                    titleFontSize : 10
+                },
+                axisY : {
+                    title : "Nombre de patients",
+                    titleFontSize : 10
+                },
                 data : [{
                     type : "column",
                     dataPoints : data

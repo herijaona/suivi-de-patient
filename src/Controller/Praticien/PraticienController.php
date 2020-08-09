@@ -748,16 +748,16 @@ class PraticienController extends AbstractController
       foreach($patientsBirthday as $birthday){
         for($i=10; $i<=100; $i+=10){
           if(intval($birthday["birthday"]->diff(new \Datetime())->format("%y")) < $i && intval($birthday["birthday"]->diff(new \Datetime())->format("%y")) >= $i-10){
-            if(array_key_exists((string)$i-10 . " to " . (string)($i-1), $patientsAgeRange)){
-              $patientsAgeRange[(string)$i-10 . " to " . (string)($i-1)]++;
+            if(array_key_exists((string)$i-10 . " à " . (string)($i-1), $patientsAgeRange)){
+              $patientsAgeRange[(string)$i-10 . " à " . (string)($i-1)]++;
             }
             else{
-              $patientsAgeRange[(string)$i-10 . " to " . (string)($i-1)] = 1;
+              $patientsAgeRange[(string)$i-10 . " à " . (string)($i-1)] = 1;
             }
           }
           else{
-            if(!array_key_exists((string)$i-10 . " to " . (string)($i-1), $patientsAgeRange)){
-              $patientsAgeRange[(string)$i-10 . " to " . (string)($i-1)] = 0;
+            if(!array_key_exists((string)$i-10 . " à " . (string)($i-1), $patientsAgeRange)){
+              $patientsAgeRange[(string)$i-10 . " à " . (string)($i-1)] = 0;
             }
           }
         }
