@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Ordonnace;
 use App\Entity\Patient;
 use App\Entity\Praticien;
 use App\Entity\TypePatient;
@@ -146,6 +147,12 @@ class RegistrationController extends AbstractController
             $praticien->setEtat(false);
             $praticien->setUser($user);
             $entityManager->persist($praticien);
+            $entityManager->flush();
+            $ordonance = new Ordonnace();
+            $ordonance->setPraticien($praticien);
+            $ordonance->setDatePrescription(new \DateTime('now'));
+            $ordonance->setMedecinTraitant($praticien);
+            $entityManager->persist($ordonance);
             $entityManager->flush();
 
             // CREATE ACCOUNT PATIENT
