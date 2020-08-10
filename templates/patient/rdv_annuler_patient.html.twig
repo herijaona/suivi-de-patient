@@ -23,7 +23,6 @@
                 <th>Type</th>
                 <th>{% trans %}Object of consultation{% endtrans %} </th>
                 <th>Praticien</th>
-                {# <th>{% trans %}Vaccine{% endtrans %}</th> #}
                 <th>Status</th>
 
             </tr>
@@ -42,7 +41,6 @@
                         {{ rdv.firstName }}
                         {{ rdv.lastName }}
                     </td>
-                    <td></td>
                     <td>
                         {% if rdv.statusConsultation == 1 %}
                             <span class="badge badge-success badge-style modif-status">{% trans %}activate{% endtrans %}</span>
@@ -72,11 +70,7 @@
                     </td>
                     {# <td>{{ vac.vaccinName }}</td> #}
                     <td>
-                        {% if vac.statusVaccin == 1 %}
-                            <span class="badge badge-success badge-style modif-status"> activé </span>
-                        {% elseif vac.statusVaccin == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">En attente</span>
-                        {% elseif vac.statusVaccin == 2 %}
+                        {% if vac.statusVaccin == 2 %}
                             <span class="badge badge-danger badge-style modif-status">Réjeter</span>
                         {% endif %}
                     </td>
@@ -96,15 +90,13 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
-
         $(document).ready(function () {
             $('#example1').DataTable();
-
             $('.date_rdv').datepicker({
                 format: 'dd/mm/yyyy',
                 autoclose: true,
             });
-        })
+        });
 
     </script>
 

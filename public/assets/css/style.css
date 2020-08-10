@@ -131,7 +131,7 @@ ul {
 .menu_suivi {
     list-style: none;
     font-family: "roboto-regular";
-    font-size: 14px;
+    font-size: 15px;
     line-height: 38px;
     margin-top: 20px;
     padding: 0;
@@ -488,7 +488,7 @@ select.mdb-select.initialized {
 }
 
 .logo-login {
-    width: 130px;
+    width: 40%;
     margin-bottom: 13px;
     margin-top: 19px;
 }

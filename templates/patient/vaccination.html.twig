@@ -10,17 +10,17 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">{% trans %}All vaccinations {% endtrans %}</h4>
+            <h4 class="h4-content">{% trans %}All Vaccinations {% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>Vaccine</th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
                 <th>Date Prise Initiale</th>
                 <th>Date Rappel</th>
-                <th>Intervention</th>
+                <th>Status</th>
             </tr>
             </thead>
             <tbody>
@@ -31,14 +31,11 @@
                     </td>
                     <td>
                         {% if vac.datePriseInitiale != null %}
-                            {# {{ vac.datePriseInitiale |format_datetime('full', 'short', locale=app.request.locale) }} #}
                             {{ vac.datePriseInitiale |localizeddate('full', 'short') }}
                         {% elseif vac.datePriseInitiale == null %}
                         {% endif %}</td>
                     <td>
-
                         {% if vac.rappelVaccin != null %}
-                        {# {{ vac.rappelVaccin |format_datetime('full', 'short', locale=app.request.locale) }} #}
                         {{ vac.rappelVaccin | localizeddate('full', 'short') }}
                         {% elseif vac.rappelVaccin == null %}
                         {% endif %}

@@ -22,9 +22,6 @@
                 <th>Patient</th>
                 <th>Status</th>
                 <th>Intervention</th>
-
-
-                {# <th>More</th> #}
             </tr>
             </thead>
             <tbody>
@@ -51,11 +48,15 @@
                     </td>
 
                     <td>
-                        {% if rdv.etat == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
-                        {% elseif rdv.etat == 0 %}
-                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                        {% if rdv.statusConsultation == 2 %}
+                        {% else %}
+                            {% if rdv.etat == 1 %}
+                                <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                            {% elseif rdv.etat == 0 %}
+                                <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                            {% endif %}
                         {% endif %}
+
                     </td>
 
 
@@ -73,33 +74,8 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
-
         $(document).ready(function() {
             $('#example1').DataTable();
-        });
-        $('.active_etat_rdv').on('click', function (e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            var etat = $(this).data('etat');
-            $.ajax({
-                url: "{{ path('update_etat_rdv') }}",
-                type: 'post',
-                data: {
-                    'id_rdv': id,
-                    'etat': etat
-                },
-                dataType: "json",
-                success: (data) =>{
-                    if(data.status == 'OK' ){
-                        location.reload();
-                    }
-                },
-                error: (e) => {
-                    console.log(e.statusText);
-                }
-            }).done(() => {
-
-            });
         });
 
     </script>

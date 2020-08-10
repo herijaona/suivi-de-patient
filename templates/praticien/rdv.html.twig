@@ -89,37 +89,9 @@
     <script>
         $(document).ready(function() {
             $('#example1').DataTable();
-        });
-        $(".add_form_rdv").on('click' , function(e) {
-            $(".loadBody").css("display", "block");
-            e.preventDefault();
-            $.ajax({
-                url: "{{ path('add_form_rdv_patient') }}",
-                type: 'post',
-                data: {
-                    action: 'new'
-                },
-                dataType: 'json',
-                success: (data) => {
-                    $('.create_body').html(data.form_html);
-                    $("#modal_create_body").modal('show');
-                    $('#rdv_heureRdv').clockpicker({
-                        donetext: "valider",
-                        autoclose: true,
-                    });
-                    $('#rdv_heureRdv').on('change', function () {
-                        let receivedVal = $(this).val();
-                        $(this).val(receivedVal + ":00");
-                    });
-
-                    $(".loadBody").css("display", "none");
-                },
-                error: (e) => {
-                    $(".loadBody").css("display", "none");
-                    $(".chargementError").css("display", "block");
-                }
-            }).done(() => {
-                $(".loadBody").css("display", "none");
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
             });
         });
         $('.modif-status').on('click', function (e) {
@@ -132,7 +104,6 @@
             var praticien = $(this).data('praticien');
             var patient = $(this).data('patient');
             var vaccin = $(this).data('vaccin');
-
             $.ajax({
                 url: "{{ path('change_status') }}",
                 type: 'post',
@@ -227,15 +198,5 @@
                 return false
             }
         });
-
-        $(document).ready(function () {
-
-
-            $('.date_rdv').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-            });
-        })
-
     </script>
 {% endblock %}

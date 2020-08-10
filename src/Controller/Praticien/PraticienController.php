@@ -249,6 +249,7 @@ class PraticienController extends AbstractController
                       $this->entityManager->persist($interConsu);
                       $this->entityManager->flush();
                       $ordoConsu->setStatusConsultation(1);
+                      $ordoConsu->setStatusNotif(1);
                       $this->entityManager->persist($ordoConsu);
                       $this->entityManager->flush();
                   }
@@ -265,6 +266,7 @@ class PraticienController extends AbstractController
                       $this->entityManager->persist($interVacc);
                       $this->entityManager->flush();
                       $ordoVacc->setStatusVaccin(1);
+                      $ordoVacc->setStatusNotif(1);
                       $this->entityManager->persist($ordoVacc);
                       $this->entityManager->flush();
 
@@ -294,16 +296,8 @@ class PraticienController extends AbstractController
               if($request->request->get('type') == "consultation" && $request->request->get('etat') == 0){
                   $ordoConsu = $this->ordoConsultationRepository->find($request->request->get('id'));
                   if($ordoConsu != null){
-                      $interCons = new IntervationConsultation();
-                      $interCons->setPatient($patient);
-                      $interCons->setPraticienPrescripteur($praticien);
-                      $interCons->setDateConsultation( $Date_Rdv);
-                      $interCons->setOrdoConsulataion($ordoconsu);
-                      $interCons->setPraticienConsultant($praticien);
-                      $interCons->setEtat(0);
-                      $this->entityManager->persist($interCons);
-                      $this->entityManager->flush();
-                      $ordoConsu->setStatusConsultation(1);
+                      $ordoConsu->setStatusConsultation(2);
+                      $ordoConsu->setStatusNotif(1);
                       $this->entityManager->persist($ordoConsu);
                       $this->entityManager->flush();
                   }
@@ -313,48 +307,10 @@ class PraticienController extends AbstractController
                   $vaccin = $request->request->get('vaccin');
                   $vaccination= $this->vaccinRepository->find($vaccin);
                   if($ordoVacc != null){
-                      $interVacc = new  InterventionVaccination();
-                      $interVacc->setPatient($patient);
-                      $interVacc->setPraticienPrescripteur($praticien);
-                      $interVacc->setEtat(0);
-                      $interVacc->setVaccin($vaccination);
-                      $interVacc->setDatePriseVaccin( $Date_Rdv);
-                      $interVacc->setPraticienExecutant($praticien);
-                      $interVacc->setOrdoVaccination($ordovacc);
-                      $this->entityManager->persist($interVacc);
-                      $this->entityManager->flush();
-                      $ordoVacc->setStatusVaccin(1);
+                      $ordoVacc->setStatusVaccin(2);
+                      $ordoVacc->setStatusNotif(1);
                       $this->entityManager->persist($ordoVacc);
                       $this->entityManager->flush();
-
-                      // Get list of vaccination->rappel() methods
-                      $vaccMethods = get_class_methods($vaccination);
-
-                      // Add new line in CarnetVaccin foreach rappel of vaccin
-                      foreach($vaccMethods as $getRappel) {
-
-                          // If $getRappel contains "getRappel" in its value
-                          if (strpos($getRappel, "getRappel") !== false) {
-
-                              $rappel = $vaccination->$getRappel();
-
-                              if ($rappel !== "" && $rappel !== null) {
-                                  $carnetVaccination = new CarnetVaccination();
-
-                                  $carnetVaccination->setIntervationVaccination($interVacc)
-                                      ->setPatient($patient)
-                                      ->setVaccin($vaccination)
-                                      ->setEtat(1);
-
-                                  $rappel = new \DateTime(date('Y-m-d H:i:s', strtotime($rappel)));
-
-                                  $carnetVaccination->setRappelVaccin($rappel);
-
-                                  $this->entityManager->persist($carnetVaccination);
-                                  $this->entityManager->flush();
-                              }
-                          }
-                      }
                   }
               }
           }
@@ -374,7 +330,6 @@ class PraticienController extends AbstractController
                {
                    if($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
                        $intervention = $this->interventionVaccinationRepository->find($request->request->get('id'));
-
                        if($intervention != null){
                            $intervention->setEtat(1);
                            $this->entityManager->persist($intervention);
@@ -386,7 +341,6 @@ class PraticienController extends AbstractController
                        }
                    }else{
                        $inter = $this->intervationConsultationRepository->find($request->request->get('id'));
-
                        if($inter != null){
                            $inter->setEtat(1);
                            $this->entityManager->persist($inter);
@@ -679,12 +633,11 @@ class PraticienController extends AbstractController
                 $nom = $noti["lastName"];
                 $prenom = $noti["firstName"];
                 $vaccination .='
-           <li class="dropdown-item" style="width: 100%; ">
-           <a href="rdv-prat">
+           <a style="background-color: #06CF7D; opacity: 0.8;" class="dropdown-item" href="rdv-prat">
            <strong> Demande de Vaccination </strong><br/>
            <small><em>'.$nom.' a envoyé demande vaccination </em></small>
            </a>
-           </li>
+           
            ';
 
             }
@@ -696,12 +649,11 @@ class PraticienController extends AbstractController
            $nom = $notif["lastName"];
            $prenom = $notif["firstName"];
            $consultation .='
-           <li class="dropdown-item" style="width: 100%; ">
-           <a href="rdv-prat">
+           <a class="dropdown-item" style="background-color: #06CF7D; opacity: 0.8;" href="rdv-prat">
            <strong> Demande de Consultation </strong><br/>
            <small><em>'.$nom.' a envoyé demande consultation </em></small>
            </a>
-           </li>
+          
            ';
        }
     }

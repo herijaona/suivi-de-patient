@@ -1,59 +1,61 @@
-{% extends 'include/base.html.twig' %}
 
-{% block title %}
-	Vaccination Record
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}Vaccination schedule {% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+
 {% endblock %}
 
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">{% trans %} Vaccination Record {% endtrans %}</h4>
+            <h4 class="h4-content">{% trans %}Vaccination schedule {% endtrans %}</h4>
         </div>
     </div>
-
-    <div class="row-table table-content text-center">
+    <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
-	            <tr>
-	                <th>{% trans %} Patient {% endtrans %}</th>
-	                <th> Vaccin </th>
-	                <th>{% trans %}Date Prise Initiale {% endtrans %}</th>
-	                <th> Rappel </th>
-	                <th>{% trans %} State {% endtrans %}</th>
-	            </tr>
+            <tr>
+                <th>Patient</th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
+                <th>Date Prise initiale</th>
+                <th>Date Rappel</th>
+                <th>Status</th>
+
+            </tr>
             </thead>
             <tbody>
-            	{% for vaccin in listVaccins %}
-                    {% if vaccin.datePriseInitiale >= date("now") b-or vaccin.rappel >= date("now") %}
-                		<tr>
-                			<td>{{vaccin.firstname}} {{vaccin.lastname}}</td>
-                			<td>{{vaccin.vaccin}}</td>
-                			<td>
-                                {% if vaccin.datePriseInitiale %}
-                                    {# {{vaccin.datePriseInitiale | date("d-m-Y")}} #}
-                                    {{ vaccin.datePriseInitiale |localizeddate('long', 'short') }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                			</td>
-                			<td>
-                                {% if vaccin.rappel %}
-                                    {# {{vaccin.rappel | date("d-m-Y")}} #}
-                                    {{ vaccin.rappel |localizeddate('long', 'short') }}
-                                {% else %}
-                                    -
-                                {% endif %}
-                            </td>
-                			<td>
-                				{% if vaccin.vaccinState %}
-    	                            <span class="badge badge-success badge-style  modif-status">{% trans %}Realized{% endtrans %}</span>
-    	                        {% else %}
-    	                            <span class="badge badge-info badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
-    	                        {% endif %}
-                			</td>
-                		</tr>
-                    {% endif %}
-            	{% endfor %}
+            {# {{dump(vaccination)}} #}
+            {% for vaccin in listVaccins %}
+
+                <tr>
+                    <td>{{vaccin.firstname}} {{vaccin.lastname}}</td>
+                    <td>{{vaccin.vaccin}}</td>
+                    <td>
+                        {% if vaccin.datePriseInitiale %}
+                            {{ vaccin.datePriseInitiale |localizeddate('long', 'short') }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if vaccin.rappel %}
+                            {{ vaccin.rappel |localizeddate('long', 'short') }}
+                        {% else %}
+                            -
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if vaccin.vaccinState == 0 %}
+                            <span class="badge badge-success badge-style modif-status">{% trans %}Realize{% endtrans %}</span>
+                        {% else %}
+                            <span class="badge badge-info badge-style ">{% trans %}Realized{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+
+            {% endfor %}
             </tbody>
         </table>
     </div>
@@ -61,8 +63,6 @@
 
 {% block javascripts %}
     <!-- DataTables -->
-    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
-    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
         $(document).ready(function() {
             $('#example1').DataTable();

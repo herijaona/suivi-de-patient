@@ -1,4 +1,4 @@
- <div class="menu_up">
+<div class="menu_up">
 
     <ul class="menu_right">
 
@@ -12,20 +12,20 @@
 
         <li class="dropdown">
             {% if is_granted('ROLE_PATIENT') %}
-                <a class="btn btn-default dropdown-toggle pat" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-hidden="true" aria-expanded="true">
+                <a class="btn btn-default dropdown-toggle pat" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-hidden="false" aria-expanded="true">
                     <i  class="far fa-bell"> <span class="label label-pill label-danger cont"></span></i>
-                    <span class="caret"></span>
+
                 </a>
-                <ul class="dropdown-menu patient dropdown-menu-right">
+                <ul class="dropdown-menu patient dropdown-menu-right" style="width: 300px">
+
 
                 </ul>
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
                 <a class="btn btn-default dropdown-toggle prat" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-hidden="true" aria-expanded="true">
-                    <i  class="far fa-bell"> <span class="label label-pill label-danger count"></span></i>
-                    <span class="caret"></span>
+                    <i class="far fa-bell"> <span class="label label-pill label-danger count"></span></i>
                 </a>
-                <ul class="dropdown-menu test dropdown-menu-right">
+                <ul class="dropdown-menu test dropdown-menu-right" style="width: 300px" >
 
                 </ul>
             {% endif %}
@@ -34,28 +34,27 @@
         </li>
         <li class="position-relative profileTrigger">
             {% if is_granted('ROLE_PATIENT') %}
-                <a class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-hidden="true" aria-expanded="true">
+                <a class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" >
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                     <img style=" position: absolute; height: 30px" src="/{{ img }}" width="30px">
-                    <img style=" position: absolute; height: 30px" src="/uploads/{{ app.user.photo }}" width="30px">
-                    <span class="caret"></span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
-                    <li class="dropdown-item"><a href="{{ path('editPatient') }}">{% trans %}My profile{% endtrans %}</a></li>
 
-                    <li class="dropdown-item"><a href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a></li>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-right" >
+                   <a class="dropdown-item" style="position: relative" href="{{ path('editPatient') }}">{% trans %}My profile{% endtrans %}</a>
+                    <hr>
+                    <a class="dropdown-item" style="position: relative" href="{{ path('app_logout') }}">{% trans %}Logout{% endtrans %}</a>
                 </ul>
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
-                <a class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-hidden="true" aria-expanded="true" >
+                <a class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown">
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                     <img class="rounded-circle" style=" position: absolute; height: 30px" src="/{{ img }}" width="30px">
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right">
-                    <li class="dropdown-item"><a href="{{ path('editPraticien') }}">{% trans %}My profile{% endtrans %}</a></li>
-
-                    <li class="dropdown-item" ><a href="{{ path('app_logout') }}" >{% trans %}Logout{% endtrans %}</a></li>
+                    <a class="dropdown-item" href="{{ path('editPraticien') }}">{% trans %}My profile{% endtrans %}</a>
+                    <hr>
+                    <a class="dropdown-item" href="{{ path('app_logout') }}" >{% trans %}Logout{% endtrans %}</a>
                 </ul>
 
             {% endif %}
