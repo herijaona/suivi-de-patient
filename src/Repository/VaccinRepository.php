@@ -93,6 +93,7 @@ class VaccinRepository extends ServiceEntityRepository
 
 // -------------------------------------------------------------------------------------------
 // If count should depend on praticien (by using its user id)
+// ie if only type of vaccins provided by the current user/praticien should be counted
 // -------------------------------------------------------------------------------------------
 // SELECT type_vaccin.type_name, COUNT(type_vaccin.id)
 // FROM type_vaccin
@@ -132,7 +133,7 @@ class VaccinRepository extends ServiceEntityRepository
 // -------------------------------------------------------------------------------------------
 
 // --------------------------------------------------------------------------------------------
-// Get statistic of vaccin according to the current user/praticien
+// Get statistic of vaccin provided by the current user/praticien
 // --------------------------------------------------------------------------------------------
     // SELECT vaccin.vaccin_name, COUNT(vaccin.id)
     // FROM vaccin
