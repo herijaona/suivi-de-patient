@@ -49,7 +49,7 @@
             {% if is_granted('ROLE_PRATICIEN') %}
                 <a class="btn btn-default dropdown-toggle" type="button"  data-toggle="dropdown" aria-haspopup="true" aria-hidden="true" aria-expanded="true" >
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
-                    <img style=" position: absolute; height: 30px" src="/{{ img }}" width="30px">
+                    <img class="rounded-circle" style=" position: absolute; height: 30px" src="/{{ img }}" width="30px">
                     <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-right">
