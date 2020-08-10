@@ -49,8 +49,8 @@
         <source>City</source>
         <target>Ville</target>
       </trans-unit>
-      <trans-unit id="WLNcOM3" resname="Vaccination schedule">
-        <source>Vaccination schedule</source>
+      <trans-unit id="WLNcOM3" resname="Vaccination Schedule">
+        <source>Vaccination Schedule</source>
         <target>Calendrier de Vaccination</target>
       </trans-unit>
       <trans-unit id="ik_Vfgj" resname="Appointment">
@@ -169,8 +169,8 @@
         <source>+ Create an appointment</source>
         <target>+ Créer un rendez-vous</target>
       </trans-unit>
-      <trans-unit id="PtuTVRr" resname="All vaccinations">
-        <source>All vaccinations</source>
+      <trans-unit id="PtuTVRr" resname="All Vaccinations">
+        <source>All Vaccinations</source>
         <target>Toutes les vaccinations</target>
       </trans-unit>
       <trans-unit id="NOdMaqt" resname="Vaccination date">
@@ -713,8 +713,8 @@
         <source>Mother's Name</source>
         <target>Le nom de la mère</target>
       </trans-unit>
-      <trans-unit id="uleluUH" resname="Register patient">
-        <source>Register patient</source>
+      <trans-unit id="uleluUH" resname="Register Patient">
+        <source>Register Patient</source>
         <target>Enregistrer le patient</target>
       </trans-unit>
       <trans-unit id="ioMYMd2" resname="Realize">
@@ -752,6 +752,27 @@
       <trans-unit id="oA_wxQd" resname="Accepted">
         <source>Accepted</source>
         <target>Accepté</target>
+      </trans-unit>
+      <trans-unit id="sM5mkQU" resname="Appointment Proposal">
+        <source>Appointment Proposal</source>
+        <target>__Appointment Proposal</target>
+      </trans-unit>
+      <trans-unit id=".ztcaB6" resname="Realized Vacc">
+        <source>Realized Vacc</source>
+        <target>__Realized Vacc</target>
+      </trans-unit>
+      <trans-unit id="kfC9yZ3" resname="Unrealized Vacc">
+        <source>Unrealized Vacc</source>
+        <target>__Unrealized Vacc</target>
+      </trans-unit>
+
+      <trans-unit id="c_VmXZl" resname="Register Praticien">
+        <source>Register Praticien</source>
+        <target>__Register Praticien</target>
+      </trans-unit>
+      <trans-unit id="u3I07BJ" resname="Register">
+        <source>Register</source>
+        <target>__Register</target>
       </trans-unit>
     </body>
   </file>
