@@ -89,9 +89,10 @@ class PraticienController extends AbstractController
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId());
 
-        return $this->render('praticien/vaccination.html.twig', [
-            'vaccination' => $rvc,
-        ]);
+        // return $this->render('praticien/vaccination.html.twig', [
+        //     'vaccination' => $rvc,
+        // ]);
+        return $this->redirectToRoute('dashboard');
     }
 
     /**
