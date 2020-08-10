@@ -3,11 +3,6 @@
 {% block title %}{% trans %}Dashboard{% endtrans %}{% endblock %}
 
 {% block body %}
-
-	{# {{dump(nbRejectedPatient)}} #}
-
-
-<!-- Content -->
 <h4 class="title-dash">{% trans %}Dashboard{% endtrans %}</h4>
 
 <div class="row admin">
@@ -88,11 +83,8 @@
 <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
 <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
 <script>
-    $("#patient").DataTable({
-        language: {
-            url: "{{ asset('vendor/datatables/English.json') }}"
-
-        }
+    $(document).ready(function() {
+        $('#patient').DataTable();
     });
 </script>
 {% endblock %}

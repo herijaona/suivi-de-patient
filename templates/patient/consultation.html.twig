@@ -49,10 +49,13 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if rdv.etat == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
-                        {% elseif rdv.etat == 0 %}
-                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                        {% if rdv.statusConsultation == 2 %}
+                        {% else %}
+                            {% if rdv.etat == 1 %}
+                                <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                            {% elseif rdv.etat == 0 %}
+                                <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                            {% endif %}
                         {% endif %}
                     </td>
 

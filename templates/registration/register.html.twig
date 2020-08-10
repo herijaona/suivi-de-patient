@@ -7,11 +7,10 @@
     {{ form_start(registrationForm) }}
 
     <div class="background-img"></div>
-<div class="body-page register">
+<div class="body-page register" style="margin-top: 5%">
     <div class="container text-center body-content ">
-        <div class="btn-back"><a href="{{ path('homepage') }}">Retour</a></div>
-        <img class="logo-login" width="88px" src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
-        <h3 class="main-title mb-4">{% trans %}Register patient{% endtrans %}</h3>
+        <img class="logo-login" src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
+        <h3 class="main-title mb-4">{% trans %}Register Patient{% endtrans %}</h3>
         <form role="form" class="form-horizontal">
             <div class="row form-group">
                 <div class="col-lg-6">

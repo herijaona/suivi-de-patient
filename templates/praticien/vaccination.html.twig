@@ -9,7 +9,7 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">{% trans %}All vaccinations {% endtrans %}</h4>
+            <h4 class="h4-content">{% trans %}All Vaccinations {% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
@@ -45,10 +45,13 @@
                     </td>
 
                     <td>
-                        {% if vac.etat == 1 %}
-                            <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
-                        {% elseif vac.etat == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
+                        {% if vac.statusVaccin == 2 %}
+                        {% else%}
+                            {% if vac.etat == 1 %}
+                                <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
+                            {% elseif vac.etat == 0 %}
+                                <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
+                            {% endif %}
                         {% endif %}
                     </td>
                     <td>

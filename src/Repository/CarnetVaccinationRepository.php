@@ -27,34 +27,26 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
             FROM App\Entity\CarnetVaccination c 
             INNER JOIN App\Entity\Patient p with p.id = c.patient
             LEFT JOIN App\Entity\Vaccin v with v.id = c.vaccin
-            WHERE (p.id = :patient OR p.id IS NULL) 
+            WHERE (p.id = :patient OR p.id IS NULL) AND (c.datePriseInitiale >= :now OR c.rappelVaccin >= :now) 
             ORDER BY c.datePriseInitiale DESC')
-            ->setParameter('patient', $patient);
+            ->setParameter('patient', $patient)
+            ->setParameter('now', new \DateTime());
 
         return $query->getResult();
     }
 
+
     public function findListVaccinsInCarnet(Patient $patient){
         $result = [];
-
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('
-            SELECT p.firstName as firstname, p.lastName as lastname, v.vaccinName as vaccin, v.etat as vaccinState, c.datePriseInitiale as datePriseInitiale, c.rappelVaccin as rappel
+            SELECT p.firstName as firstname, p.lastName as lastname, v.vaccinName as vaccin, c.etat as vaccinState, c.datePriseInitiale as datePriseInitiale, c.rappelVaccin as rappel
             FROM App\Entity\CarnetVaccination c
+             INNER JOIN App\Entity\Patient p with p.id = c.patient
             INNER JOIN App\Entity\Vaccin v with v.id=c.vaccin
-            INNER JOIN App\Entity\Patient p with p.id = c.patient
-            WHERE p.id= :patient
-        ')->setParameter('patient', $patient);
-
-        //     SELECT o.id, o.datePrise, o.etat, o.statusVaccin, p.firstName, p.lastName, v.id as vaccin, pr.id as praticien, p.id as patient
-        //     FROM App\Entity\OrdoVaccination o 
-        //     INNER JOIN App\Entity\Patient p with p.id= o.patient
-        //     LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
-        //     LEFT JOIN App\Entity\Praticien pr with pr.id=d.praticien
-        //     LEFT JOIN App\Entity\Vaccin v with v.id = o.vaccin
-        //     WHERE pr.id= :praticien 
-        //     ORDER BY o.datePrise DESC
-        // ')->setParameter('praticien', $praticien);
+            WHERE p.id= :patient AND (c.datePriseInitiale >= :now OR c.rappelVaccin >= :now)')
+            ->setParameter('patient', $patient)
+            ->setParameter('now', new \DateTime());
 
         return $query->getResult();
     }

@@ -595,12 +595,10 @@ class PatientController extends AbstractController
                 $nom = $notif["lastName"];
                 $prenom = $notif["firstName"];
                 $pro .='
-                <li class="dropdown-item" style="width: 100%; ">
-                 <a href="proposition/rdv">
+                 <a class="dropdown-item" style="background-color: #06CF7D" href="proposition/rdv">
                  <strong> Proposition Rendez-vous </strong><br/>
-                <small><em>'.$nom.' a envoyé proposition </em></small>
-                </a>
-                </li>
+                 <small><em>'.$nom.' a envoyé proposition </em></small>
+                 </a>
            ';
             }
         }
