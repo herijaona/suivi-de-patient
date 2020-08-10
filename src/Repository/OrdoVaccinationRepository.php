@@ -174,6 +174,7 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
             INNER JOIN App\Entity\Praticien pr WITH pr.id = o.referencePraticienExecutant
             INNER JOIN App\Entity\User u WITH u.id = pr.user
             WHERE u.id = :userId
+            AND o.statusVaccin = 1
         ")->setParameter('userId', $userId);
 
         return $query->getResult();
