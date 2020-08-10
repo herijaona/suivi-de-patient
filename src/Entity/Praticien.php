@@ -29,13 +29,13 @@ class Praticien
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:VaccinPraticien","read:praticien", "read:carnetvaccination"})
+     * @Groups({"read:VaccinPraticien","read:praticien", "read:carnetvaccination", "read:IntervationConsultation"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:VaccinPraticien", "read:praticien", "read:carnetvaccination"})
+     * @Groups({"read:VaccinPraticien", "read:praticien", "read:carnetvaccination", "read:IntervationConsultation"})
      */
     private $lastName;
 
@@ -47,7 +47,7 @@ class Praticien
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:praticien"})
+     * @Groups({"read:praticien", "read:carnetvaccination", "read:IntervationConsultation"})
      */
     private $phoneProfessional;
 

@@ -23,7 +23,7 @@ class GroupFamily
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read:GroupFamily"})
+     * @Groups({"read:GroupFamily", "read:Family"})
      */
     private $id;
 
@@ -36,12 +36,13 @@ class GroupFamily
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:GroupFamily"})
+     * @Groups({"read:GroupFamily", "read:Family"})
      */
     private $designation;
 
     /**
      * @ORM\OneToMany(targetEntity=Family::class, mappedBy="groupFamily")
+     * @Groups({"read:GroupFamily"})
      */
     private $families;
 
