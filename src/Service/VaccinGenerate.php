@@ -96,27 +96,35 @@ class VaccinGenerate
                 // Calculate the exact date for each string formatted date
                 foreach($getDateMethods as $getDate){
 
+
                     $crnV = new CarnetVaccination();
 
                     $crnV->setPatient($patient)
                          ->setVaccin($vacc)
-                         ->setEtat(false)
+                         // ->setEtat(false)
                          ->setIntervationVaccination($intervention);
 
                     $getVAcc = $vacc->$getDate();
                     
                     if($getVAcc !== "" && $getVAcc !== null){
+                        $crnV->setEtat($getVAcc < new \Datetime());
+
                         $interval = date_interval_create_from_date_string($getVAcc);
                         $rappelOrDateInit = new \Datetime($birthday->format('Y-m-d H:i:s'));
                         date_add($rappelOrDateInit, $interval);
 
                         // Reporter la date si elle tombe en week-end
                         $weekday = date('N', $rappelOrDateInit->getTimestamp());
-                        if($weekday == 0){
+                        // dump($rappelOrDateInit);
+                        // dump($weekday);
+                        if($weekday === "7"){
                             date_add($rappelOrDateInit, date_interval_create_from_date_string("1 day"));
                         }
-                        elseif($weekday == 6){
+                        elseif($weekday === "6"){
                             date_add($rappelOrDateInit, date_interval_create_from_date_string("2 days"));
+                        }
+                        elseif($weekday === "5"){
+                            date_add($rappelOrDateInit, date_interval_create_from_date_string("3 days"));
                         }
 
                         if($getDate === "getDatePriseInitiale"){
