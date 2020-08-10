@@ -145,6 +145,7 @@ class VaccinRepository extends ServiceEntityRepository
     // AND intervention_vaccination.id = carnet_vaccination.intervation_vaccination_id
     // AND praticien.id = intervention_vaccination.praticien_prescripteur_id
     // AND user.id = praticien.user_id
+    // AND carnet_vaccination.date_prise_initiale IS NOT NULL
     // AND user.id = 2
     // GROUP BY vaccin.id
 // --------------------------------------------------------------------------------------------
@@ -159,6 +160,7 @@ class VaccinRepository extends ServiceEntityRepository
             INNER JOIN App\Entity\Praticien pr WITH pr.id = iv.praticienPrescripteur
             INNER JOIN App\Entity\User u WITH u.id = pr.user
             WHERE u.id = :userId
+            AND cv.datePriseInitiale IS NOT NULL
             GROUP BY v.id
         ")->setParameter('userId', $userId);
 
