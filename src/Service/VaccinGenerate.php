@@ -115,8 +115,7 @@ class VaccinGenerate
 
                         // Reporter la date si elle tombe en week-end
                         $weekday = date('N', $rappelOrDateInit->getTimestamp());
-                        // dump($rappelOrDateInit);
-                        // dump($weekday);
+                        
                         if($weekday === "7"){
                             date_add($rappelOrDateInit, date_interval_create_from_date_string("1 day"));
                         }
