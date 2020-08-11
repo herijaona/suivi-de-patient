@@ -32,7 +32,9 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.dateOnBorn|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}">
                         </div>
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Place of birth{% endtrans %}</label> {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Lieu de Naissance'}}) }}
+                            <label for="">{% trans %}Place of birth{% endtrans %}</label> {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control form-show', 'placeholder': 'Lieu de Naissance', 'value':values.addressOnBorn}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.addressOnBorn}}">
+
                         </div>
                     </div>
                     <div class="row form-group">
@@ -41,15 +43,20 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.phone }}">
                         </div>
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Patient type{% endtrans %}</label> {{ form_widget(registrationForm.type_patient, {'attr': {'class': 'form-control', 'placeholder': 'Type patient'}}) }}
+                            <label for="">{% trans %}Patient type{% endtrans %}</label> {{ form_widget(registrationForm.type_patient, {'attr': {'class': 'form-control form-show', 'placeholder': 'Type patient'}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.TypePatient.typePatientName }}">
                         </div>
                     </div>
                     <div class="row form-group">
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Address{% endtrans %}</label> {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Adresse'}}) }}
+                            <label for="">{% trans %}Address{% endtrans %}</label> {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-show', 'placeholder': 'Adresse','value': values.address}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.address}}">
+
                         </div>
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Gender{% endtrans %}</label> {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control', 'placeholder': 'Sexe'}}) }}
+                            <label for="">{% trans %}Gender{% endtrans %}</label> {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe', 'value':values.sexe }}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.sexe}}">
+
                         </div>
                     </div>
                     <div class="row form-group">
@@ -67,11 +74,15 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.username }}">
                         </div>
                         <div class="col-md-6">
+
                             <label for="">{% trans %}Name of the Father{% endtrans %}</label> {{ form_widget(registrationForm.namedaddy, {'attr': {'class': 'form-control mb-3', 'placeholder': 'nom de père'}}) }}
+
                         </div>
+
                     </div>
                     <div class="row form-group">
                         <div class="col-md-6">
+
                             <label for="">{% trans %}Mother's Name{% endtrans %}</label> {{ form_widget(registrationForm.namemonther, {'attr': {'class': 'form-control mb-3', 'placeholder': 'nom de mère'}}) }}
                         </div>
                     </div>

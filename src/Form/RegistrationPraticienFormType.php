@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\CentreHealth;
 use App\Entity\City;
 use App\Entity\User;
 use Doctrine\ORM\EntityManager;
@@ -26,6 +27,17 @@ class RegistrationPraticienFormType extends AbstractType
             ->add('username')
             ->add('lastname')
             ->add('firstname')
+            ->add('center_health',EntityType::class ,[
+                'class'=>CentreHealth::class,
+                'query_builder'=>function(EntityRepository $entityRepository){
+                    return $entityRepository->createQueryBuilder('c');
+                },
+                'choice_value' => 'id',
+                'choice_label' => function(?CentreHealth $centreHealth) {
+                    return $centreHealth ? strtoupper($centreHealth->getCentreName()) : '';
+                },
+                'placeholder' => 'Votre centre de santé',
+            ])
             ->add('date_naissance', DateType::class, [
                 'widget' => 'single_text',
             ])

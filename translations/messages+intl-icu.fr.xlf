@@ -49,7 +49,7 @@
         <source>City</source>
         <target>Ville</target>
       </trans-unit>
-      <trans-unit id="WLNcOM3" resname="Vaccination Schedule">
+      <trans-unit id="8KsdBcJ" resname="Vaccination Schedule">
         <source>Vaccination Schedule</source>
         <target>Calendrier de Vaccination</target>
       </trans-unit>
@@ -169,7 +169,7 @@
         <source>+ Create an appointment</source>
         <target>+ Créer un rendez-vous</target>
       </trans-unit>
-      <trans-unit id="PtuTVRr" resname="All Vaccinations">
+      <trans-unit id="eoEufqL" resname="All Vaccinations">
         <source>All Vaccinations</source>
         <target>Toutes les vaccinations</target>
       </trans-unit>
@@ -713,7 +713,7 @@
         <source>Mother's Name</source>
         <target>Le nom de la mère</target>
       </trans-unit>
-      <trans-unit id="uleluUH" resname="Register Patient">
+      <trans-unit id="XTAfKSZ" resname="Register Patient">
         <source>Register Patient</source>
         <target>Enregistrer le patient</target>
       </trans-unit>
@@ -755,7 +755,7 @@
       </trans-unit>
       <trans-unit id="sM5mkQU" resname="Appointment Proposal">
         <source>Appointment Proposal</source>
-        <target>__Appointment Proposal</target>
+        <target>Proposition de Rendez-vous</target>
       </trans-unit>
       <trans-unit id=".ztcaB6" resname="Realized Vacc">
         <source>Realized Vacc</source>
@@ -765,14 +765,33 @@
         <source>Unrealized Vacc</source>
         <target>__Unrealized Vacc</target>
       </trans-unit>
-
       <trans-unit id="c_VmXZl" resname="Register Praticien">
         <source>Register Praticien</source>
-        <target>__Register Praticien</target>
+        <target>Inscrire Praticien</target>
       </trans-unit>
       <trans-unit id="u3I07BJ" resname="Register">
         <source>Register</source>
-        <target>__Register</target>
+        <target>S'inscrire</target>
+      </trans-unit>
+      <trans-unit id="PtuTVRr" resname="All vaccinations">
+        <source>All vaccinations</source>
+        <target>Toutes les vaccinations</target>
+      </trans-unit>
+      <trans-unit id="WLNcOM3" resname="Vaccination schedule">
+        <source>Vaccination schedule</source>
+        <target>Calendrier de vaccination</target>
+      </trans-unit>
+      <trans-unit id="W7OVpDO" resname="Center Health">
+        <source>Center Health</source>
+        <target>Centre de Santé</target>
+      </trans-unit>
+      <trans-unit id="w6rNmtQ" resname="Realized Vaccination">
+        <source>Realized Vaccination</source>
+        <target>Vaccination réalisée</target>
+      </trans-unit>
+      <trans-unit id="6VvmrCV" resname="Unrealized Vaccination">
+        <source>Unrealized Vaccination</source>
+        <target>Vaccination non réalisée</target>
       </trans-unit>
     </body>
   </file>

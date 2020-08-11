@@ -63,6 +63,11 @@ class Ordonnace
      */
     private $ordoMedicaments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CentreHealth::class, inversedBy="ordonnaces")
+     */
+    private $CentreSante;
+
     public function __construct()
     {
         $this->ordoVaccinations = new ArrayCollection();
@@ -200,6 +205,18 @@ class Ordonnace
                 $ordoMedicament->setOrdonnance(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCentreSante(): ?CentreHealth
+    {
+        return $this->CentreSante;
+    }
+
+    public function setCentreSante(?CentreHealth $CentreSante): self
+    {
+        $this->CentreSante = $CentreSante;
 
         return $this;
     }

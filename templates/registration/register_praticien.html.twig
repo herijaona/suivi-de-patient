@@ -45,8 +45,11 @@
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-lg-12">
+                    <div class="col-lg-6">
                         {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'e-mail'}}) }}
+                    </div>
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Your center health'}}) }}
                     </div>
                 </div>
                  <div class="row form-group">

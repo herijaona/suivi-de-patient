@@ -97,9 +97,17 @@ class CentreHealth
      */
     private $quartier;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Ordonnace::class, mappedBy="CentreSante")
+     */
+    private $ordonnaces;
+
+
     public function __construct()
     {
         $this->vaccinCentreHealths = new ArrayCollection();
+        $this->praticiens = new ArrayCollection();
+        $this->ordonnaces = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -266,6 +274,37 @@ class CentreHealth
     public function setQuartier(?string $quartier): self
     {
         $this->quartier = $quartier;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Ordonnace[]
+     */
+    public function getOrdonnaces(): Collection
+    {
+        return $this->ordonnaces;
+    }
+
+    public function addOrdonnace(Ordonnace $ordonnace): self
+    {
+        if (!$this->ordonnaces->contains($ordonnace)) {
+            $this->ordonnaces[] = $ordonnace;
+            $ordonnace->setCentreSante($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdonnace(Ordonnace $ordonnace): self
+    {
+        if ($this->ordonnaces->contains($ordonnace)) {
+            $this->ordonnaces->removeElement($ordonnace);
+            // set the owning side to null (unless already changed)
+            if ($ordonnace->getCentreSante() === $this) {
+                $ordonnace->setCentreSante(null);
+            }
+        }
 
         return $this;
     }

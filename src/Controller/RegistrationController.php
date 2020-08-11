@@ -61,6 +61,7 @@ class RegistrationController extends AbstractController
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
             $user->setUsername($form->get('username')->getData());
+            $user->setEmail($form->get('email')->getData());
             $user->setRoles([self::ROLE_PATIENT]);
             $user->setActivatorId($code);
             $user->setEtat(0);
@@ -80,7 +81,6 @@ class RegistrationController extends AbstractController
             $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($form->get('date_naissance')->getData());
             $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
-
             $patient->setTypePatient($form->get('type_patient')->getData());
             $patient->setPhone($form->get('phone')->getData());
             $patient->setFatherName($form->get('namedaddy')->getData());
@@ -118,10 +118,13 @@ class RegistrationController extends AbstractController
             $code = $this->generate_code();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
+            $centre = $form->get('center_health')->getData();
+            $email = $form->get('email')->getData();
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
             $user->setUsername($form->get('username')->getData());
+            $user->setEmail($email);
             $user->setRoles([self::ROLE_PRATICIEN]);
             $user->setActivatorId($code);
             $user->setEtat(false);
@@ -140,6 +143,8 @@ class RegistrationController extends AbstractController
             $praticien->setCreatedAt(new \DateTime('now'));
             $praticien->setDateBorn($form->get('date_naissance')->getData());
             //$praticien->setAdressBorn($form->get('lieu_naissance')->getData());
+            $praticien->setAddress($form->get('address')->getData());
+            $praticien->setCity($form->get('lieu_naissance')->getData());
             $praticien->setFonction($form->get('fonction')->getData());
             $praticien->setPhone($form->get('phone')->getData());
             $praticien->setPhoneProfessional($form->get('phone_professional')->getData());
@@ -151,6 +156,7 @@ class RegistrationController extends AbstractController
             $ordonance->setPraticien($praticien);
             $ordonance->setDatePrescription(new \DateTime('now'));
             $ordonance->setMedecinTraitant($praticien);
+            $ordonance->setCentreSante($centre);
             $entityManager->persist($ordonance);
             $entityManager->flush();
 
@@ -158,12 +164,15 @@ class RegistrationController extends AbstractController
             $code2 = $this->generate_code();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
-            //$userName2 = $this->random_username($last_name . $first_name);
+
+            $userName2 = $this->random_username($last_name . $first_name);
+
             $user2 = new User();
             $user2->setLastName($last_name);
             $user2->setFirstName($first_name);
-            $user2->setUsername($form->get('username')->getData());
             $user2->setRoles([self::ROLE_PATIENT]);
+            $user->setEmail($email);
+            $user2->setUsername($form->get('username')->getData().$userName2);
             $user2->setActivatorId($code2);
             $user2->setEtat(false);
             // encode the plain password
