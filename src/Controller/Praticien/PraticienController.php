@@ -89,9 +89,10 @@ class PraticienController extends AbstractController
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId());
 
-        return $this->render('praticien/vaccination.html.twig', [
-            'vaccination' => $rvc,
-        ]);
+        // return $this->render('praticien/vaccination.html.twig', [
+        //     'vaccination' => $rvc,
+        // ]);
+        return $this->redirectToRoute('dashboard');
     }
 
     /**
@@ -188,6 +189,7 @@ class PraticienController extends AbstractController
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $rce = $this->ordoConsultationRepository->searchStatusPraticienEnValid($praticien->getId());
+        dump($praticien);
         $rve = $this->ordoVaccinationRepository->searchStatusPraticienEnValid($praticien->getId());
 
 
@@ -643,8 +645,8 @@ class PraticienController extends AbstractController
 
         }
         foreach ($cons as $rows){
-            $tes = $rows[1];
        foreach ($co as $notif){
+           $tes = $rows[1];
            $nom = $notif["lastName"];
            $prenom = $notif["firstName"];
            $consultation .='
@@ -669,19 +671,70 @@ class PraticienController extends AbstractController
     }
 
     /**
-    * @Route("/chart/evolution_des_patients", name="evolution_des_patients")
+    * @Route("/chart/nb_prise_type_vacc", name="chart/nb_prise_type_vacc"), methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
     */
-    public function evolution_des_patients(){
-      // $evolut_patient = $this->patientRepository->findNbrPatientGroupByType();
+    public function nb_prise_type_vacc(){
+      $userId = $this->getUser()->getId();
 
-      // $epat = [];
-      // if (count($evolut_patient) > 0){
-      //   $i = 0;
-      //   foreach ($evolut_patient as $evolut_pat){
-      //       $epat[$i]['label']= $evolut_pat['typePatientName'];
-      //       $epat[$i]['y']= intval($evolut_pat['nb_patient']);
-      //       $i++;
-      //   }
-      // }
+      $queryResult = $this->vaccinRepository->countPriseVaccinParType($userId);
+
+      $result = [];
+      foreach($queryResult as $res){
+        array_push($result, array(
+          "label" => $res["typeVaccin"],
+          "y" => intval($res["nb"])
+        ));
+      }
+
+      return new JsonResponse($result);
+    }
+
+    /**
+    * @Route("/chart/age_range", name="age_range")
+    */
+    public function age_range(){
+      $userId = $this->getUser()->getId();
+
+      // Get the current user/praticien patients birthday
+      $patientsBirthday = $this->ordoVaccinationRepository->findPatientsBirthday($userId);
+
+      $patientsAgeRange = array();
+      // Count each range of 10
+      foreach($patientsBirthday as $birthday){
+        for($i=10; $i<=100; $i+=10){
+          if(intval($birthday["birthday"]->diff(new \Datetime())->format("%y")) < $i && intval($birthday["birthday"]->diff(new \Datetime())->format("%y")) >= $i-10){
+            if(array_key_exists((string)$i-10 . " à " . (string)($i-1), $patientsAgeRange)){
+              $patientsAgeRange[(string)$i-10 . " à " . (string)($i-1)]++;
+            }
+            else{
+              $patientsAgeRange[(string)$i-10 . " à " . (string)($i-1)] = 1;
+            }
+          }
+          else{
+            if(!array_key_exists((string)$i-10 . " à " . (string)($i-1), $patientsAgeRange)){
+              $patientsAgeRange[(string)$i-10 . " à " . (string)($i-1)] = 0;
+            }
+          }
+        }
+      }
+      $result = [];
+      foreach ($patientsAgeRange as $key => $value) {
+        $age = [];
+        $age["label"] = $key;
+        $age["y"] = $value;
+        array_push($result, $age);
+      }
+
+      return new JsonResponse($result);
+    }
+
+    /**
+    * @Route("/chart/vaccin_stat", name="vaccin_stat")
+    */
+    public function vaccin_stat(){
+      $userId = $this->getUser()->getId();
+
+      $queryResult = $this->vaccinRepository->getVaccStat($userId);
+      return new JsonResponse($queryResult);
     }
 }

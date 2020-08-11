@@ -24,19 +24,19 @@ class Patient
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read:patient","read:OrdoConsultation"})
+     * @Groups({"read:patient","read:OrdoConsultation", "read:Family"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:patient", "read:carnetvaccination"})
+     * @Groups({"read:patient", "read:carnetvaccination", "read:Family"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"read:patient", "read:carnetvaccination"})
+     * @Groups({"read:patient", "read:carnetvaccination", "read:Family"})
      */
     private $lastName;
 

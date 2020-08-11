@@ -2,7 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\IntervationConsultationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -16,6 +20,9 @@ use Doctrine\ORM\Mapping as ORM;
  *    collectionOperations={"get"},
  *    itemOperations={"get"}
  * )
+ * @ApiFilter(SearchFilter::class, properties={"patient": "exact"})
+ * @ApiFilter(DateFilter::class, properties={"dateConsultation": DateFilter::PARAMETER_AFTER})
+ * @ApiFilter(OrderFilter::class, properties={"dateConsultation"}, arguments={"orderParameterName"="order"}))
  */
 class IntervationConsultation
 {
@@ -29,7 +36,7 @@ class IntervationConsultation
 
     /**
      * @ORM\ManyToOne(targetEntity=OrdoConsultation::class, inversedBy="intervationConsultations")
-     * @Groups({"read:IntervationConsultation"})u
+     *
      */
     private $ordoConsulataion;
 
@@ -53,6 +60,7 @@ class IntervationConsultation
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="intervationConsultationsPraticienPrescripteur")
+     * @Groups({"read:IntervationConsultation"})
      */
     private $praticienPrescripteur;
 
@@ -87,6 +95,9 @@ class IntervationConsultation
         return $this->id;
     }
 
+    /**
+     * @return OrdoConsultation|null
+     */
     public function getOrdoConsulataion(): ?OrdoConsultation
     {
         return $this->ordoConsulataion;

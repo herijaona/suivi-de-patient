@@ -45,7 +45,7 @@ class ConsultationController extends  AbstractController
     }
 
     public function inProgressAction(Request $request){
-        dd($request);
+
         if ($this->tokenService->getTokenStorage() == null) {
             return new JsonResponse(['status' => 'KO', 'message' => 'Vous étes deconnecter']);
         }

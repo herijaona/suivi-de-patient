@@ -56,7 +56,7 @@ class OrdoConsultation
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:OrdoConsultation"})
+     * @Groups({"read:OrdoConsultation", "read:IntervationConsultation"})
      */
     private $objetConsultation;
 

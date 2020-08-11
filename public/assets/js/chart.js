@@ -10,6 +10,7 @@ window.onload = function() {
             $.each(data, function( index, value ) {
                 epat.push({label: value.label, y: value.y});
             });
+
             var chart2 = new CanvasJS.Chart("chartContainer2", {
                 animationEnabled: true,
                 title: {
@@ -36,39 +37,119 @@ window.onload = function() {
 
     });
 
-    // Chart 2
+// ---------------------------------------------------------------------------------
+// Chart Nombre de Prise Par Type de Vaccin
+// ---------------------------------------------------------------------------------
     $.ajax({
-        url: "/praticien/chart/evolutions_des_patiens",
+        url: "/praticien/chart/nb_prise_type_vacc",
         type: 'get',
         dataType: 'json',
         success: (data) => {
-            var epat = [];
+            var nbTypeVAcc = [];
             $.each(data, function( index, value ) {
-                epat.push({label: value.label, y: value.y});
+                nbTypeVAcc.push({label: value.label, y: value.y});
             });
-            var chart4 = new CanvasJS.Chart("chartContainer4", {
-                animationEnabled: true,
-                title: {
-                    text: "Nombres patients par type patient",
+            var dataSeries = {type : "doughnut", dataPoints : nbTypeVAcc};
+            var dt = [];
+            dt.push(dataSeries);
+
+            var options = {
+                animationEnabled : true,
+                title : {
+                    text : "Nombre de Prise par Type de Vaccin",
                     horizontalAlign: "left",
                     fontSize: 16,
                 },
-                data: [{
-                    type: "doughnut",
-                    startAngle: 60,
-                    //innerRadius: 60,
-                    indexLabelFontSize: 17,
-                    indexLabel: "{y} {label} ",
-                    toolTipContent: "<b> {y} {label}:</b> (#percent%)",
-                    dataPoints: epat
-                }]
-            });
+                data : dt
+            }
+
+            var chart4 = new CanvasJS.Chart("chartNbPriseTypeVacc", options);
+
             chart4.render();
         },
         error: (e) => {
 
         }
     }).done(() => {
+
+    });
+// ---------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------
+// Chart Age Range
+// ---------------------------------------------------------------------------------
+    $.ajax({
+        url: "/praticien/chart/age_range",
+        type: 'get',
+        dataType: 'json',
+        success: (data) => {
+            var ageRangeChart = new CanvasJS.Chart("chartContainerAgeRange",{
+                animationEnabled : true,
+                title : {
+                    text : "Tranche d'age",
+                    horizontalAlign: "left",
+                    fontSize: 16,
+                },
+                axisX : {
+                    title : "Tranche d'age par 10",
+                    horizontalAlign : "right",
+                    titleFontSize : 10
+                },
+                axisY : {
+                    title : "Nombre de patients",
+                    titleFontSize : 10
+                },
+                data : [{
+                    type : "column",
+                    dataPoints : data
+                }]
+            });
+            ageRangeChart.render();
+        },
+        error: (e) => {
+
+        }
+    }).done(() => {
+
+    });
+// ---------------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------------
+// Chart Vaccin
+// ---------------------------------------------------------------------------------
+    $.ajax({
+        url: "/praticien/chart/vaccin_stat",
+        type: 'get',
+        dataType: 'json',
+        success: (data) => {
+            var nbVacc = [];
+            console.log(data);
+            $.each(data, function( index, value ) {
+                nbVacc.push({label: value.label, y: value.y});
+            });
+            var dataSeries = {type : "pie", dataPoints : nbVacc};
+            var dt = [];
+            dt.push(dataSeries);
+
+            var options = {
+                animationEnabled : true,
+                title : {
+                    text : "Nombre de Vaccins",
+                    horizontalAlign: "left",
+                    fontSize: 16,
+                },
+                data : dt
+            }
+
+            var chartVaccinStat = new CanvasJS.Chart("chartVaccinStat", options);
+
+            chartVaccinStat.render();
+        },
+        error: (e) => {
+
+        }
+    }).done(() => {
+// ---------------------------------------------------------------------------------
 
     });
 

@@ -2,7 +2,10 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\FamilyRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,6 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
  *    collectionOperations={"get"},
  *    itemOperations={"get"}
  * )
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "patientChild": "partial", "groupFamily": "partial"})
  */
 class Family
 {
