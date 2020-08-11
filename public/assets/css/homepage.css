@@ -22,7 +22,7 @@ h1 {
     top: 0;
     position: fixed;
     width: 100%;
-    background: url(../images/bg.jpg);
+    background: url(../images/b.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
@@ -37,15 +37,15 @@ h1 {
     top: 0;
     opacity: 1;
     height: 100%;
-    background:linear-gradient(-12deg, #f1f1f136 -9%, rgb(239 236 238 / 78%) 18%);
+    background:linear-gradient(-18deg, #04200a82 24%, rgb(29 78 49 / 41%) 45%);
 }
 
 .btn-login {
     font-size: .9rem;
     color: white;
     background: transparent;
-    width: 200px;
-    padding: 9px;
+    width: 220px;
+    padding: 15px;
     border: 2px solid white;
     line-height: 1rem;
 }
@@ -56,8 +56,8 @@ h1 {
     border: 0;
     color: #ffffff;
     background: rgb(6, 186, 113);
-    width: 200px;
-    padding: 9px;
+    width: 220px;
+    padding: 15px;
 }
 
 .btn-login:hover {

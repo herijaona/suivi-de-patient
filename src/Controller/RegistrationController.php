@@ -158,13 +158,11 @@ class RegistrationController extends AbstractController
             $code2 = $this->generate_code();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
-
-            $userName2 = $this->random_username($last_name . $first_name);
-
+            //$userName2 = $this->random_username($last_name . $first_name);
             $user2 = new User();
             $user2->setLastName($last_name);
             $user2->setFirstName($first_name);
-            $user2->setUsername($userName2);
+            $user2->setUsername($form->get('username')->getData());
             $user2->setRoles([self::ROLE_PATIENT]);
             $user2->setActivatorId($code2);
             $user2->setEtat(false);

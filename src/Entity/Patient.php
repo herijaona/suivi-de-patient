@@ -10,12 +10,12 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * 
+ *
  * @ORM\Entity(repositoryClass=PatientRepository::class)
  *  @ApiResource(
  *    normalizationContext={"groups"={"read:patient"}},
  *    collectionOperations={"get"},
- *    itemOperations={"get"} 
+ *    itemOperations={"get"}
  * )
  */
 class Patient
@@ -179,8 +179,6 @@ class Patient
     private $addressOnBorn;
 
     /**
-
-
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $numRue;
@@ -325,7 +323,7 @@ class Patient
 
         return $this;
     }
-    
+
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
@@ -846,7 +844,7 @@ class Patient
         }
         return $this;
     }
-    
+
     public function removeInterventionVaccination(InterventionVaccination $interventionVaccination): self
     {
         if ($this->interventionVaccinations->contains($interventionVaccination)) {
