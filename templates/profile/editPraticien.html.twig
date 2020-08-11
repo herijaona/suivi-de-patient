@@ -62,8 +62,8 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.email }}">
                         </div>
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Center Health{% endtrans %}</label>{{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control form-show', 'placeholder': 'Your center health','value':values.Ordonnace.CentreHealth.centreName}}) }}
-                            <input type="text" class="form-control form-edit" placeholder="{{ values.Ordonnace.CentreHealth.centreName }}">
+                            <label for="">{% trans %}Center Health{% endtrans %}</label>{{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control form-show', 'placeholder': 'Your center health'}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.ordonnaces}}">
                         </div>
                     </div>
                     <div class="row form-group">
