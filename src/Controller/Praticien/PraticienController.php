@@ -635,6 +635,7 @@ class PraticienController extends AbstractController
            <strong> Demande de Vaccination </strong><br/>
            <small><em>'.$nom.' a envoyé demande vaccination </em></small>
            </a>
+           <hr>
            
            ';
 
@@ -651,6 +652,7 @@ class PraticienController extends AbstractController
            <strong> Demande de Consultation </strong><br/>
            <small><em>'.$nom.' a envoyé demande consultation </em></small>
            </a>
+           <hr>
           
            ';
        }
