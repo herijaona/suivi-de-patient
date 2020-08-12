@@ -83,6 +83,8 @@
                         {{ centre.city.region.state.nameState }}
                     </td>
                     <td>
+                        <a href="{{ path('see_vaccin', {'centre_id' : centre.id}) }}" class="btn btn-primary" style="height: 32px;"><i class="fas fa-eye"></i></a>
+
                         <span class="btn btn-primary data-edit" data-id="{{ centre.id }}"><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ centre.id }}"><i class="fa fa-trash-o"></i></span>
                     </td>

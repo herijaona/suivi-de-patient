@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\CentreHealth;
 use App\Entity\Vaccin;
+use App\Entity\VaccinCentreHealth;
 use App\Form\CenterHealthType;
 use App\Form\ChangePasswordType;
 use App\Form\VaccinType;
@@ -12,6 +14,7 @@ use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
 use App\Repository\TypeVaccinRepository;
 use App\Repository\UserRepository;
+use App\Repository\VaccinCentreHealthRepository;
 use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManagerInterface;
@@ -528,7 +531,7 @@ class AdminController extends AbstractController
      * @param UserPasswordEncoderInterface $userPasswordEncoder
      * @Route("/resetting-mdp", name="resetting_password")
      */
-    public function resetting_password(Request $request, UserPasswordEncoderInterface $userPasswordEncoder)
+    public function resetting_password(Request $request, UserPasswordEncoderInterface $userPasswordEncoder,TranslatorInterface $translator)
     {
         $requestUser = $request->request->get('change_password');
         $IdUser = $requestUser['id'];
@@ -547,6 +550,18 @@ class AdminController extends AbstractController
         }
 
         return $this->redirectToRoute('admin_member');
+    }
+
+
+    /**
+     * @Route("/admin/centre/health/{centre_id}", name="see_vaccin")
+     */
+    public function see_vaccin($centre_id, VaccinCentreHealthRepository $repository,Request $request){
+        $cv = $repository->findListVaccinsInCentre($centre_id) ;
+        return $this->render('admin/centre_health/centre_vaccin.html.twig',[
+            'centre'=>$cv,
+        ]);
+
     }
 
 }

@@ -1,0 +1,54 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}Health center vaccine{% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    <style>
+        .form-row{
+            align-items: center !important;
+            justify-content: flex-end !important;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-5 mt-4">
+            <h4 class="h4-content">{% trans %}Health center vaccine{% endtrans %}</h4>
+        </div>
+    </div>
+
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+
+                <th>{% trans %}Center Name{% endtrans %}</th>
+                <th>{% trans %}Vaccine Name{% endtrans %}</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for centre in centre  %}
+                <tr>
+                    <td>
+                        {{ centre.centreName }}
+                    </td>
+                    <td>
+                        {{ centre.vaccinName }}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#example1').DataTable();
+        });
+    </script>
+{% endblock %}

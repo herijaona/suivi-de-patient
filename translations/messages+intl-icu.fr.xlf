@@ -757,14 +757,6 @@
         <source>Appointment Proposal</source>
         <target>Proposition de Rendez-vous</target>
       </trans-unit>
-      <trans-unit id=".ztcaB6" resname="Realized Vacc">
-        <source>Realized Vacc</source>
-        <target>__Realized Vacc</target>
-      </trans-unit>
-      <trans-unit id="kfC9yZ3" resname="Unrealized Vacc">
-        <source>Unrealized Vacc</source>
-        <target>__Unrealized Vacc</target>
-      </trans-unit>
       <trans-unit id="c_VmXZl" resname="Register Praticien">
         <source>Register Praticien</source>
         <target>Inscrire Praticien</target>
@@ -792,6 +784,14 @@
       <trans-unit id="6VvmrCV" resname="Unrealized Vaccination">
         <source>Unrealized Vaccination</source>
         <target>Vaccination non réalisée</target>
+      </trans-unit>
+      <trans-unit id=".FJfXBp" resname="Health center vaccine">
+        <source>Health center vaccine</source>
+        <target>Vaccin du centre de santé</target>
+      </trans-unit>
+      <trans-unit id="SCAVp5U" resname="Vaccine Name">
+        <source>Vaccine Name</source>
+        <target>Nom du vaccin</target>
       </trans-unit>
     </body>
   </file>

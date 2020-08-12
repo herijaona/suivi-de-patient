@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\CentreHealth;
 use App\Entity\VaccinCentreHealth;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,18 @@ class VaccinCentreHealthRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, VaccinCentreHealth::class);
+    }
+    public function findListVaccinsInCentre($centreHealth){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            SELECT c.id, ch.centreName,v.vaccinName
+            FROM App\Entity\VaccinCentreHealth c
+            INNER JOIN App\Entity\CentreHealth ch with ch.id = c.centreHealth
+            INNER JOIN App\Entity\Vaccin v with v.id=c.vaccin
+            WHERE ch.id= :centre 
+            ORDER BY c.id ASC')
+            ->setParameter('centre', $centreHealth);
+        return $query->getResult();
     }
 
     // /**
