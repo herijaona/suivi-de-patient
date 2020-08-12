@@ -46,8 +46,6 @@ class OrdoConsultationRepository extends ServiceEntityRepository
             ORDER BY o.dateRdv ASC')
             ->setParameter('praticien', $praticien);
 
-
-
         return $query->getResult();
     }
 

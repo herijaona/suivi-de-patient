@@ -20,7 +20,6 @@
                 <th>{% trans %}Consultation date{% endtrans %}</th>
                 <th>{% trans %}Object of consultation{% endtrans %} </th>
                 <th>Praticien</th>
-                <th>Status</th>
                 <th>Intervention</th>
 
                 {# <th>More</th> #}
@@ -40,23 +39,35 @@
                         {{ rdv.firstName }} {{ rdv.lastName }}
                     </td>
                     <td>
-                        {% if rdv.statusConsultation == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Accepted{% endtrans %}</span>
-                        {% elseif rdv.statusConsultation == 0 %}
+                        {% if rdv.etat == 1 %}
+                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                        {% elseif rdv.etat == 0 %}
                             <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
-                        {% elseif rdv.statusConsultation == 2 %}
-                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
+
+                    </td>
+
+                </tr>
+            {% endfor %}
+            {% for rdv in proposition  %}
+                <tr>
+                    <td>
+                        {{ rdv.dateProposition |format_datetime('full', 'short', locale=app.request.locale) }}
+                    </td>
+
+                    <td>
+                        {{ rdv.descriptionProposition }}
                     </td>
                     <td>
-                        {% if rdv.statusConsultation == 2 %}
-                        {% else %}
-                            {% if rdv.etat == 1 %}
-                                <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
-                            {% elseif rdv.etat == 0 %}
-                                <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
-                            {% endif %}
+                        {{ rdv.firstName }} {{ rdv.lastName }}
+                    </td>
+                    <td>
+                        {% if rdv.etat == 1 %}
+                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                        {% elseif rdv.etat == 0 %}
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
+
                     </td>
 
                 </tr>

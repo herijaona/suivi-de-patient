@@ -2,21 +2,17 @@
 
 <div class="col_exc_1" style="position: relative;">
     <link href="{{ asset('assets/css/croppie.css') }}" rel="stylesheet" type="text/css">
-
         <h4 class="h4_patient"> {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %} {% trans %} Area {% endtrans %}
         </h4>
         <div class="bar-container">
             <i style="position: absolute" class="fas fa-bars bar-icon"></i>
         </div>
-
-
     <div class="mt-4 menu-container">
-
             <div class="img_profile">
                 {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
-                <img style="position: relative" src="/{{ img }}">
+                <img src="/{{ img }}">
                 <a class="edit-profile">
-                    <i style="position: relative" class="fas fa-pencil-alt"></i>
+                    <i  class="fas fa-pencil-alt"></i>
                 </a>
                 <input type="file"   id="upload_image" name="upload_image"  accept="image/*" style="display: none"/>
 
@@ -101,17 +97,7 @@
                 </li>
                 <li {% if (currentPath == path('proposisition_rdv') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('proposisition_rdv') }}">{% trans %}Appointment proposal{% endtrans %}</a></li>
                 <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">{% trans %}Family Group {% endtrans %}</a></li>
-
             {% endif %}
-        </ul>
-        <ul class="logout_footer">
-            <li>
-                {% if is_granted('ROLE_ADMIN') %}
-                <a href="{{ path('admin_logout') }}">
-                    <i class="fas fa-sign-out-alt"></i> {% trans %}Logout{% endtrans %}
-                </a>
-                {% endif %}
-            </li>
         </ul>
     </div>
 </div>

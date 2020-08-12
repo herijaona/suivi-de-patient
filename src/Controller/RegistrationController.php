@@ -198,7 +198,6 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             // do anything else you need here, like send an email
-
             return $this->redirectToRoute('app_register_activate',['id'=>$user->getId()]);
         }
 

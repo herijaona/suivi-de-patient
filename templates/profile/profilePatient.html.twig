@@ -4,7 +4,7 @@
 <div class="d-flex w-100">
     <h2 class="profile-h2">{% trans %}My profile{% endtrans %}</h2>
     <div class="text-right w-50">
-        <button type="submit " class="btn btn-info button-login btn-edit mb-3">
+        <button type="submit" class="btn btn-info button-login btn-edit mb-3">
             <i class="fas fa-pencil-alt mr-2"></i>
             <span>{% trans %}Edit{% endtrans %}</span>
         </button>
@@ -65,17 +65,20 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.email }}">
                         </div>
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Password{% endtrans %}</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
+                            <label for="">{% trans %}Password{% endtrans %}</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe', 'value': values.user.password}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.password }}">
+
                         </div>
                     </div>
                     <div class="row form-group">
                         <div class="col-lg-6">
-                            <label for="">Username</label> {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant'}}) }}
+                            <label for="">Username</label> {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant', 'value': values.user.username}}) }}
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.username }}">
                         </div>
                         <div class="col-md-6">
 
-                            <label for="">{% trans %}Name of the Father{% endtrans %}</label> {{ form_widget(registrationForm.namedaddy, {'attr': {'class': 'form-control mb-3', 'placeholder': 'nom de père'}}) }}
+                            <label for="">{% trans %}Name of the Father{% endtrans %}</label> {{ form_widget(registrationForm.namedaddy, {'attr': {'class': 'form-control mb-3 form-show', 'placeholder': 'nom de père' , 'value': values.fatherName}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.fatherName }}">
 
                         </div>
 
@@ -83,10 +86,12 @@
                     <div class="row form-group">
                         <div class="col-md-6">
 
-                            <label for="">{% trans %}Mother's Name{% endtrans %}</label> {{ form_widget(registrationForm.namemonther, {'attr': {'class': 'form-control mb-3', 'placeholder': 'nom de mère'}}) }}
+                            <label for="">{% trans %}Mother's Name{% endtrans %}</label> {{ form_widget(registrationForm.namemonther, {'attr': {'class': 'form-control mb-3  form-show', 'placeholder': 'nom de mère', 'value': values.motherName }}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.motherName }}">
+
                         </div>
                     </div>
-                    <button type="submit " class="btn btn-info button-login mb-3 button-edit button-edit-class">
+                    <button type="submit " class="btn btn-info button-login mb-3 button-edit button-edit-class" >
                         {% trans %}Save{% endtrans %}
                     </button>
                 </form>
@@ -119,6 +124,10 @@
             $(this).prepend('<i class="fas fa-pencil-alt mr-2"></i>');
         }
     });
+    $(".button-edit-class").click(function () {
+        console.log("change");
+
+    })
 </script>
 
 {% endblock %}

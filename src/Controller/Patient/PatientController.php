@@ -125,9 +125,11 @@ class PatientController extends AbstractController
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
         $rvc = $this->ordoConsultationRepository->searchStatus($patient->getId(), 1);
+        $pr= $this->propositionRdvRepository->searchPropositio($patient->getId(), 1);
         return $this->render('patient/consultation.html.twig', [
             'consultation'=>$rvc,
-            'Doctors'=>$doctor
+            'proposition'=>$pr,
+            'Doctors'=>$doctor,
         ]);
     }
 
@@ -578,33 +580,4 @@ class PatientController extends AbstractController
         }
         return new JsonResponse(['form_delete' => $delete]);
     }
-    /**
-     * @Route("/notification" , name ="noti")
-     */
-    public function notif( Request $request)
-    {
-        $user= $this->getUser();
-        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        $proposition = $this->propositionRdvRepository->searchStatusPatientNotif($patient);
-        $propos = $this->propositionRdvRepository->searchPropositio($patient);
-        $pro ='';
-        foreach ($proposition as $rows){
-            $tes = $rows["count"];
-            foreach ($propos as $notif){
-
-                $nom = $notif["lastName"];
-                $prenom = $notif["firstName"];
-                $pro .='
-                 <a class="dropdown-item" style="background-color: #06CF7D" href="proposition/rdv">
-                 <strong> Proposition Rendez-vous </strong><br/>
-                 <small><em>'.$nom.' a envoyé proposition </em></small>
-                 </a>
-           ';
-            }
-        }
-        return new JsonResponse(['unseen_notification'=>$tes,'notification'=>$pro]);
-
-    }
-
-
 }

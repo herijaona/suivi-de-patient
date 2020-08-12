@@ -31,11 +31,17 @@
                         {{ icp.dateConsultation |format_datetime('full', 'short', locale=app.request.locale)}}
                     </td>
                     <td>Consultation</td>
-                    <td>{{ icp.objetConsultation }}</td>
+                    <td>
+                        {% if icp.descriptionProposition == null %}
+                             {{ icp.objetConsultation }}
+                        {% else %}
+                            {{ icp.descriptionProposition }}
+                        {% endif %}
+                    </td>
                     <td>{{ icp.patient_name }} {{ icp.patient_lastname }} </td>
                     <td>
                         {% if icp.etat == 0  %}
-                            <span class="badge badge-success badge-style modif-etat" data-etat="{{ icp.etat }}" data-id = {{ icp.id }}  data-type="consultation"  data-action="active">{% trans %}Realize{% endtrans %}</span>
+                            <span class="badge badge-success badge-style modif-etat" data-etat="{{ icp.etat }}" data-id = "{{ icp.id }}" data-proposition = "{{ icp.proposition }}"   data-type="consultation"  data-action="active">{% trans %}Realize{% endtrans %}</span>
                         {% elseif icp.etat == 1 %}
                             <span class="badge badge-info badge-style ">{% trans %}Realized{% endtrans %}</span>
                         {% endif %}
@@ -53,7 +59,7 @@
                     <td>{{ ivp.patient_name }} {{ ivp.patient_lastname }}  </td>
                     <td>
                         {% if ivp.etat == 0  %}
-                        <span class="badge badge-success badge-style modif-etat" data-etat="{{ ivp.etat }}" data-id = {{ ivp.id }}  data-type="vaccination"  data-action="active">{% trans %}Realize{% endtrans %}</span>
+                        <span class="badge badge-success badge-style modif-etat" data-etat="{{ ivp.etat }}" data-id = "{{ ivp.id }}"  data-type="vaccination"  data-action="active">{% trans %}Realize{% endtrans %}</span>
                         {% elseif ivp.etat == 1 %}
                             <span class="badge badge-info badge-style ">{% trans %}Realized{% endtrans %}</span>
                         {% endif %}
@@ -81,6 +87,7 @@
         var type = $(this).data('type');
         var etat = $(this).data('etat');
         var action = $(this).data('action');
+        var proposition = $(this).data('proposition');
         $.ajax({
             url: "{{ path('update_etat') }}",
             type: 'post',
@@ -88,6 +95,7 @@
                 id: id,
                 type: type,
                 etat: etat,
+                proposition: proposition,
                 action: action
             },
             dataType: "json",

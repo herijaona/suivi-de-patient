@@ -101,7 +101,7 @@ class VaccinGenerate
 
                     $crnV->setPatient($patient)
                          ->setVaccin($vacc)
-                         // ->setEtat(false)
+                         ->setEtat(false)
                          ->setIntervationVaccination($intervention);
 
                     $getVAcc = $vacc->$getDate();

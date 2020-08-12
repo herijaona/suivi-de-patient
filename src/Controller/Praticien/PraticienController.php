@@ -47,6 +47,7 @@ class PraticienController extends AbstractController
     protected $intervationConsultationRepository;
     protected $interventionVaccinationRepository;
     protected $propositionRdvRepository;
+    protected $carnetVaccinationRepository;
 
 
 
@@ -54,6 +55,7 @@ class PraticienController extends AbstractController
         VaccinGenerate $vaccinGenerate,
         PatientRepository $patientRepository,
         PropositionRdvRepository $propositionRdvRepository,
+        CarnetVaccinationRepository $carnetVaccinationRepository,
         PraticienRepository $praticienRepository,
         FamilyRepository $familyRepository,
         OrdoConsultationRepository $ordoConsultationRepository,
@@ -67,6 +69,7 @@ class PraticienController extends AbstractController
         $this->vaccinGenerate = $vaccinGenerate;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
+        $this->carnetVaccinationRepository=$carnetVaccinationRepository;
         $this->familyRepository = $familyRepository;
         $this->propositionRdvRepository= $propositionRdvRepository;
         $this->entityManager = $entityManager;
@@ -106,9 +109,11 @@ class PraticienController extends AbstractController
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $rvc = $this->ordoConsultationRepository->searchStatusPraticien($praticien->getId());
+        $pr = $this->propositionRdvRepository->searchStatusPraticien($praticien->getId());
 
         return $this->render('praticien/consultation.html.twig', [
             'consultation' => $rvc,
+            'proposition'=>$pr,
         ]);
     }
 
@@ -326,6 +331,7 @@ class PraticienController extends AbstractController
            {
                $ordoVacc = $this->ordoVaccinationRepository->find($request->request->get('id'));
                $ordoCons = $this->ordoConsultationRepository->find($request->request->get('id'));
+               $proposition = $this->propositionRdvRepository->find($request->request->get('id'));
                if($request->request->get('action') == "active")
                {
                    if($request->request->get('type') == "vaccination" && $request->request->get('etat') == 0){
@@ -337,17 +343,24 @@ class PraticienController extends AbstractController
                            $ordoVacc->setEtat(1);
                            $this->entityManager->persist($ordoVacc);
                            $this->entityManager->flush();
-
                        }
                    }else{
                        $inter = $this->intervationConsultationRepository->find($request->request->get('id'));
                        if($inter != null){
+                           $propos = $request->request->get('proposition');
                            $inter->setEtat(1);
                            $this->entityManager->persist($inter);
                            $this->entityManager->flush();
-                           $ordoCons->setEtat(1);
-                           $this->entityManager->persist($ordoCons);
-                           $this->entityManager->flush();
+                           if($propos == null){
+                               $ordoVacc->setEtat(1);
+                               $this->entityManager->persist($ordoVacc);
+                               $this->entityManager->flush();
+
+                           }else{
+                               $proposition->setEtat(1);
+                               $this->entityManager->persist($proposition);
+                               $this->entityManager->flush();
+                           }
 
 
                        }
@@ -614,63 +627,6 @@ class PraticienController extends AbstractController
     }
 
     /**
-     * @Route("/notification" , name ="notif")
-     */
-    public function notif( Request $request)
-    {
-        $user= $this->getUser();
-        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $cons= $this->ordoConsultationRepository->searchStatusPraticienNotif($praticien);
-        $co= $this->ordoConsultationRepository->searchStatusPraticienAll($praticien);
-        $vacc = $this->ordoVaccinationRepository->searchStatusPraticienNotif($praticien);
-        $vac = $this->ordoVaccinationRepository->searchStatusPraticienAll($praticien);
-
-        $consultation ='';
-        $vaccination ='';
-        foreach ($vacc as $row){
-            $te = $row[1];
-            foreach ($vac as $noti) {
-                $nom = $noti["lastName"];
-                $prenom = $noti["firstName"];
-                $vaccination .='
-           <a style="background-color: #06CF7D; opacity: 0.8;" class="dropdown-item" href="rdv-prat">
-           <strong> Demande de Vaccination </strong><br/>
-           <small><em>'.$nom.' a envoyé demande vaccination </em></small>
-           </a>
-           <hr>
-           
-           ';
-
-            }
-
-        }
-        foreach ($cons as $rows){
-            $tes = $rows[1];
-       foreach ($co as $notif){
-           $nom = $notif["lastName"];
-           $prenom = $notif["firstName"];
-           $consultation .='
-           <a class="dropdown-item" style="background-color: #06CF7D; opacity: 0.8;" href="rdv-prat">
-           <strong> Demande de Consultation </strong><br/>
-           <small><em>'.$nom.' a envoyé demande consultation </em></small>
-           </a>
-           <hr>
-          
-           ';
-       }
-    }
-
-
-
-        $count= $tes + $te;
-        $notifig= $consultation . $vaccination;
-
-
-        return new JsonResponse(['unseen_notification'=>$count,'notification'=>$notifig]);
-
-    }
-
-    /**
     * @Route("/chart/nb_prise_type_vacc", name="chart/nb_prise_type_vacc"), methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
     */
     public function nb_prise_type_vacc(){
@@ -737,4 +693,23 @@ class PraticienController extends AbstractController
       $queryResult = $this->vaccinRepository->getVaccStat($userId);
       return new JsonResponse($queryResult);
     }
+
+    /**
+     * @Route("/update/carnet", name="update_carnet")
+     */
+    public function update_carnet(Request $request, TranslatorInterface $translator)
+    {
+        $carnet = $this->carnetVaccinationRepository->find($request->request->get('id'));
+        $carnet->setEtat(true);
+        $this->entityManager->persist($carnet);
+        $this->entityManager->flush();
+
+        $message=$translator->trans('Successful change');
+        $this->addFlash('success', $message);
+        return new JsonResponse(['status' => 'OK']);
+    }
+
+
+
+
 }

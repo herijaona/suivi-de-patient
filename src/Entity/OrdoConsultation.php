@@ -96,10 +96,6 @@ class OrdoConsultation
      */
     private $etat;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=PropositionRdv::class, inversedBy="ordoConsultations")
-     */
-    private $proposition;
 
     /**
      * @ORM\Column(type="integer")

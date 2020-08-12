@@ -40,7 +40,7 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
         $result = [];
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('
-            SELECT p.firstName as firstname, p.lastName as lastname, v.vaccinName as vaccin, c.etat as vaccinState, c.datePriseInitiale as datePriseInitiale, c.rappelVaccin as rappel
+            SELECT c.id, p.firstName as firstname, p.lastName as lastname, v.vaccinName as vaccin, c.etat as vaccinState, c.datePriseInitiale as datePriseInitiale, c.rappelVaccin as rappel
             FROM App\Entity\CarnetVaccination c
              INNER JOIN App\Entity\Patient p with p.id = c.patient
             INNER JOIN App\Entity\Vaccin v with v.id=c.vaccin

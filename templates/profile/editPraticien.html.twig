@@ -62,8 +62,13 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.email }}">
                         </div>
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Center Health{% endtrans %}</label>{{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control form-show', 'placeholder': 'Your center health'}}) }}
-                            <input type="text" class="form-control form-edit" placeholder="{{ values.ordonnaces}}">
+                            {% for  ordo in  values.ordonnaces%}
+                            <label for="">{% trans %}Center Health{% endtrans %}</label>{{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control form-show', 'placeholder': 'Your center health', 'value': ordo.CentreSante.centreName}}) }}
+
+                                <input type="text" class="form-control form-edit" placeholder="{{ ordo.CentreSante.centreName}}">
+                            {% endfor %}
+                            {##}
+
                         </div>
                     </div>
                     <div class="row form-group">
@@ -72,7 +77,8 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.username }}">
                         </div>
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Password{% endtrans %}</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Mot de passe'}}) }}
+                            <label for="">{% trans %}Password{% endtrans %}</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe', 'value': values.user.password}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.password }}">
                         </div>
                     </div>
                     <button type="submit" class="btn btn-info button-login mb-3 button-edit button-edit-class">
@@ -107,6 +113,8 @@
             $(this).children('span').html('<span>{% trans %}Edit{% endtrans %}</span>');
             $(this).prepend('<i class="fas fa-pencil-alt mr-2"></i>');
         }
+
+
     });
 </script>
 {% endblock %}

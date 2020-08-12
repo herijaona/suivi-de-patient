@@ -46,11 +46,6 @@ class PropositionRdv
 
 
     /**
-     * @ORM\OneToMany(targetEntity=OrdoConsultation::class, mappedBy="proposition")
-     */
-    private $ordoConsultations;
-
-    /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="propositionRdvs")
      */
     private $patient;
