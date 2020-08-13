@@ -37,7 +37,7 @@ h1 {
     top: 0;
     opacity: 1;
     height: 100%;
-    background:linear-gradient(-18deg, #04200a82 24%, rgb(29 78 49 / 41%) 45%);
+    background:linear-gradient(-18deg, #2f8a4282 24%, rgb(13 101 49 / 12%) 45%);
 }
 
 .btn-login {
@@ -45,7 +45,7 @@ h1 {
     color: white;
     background: transparent;
     width: 220px;
-    padding: 15px;
+    padding: 10px;
     border: 2px solid white;
     line-height: 1rem;
 }
@@ -57,7 +57,7 @@ h1 {
     color: #ffffff;
     background: rgb(6, 186, 113);
     width: 220px;
-    padding: 15px;
+    padding: 10px;
 }
 
 .btn-login:hover {

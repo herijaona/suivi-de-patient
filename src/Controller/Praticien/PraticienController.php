@@ -631,9 +631,7 @@ class PraticienController extends AbstractController
     */
     public function nb_prise_type_vacc(){
       $userId = $this->getUser()->getId();
-
       $queryResult = $this->vaccinRepository->countPriseVaccinParType($userId);
-
       $result = [];
       foreach($queryResult as $res){
         array_push($result, array(
@@ -650,10 +648,7 @@ class PraticienController extends AbstractController
     */
     public function age_range(){
       $userId = $this->getUser()->getId();
-
-      // Get the current user/praticien patients birthday
       $patientsBirthday = $this->ordoVaccinationRepository->findPatientsBirthday($userId);
-
       $patientsAgeRange = array();
       // Count each range of 10
       foreach($patientsBirthday as $birthday){
@@ -685,13 +680,20 @@ class PraticienController extends AbstractController
     }
 
     /**
-    * @Route("/chart/vaccin_stat", name="vaccin_stat")
+    * @Route("/chart/vaccin_stat", name="/chart/vaccin_stat")
     */
     public function vaccin_stat(){
-      $userId = $this->getUser()->getId();
+        $userId = $this->getUser()->getId();
 
-      $queryResult = $this->vaccinRepository->getVaccStat($userId);
-      return new JsonResponse($queryResult);
+        $queryResult = $this->carnetVaccinationRepository->findvaccin($userId);
+        $result = [];
+        foreach($queryResult as $res){
+            array_push($result, array(
+                "label" => $res["vaccin"],
+                "y" => intval($res["patient"])
+            ));
+        }
+      return new JsonResponse($result);
     }
 
     /**

@@ -14,7 +14,7 @@ window.onload = function() {
             var chart2 = new CanvasJS.Chart("chartContainer2", {
                 animationEnabled: true,
                 title: {
-                    text: "Nombres patients par type patient",
+                    text: "Number of patients by patient type",
                     horizontalAlign: "left",
                     fontSize: 16,
                 },
@@ -56,7 +56,7 @@ window.onload = function() {
             var options = {
                 animationEnabled : true,
                 title : {
-                    text : "Nombre de Prise par Type de Vaccin",
+                    text : "Number of doses per type of vaccine",
                     horizontalAlign: "left",
                     fontSize: 16,
                 },
@@ -86,17 +86,17 @@ window.onload = function() {
             var ageRangeChart = new CanvasJS.Chart("chartContainerAgeRange",{
                 animationEnabled : true,
                 title : {
-                    text : "Tranche d'age",
+                    text : "Age range",
                     horizontalAlign: "left",
                     fontSize: 16,
                 },
                 axisX : {
-                    title : "Tranche d'age par 10",
+                    title : "Age group by 10",
                     horizontalAlign : "right",
                     titleFontSize : 10
                 },
                 axisY : {
-                    title : "Nombre de patients",
+                    title : "Number of patients",
                     titleFontSize : 10
                 },
                 data : [{
@@ -134,7 +134,7 @@ window.onload = function() {
             var options = {
                 animationEnabled : true,
                 title : {
-                    text : "Nombre de Vaccins",
+                    text : "vaccine type",
                     horizontalAlign: "left",
                     fontSize: 16,
                 },
@@ -149,8 +149,7 @@ window.onload = function() {
 
         }
     }).done(() => {
-// ---------------------------------------------------------------------------------
-
+        // ---------------------------------------------------------------------------------
     });
 
     $.ajax({
@@ -167,11 +166,11 @@ window.onload = function() {
             var chart = new CanvasJS.Chart("chartContainer", {
                 animationEnabled: true,
                 title: {
-                    text: "Evolution des vaccinations par an",
+                    text: "Evolution of vaccinations per year",
                     fontSize: 18,
                 },
                 data: [{
-                    yValueFormatString: "## Nombre de vaccination",
+                    yValueFormatString: "## Number of vaccinations",
                     xValueFormatString: "MM YYYY",
                     type: "spline",
                     dataPoints: evacc
@@ -202,7 +201,7 @@ window.onload = function() {
             var chart3 = new CanvasJS.Chart("chartContainer3", {
                 animationEnabled: true,
                 title: {
-                    text: "Utilisateurs",
+                    text: "Users",
                     fontSize: 18,
                 },
                 data: [{

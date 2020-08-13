@@ -43,8 +43,8 @@
                         {{ my_group.Membres|length }} familles
                     </td>
                     <td>
-                        <span class="see_group" data-id="{{ my_group.ID }}" data-href="{{ path('see_my_group', {'group_id': my_group.ID}) }}" ><i class="fas fa-eye"></i></span>
-                        <span class="edit_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-edit"></i></span>
+                        <span class="btn btn-primary see_group" data-id="{{ my_group.ID }}" data-href="{{ path('see_my_group', {'group_id': my_group.ID}) }}" ><i class="fas fa-eye"></i></span>
+                        <span class="btn btn-primary edit_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-edit"></i></span>
                     </td>
                 </tr>
             {% endfor %}

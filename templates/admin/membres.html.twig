@@ -69,8 +69,9 @@
     </div>
     <div class="tab-wrap">
         <ul class="tab-list">
-            <li class="in"><a href="javascript:;"><span>Patient</span></a></li>
-            <li><a href="javascript:;"><span>Praticien</span></a></li>
+            <li style="margin-left: 34px;" class=" in"><a href="javascript:;"><span class="btn btn-info">Patient</span></a></li>
+
+            <li style="margin-left: 15px"><a href="javascript:;"><span class="btn btn-info">Praticien</span></a></li>
         </ul>
         <div class="tab-items">
             <div class="tab-item in">
@@ -184,11 +185,7 @@
     <script>
         $(document).ready(function () {
             $('#table-patients').DataTable();
-            $("#table-praticiens").DataTable({
-                language: {
-                    url: "{{ asset('vendor/datatables/English.json') }}"
-                }
-            });
+            $("#table-praticiens").DataTable();
         });
         $(".new_vaccin").on('click' , function(e) {
             $(".loadBody").css("display", "block");
