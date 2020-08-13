@@ -16,7 +16,7 @@
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                     <img class="rounded-circle" style=" position: absolute; height: 30px; margin-left: -25px;margin-top: 3px;" src="/{{ img }}" width="30px">
                 </a>
-                <div style="margin-top: 11px; background: linear-gradient(150deg, #077DF2 4%, #06CF7D 100%); width: 110px" class="menu_">
+                <div style="margin-top: 11px; background: linear-gradient(150deg, rgb(40 112 174) 4%, #28a745 100%); width: 110px" class="menu_">
                     <a  style="font-size: 14px" href="{{ path('editPatient')  }}">{% trans %}My profile{% endtrans %}</a>
                     <hr>
                     <a style="font-size: 14px; margin-left: -19px " href="{{ path('admin_logout') }}">{% trans %}Logout{% endtrans %}</a>
@@ -27,7 +27,7 @@
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                     <img class="rounded-circle" style=" position: absolute; height: 30px; margin-left: -25px;margin-top: 3px;" src="/{{ img }}" width="30px">
                 </a>
-                <div style="margin-top: 11px; background: linear-gradient(150deg, #077DF2 4%, #06CF7D 100%); width: 110px" class="menu_">
+                <div style="margin-top: 11px; background: linear-gradient(150deg, rgb(40 112 174) 4%, #28a745 100%); width: 110px" class="menu_">
                     <a  style="font-size: 14px" href="{{ path('editPraticien') }}">{% trans %}My profile{% endtrans %}</a>
                     <hr>
                     <a style="font-size: 14px; margin-left: -19px " href="{{ path('admin_logout') }}">{% trans %}Logout{% endtrans %}</a>
@@ -52,9 +52,10 @@
 
     <script>
         $('.menu_').css('display', 'none');
-        $(".clickTr").click(function() {
+        $(".clickTr").on('click',function() {
             $('.menu_').toggle();
         });
+
     </script>
 
 {% endblock %}

@@ -134,7 +134,7 @@ window.onload = function() {
             var options = {
                 animationEnabled : true,
                 title : {
-                    text : "Number of Vaccines",
+                    text : "vaccine type",
                     horizontalAlign: "left",
                     fontSize: 16,
                 },
@@ -149,8 +149,7 @@ window.onload = function() {
 
         }
     }).done(() => {
-// ---------------------------------------------------------------------------------
-
+        // ---------------------------------------------------------------------------------
     });
 
     $.ajax({
