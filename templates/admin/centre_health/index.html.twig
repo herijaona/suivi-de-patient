@@ -83,9 +83,9 @@
                         {{ centre.city.region.state.nameState }}
                     </td>
                     <td>
-                        <a href="{{ path('see_vaccin', {'centre_id' : centre.id}) }}" class="btn btn-primary" style="height: 32px;"><i class="fas fa-eye"></i></a>
-
-                        <span class="btn btn-primary data-edit" data-id="{{ centre.id }}"><i class="fa fa-pencil"></i></span>
+                        <a class="btn btn-primary see_vaccin" style="width: 36px;height: 33px;"  href="{{ path('see_vaccin', {'centre_id' : centre.id}) }}" ><i style="margin-left: -3px" class="fas fa-eye"></i></a>
+                        {#<a href="{{ path('see_vaccin', {'centre_id' : centre.id}) }}" class="btn btn-primary"  style="width: 37px; height: 31px;"><i style="margin-left: -3px" class="fas fa-eye"></i></a>#}
+                        <span class="btn btn-primary data-edit" data-id="{{ centre.id }}" ><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ centre.id }}"><i class="fa fa-trash-o"></i></span>
                     </td>
                 </tr>
@@ -104,6 +104,7 @@
                     url: "{{ asset('vendor/datatables/lang.json') }}"
                 }
             });
+
             $('.chosen-select').chosen({width: "100%"});
             $('#example-select-all').on('click', function(){
                 var rows = table.rows({ 'search': 'applied' }).nodes();

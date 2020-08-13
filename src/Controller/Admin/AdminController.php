@@ -554,7 +554,7 @@ class AdminController extends AbstractController
 
 
     /**
-     * @Route("/admin/centre/health/{centre_id}", name="see_vaccin")
+     * @Route("/centre/health/{centre_id}", name="see_vaccin")
      */
     public function see_vaccin($centre_id, VaccinCentreHealthRepository $repository,Request $request){
         $cv = $repository->findListVaccinsInCentre($centre_id) ;

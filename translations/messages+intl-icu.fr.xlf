@@ -793,6 +793,10 @@
         <source>Vaccine Name</source>
         <target>Nom du vaccin</target>
       </trans-unit>
+      <trans-unit id="Number of patients by patient type">
+        <source xml:lang="en">Number of patients by patient type</source>
+        <target xml:lang="fr">Nombres patients par type patient</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

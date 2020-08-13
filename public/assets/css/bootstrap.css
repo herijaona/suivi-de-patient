@@ -300,7 +300,11 @@ button::-moz-focus-inner {
 input[type=checkbox],
 input[type=radio] {
     box-sizing: border-box;
-    padding: 0
+    padding: 0;
+    width: 39px;
+    margin-left: 16px;
+    margin-top: 9px;
+">
 }
 
 input[type=date],

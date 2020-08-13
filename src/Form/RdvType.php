@@ -23,7 +23,7 @@ class RdvType extends AbstractType
         $builder
             ->add('id', HiddenType::class)
             ->add('praticiens',EntityType::class,
-                ['required' => false,
+                ['required' => true,
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('p')
                             ->orderBy('p.firstName')
