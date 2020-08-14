@@ -685,7 +685,8 @@ class PraticienController extends AbstractController
     public function vaccin_stat(){
         $userId = $this->getUser()->getId();
 
-        $queryResult = $this->carnetVaccinationRepository->findvaccin($userId);
+        $queryResult = $this->interventionVaccinationRepository->findvaccin($userId);
+        dd($userId);
         $result = [];
         foreach($queryResult as $res){
             array_push($result, array(

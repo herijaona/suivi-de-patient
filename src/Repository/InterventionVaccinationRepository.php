@@ -71,6 +71,19 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function findvaccin(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            SELECT i.id, v.vaccinName as vaccin, count(p.id) as patient
+            FROM App\Entity\InterventionVaccination i 
+            INNER JOIN App\Entity\Patient p with p.id = i.patient
+            LEFT JOIN APP\Entity\CarnetVaccination c with c.id = i.carnetVaccinations
+            LEFT JOIN APP\Entity\Vaccin v with v.id = c.vaccin');
+
+        return $query->getResult();
+
+    }
+
     // /**
     //  * @return InterventionVaccination[] Returns an array of InterventionVaccination objects
     //  */
