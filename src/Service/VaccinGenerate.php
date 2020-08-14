@@ -99,15 +99,17 @@ class VaccinGenerate
 
                     $crnV = new CarnetVaccination();
 
+
                     $crnV->setPatient($patient)
                          ->setVaccin($vacc)
                          ->setEtat(false)
                          ->setIntervationVaccination($intervention);
 
                     $getVAcc = $vacc->$getDate();
+
+
                     
                     if($getVAcc !== "" && $getVAcc !== null){
-                        $crnV->setEtat($getVAcc < new \Datetime());
 
                         $interval = date_interval_create_from_date_string($getVAcc);
                         $rappelOrDateInit = new \Datetime($birthday->format('Y-m-d H:i:s'));

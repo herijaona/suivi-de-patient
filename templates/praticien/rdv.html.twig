@@ -87,13 +87,6 @@
 {% block javascripts %}
     <!-- DataTables -->
     <script>
-        $(document).ready(function() {
-            $('#example1').DataTable();
-            $('.date_rdv').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-            });
-        });
         $('.modif-status').on('click', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -131,72 +124,14 @@
             });
 
         });
-
-        $('.data-edit').on('click', function (e) {
-            e.preventDefault();
-            var id = $(this).data('id');
-            var type = $(this).data('type');
-            $.ajax({
-                url: "{{ path('add_form_rdv_patient') }}",
-                type: 'post',
-                data: {
-                    id: id,
-                    type: type,
-                    action: 'edit'
-                },
-                dataType: "json",
-                success: (data) =>{
-                    $('.create_body').html(data.form_html);
-                    $("#modal_create_body").modal('show');
-                    $('#rdv_heureRdv').clockpicker({
-                        donetext: "valider",
-                        autoclose: true,
-                    });
-                    $('#rdv_heureRdv').on('change', function () {
-                        let receivedVal = $(this).val();
-                        $(this).val(receivedVal + ":00");
-                    });
-                    $(".loadBody").css("display", "none");
-                },
-                error: (e) => {
-                    $(".loadBody").css("display", "none");
-                    $(".chargementError").css("display", "block");
-                }
-            }).done(() => {
-                $(".loadBody").css("display", "none");
+        $(document).ready(function() {
+            $('#example1').DataTable();
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
             });
         });
 
 
-        $('.data-remove').on('click', function (e) {
-            e.preventDefault();
-            var $delete = confirm('Êtes-vous sûr de vouloir supprimer cet rdv ?');
-            if($delete){
-                $(".loadBody").css("display", "block");
-                var id = $(this).data('id');
-                var type = $(this).data('type');
-                $.ajax({
-                    url: "{{ path('remove_rdv_patient') }}",
-                    type: 'post',
-                    data: {
-                        id: id,
-                        type: type,
-                    },
-                    dataType: "json",
-                    success: (data) =>{
-                        $(".loadBody").css("display", "none");
-                        location.reload();
-                    },
-                    error: (e) => {
-                        $(".loadBody").css("display", "none");
-                        $(".chargementError").css("display", "block");
-                    }
-                }).done(() => {
-                    $(".loadBody").css("display", "none");
-                });
-            }else {
-                return false
-            }
-        });
     </script>
 {% endblock %}

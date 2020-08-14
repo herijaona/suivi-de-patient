@@ -64,9 +64,6 @@
 {% block javascripts %}
     <!-- DataTables -->
     <script>
-        $(document).ready(function() {
-            $('#example1').DataTable();
-        });
         $('.modif-carnet').on('click', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -90,6 +87,9 @@
             }).done(() => {
                 $(".loadBody").css("display", "none");
             });
+        });
+        $(document).ready(function() {
+            $('#example1').DataTable();
         });
     </script>
 {% endblock %}

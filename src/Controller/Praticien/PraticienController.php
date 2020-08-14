@@ -393,8 +393,8 @@ class PraticienController extends AbstractController
         }
         $this->entityManager->persist($Rdv);
         $this->entityManager->flush();
-        //$message=$translator->trans('Successful change');
-        //$this->addFlash('success', $message);
+        $message=$translator->trans('Successful change');
+        $this->addFlash('success', $message);
         return new JsonResponse(['status' => 'OK']);
     }
 
@@ -415,12 +415,12 @@ class PraticienController extends AbstractController
             }
             $this->entityManager->persist($Rdv);
             $this->entityManager->flush();
-            //$message=$translator->trans('Successful change');
-            //$this->addFlash('success', $message);
+            $message=$translator->trans('Successful change');
+            $this->addFlash('success', $message);
 
         }else{
-            //$message=$translator->trans('You do not have access to this event');
-            //$this->addFlash('error', $message);
+            $message=$translator->trans('You do not have access to this event');
+            $this->addFlash('error', $message);
         }
         return new JsonResponse(['status' => 'OK']);
     }
@@ -679,6 +679,25 @@ class PraticienController extends AbstractController
       return new JsonResponse($result);
     }
 
+    /**
+    * @Route("/chart/vaccin_stat", name="/chart/vaccin_stat")
+    */
+    public function vaccin_stat(){
+        $userId = $this->getUser()->getId();
+
+        $queryResult = $this->carnetVaccinationRepository->findvaccin($userId);
+        $result = [];
+
+            foreach($queryResult as $res){
+                array_push($result, array(
+                    "label" => $res["vaccin"],
+                    "y" => intval($res["patient"])
+                ));
+            }
+
+
+      return new JsonResponse($result);
+    }
 
 
     /**

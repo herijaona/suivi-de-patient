@@ -99,13 +99,6 @@
 {% block javascripts %}
     <!-- DataTables -->
     <script>
-        $(document).ready(function () {
-            $('#example1').DataTable();
-            $('.date_rdv').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-            });
-        });
         $(".add_form_rdv").on('click' , function(e) {
             $(".loadBody").css("display", "block");
             e.preventDefault();
@@ -203,6 +196,13 @@
             }else {
                 return false
             }
+        });
+        $(document).ready(function () {
+            $('#example1').DataTable();
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            });
         });
     </script>
 {% endblock %}
