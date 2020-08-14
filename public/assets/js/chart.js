@@ -114,43 +114,7 @@ window.onload = function() {
     });
 // ---------------------------------------------------------------------------------
 
-// ---------------------------------------------------------------------------------
-// Chart Vaccin
-// ---------------------------------------------------------------------------------
-    $.ajax({
-        url: "/praticien/chart/vaccin_stat",
-        type: 'get',
-        dataType: 'json',
-        success: (data) => {
-            var nbVacc = [];
-            console.log(data);
-            $.each(data, function( index, value ) {
-                nbVacc.push({label: value.label, y: value.y});
-            });
-            var dataSeries = {type : "pie", dataPoints : nbVacc};
-            var dt = [];
-            dt.push(dataSeries);
 
-            var options = {
-                animationEnabled : true,
-                title : {
-                    text : "vaccine type",
-                    horizontalAlign: "left",
-                    fontSize: 16,
-                },
-                data : dt
-            }
-
-            var chartVaccinStat = new CanvasJS.Chart("chartVaccinStat", options);
-
-            chartVaccinStat.render();
-        },
-        error: (e) => {
-
-        }
-    }).done(() => {
-        // ---------------------------------------------------------------------------------
-    });
 
     $.ajax({
         url: "/admin/chart/evolutions_des_vaccinations",

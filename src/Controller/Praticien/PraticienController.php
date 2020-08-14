@@ -679,23 +679,7 @@ class PraticienController extends AbstractController
       return new JsonResponse($result);
     }
 
-    /**
-    * @Route("/chart/vaccin_stat", name="/chart/vaccin_stat")
-    */
-    public function vaccin_stat(){
-        $userId = $this->getUser()->getId();
 
-        $queryResult = $this->interventionVaccinationRepository->findvaccin($userId);
-        dd($userId);
-        $result = [];
-        foreach($queryResult as $res){
-            array_push($result, array(
-                "label" => $res["vaccin"],
-                "y" => intval($res["patient"])
-            ));
-        }
-      return new JsonResponse($result);
-    }
 
     /**
      * @Route("/update/carnet", name="update_carnet")

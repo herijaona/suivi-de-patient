@@ -53,6 +53,28 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
 
 
 
+    public function findvaccin(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT DISTINCT c.id, v.vaccinName as vaccin
+            FROM App\Entity\CarnetVaccination c
+            INNER JOIN App\Entity\Patient p with p.id = c.patient
+            LEFT JOIN App\Entity\Vaccin v with v.id = c.vaccin');
+
+        return $query->getResult();
+
+    }
+    public function findvacci(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT count(distinct p.id) as patient
+            FROM App\Entity\CarnetVaccination c
+            INNER JOIN App\Entity\Patient p with p.id = c.patient
+            LEFT JOIN App\Entity\Vaccin v with v.id = c.vaccin');
+
+        return $query->getResult();
+
+    }
+
+
 
     // /**
     //  * @return CarnetVaccination[] Returns an array of CarnetVaccination objects
