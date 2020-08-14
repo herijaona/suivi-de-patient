@@ -5,12 +5,10 @@
 {% block stylesheets %}
     {{ parent() }}
 {% endblock %}
-
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">{% trans %}
-                Appointment proposal {% endtrans %}</h4>
+            <h4 class="h4-content">{% trans %}Appointment proposal {% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
@@ -25,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for propos in proposition  %}
+            {% for propos in proposition %}
                 <tr>
                     <td class="text-left">
                         {{ propos.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
@@ -44,7 +42,6 @@
                     <td>
                         <span class="badge badge-success badge-style modif-etat" data-patient="{{ propos.patient }}" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}"  >{% trans %}Accept{% endtrans %}</span>
                     </td>
-
                 </tr>
             {% endfor %}
             </tbody> date
