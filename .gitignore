@@ -18,6 +18,7 @@
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
+.env
 /.env
 /composer.lock
 composer.lock
@@ -25,4 +26,3 @@ composer.lock
 ###> lexik/jwt-authentication-bundle ###
 # /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
-composer.lock~723d823f4dbaa2b02e3d9c4b227b764b3a8de690

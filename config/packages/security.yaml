@@ -25,7 +25,7 @@ security:
                 password_path:            password
                 success_handler:          lexik_jwt_authentication.handler.authentication_success
                 failure_handler:          lexik_jwt_authentication.handler.authentication_failure
-        api:
+        apip:
             pattern:   ^/apip
             stateless: true
             guard:
@@ -71,7 +71,8 @@ security:
          - { path: ^/admin/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/admin/logout$, role: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/admin/, role: [ROLE_ADMIN] }
+         - { path: ^/api/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/api/login_check$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-         - { path: ^/apip/users, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+         #- { path: ^/apip/users, roles: IS_AUTHENTICATED_ANONYMOUSLY }
          - { path: ^/apip,       roles: IS_AUTHENTICATED_FULLY }
 

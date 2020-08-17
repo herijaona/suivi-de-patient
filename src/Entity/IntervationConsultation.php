@@ -20,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  *    collectionOperations={"get"},
  *    itemOperations={"get"}
  * )
- * @ApiFilter(SearchFilter::class, properties={"patient": "exact"})
+ * @ApiFilter(SearchFilter::class, properties={"patient": "exact", "etat": "exact"})
  * @ApiFilter(DateFilter::class, properties={"dateConsultation": DateFilter::PARAMETER_AFTER})
  * @ApiFilter(OrderFilter::class, properties={"dateConsultation"}, arguments={"orderParameterName"="order"}))
  */
