@@ -785,7 +785,7 @@
         <source>Unrealized Vaccination</source>
         <target>Vaccination non réalisée</target>
       </trans-unit>
-      <trans-unit id=".FJfXBp" resname="Health center vaccine">
+      <trans-unit id="IxJAyAQ" resname="Health center vaccine">
         <source>Health center vaccine</source>
         <target>Vaccin du centre de santé</target>
       </trans-unit>
@@ -793,9 +793,17 @@
         <source>Vaccine Name</source>
         <target>Nom du vaccin</target>
       </trans-unit>
-      <trans-unit id="Number of patients by patient type">
-        <source xml:lang="en">Number of patients by patient type</source>
-        <target xml:lang="fr">Nombres patients par type patient</target>
+      <trans-unit id="YcLTZXo" resname="Number of patients by patient type">
+        <source>Number of patients by patient type</source>
+        <target>Nombres patients par type patient</target>
+      </trans-unit>
+      <trans-unit id="XQVluhk" resname="Initial Take Date">
+        <source>Initial Take Date</source>
+        <target>Date de prise initiale</target>
+      </trans-unit>
+      <trans-unit id="wjnLpwY" resname="Date Reminder">
+        <source>Date Reminder</source>
+        <target>Date Rappel</target>
       </trans-unit>
     </body>
   </file>
