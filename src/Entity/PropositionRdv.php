@@ -2,6 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\PropositionRdvRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,54 +15,72 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=PropositionRdvRepository::class)
+ * @ApiResource(
+ *    normalizationContext={"groups"={"read:PropositionRdv"}},
+ *    collectionOperations={"get"},
+ *    itemOperations={"get"}
+ * )
+ * @ApiFilter(SearchFilter::class, properties={"praticien": "exact"})
+ * @ApiFilter(DateFilter::class, properties={"dateConsultation": DateFilter::PARAMETER_AFTER})
+ * @ApiFilter(OrderFilter::class, properties={"dateProposition"}, arguments={"orderParameterName"="order"}))
  */
+
 class PropositionRdv
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"read:PropositionRdv"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"read:PropositionRdv"})
      */
     private $dateProposition;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:PropositionRdv"})
      */
     private $descriptionProposition;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:PropositionRdv"})
      */
     private $statusProposition;
 
     /**
      * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="propositionRdvs")
+     * @Groups({"read:PropositionRdv"})
      */
     private $praticien;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Groups({"read:PropositionRdv"})
      */
     private $etat;
 
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="propositionRdvs")
+     * @Groups({"read:PropositionRdv"})
      */
     private $patient;
 
     /**
      * @ORM\OneToOne(targetEntity=IntervationConsultation::class, mappedBy="proposition", cascade={"persist", "remove"})
+     * @Groups({"read:PropositionRdv"})
      */
     private $intervationConsultation;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"read:PropositionRdv"})
      */
     private $statusNotif;
 

@@ -6,11 +6,13 @@ namespace App\Controller\Api\Vaccination;
 
 use App\Entity\OrdoConsultation;
 use App\Entity\OrdoVaccination;
+use App\Entity\PropositionRdv;
 use App\Repository\OrdoConsultationRepository;
 use App\Repository\OrdonnaceRepository;
 use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\PropositionRdvRepository;
 use App\Repository\VaccinRepository;
 use App\Service\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -33,6 +35,7 @@ class VaccinationController extends AbstractController
     private $ordonnaceRepository;
     private $vaccinRepository;
     private $ordoConsultationRepository;
+    private $propositionRdvRepository;
 
     public function __construct(
         EntityManagerInterface $em,
@@ -43,7 +46,8 @@ class VaccinationController extends AbstractController
         PraticienRepository $praticienRepository,
         OrdonnaceRepository $ordonnaceRepository,
         VaccinRepository $vaccinRepository,
-        OrdoConsultationRepository $ordoConsultationRepository
+        OrdoConsultationRepository $ordoConsultationRepository,
+        PropositionRdvRepository $propositionRdvRepository
     )
     {
         $this->em = $em;
@@ -55,6 +59,7 @@ class VaccinationController extends AbstractController
         $this->ordonnaceRepository = $ordonnaceRepository;
         $this->vaccinRepository = $vaccinRepository;
         $this->ordoConsultationRepository = $ordoConsultationRepository;
+        $this->propositionRdvRepository = $propositionRdvRepository;
     }
 
     public function inProgressAction(Request $request){
@@ -105,7 +110,7 @@ class VaccinationController extends AbstractController
         $heure = $rdvRequest["heureRdv"];
         $Id = $rdvRequest["id"];
 
-        $user = $this->getUser();
+        $user = $this->tokenService->getCurrentUser();
 
         $rdv_date = str_replace("/", "-", $date);
 
@@ -191,6 +196,46 @@ class VaccinationController extends AbstractController
                 }
                 break;
         }
+        return new JsonResponse(['status' => 'OK']);
+    }
+
+    public  function register_proposition(Request $request)
+    {
+
+        $propositionRequest = json_decode($request->getContent(),true);
+
+        $description = $propositionRequest["description"];
+        $patient = $propositionRequest["patient"];
+        $date = $propositionRequest["dateRdv"];
+        $heure = $propositionRequest["heureRdv"];
+        $Id = $propositionRequest["id"];
+
+        $user = $this->tokenService->getCurrentUser();
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $praticien= $this->praticienRepository->findOneBy(['user'=>$user]);
+        if($patient != ''){
+            $patient =  $this->patientRepository->find($patient);
+
+        }
+
+        if($Id !='' && $Id = 0)
+        {
+            $proposition = $this->propositionRdvRepository->find($Id);
+        }else {
+            $proposition = new PropositionRdv();
+        }
+
+        $proposition->setDescriptionProposition($description);
+        $proposition->setDateProposition($Date_Rdv);
+        $proposition->setPraticien($praticien);
+        $proposition->setPatient($patient);
+        $proposition->setStatusProposition(0);
+        $proposition->setEtat(0);
+        $proposition->setStatusNotif(0);
+        $this->em->persist($proposition);
+        $this->em->flush();
+
         return new JsonResponse(['status' => 'OK']);
     }
 }

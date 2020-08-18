@@ -576,9 +576,8 @@ class PraticienController extends AbstractController
         $proposition->setStatusProposition(0);
         $proposition->setEtat(0);
         $proposition->setStatusNotif(0);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($proposition);
-        $entityManager->flush();
+        $this->entityManager->persist($proposition);
+        $this->entityManager->flush();
         return $this->redirectToRoute('rdv_proposition');
     }
 

@@ -42,4 +42,7 @@ api_update_status_rdv:
 api_update_etat_rdv:
     path: /apip/update_etat_rdv
     controller: App\Controller\Api\Vaccination\VaccinationController::registerRdvAction
+register_proposition:
+    path: /apip/register_proposition
+    controller: App\Controller\Api\Vaccination\VaccinationController::register_proposition
 
