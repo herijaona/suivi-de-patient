@@ -356,7 +356,6 @@ class PraticienController extends AbstractController
                return new JsonResponse(['status' => 'OK']);
            }
 
-
     /**
      * @Route("/form-add", name="add_form_rdv")
      */
