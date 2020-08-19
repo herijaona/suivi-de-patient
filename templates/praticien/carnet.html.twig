@@ -22,13 +22,11 @@
                 <th>{% trans %}Initial Take Date {% endtrans %}</th>
                 <th>{% trans %}Date Reminder{% endtrans %}</th>
                 <th>Status</th>
-
             </tr>
             </thead>
             <tbody>
             {# {{dump(vaccination)}} #}
             {% for vaccin in listVaccins %}
-
                 <tr>
                     <td>{{vaccin.firstname}} {{vaccin.lastname}}</td>
                     <td>{{vaccin.vaccin}}</td>
@@ -54,13 +52,11 @@
                         {% endif %}
                     </td>
                 </tr>
-
             {% endfor %}
             </tbody>
         </table>
     </div>
 {% endblock %}
-
 {% block javascripts %}
     <!-- DataTables -->
     <script>

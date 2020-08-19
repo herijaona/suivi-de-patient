@@ -109,7 +109,6 @@
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/croppie.js') }}" type="text/javascript"></script>
 <script>
-
     $('.bar-container').click(function(){
         $('.menu-container').toggle('show');
     })
@@ -142,7 +141,6 @@
         $('#uploadimageModal').modal('show');
     });
 
-
     $('.crop_image').click(function(event){
         $image_crop.croppie('result', {
             type: 'canvas',
@@ -156,7 +154,7 @@
                 {
                     $('#uploadimageModal').modal('hide');
                     location.reload();
-                    //$('#uploaded_image').html(data);
+
                 }
             });
         })

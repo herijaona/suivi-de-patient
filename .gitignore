@@ -25,4 +25,7 @@ composer.lock
 ###> lexik/jwt-authentication-bundle ###
 # /config/jwt/*.pem
 ###< lexik/jwt-authentication-bundle ###
+
+###mercure###
+updates.db
 composer.lock~723d823f4dbaa2b02e3d9c4b227b764b3a8de690

@@ -10,7 +10,8 @@
         <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}New appointment{% endtrans %}</h4>
     {% else %}
         <h4 class="modal-title white-text w-100 font-weight-bold py-2">
-            {% trans %}Appointment modification{% endtrans %}</h4>
+            {% trans %}Appointment modification{% endtrans %}
+        </h4>
     {% endif %}
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true" class="white-text">&times;</span>
@@ -29,12 +30,11 @@
         {{ form_widget(form.typeRdv, {'attr': { 'class': 'form-control chosen-select' }}) }}
     </div>
     <div class="md-form description_hidden">
-        <label class="active" for="form1">Description </label>
+        <label class="active" for="form1">Description</label>
         {{ form_widget(form.description, {'attr': { 'class': 'form-control' }}) }}
     </div>
-
     <div class="md-form">
-        <label class="active" for="form1">{% trans %}Appointment date{%  endtrans %} </label>
+        <label class="active" for="form1">{% trans %}Appointment date{%  endtrans %}</label>
         {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control date_rdv' }}) }}
     </div>
     <div class="md-form">
