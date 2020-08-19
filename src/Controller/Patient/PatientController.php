@@ -172,10 +172,8 @@ class PatientController extends AbstractController
             $interCons->setPraticienConsultant($praticien);
             $interCons->setEtat(0);
             $interCons->setProposition($proposition);
+            $interCons->getProposition()->setStatusProposition(1);
             $this->entityManager->persist($interCons);
-            $this->entityManager->flush();
-            $propos->setStatusProposition(1);
-            $this->entityManager->persist($propos);
             $this->entityManager->flush();
         }
         $message = $translator->trans('Successful change');
@@ -272,34 +270,25 @@ class PatientController extends AbstractController
     /**
      * @Route("/register-rdv", name="register_rdv")
      */
-    public function register_rdv(Request $request)
+    public function register_rdv(Request $request,TranslatorInterface $translator)
     {
         $rdvRequest = $request->request->get("rdv");
         $type = $rdvRequest["typeRdv"];
         $doctor = $rdvRequest["praticiens"];
-
         $date = $rdvRequest["dateRdv"];
         $description = $rdvRequest["description"];
         $heure = $rdvRequest["heureRdv"];
         $Id = $rdvRequest["id"];
-
         $user = $this->getUser();
-
         $rdv_date = str_replace("/", "-", $date);
-
         $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
-
         $ordo = null;
         $vaccination = null;
         $praticien = null;
-
         if($doctor != ''){
             $praticien =  $this->praticienRepository->find($doctor);
             $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
         }
-
-
-
         $patient =  $this->patientRepository->findOneBy(['user' => $user]);
 
         if ($type=="consultation"){
@@ -324,7 +313,6 @@ class PatientController extends AbstractController
                 $ordovaccination = $this->ordoVaccinationRepository->find($Id);
             }else{
                 $ordovaccination = new OrdoVaccination();
-                
             }
             $ordovaccination->setDatePrise($Date_Rdv);
             $ordovaccination->setOrdonnance($ordo);
@@ -336,8 +324,6 @@ class PatientController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($ordovaccination);
             $entityManager->flush();
-
-
             $patientordovaccination = new PatientOrdoVaccination();
             $patientordovaccination->setPatient($patient);
             // $id = $patientordovaccination->getId();
@@ -346,9 +332,9 @@ class PatientController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($patientordovaccination);
             $entityManager->flush();
-
-            
         }
+        $message=$translator->trans('Appointment registration successful');
+        $this->addFlash('success', $message);
         return $this->redirectToRoute('rdv_patient');
 
     }

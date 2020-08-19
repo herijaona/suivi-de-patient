@@ -805,6 +805,10 @@
         <source>Date Reminder</source>
         <target>Date Rappel</target>
       </trans-unit>
+      <trans-unit id="pepCGzr" resname="Appointment registration successful">
+        <source>Appointment registration successful</source>
+        <target>Enregistrement du rendez-vous réussi</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
