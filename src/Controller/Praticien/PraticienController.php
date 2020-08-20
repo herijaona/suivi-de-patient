@@ -7,6 +7,7 @@ use App\Entity\IntervationConsultation;
 use App\Entity\InterventionVaccination;
 use App\Entity\OrdoConsultation;
 use App\Entity\OrdoVaccination;
+use App\Entity\PatientIntervationConsultation;
 use App\Entity\PropositionRdv;
 use App\Form\ConsultationPraticienType;
 use App\Form\PropositionRdvType;
@@ -29,8 +30,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-// use App\Service\VaccinGenerate;
-
 /**
  * @Route("/praticien")
  */
@@ -147,8 +146,8 @@ class PraticienController extends AbstractController
             'vaccination'=>$ivp,
 
         ]);
-
     }
+
     /**
      * @Route("/intervention/rejected", name="intervention_praticien_reject")
      */
@@ -203,6 +202,7 @@ class PraticienController extends AbstractController
             'vaccination'=>$rve,
         ]);
     }
+
     /**
      * @Route("/see-calendar/{patient_id}", name="see_calendar")
      */
@@ -256,6 +256,11 @@ class PraticienController extends AbstractController
                             $interConsu->getOrdoConsulataion()->setStatusNotif(1);
                             $this->entityManager->persist($interConsu);
                             $this->entityManager->flush();
+                            $patientintervationconsultation = new PatientIntervationConsultation();
+                            $patientintervationconsultation->setPatient($patient);
+                            $patientintervationconsultation->setInterventionConsultation($interConsu);
+                            $this->entityManager->persist($patientintervationconsultation);
+                            $this->entityManager->flush();
                         }
                     }else{
                         $ordoVacc = $this->ordoVaccinationRepository->find($id);
@@ -271,7 +276,6 @@ class PraticienController extends AbstractController
                             $interVacc->getOrdoVaccination()->setStatusNotif(1);
                             $this->entityManager->persist($interVacc);
                             $this->entityManager->flush();
-
                             $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
                             $birthday = $patient->getDateOnBorn();
                             $type_patient = $patient->getTypePatient();
@@ -488,7 +492,7 @@ class PraticienController extends AbstractController
             $delete = true;
             $message=$translator->trans('The Appointment proposal has been successfully deleted!');
             $this->addFlash('success', $message);
-         return new JsonResponse(['form_delete' => $delete]);
+            return new JsonResponse(['form_delete' => $delete]);
     }
 
     /**
@@ -603,13 +607,8 @@ class PraticienController extends AbstractController
         $carnet->setEtat(true);
         $this->entityManager->persist($carnet);
         $this->entityManager->flush();
-
         $message=$translator->trans('Successful change');
         $this->addFlash('success', $message);
         return new JsonResponse(['status' => 'OK']);
     }
-
-
-
-
 }
