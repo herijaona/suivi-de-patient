@@ -155,7 +155,7 @@ class PatientController extends AbstractController
         $praticien = $request->request->get("praticien");
         $patient = $request->request->get("patient");
         $date = $request->request->get("date");
-        $description = $request->request->get("description");
+        //$description = $request->request->get("description");
         $patient = $this->patientRepository->find($patient);
         $praticien = $this->praticienRepository->find($praticien);
         $proposition = $this->propositionRdvRepository->find($id);
@@ -173,11 +173,7 @@ class PatientController extends AbstractController
             $interCons->getProposition()->setStatusProposition(1);
             $this->entityManager->persist($interCons);
             $this->entityManager->flush();
-            $patientordointer = new PatientIntervationConsultation();
-            $patientordointer->setInterventionConsultation($interCons);
-            $patientordointer->setPatient($patient);
-            $this->entityManager->persist($patientordointer);
-            $this->entityManager->flush();
+
         }
             $message = $translator->trans('Successful change');
             $this->addFlash('success', $message);
@@ -209,6 +205,7 @@ class PatientController extends AbstractController
         $user = $this->getUser();
         $patient= $this->patientRepository->findOneBy(['user'=>$user]);
         $rce = $this->ordoConsultationRepository->searchStatus($patient->getId());
+
         $rve = $this->ordoVaccinationRepository->searchStatus($patient->getId());
         $doctor = $this->praticienRepository->findAll();
 
@@ -293,11 +290,6 @@ class PatientController extends AbstractController
             $ordoconsultation->setStatusNotif(0);
             $this->entityManager->persist($ordoconsultation);
             $this->entityManager->flush();
-            $patientordoconsultation = new PatientOrdoConsultation();
-            $patientordoconsultation->setPatient($patient);
-            $patientordoconsultation->setOrdoConsultation($ordoconsultation);
-            $this->entityManager->persist($patientordoconsultation);
-            $this->entityManager->flush();
         }else{
             if ($Id != ''){
                 $ordovaccination = $this->ordoVaccinationRepository->find($Id);
@@ -312,11 +304,6 @@ class PatientController extends AbstractController
             $ordovaccination->setEtat(0);
             $ordovaccination->setStatusNotif(0);
             $this->entityManager->persist($ordovaccination);
-            $this->entityManager->flush();
-            $patientordovaccination = new PatientOrdoVaccination();
-            $patientordovaccination->setPatient($patient);
-            $patientordovaccination->setOrdoVaccination($ordovaccination);
-            $this->entityManager->persist($patientordovaccination);
             $this->entityManager->flush();
         }
             $message=$translator->trans('Appointment registration successful');
@@ -498,16 +485,18 @@ class PatientController extends AbstractController
         $delete = false;
         if ($type == 'consultation'){
             $ordoCon = $this->ordoConsultationRepository->find($Id);
+
             if ( $ordoCon != null){
                 $IntervationConsultations = $ordoCon->getIntervationConsultations();
                 $PatientOrdoConsultations = $ordoCon->getPatientOrdoConsultations();
-                if (($IntervationConsultations && count($IntervationConsultations) > 0) ||
-                    ($PatientOrdoConsultations && count($PatientOrdoConsultations) > 0))
+
+                if ($IntervationConsultations && count($IntervationConsultations) > 0)
                 {
                     $message = $translator->trans('Error deleting this element!');
                     $delete = false;
                     $this->addFlash('error', $message );
                 }else{
+
                     $this->entityManager->remove($ordoCon);
                     $this->entityManager->flush();
                     $message = $translator->trans('Appointment has been deleted successfully!');
@@ -521,13 +510,13 @@ class PatientController extends AbstractController
             if ( $ordoCon != null){
                 $InterventionVaccinations = $ordoCon->getInterventionVaccinations();
                 $PatientOrdoVaccinations = $ordoCon->getPatientOrdoVaccinations();
-                if (($PatientOrdoVaccinations && count($PatientOrdoVaccinations) > 0) ||
-                    ($InterventionVaccinations && count($InterventionVaccinations) > 0))
+                if ($InterventionVaccinations && count($InterventionVaccinations) > 0)
                 {
                     $message = $translator->trans('Error deleting this element!');
                     $delete = false;
                     $this->addFlash('error', $message);
                 }else{
+
                     $this->entityManager->remove($ordoCon);
                     $this->entityManager->flush();
                     $message = $translator->trans('Appointment has been deleted successfully!');

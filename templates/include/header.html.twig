@@ -18,7 +18,7 @@
                 <div style="margin-top: 11px; background: linear-gradient(150deg, rgb(40 112 174) 4%, #28a745 100%); width: 110px" class="menu_">
                     <a  style="font-size: 14px" href="{{ path('editPatient')}}">{% trans %}My profile{% endtrans %}</a>
                     <hr>
-                    <a style="font-size: 14px; margin-left: -19px " href="{{ path('admin_logout')}}">{% trans %}Logout{% endtrans %}</a>
+                    <a style="font-size: 14px; margin-left: -19px " href="{{ path('app_logout')}}">{% trans %}Logout{% endtrans %}</a>
                 </div>
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
@@ -29,7 +29,7 @@
                 <div style="margin-top: 11px; background: linear-gradient(150deg, rgb(40 112 174) 4%, #28a745 100%); width: 110px" class="menu_">
                     <a  style="font-size: 14px" href="{{ path('editPraticien')}}">{% trans %}My profile{% endtrans %}</a>
                     <hr>
-                    <a style="font-size: 14px; margin-left: -19px " href="{{ path('admin_logout')}}">{% trans %}Logout{% endtrans %}</a>
+                    <a style="font-size: 14px; margin-left: -19px " href="{{ path('app_logout')}}">{% trans %}Logout{% endtrans %}</a>
                 </div>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
