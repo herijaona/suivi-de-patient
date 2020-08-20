@@ -454,7 +454,7 @@ class PraticienController extends AbstractController
         $heure = $propositionRequest["heureRdv"];
         $Id = $propositionRequest["id"];
 
-        $user = $this->getUser();
+            $user = $this->getUser();
         $rdv_date = str_replace("/", "-", $date);
         $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
         $praticien= $this->praticienRepository->findOneBy(['user'=>$user]);

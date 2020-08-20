@@ -9,6 +9,7 @@ use App\Entity\InterventionVaccination;
 use App\Entity\OrdoConsultation;
 use App\Entity\OrdoVaccination;
 use App\Entity\PropositionRdv;
+use App\Repository\CarnetVaccinationRepository;
 use App\Repository\IntervationConsultationRepository;
 use App\Repository\InterventionVaccinationRepository;
 use App\Repository\OrdoConsultationRepository;
@@ -24,6 +25,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -33,18 +35,68 @@ class VaccinationController extends AbstractController
      * @var EntityManagerInterface
      */
     protected $em;
+    /**
+     * @var AuthorizationCheckerInterface
+     */
     private $authorizationChecker;
+    /**
+     * @var TokenService
+     */
     private $tokenService;
+    /**
+     * @var OrdoVaccinationRepository
+     */
     private $ordoVaccinationRepository;
     private $patientRepository;
+    /**
+     * @var PraticienRepository
+     */
     private $praticienRepository;
+    /**
+     * @var OrdonnaceRepository
+     */
     private $ordonnaceRepository;
+    /**
+     * @var VaccinRepository
+     */
     private $vaccinRepository;
+    /**
+     * @var OrdoConsultationRepository
+     */
     private $ordoConsultationRepository;
+    /**
+     * @var PropositionRdvRepository
+     */
     private $propositionRdvRepository;
+    /**
+     * @var IntervationConsultationRepository
+     */
     private $intervationConsultationRepository;
+    /**
+     * @var InterventionVaccinationRepository
+     */
     private $interventionVaccinationRepository;
+    /**
+     * @var CarnetVaccinationRepository
+     */
+    private $carnetVaccinationRepository;
 
+    /**
+     * VaccinationController constructor.
+     * @param EntityManagerInterface $em
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TokenService $tokenService
+     * @param OrdoVaccinationRepository $ordoVaccinationRepository
+     * @param PatientRepository $patientRepository
+     * @param PraticienRepository $praticienRepository
+     * @param OrdonnaceRepository $ordonnaceRepository
+     * @param VaccinRepository $vaccinRepository
+     * @param OrdoConsultationRepository $ordoConsultationRepository
+     * @param PropositionRdvRepository $propositionRdvRepository
+     * @param IntervationConsultationRepository $intervationConsultationRepository
+     * @param InterventionVaccinationRepository $interventionVaccinationRepository
+     * @param CarnetVaccinationRepository $carnetVaccinationRepository
+     */
     public function __construct(
         EntityManagerInterface $em,
         AuthorizationCheckerInterface $authorizationChecker,
@@ -57,7 +109,8 @@ class VaccinationController extends AbstractController
         OrdoConsultationRepository $ordoConsultationRepository,
         PropositionRdvRepository $propositionRdvRepository,
         IntervationConsultationRepository $intervationConsultationRepository,
-        InterventionVaccinationRepository $interventionVaccinationRepository
+        InterventionVaccinationRepository $interventionVaccinationRepository,
+        CarnetVaccinationRepository $carnetVaccinationRepository
     )
     {
         $this->em = $em;
@@ -72,8 +125,14 @@ class VaccinationController extends AbstractController
         $this->propositionRdvRepository = $propositionRdvRepository;
         $this->intervationConsultationRepository = $intervationConsultationRepository;
         $this->interventionVaccinationRepository = $interventionVaccinationRepository;
+        $this->carnetVaccinationRepository = $carnetVaccinationRepository;
     }
 
+    /**
+     * @Route("/apip/ordo_vaccinations_in_progress", name="api_ordovaccination_in_progress", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function inProgressAction(Request $request){
         if ($this->tokenService->getTokenStorage() == null) {
             return new JsonResponse(['status' => 'KO', 'message' => 'Vous étes deconnecter']);
@@ -93,6 +152,11 @@ class VaccinationController extends AbstractController
         return new JsonResponse($data);
     }
 
+    /**
+     * @Route("/apip/ordovaccination_rejected", name="api_ordovaccination_rejected", methods={"GET"})
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function inRejectedAction(Request $request){
         if ($this->tokenService->getTokenStorage() == null) {
             return new JsonResponse(['status' => 'KO', 'message' => 'Vous étes deconnecter']);
@@ -112,6 +176,13 @@ class VaccinationController extends AbstractController
     }
 
     //register rdv patient
+
+    /**
+     * @Route("/apip/register_rdv_patient", name="api_register_rdv_patient", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public  function registerRdvAction(Request $request){
         $rdvRequest = json_decode($request->getContent(),true);
         $type = $rdvRequest["typeRdv"];
@@ -177,6 +248,12 @@ class VaccinationController extends AbstractController
     }
 
     //accept rdv (consultation/vaccination)old version
+
+    /**
+     * @Route("/apip/update_status_rdv", name="api_update_status_rdv", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
     public  function updateStatusRdvAction(Request $request)
     {
         $rdvRequest = json_decode($request->getContent(),true);
@@ -213,6 +290,13 @@ class VaccinationController extends AbstractController
     }
 
     // register proposition rdv
+
+    /**
+     * @Route("/apip/register_proposition", name="api_register_proposition", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
     public  function register_proposition(Request $request)
     {
 
@@ -254,7 +338,15 @@ class VaccinationController extends AbstractController
     }
 
     //accept/reject rdv (consultation/vaccination)
-    public function  accepted_rdv_vaccination( Request $request, VaccinGenerate $vaccGen)
+
+    /**
+     * @Route("/apip/praticien_accepted_rdv", name="api_praticien_accepted_rdv", methods={"POST"})
+     * @param Request $request
+     * @param VaccinGenerate $vaccGen
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function  accepted_rdv_vaccination(Request $request, VaccinGenerate $vaccGen)
     {
         $acceptedRdvVaccination = json_decode($request->getContent(),true);
 
@@ -339,6 +431,12 @@ class VaccinationController extends AbstractController
     }
 
    // intervation => mise à jour d'etat( vaccination/consultation)
+
+    /**
+     * @Route("/apip/praticien_intervation_update_etat", name="api_praticien_intervation_update_etat", methods={"POST"})
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function intervation_update_etat(Request $request)
     {
         $intervationUpdateEtat = json_decode($request->getContent(),true);
@@ -374,14 +472,79 @@ class VaccinationController extends AbstractController
     }
 
     //supprimer proposition rdv praticien
-    public function remove_proposition(Request $request)
+
+    /**
+     * @Route("/apip/praticien_remove_proposition/{id}", name="praticien_remove_proposition", methods={"DELETE"})
+     * @param $id
+     * @return JsonResponse
+     */
+    public function remove_proposition($id)
     {
-        $removePropos = json_decode($request->getContent(),true);
-        $Id = $removePropos['id'];
-        $propos = $this->propositionRdvRepository->find($Id);
+        $propos = $this->propositionRdvRepository->find($id);
         $this->em->remove($propos);
         $this->em->flush();
-        return new JsonResponse(['delete' => true ]);
+        return new JsonResponse(['status' => 'OK' ]);
+    }
+
+
+    //Suppression rdv
+
+    /**
+     * @Route("/apip/delete_rdv/{id}/{type}", name="delete_rdv", methods={"DELETE"})
+     * @param Request $request
+     * @param $Id
+     * @param $type
+     * @return JsonResponse
+     */
+    public function remove_rdv(Request $request, $Id, $type)
+    {
+        $delete = 'KO';
+        switch ($type) {
+            case 'consultation':
+                $ordoCon = $this->ordoConsultationRepository->find($Id);
+                if ($ordoCon != null){
+                    if ($ordoCon->getIntervationConsultations() && $ordoCon->getIntervationConsultations() != null)
+                    {
+                        $delete = 'KO';
+                    }else{
+                        if ($ordoCon->getPatientOrdoConsultations() != null) $this->em->remove($ordoCon->getPatientOrdoConsultations());
+                        $this->em->remove($ordoCon);
+                        $this->em->flush();
+                        $delete = 'OK';
+                    }
+                }
+                break;
+            case 'vaccination':
+                $ordoCon = $this->ordoVaccinationRepository->find($Id);
+                if ( $ordoCon && $ordoCon != null){
+                    if ($ordoCon->getInterventionVaccinations() && $ordoCon->getInterventionVaccinations() != null)
+                    {
+                        $delete = 'KO';
+                    }else{
+                        if ($ordoCon->getInterventionVaccinations() && $ordoCon->getInterventionVaccinations() != null) $this->em->remove($ordoCon->getInterventionVaccinations());
+                        $this->em->remove($ordoCon);
+                        $this->em->flush();
+                        $delete = 'OK';
+                    }
+                }
+                break;
+        }
+
+        return new JsonResponse(['status' => $delete]);
+    }
+
+    /**
+     * @Route("/apip/update/{id}/carnet_vaccination", name="update_carnet_vaccination", methods={"POST"})
+     * @param $id
+     * @return JsonResponse
+     */
+    public function update_carnet_vaccination($id)
+    {
+        $carnet = $this->carnetVaccinationRepository->find($id);
+        $carnet->setEtat(true);
+        $this->em->persist($carnet);
+        $this->em->flush();
+        return new JsonResponse(['status' => 'OK']);
     }
 
 }

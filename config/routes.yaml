@@ -21,37 +21,37 @@ current_user_check:
     path: /apip/current_user_check
     controller: App\Controller\Api\DefaultController::CurrentUserCheck
 
-api_ordovaccination_in_progress:
-    path: /apip/ordo_vaccinations_in_progress
-    controller: App\Controller\Api\Vaccination\VaccinationController::inProgressAction
-api_ordovaccination_rejected:
-    path: /apip/ordovaccination_rejected
-    controller: App\Controller\Api\Vaccination\VaccinationController::inRejectedAction
-api_ordoconsultation_in_progress:
-    path: /apip/ordoconsultation_in_progress
-    controller: App\Controller\Api\Consultation\ConsultationController::inProgressAction
-api_ordoconsultation_rejected:
-    path: /apip/ordoconsultation_rejected
-    controller: App\Controller\Api\Consultation\ConsultationController::inRejectedAction
-api_register_rdv_patient:
-    path: /apip/register_rdv_patient
-    controller: App\Controller\Api\Vaccination\VaccinationController::registerRdvAction
-api_update_status_rdv:
-    path: /apip/update_status_rdv
-    controller: App\Controller\Api\Vaccination\VaccinationController::updateStatusRdvAction
-api_update_etat_rdv:
-    path: /apip/update_etat_rdv
-    controller: App\Controller\Api\Vaccination\VaccinationController::registerRdvAction
-register_proposition:
-    path: /apip/register_proposition
-    controller: App\Controller\Api\Vaccination\VaccinationController::register_proposition
-api_praticien_accepted_rdv:
-    path: /apip/praticien_accepted_rdv
-    controller: App\Controller\Api\Vaccination\VaccinationController::accepted_rdv_vaccination
-api_praticien_intervation_update_etat:
-    path: /apip/praticien_intervation_update_etat
-    controller: App\Controller\Api\Vaccination\VaccinationController::intervation_update_etat
-api_praticien_remove_proposition:
-    path: /apip/praticien_remove_proposition
-    controller: App\Controller\Api\Vaccination\VaccinationController::remove_proposition
+    #api_ordovaccination_in_progress:
+    #    path: /apip/ordo_vaccinations_in_progress
+    #    controller: App\Controller\Api\Vaccination\VaccinationController::inProgressAction
+    #api_ordovaccination_rejected:
+    #    path: /apip/ordovaccination_rejected
+    #    controller: App\Controller\Api\Vaccination\VaccinationController::inRejectedAction
+    #api_ordoconsultation_in_progress:
+    #    path: /apip/ordoconsultation_in_progress
+    #    controller: App\Controller\Api\Consultation\ConsultationController::inProgressAction
+    #api_ordoconsultation_rejected:
+    #    path: /apip/ordoconsultation_rejected
+    #    controller: App\Controller\Api\Consultation\ConsultationController::inRejectedAction
+    #api_register_rdv_patient:
+    #    path: /apip/register_rdv_patient
+    #    controller: App\Controller\Api\Vaccination\VaccinationController::registerRdvAction
+    #api_update_status_rdv:
+    #    path: /apip/update_status_rdv
+    #   controller: App\Controller\Api\Vaccination\VaccinationController::updateStatusRdvAction
+    #api_update_etat_rdv:
+    #    path: /apip/update_etat_rdv
+    #    controller: App\Controller\Api\Vaccination\VaccinationController::registerRdvAction
+    #register_proposition:
+    #    path: /apip/register_proposition
+    #    controller: App\Controller\Api\Vaccination\VaccinationController::register_proposition
+    #api_praticien_accepted_rdv:
+    #    path: /apip/praticien_accepted_rdv
+    #    controller: App\Controller\Api\Vaccination\VaccinationController::accepted_rdv_vaccination
+    #api_praticien_intervation_update_etat:
+    #    path: /apip/praticien_intervation_update_etat
+    #    controller: App\Controller\Api\Vaccination\VaccinationController::intervation_update_etat
+    #api_praticien_remove_proposition:
+    #    path: /apip/praticien_remove_proposition
+    #    controller: App\Controller\Api\Vaccination\VaccinationController::remove_proposition
 
