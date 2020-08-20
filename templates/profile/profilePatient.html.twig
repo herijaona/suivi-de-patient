@@ -12,7 +12,7 @@
 </div>
 <div>
     <div>
-        {{ form_start(registrationForm) }}
+        {{ form_start(registrationForm, {'attr': {'action': path('editPatient') }}) }}
         <div class="body-page register edit-register">
             <div class="container text-center body-content">
                 <form role="form" class="form-horizontal">
@@ -91,9 +91,8 @@
 
                         </div>
                     </div>
-                    <button type="submit " class="btn btn-info button-login mb-3 button-edit button-edit-class" >
-                        {% trans %}Save{% endtrans %}
-                    </button>
+                    <button  class="btn btn-info button-login  button-edit button-edit-class">{% trans %}Save{% endtrans %}</button>
+
                 </form>
             </div>
         </div>
@@ -124,10 +123,6 @@
             $(this).prepend('<i class="fas fa-pencil-alt mr-2"></i>');
         }
     });
-    $(".button-edit-class").click(function () {
-        console.log("change");
-
-    })
 </script>
 
 {% endblock %}

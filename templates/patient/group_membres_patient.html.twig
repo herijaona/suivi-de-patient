@@ -92,7 +92,7 @@
         e.preventDefault();
         var id_group = $(this).data('id-group');
         var id_membre = $(this).data('id-mmb');
-        var result = confirm("Êtes-vous sûr de vouloir supprimer dans cet groupe ?");
+        var result = confirm("Are you sure you want to delete from this group?");
         if (result) {
             var url = "{{ path('delete_membres_group') }}";
             $.ajax({

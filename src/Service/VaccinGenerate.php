@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\CarnetVaccination;
 use App\Entity\OrdoVaccination;
+use App\Entity\PatientCarnetVaccination;
 use App\Repository\InterventionVaccinationRepository;
 use App\Repository\VaccinRepository;
 use Carbon\Carbon;
@@ -135,6 +136,11 @@ class VaccinGenerate
                             $crnV->setRappelVaccin($rappelOrDateInit);
                         }
                         $this->entityManager->persist($crnV);
+                        $this->entityManager->flush();
+                        $PatientCarnet = new PatientCarnetVaccination();
+                        $PatientCarnet->setPatient($patient)
+                                      ->setCarnetVaccination($crnV);
+                        $this->entityManager->persist($PatientCarnet);
                         $this->entityManager->flush();
                     }
                 }

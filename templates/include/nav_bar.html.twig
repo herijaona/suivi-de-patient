@@ -86,8 +86,7 @@
                 <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}">{% trans %}Appointment Proposal{% endtrans %}</a></li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
-                <!--  <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li> -->
-                <li {% if (currentPath == path('vaccination_patient') or currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">{% trans %}Vaccination Schedule{% endtrans %}</a></li>
+                <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">{% trans %}Vaccination Schedule{% endtrans %}</a></li>
                 <li {% if (currentPath == path('consultation_patient')) ? 'active' :''  %} class="active" {% endif %} ><a href="{{ path('consultation_patient') }}">Consultation</a></li>
                 <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
@@ -109,7 +108,6 @@
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/croppie.js') }}" type="text/javascript"></script>
 <script>
-
     $('.bar-container').click(function(){
         $('.menu-container').toggle('show');
     })
@@ -142,7 +140,6 @@
         $('#uploadimageModal').modal('show');
     });
 
-
     $('.crop_image').click(function(event){
         $image_crop.croppie('result', {
             type: 'canvas',
@@ -156,7 +153,7 @@
                 {
                     $('#uploadimageModal').modal('hide');
                     location.reload();
-                    //$('#uploaded_image').html(data);
+
                 }
             });
         })
