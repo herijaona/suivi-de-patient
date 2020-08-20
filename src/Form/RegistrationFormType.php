@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\City;
+use App\Entity\State;
 use App\Entity\TypePatient;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -30,28 +32,19 @@ class RegistrationFormType extends AbstractType
             ->add('date_naissance', DateType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('lieu_naissance',EntityType::class ,[
-                'class'=>City::class,
-                'query_builder'=>function(EntityRepository $entityRepository){
-                    return $entityRepository->createQueryBuilder('c');
-                },
-                'choice_value' => 'id',
-                'choice_label' => function(?City $city) {
-                    return $city ? strtoupper($city->getNameCity()) : '';
-                },
-                'placeholder' => 'Lieu de naissance',
-            ])
+            ->add('lieu_naissance')
             ->add('phone')
-            ->add('address',EntityType::class ,[
-                'class'=>City::class,
+            ->add('address')
+            ->add('country', EntityType::class,[
+                'class'=>State::class,
                 'query_builder'=>function(EntityRepository $entityRepository){
-                    return $entityRepository->createQueryBuilder('c');
+                    return $entityRepository->createQueryBuilder('s');
                 },
                 'choice_value' => 'id',
-                'choice_label' => function(?City $city) {
-                    return $city ? strtoupper($city->getNameCity()) : '';
+                'choice_label' => function(?State $state){
+                    return $state ? strtoupper($state->getNameState()):'';
                 },
-                'placeholder' => 'Votre adresse',
+                'placeholder' => 'Country',
             ])
             ->add('type_patient',EntityType::class ,[
                 'class'=>TypePatient::class,

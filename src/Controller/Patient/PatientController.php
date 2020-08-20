@@ -155,7 +155,7 @@ class PatientController extends AbstractController
         $praticien = $request->request->get("praticien");
         $patient = $request->request->get("patient");
         $date = $request->request->get("date");
-        $description = $request->request->get("description");
+        //$description = $request->request->get("description");
         $patient = $this->patientRepository->find($patient);
         $praticien = $this->praticienRepository->find($praticien);
         $proposition = $this->propositionRdvRepository->find($id);
