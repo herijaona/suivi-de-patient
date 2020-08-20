@@ -45,4 +45,13 @@ api_update_etat_rdv:
 register_proposition:
     path: /apip/register_proposition
     controller: App\Controller\Api\Vaccination\VaccinationController::register_proposition
+api_praticien_accepted_rdv:
+    path: /apip/praticien_accepted_rdv
+    controller: App\Controller\Api\Vaccination\VaccinationController::accepted_rdv_vaccination
+api_praticien_intervation_update_etat:
+    path: /apip/praticien_intervation_update_etat
+    controller: App\Controller\Api\Vaccination\VaccinationController::intervation_update_etat
+api_praticien_remove_proposition:
+    path: /apip/praticien_remove_proposition
+    controller: App\Controller\Api\Vaccination\VaccinationController::remove_proposition
 

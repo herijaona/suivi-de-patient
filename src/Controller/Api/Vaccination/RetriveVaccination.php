@@ -55,7 +55,7 @@ class RetriveVaccination extends AbstractController
             return $this->ordoVaccinationRepository->searchStatus($patient->getId(), 1);
         } elseif ($this->authorizationChecker->isGranted('ROLE_PRATICIEN')) {
             $praticien = $this->praticienRepository->findOneBy(['user' => $CurrentUser]);
-            return $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId(), 1, 0);
+            return $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId());
         } elseif ($this->authorizationChecker->isGranted('ROLE_ADMIN')) {
             return $this->ordoVaccinationRepository->find(['statusVaccin' => 1]);
         }
