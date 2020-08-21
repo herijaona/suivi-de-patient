@@ -88,6 +88,7 @@
     <!-- DataTables -->
     <script>
         $('.modif-status').on('click', function (e) {
+            $(".loadBody").css("display", "block");
             e.preventDefault();
             var id = $(this).data('id');
             var type = $(this).data('type');

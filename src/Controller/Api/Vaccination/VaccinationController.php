@@ -185,13 +185,13 @@ class VaccinationController extends AbstractController
      */
     public  function registerRdvAction(Request $request){
         $rdvRequest = json_decode($request->getContent(),true);
-        $type = $rdvRequest["typeRdv"];
-        $doctor = $rdvRequest["praticiens"];
-        $vaccin = $rdvRequest["vaccin"];
-        $date = $rdvRequest["dateRdv"];
-        $description = $rdvRequest["description"];
-        $heure = $rdvRequest["heureRdv"];
-        $Id = $rdvRequest["id"];
+        $type = in_array("typeRdv", $rdvRequest, TRUE)? $rdvRequest['typeRdv'] : '';
+        $doctor = in_array("praticiens", $rdvRequest, TRUE)? $rdvRequest['praticiens'] : '';
+        $vaccin = in_array("vaccin", $rdvRequest, TRUE)? $rdvRequest['vaccin'] : '';
+        $date = in_array("dateRdv", $rdvRequest, TRUE)? $rdvRequest['dateRdv'] : '';
+        $description = in_array("description", $rdvRequest, TRUE)? $rdvRequest['description'] : '';
+        $heure = in_array("heureRdv", $rdvRequest, TRUE)? $rdvRequest['heureRdv'] : '';
+        $Id = in_array("id", $rdvRequest, TRUE)? $rdvRequest['id'] : '';
 
         $user = $this->tokenService->getCurrentUser();
 
@@ -299,14 +299,13 @@ class VaccinationController extends AbstractController
      */
     public  function register_proposition(Request $request)
     {
-
         $propositionRequest = json_decode($request->getContent(),true);
 
-        $description = $propositionRequest["description"];
-        $patient = $propositionRequest["patient"];
-        $date = $propositionRequest["dateRdv"];
-        $heure = $propositionRequest["heureRdv"];
-        $Id = $propositionRequest["id"];
+        $description = in_array("idescriptiond", $propositionRequest, TRUE)? $propositionRequest['description'] : '';
+        $patient = in_array("patient", $propositionRequest, TRUE)? $propositionRequest['patient'] : '';
+        $date = in_array("dateRdv", $propositionRequest, TRUE)? $propositionRequest['dateRdv'] : '';
+        $heure = in_array("heureRdv", $propositionRequest, TRUE)? $propositionRequest['heureRdv'] : '';
+        $Id = in_array("id", $propositionRequest, TRUE)? $propositionRequest['id'] : '';
 
         $user = $this->tokenService->getCurrentUser();
         $rdv_date = str_replace("/", "-", $date);
@@ -350,12 +349,12 @@ class VaccinationController extends AbstractController
     {
         $acceptedRdvVaccination = json_decode($request->getContent(),true);
 
-        $id = $acceptedRdvVaccination['id'];//id_ordo(vaccin/consultation)
-        $praticien = $acceptedRdvVaccination['praticien'];//id
-        $patient = $acceptedRdvVaccination['patient'];//id
-        $date = $acceptedRdvVaccination['date'];//19/01/2020
-        $action = $acceptedRdvVaccination['action'];//reject/active
-        $type = $acceptedRdvVaccination['type']; //consultation/vaccination
+        $id = in_array("id", $acceptedRdvVaccination, TRUE)? $acceptedRdvVaccination['id'] : '';//id_ordo(vaccin/consultation)
+        $praticien = in_array("praticien", $acceptedRdvVaccination, TRUE)? $acceptedRdvVaccination['praticien'] : '';//id
+        $patient = in_array("patient", $acceptedRdvVaccination, TRUE)? $acceptedRdvVaccination['patient'] : '';//id
+        $date = in_array("date", $acceptedRdvVaccination, TRUE)? $acceptedRdvVaccination['date'] : '';//19/01/2020
+        $action = in_array("action", $acceptedRdvVaccination, TRUE)? $acceptedRdvVaccination['action'] : '';//reject/active
+        $type = in_array("type", $acceptedRdvVaccination, TRUE)? $acceptedRdvVaccination['type'] : ''; //consultation/vaccination
 
         $Date_Rdv = new \DateTime($date);
 
@@ -441,8 +440,8 @@ class VaccinationController extends AbstractController
     {
         $intervationUpdateEtat = json_decode($request->getContent(),true);
 
-        $id = $intervationUpdateEtat['id'];//id_intervation(vaccin/consultation)
-        $type = $intervationUpdateEtat['type']; //consultation/vaccination
+        $id = in_array("id", $intervationUpdateEtat, TRUE)? $intervationUpdateEtat['id'] : '';//id_intervation(vaccin/consultation)
+        $type = in_array("type", $intervationUpdateEtat, TRUE)? $intervationUpdateEtat['type'] : ''; //consultation/vaccination
 
         switch ($type){
             case 'vaccination':
