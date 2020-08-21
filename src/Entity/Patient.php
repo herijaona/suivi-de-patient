@@ -163,20 +163,13 @@ class Patient
      */
     private $patientVaccins;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="patient")
-     */
-        private $address;
+
 
     /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="patients")
-     */
-    private $addressOnBorn;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -197,6 +190,24 @@ class Patient
      * @ORM\OneToMany(targetEntity=PropositionRdv::class, mappedBy="patient")
      */
     private $propositionRdvs;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="patients")
+     */
+    private $state;
+
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $addressOnBorn;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $address;
+
+
 
 
 
@@ -775,17 +786,7 @@ class Patient
         return $this;
     }
 
-    public function getAddress(): ?City
-    {
-        return $this->address;
-    }
 
-    public function setAddress(?City $address): self
-    {
-        $this->address = $address;
-
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
@@ -799,12 +800,12 @@ class Patient
         return $this;
     }
 
-    public function getAddressOnBorn(): ?City
+    public function getAddressOnBorn(): ?string
     {
         return $this->addressOnBorn;
     }
 
-    public function setAddressOnBorn(?City $addressOnBorn): self
+    public function setAddressOnBorn(string $addressOnBorn): self
     {
         $this->addressOnBorn = $addressOnBorn;
 
@@ -921,5 +922,31 @@ class Patient
 
         return $this;
     }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+
 
 }

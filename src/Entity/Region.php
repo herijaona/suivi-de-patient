@@ -44,9 +44,15 @@ class Region
      */
     private $cities;
 
+    /**
+     * @ORM\OneToMany(targetEntity=State::class, mappedBy="region")
+     */
+    private $states;
+
     public function __construct()
     {
         $this->cities = new ArrayCollection();
+        $this->states = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,6 +117,37 @@ class Region
     public function __toString()
     {
         return $this->getNameRegion();
+    }
+
+    /**
+     * @return Collection|State[]
+     */
+    public function getStates(): Collection
+    {
+        return $this->states;
+    }
+
+    public function addState(State $state): self
+    {
+        if (!$this->states->contains($state)) {
+            $this->states[] = $state;
+            $state->setRegion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeState(State $state): self
+    {
+        if ($this->states->contains($state)) {
+            $this->states->removeElement($state);
+            // set the owning side to null (unless already changed)
+            if ($state->getRegion() === $this) {
+                $state->setRegion(null);
+            }
+        }
+
+        return $this;
     }
 
 }

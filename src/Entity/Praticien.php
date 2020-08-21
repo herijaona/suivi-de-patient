@@ -132,10 +132,7 @@ class Praticien
      */
     private $praticienSpecialites;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="praticien")
-     */
-    private $address;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -165,6 +162,26 @@ class Praticien
      * @ORM\OneToMany(targetEntity=PropositionRdv::class, mappedBy="praticien")
      */
     private $propositionRdvs;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $adressOnBorn;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sexe;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="praticiens")
+     */
+    private $state;
 
     public function __construct()
     {
@@ -607,17 +624,7 @@ class Praticien
         return $this;
     }
 
-    public function getAddress(): ?City
-    {
-        return $this->address;
-    }
 
-    public function setAddress(?City $city): self
-    {
-        $this->address = $city;
-
-        return $this;
-    }
 
     public function __toString()
     {
@@ -699,6 +706,54 @@ class Praticien
                 $propositionRdv->setPraticien(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getAdressOnBorn(): ?string
+    {
+        return $this->adressOnBorn;
+    }
+
+    public function setAdressOnBorn(?string $adressOnBorn): self
+    {
+        $this->adressOnBorn = $adressOnBorn;
+
+        return $this;
+    }
+
+    public function getSexe(): ?string
+    {
+        return $this->sexe;
+    }
+
+    public function setSexe(string $sexe): self
+    {
+        $this->sexe = $sexe;
+
+        return $this;
+    }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): self
+    {
+        $this->state = $state;
 
         return $this;
     }
