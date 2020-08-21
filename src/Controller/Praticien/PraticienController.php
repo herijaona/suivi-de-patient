@@ -9,6 +9,7 @@ use App\Entity\OrdoConsultation;
 use App\Entity\OrdoVaccination;
 use App\Entity\PatientIntervationConsultation;
 use App\Entity\PropositionRdv;
+use App\Form\CarnetType;
 use App\Form\ConsultationPraticienType;
 use App\Form\PropositionRdvType;
 use App\Repository\FamilyRepository;
@@ -22,6 +23,7 @@ use App\Repository\PraticienRepository;
 use App\Repository\PropositionRdvRepository;
 use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
+use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectManager;
 use Psr\Container\ContainerInterface;
@@ -610,5 +612,66 @@ class PraticienController extends AbstractController
         $message=$translator->trans('Successful change');
         $this->addFlash('success', $message);
         return new JsonResponse(['status' => 'OK']);
+    }
+
+    /**
+     * @Route("/form-show-edit-carnet", name="show_edit_carnet")
+     */
+    public function show_edit_carnet(Request $request)
+    {
+
+        $id = $request->request->get('id');
+        $eventData = [];
+        $carnetVacc = $this->carnetVaccinationRepository->find($id);
+        $eventData['id'] = $carnetVacc->getId();
+        if ($carnetVacc->getRappelVaccin() != null){
+            $eventData['type'] = 'rpv';
+            $eventData['dateCarnet'] = Carbon::parse($carnetVacc->getRappelVaccin())->format('d/m/Y');
+            $eventData['timeCarnet'] = Carbon::parse($carnetVacc->getRappelVaccin())->format('H:m:s');
+        }else {
+            $eventData['type'] = 'dti';
+            $eventData['dateCarnet'] = Carbon::parse($carnetVacc->getDatePriseInitiale())->format('d/m/Y');
+            $eventData['timeCarnet'] = Carbon::parse($carnetVacc->getDatePriseInitiale())->format('H:m');
+        }
+        $form = $this->createForm(CarnetType::class, $carnetVacc);
+
+
+        $response = $this->renderView('praticien/modal/edit_carnet_vaccin.html.twig', [
+            'form' => $form->createView(),
+            'eventData' => $eventData,
+        ]);
+
+        $form->handleRequest($request);
+        return new JsonResponse(['form_html' => $response]);
+    }
+
+    /**
+     * @Route("/edit/carnet-vaccination", name ="edit_carnet_vaccination")
+     */
+
+    public  function edit_carnet_vaccination(Request $request)
+    {
+
+        $id = $request->request->get('id');
+        $type= $request->request->get('type');
+        $time_carnet = $request->request->get('time_carnet');
+
+        $carnetVacc = $this->carnetVaccinationRepository->find($id);
+        if ($type == 'rpv') {
+            $rappelVaccin = $request->request->get('rappelVaccin');
+            $rdv_date = str_replace("/", "-", $rappelVaccin);
+            $Date_Carnet = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$time_carnet)));
+            $carnetVacc->setRappelVaccin($Date_Carnet);
+        } elseif ($type == 'dti'){
+            $datePriseInitiale = $request->request->get('datePriseInitiale');
+            $rdv_date = str_replace("/", "-", $datePriseInitiale);
+            $Date_Carnet = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$time_carnet)));
+            $carnetVacc->setDatePriseInitiale($Date_Carnet);
+        }
+
+        $this->entityManager->persist($carnetVacc);
+        $this->entityManager->flush();
+        return $this->redirect($this->generateUrl("see_calendar", array('patient_id' => $carnetVacc->getPatient()->getId())));
+
     }
 }

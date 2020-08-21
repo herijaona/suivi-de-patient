@@ -156,7 +156,7 @@ class ConsultationController extends  AbstractController
         $groupRequest = json_decode($request->getContent(),true);
 
         $group_id = in_array("group_id", $groupRequest, TRUE)? $groupRequest['group_id'] : '';
-        $group_name = $groupRequest['group_name'];
+        $group_name = in_array("group_name", $groupRequest, TRUE)? $groupRequest['group_name'] : '';
 
         $user = $this->tokenService->getCurrentUser();
 
@@ -190,7 +190,7 @@ class ConsultationController extends  AbstractController
         $groupRequest = json_decode($request->getContent(),true);
 
         $group_id = in_array("group_id", $groupRequest, TRUE)? $groupRequest['group_id'] : '';
-        $group_patient = $groupRequest['patient'];
+        $group_patient = in_array("patient", $groupRequest, TRUE)? $groupRequest['patient'] : '';
 
         if ($group_id != ""){
             $group_family = $this->groupFamilyRepository->find($group_id);
