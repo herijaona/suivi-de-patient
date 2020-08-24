@@ -570,6 +570,19 @@ select.mdb-select.initialized {
 .active-menu{
     display: block;
 }
+#registration_praticien_form_phone{
+    width: 189px;
+    margin-left: 48px;
+}
+#registration_praticien_form_phone_professional{
+    width: 189px;
+    margin-left: 48px;
+}
+#registration_form_phone{
+    width: 189px;
+    margin-left: 48px;
+}
+
 
 
 @media (max-width: 700px){

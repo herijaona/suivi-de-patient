@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
@@ -32,20 +33,9 @@ class RegistrationFormType extends AbstractType
             ->add('date_naissance', DateType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('lieu_naissance')
             ->add('phone')
+            ->add('lieu_naissance')
             ->add('address')
-            ->add('country', EntityType::class,[
-                'class'=>State::class,
-                'query_builder'=>function(EntityRepository $entityRepository){
-                    return $entityRepository->createQueryBuilder('s');
-                },
-                'choice_value' => 'id',
-                'choice_label' => function(?State $state){
-                    return $state ? strtoupper($state->getNameState()):'';
-                },
-                'placeholder' => 'Country',
-            ])
             ->add('type_patient',EntityType::class ,[
                 'class'=>TypePatient::class,
                 'query_builder'=>function(EntityRepository $entityRepository){
@@ -83,6 +73,17 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
+            ])
+            ->add('country', EntityType::class,[
+                'class'=>State::class,
+                'query_builder'=>function(EntityRepository $entityRepository){
+                    return $entityRepository->createQueryBuilder('s');
+                },
+                'choice_value' => 'id',
+                'choice_label' => function(?State $state){
+                    return $state ? strtoupper($state->getNameState()):'';
+                },
+                'placeholder' => 'Country',
             ])
         ;
     }

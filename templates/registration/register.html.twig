@@ -12,38 +12,45 @@
         <img class="logo-login" src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
         <h3 class="main-title mb-4">{% trans %}Register Patient{% endtrans %}</h3>
         <form role="form" class="form-horizontal">
-            <div class="row form-group">
+             <div class="row form-group">
+                 <div class="col-lg-6">
+                 {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Lastname'}}) }}
+                 </div>
+                 <div class="col-lg-6">
+                 {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'firstname'}}) }}
+                 </div>
+             </div>
+             <div class="row form-group">
+                 <div class="col-lg-6">
+                     {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control', 'placeholder': 'Gender'}}) }}
+                 </div>
+                 <div class="col-lg-6">
+                     {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date of Birth'}}) }}
+
+                 </div>
+
+             </div>
+             <div class="row form-group">
+                 <div class="col-lg-6">
+                     {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Place of birth'}}) }}
+
+                 </div>
                 <div class="col-lg-6">
-                {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Lastname'}}) }}
-                </div>
-                <div class="col-lg-6">
-                {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'firstname'}}) }}
+                {{ form_widget(registrationForm.country , {'attr': {'class': 'form-control', 'placeholder': 'country'}}) }}
                 </div>
             </div>
+
             <div class="row form-group">
                 <div class="col-lg-6">
-                    {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control', 'placeholder': 'Gender'}}) }}
-
+                        <select class="form-control" id="city" name="city" >
+                            <option value="" selected>Select your City</option>
+                        </select>
                 </div>
                 <div class="col-lg-6">
-                    {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date of Birth'}}) }}
-
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-lg-6">
-                    {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Place of birth'}}) }}
-
-                </div>
-                <div class="col-lg-6">
-                {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control', 'placeholder': 'Address'}}) }}
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-lg-12">
                     {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Address'}}) }}
                 </div>
             </div>
+
              <div class="row form-group">
                 <div class="col-lg-6">
                     {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Your email address'}})}}
@@ -54,8 +61,8 @@
             </div>
             <div class="row form-group">
                 <div class="col-lg-6">
+                    <input type="button" id="tel" value="" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
                     {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Phone'}}) }}
-
                 </div>
                 <div class="col-lg-6">
                     {{ form_widget(registrationForm.type_patient, {'attr': {'class': 'form-control', 'placeholder': 'Patient type'}})}}
@@ -64,11 +71,9 @@
             <div class="row form-group">
                 <div class="col-lg-6">
                     {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Password'}}) }}
-
-
                 </div>
                 <div class="col-lg-6">
-                    
+
                 </div>
             </div>
 
@@ -97,13 +102,9 @@
 
         function createUsername()  {
 
-            var fname = $('#registration_form_firstname').val().substring(0,1).toLowerCase();
-            var lname = $('#registration_form_lastname').val().toLowerCase();
-            //var username = fname + lname + getRndInteger();
-
             $('#registration_form_date_naissance').on('change',function () {
 
-               var  date = $('#registration_form_date_naissance').val();
+               var date = $('#registration_form_date_naissance').val();
                var dat = new Date(date);
                var mois = dat.getMonth();
                 if(mois<9){
@@ -147,8 +148,6 @@
                 }).done(() => {
                 });
             });
-
-
             //$('#registration_form_email').val(username);
         }
 
@@ -165,6 +164,28 @@
 
             $('#registration_form_firstname').on('keyup', createUsername);
             $('#registration_form_lastname').on('keyup', createUsername);
+        });
+
+        $('#registration_form_country').on('change',function () {
+            var idcountry =$('#registration_form_country option:selected').val();
+            if(idcountry == 3){
+                $value = "+237";
+            } else if (idcountry == 4){
+                $value = "+33";
+            }
+            $('#tel').val($value);
+            $.ajax({
+                method: "POST",
+                url: "{{ path('country') }}",
+                data: {id: idcountry},
+                success: function(response){
+                    $('#city').empty();
+                    $.each(response, function(index,element) {
+                        $('#city').append('<option value="'+ element.id +'" selected="selected">'+ element.nameCity +' </option>');
+                    });
+                    $('')
+                }
+            });
         });
     </script>
 {% endblock %}

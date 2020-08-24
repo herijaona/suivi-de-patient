@@ -18,6 +18,17 @@ class CityRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, City::class);
     }
+    public function searchCity($state = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT c.id, c.nameCity
+            FROM App\Entity\City c
+            INNER JOIN App\Entity\Region r with r.id = c.region
+            LEFT JOIN App\Entity\State s with s.id = r.state
+            WHERE s.id = :state')
+            ->setParameter('state', $state);
+
+        return $query->getResult();
+    }
 
     // /**
     //  * @return City[] Returns an array of City objects

@@ -10,32 +10,44 @@ use App\Entity\User;
 use App\Form\ActivatorFormType;
 use App\Form\RegistrationFormType;
 use App\Form\RegistrationPraticienFormType;
+use App\Repository\CityRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\StateRepository;
 use App\Repository\TypePatientRepository;
 use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class RegistrationController extends AbstractController
 {
 
     protected $typePatientRepository;
     protected $userRepository;
+    protected $cityRepository;
+    protected $stateRepository;
 
     const ROLE_PATIENT = 'ROLE_PATIENT';
     const ROLE_PRATICIEN = 'ROLE_PRATICIEN';
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
-    function __construct(UserRepository $userRepository, TypePatientRepository $typePatientRepository)
+    function __construct(UserRepository $userRepository, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository)
     {
         $this->userRepository = $userRepository;
         $this->typePatientRepository = $typePatientRepository;
+        $this->cityRepository= $cityRepository;
+        $this->stateRepository=$stateRepository;
+
     }
 
     /**
@@ -57,6 +69,10 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
+            $adresse= $form->get('address')->getData();
+            $city = $request->request->get('city');
+            $city = $this->cityRepository->find($city);
+
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
@@ -77,11 +93,13 @@ class RegistrationController extends AbstractController
             $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
-            $patient->setAddress($form->get('address')->getData());
+            $patient->setAddress($adresse);
             $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($form->get('date_naissance')->getData());
             $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
             $patient->setTypePatient($form->get('type_patient')->getData());
+            $patient->setCity($city);
+            $patient->setState($form->get('country')->getData());
             $patient->setPhone($form->get('phone')->getData());
             $patient->setFatherName($form->get('namedaddy')->getData());
             $patient->setMotherName($form->get('namemonther')->getData());
@@ -120,6 +138,8 @@ class RegistrationController extends AbstractController
             $first_name = $form->get('firstname')->getData();
             $centre = $form->get('center_health')->getData();
             $email = $form->get('email')->getData();
+            $city = $request->request->get('city');
+            $city = $this->cityRepository->find($city);
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
@@ -140,11 +160,13 @@ class RegistrationController extends AbstractController
             $praticien = new Praticien();
             $praticien->setFirstName($first_name);
             $praticien->setLastName($last_name);
+            $praticien->setSexe($form->get('sexe')->getData());
             $praticien->setCreatedAt(new \DateTime('now'));
             $praticien->setDateBorn($form->get('date_naissance')->getData());
-            //$praticien->setAdressBorn($form->get('lieu_naissance')->getData());
+            $praticien->setAdressOnBorn($form->get('lieu_naissance')->getData());
             $praticien->setAddress($form->get('address')->getData());
-            $praticien->setCity($form->get('lieu_naissance')->getData());
+            $praticien->setCity($city);
+            $praticien->setState($form->get('country')->getData());
             $praticien->setFonction($form->get('fonction')->getData());
             $praticien->setPhone($form->get('phone')->getData());
             $praticien->setPhoneProfessional($form->get('phone_professional')->getData());
@@ -171,7 +193,7 @@ class RegistrationController extends AbstractController
             $user2->setLastName($last_name);
             $user2->setFirstName($first_name);
             $user2->setRoles([self::ROLE_PATIENT]);
-            $user->setEmail($email);
+            $user2->setEmail($email);
             $user2->setUsername($form->get('username')->getData().$userName2);
             $user2->setActivatorId($code2);
             $user2->setEtat(false);
@@ -188,11 +210,15 @@ class RegistrationController extends AbstractController
             $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
+            $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($form->get('date_naissance')->getData());
+            $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
+            $patient->setCity($city);
+            $patient->setState($form->get('country')->getData());
+            $patient->setPhone($form->get('phone')->getData());
+            $patient->setAddress($form->get('address')->getData());
             $patient->setTypePatient($typePatient);
             $patient->setEtat(false);
-            $patient->setPhone($form->get('phone')->getData());
-            $patient->setPhone($form->get('phone')->getData());
             $patient->setUser($user2);
             $entityManager->persist($patient);
             $entityManager->flush();
@@ -301,7 +327,14 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-
-
+    /**
+     * @Route("/country", name="country")
+     */
+    public function country(Request $request){
+        $id = $request->request->get('id');
+        $country = $this->stateRepository->find($id);
+        $city = $this->cityRepository->searchCity($country);
+        return new JsonResponse($city);
+        }
 
 }
