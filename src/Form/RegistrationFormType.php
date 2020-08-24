@@ -85,6 +85,11 @@ class RegistrationFormType extends AbstractType
                 },
                 'placeholder' => 'Country',
             ])
+           ->add('enceinte', CheckboxType::class, [
+                'label'    => 'enceinte',
+                'required' => false,
+            ]);
+
         ;
     }
 

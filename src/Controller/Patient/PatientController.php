@@ -471,7 +471,7 @@ class PatientController extends AbstractController
     /**
      * @Route("/form-add-rdv", name="add_form_rdv_patient", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      * @param Request $request
-     * @return JsonResponse
+     * @return JsonResponsereturn JsonResponse
      */
     public function add_form_rdv(Request $request)
     {

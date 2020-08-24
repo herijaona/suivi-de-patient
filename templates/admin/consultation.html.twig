@@ -42,11 +42,11 @@
                     </td>
                     <td>
                         {% if rdv.statusConsultation == 1 %}
-                            <span class="badge badge-success badge-style modif-status">{% trans %}Validate{% endtrans %}</span>
+                            <span class="badge badge-success badge-style ">{% trans %}Validate{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
+                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
+                            <span class="badge badge-danger badge-style ">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
 
                     </td>
@@ -69,63 +69,6 @@
     <script>
         $(document).ready(function() {
             $('#example1').DataTable();
-        });
-
-        $('.active_etat_rdv').on('click', function (e) {
-            $(".loadBody").css("display", "block");
-            e.preventDefault();
-            var id = $(this).data('id');
-            var etat = $(this).data('etat');
-            $.ajax({
-                url: "{{ path('update_etat_rdv') }}",
-                type: 'post',
-                data: {
-                    'id_rdv': id,
-                    'etat': etat
-                },
-                dataType: "json",
-                success: (data) =>{
-                    $(".loadBody").css("display", "none");
-                    if(data.status == 'OK' ){
-                        location.reload();
-                    }
-                },
-                error: (e) => {
-                    $(".loadBody").css("display", "none");
-                    console.log(e.statusText);
-                }
-            }).done(() => {
-
-            });
-        });
-
-        $('.active_status_rdv').on('click', function (e) {
-            e.preventDefault();
-            $(".loadBody").css("display", "block");
-            var id = $(this).data('id');
-            var status = $(this).data('status');
-
-            $.ajax({
-                url: "{{ path('update_status_rdv') }}",
-                type: 'post',
-                data: {
-                    'id_rdv': id,
-                    'status': status
-                },
-                dataType: "json",
-                success: (data) =>{
-                    $(".loadBody").css("display", "none");
-                    if(data.status == 'OK' ){
-                        location.reload();
-                    }
-                },
-                error: (e) => {
-                    $(".loadBody").css("display", "none");
-                    console.log(e.statusText);
-                }
-            }).done(() => {
-
-            });
         });
     </script>
 {% endblock %}

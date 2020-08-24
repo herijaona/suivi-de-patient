@@ -49,6 +49,11 @@ class State
      */
     private $praticiens;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $phoneindic;
+
 
 
     public function __construct()
@@ -169,6 +174,18 @@ class State
                 $praticien->setState(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPhoneindic(): ?string
+    {
+        return $this->phoneindic;
+    }
+
+    public function setPhoneindic(?string $phoneindic): self
+    {
+        $this->phoneindic = $phoneindic;
 
         return $this;
     }

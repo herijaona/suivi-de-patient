@@ -809,6 +809,18 @@
         <source>Appointment registration successful</source>
         <target>Enregistrement du rendez-vous réussi</target>
       </trans-unit>
+      <trans-unit id="GP3VSbL" resname="New">
+        <source>New</source>
+        <target>Nouveau</target>
+      </trans-unit>
+      <trans-unit id="H1HNhHe" resname="Awaiting">
+        <source>Awaiting</source>
+        <target>En attente</target>
+      </trans-unit>
+      <trans-unit id="XUJ2bH7" resname="Proposal">
+        <source>Proposal</source>
+        <target>Proposition</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
