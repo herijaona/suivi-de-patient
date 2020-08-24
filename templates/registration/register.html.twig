@@ -102,13 +102,9 @@
 
         function createUsername()  {
 
-            var fname = $('#registration_form_firstname').val().substring(0,1).toLowerCase();
-            var lname = $('#registration_form_lastname').val().toLowerCase();
-            //var username = fname + lname + getRndInteger();
-
             $('#registration_form_date_naissance').on('change',function () {
 
-               var  date = $('#registration_form_date_naissance').val();
+               var date = $('#registration_form_date_naissance').val();
                var dat = new Date(date);
                var mois = dat.getMonth();
                 if(mois<9){
@@ -152,8 +148,6 @@
                 }).done(() => {
                 });
             });
-
-
             //$('#registration_form_email').val(username);
         }
 

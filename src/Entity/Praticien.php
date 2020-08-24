@@ -183,6 +183,13 @@ class Praticien
      */
     private $state;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Associer::class, mappedBy="praticien")
+     */
+    private $associers;
+
+
+
     public function __construct()
     {
         $this->updatedAt = new \DateTime('now');
@@ -199,6 +206,8 @@ class Praticien
         $this->praticienSpecialites = new ArrayCollection();
         $this->etat = false;
         $this->propositionRdvs = new ArrayCollection();
+        $this->patients = new ArrayCollection();
+        $this->associers = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -758,5 +767,34 @@ class Praticien
         return $this;
     }
 
+    /**
+     * @return Collection|Associer[]
+     */
+    public function getAssociers(): Collection
+    {
+        return $this->associers;
+    }
 
+    public function addAssocier(Associer $associer): self
+    {
+        if (!$this->associers->contains($associer)) {
+            $this->associers[] = $associer;
+            $associer->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssocier(Associer $associer): self
+    {
+        if ($this->associers->contains($associer)) {
+            $this->associers->removeElement($associer);
+            // set the owning side to null (unless already changed)
+            if ($associer->getPraticien() === $this) {
+                $associer->setPraticien(null);
+            }
+        }
+
+        return $this;
+    }
 }

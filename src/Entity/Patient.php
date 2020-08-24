@@ -207,6 +207,10 @@ class Patient
      */
     private $address;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Associer::class, mappedBy="patient")
+     */
+    private $associers;
 
 
 
@@ -232,6 +236,8 @@ class Patient
         $this->etat = false;
         $this->interventionVaccinations = new ArrayCollection();
         $this->propositionRdvs = new ArrayCollection();
+        $this->associer = new ArrayCollection();
+        $this->associers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -946,6 +952,38 @@ class Patient
 
         return $this;
     }
+
+    /**
+     * @return Collection|Associer[]
+     */
+    public function getAssociers(): Collection
+    {
+        return $this->associers;
+    }
+
+    public function addAssocier(Associer $associer): self
+    {
+        if (!$this->associers->contains($associer)) {
+            $this->associers[] = $associer;
+            $associer->setPatient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssocier(Associer $associer): self
+    {
+        if ($this->associers->contains($associer)) {
+            $this->associers->removeElement($associer);
+            // set the owning side to null (unless already changed)
+            if ($associer->getPatient() === $this) {
+                $associer->setPatient(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 
 
