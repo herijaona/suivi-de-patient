@@ -1,10 +1,18 @@
-<!--Header-->
-<style>
-    .md-form.row-check {
-        flex-direction: row;
-        display: flex;
-    }
-</style>
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}Appointment {% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .md-form.row-check {
+            flex-direction: row;
+            display: flex;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
 <div class="modal-header text-center">
     {% if new == true %}
         <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}New appointment{% endtrans %}</h4>
@@ -49,7 +57,9 @@
 </div>
 
 {{ form_end(form) }}
+{% endblock %}
 
+{% block javascripts %}
 <script type="text/javascript">
     $(document).ready(function () {
         $('.vaccin_hidden').css("display", "none");
@@ -63,6 +73,14 @@
             todayHighlight:'TRUE',
             startDate: '-0d',
         })
+        $('#rdv_heureRdv').clockpicker({
+            donetext: "valider",
+            autoclose: true,
+        });
+        $('#rdv_heureRdv').on('change', function () {
+            let receivedVal = $(this).val();
+            $(this).val(receivedVal + ":00");
+        });
 
         if($('#rdv_typeRdv').val() == 'consultation'){
             $('.vaccin_hidden').css("display", "none");
@@ -87,3 +105,5 @@
         $('.chosen-select').trigger('chosen:updated');
     });
 </script>
+
+{% endblock %}

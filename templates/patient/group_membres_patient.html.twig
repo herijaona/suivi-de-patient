@@ -61,7 +61,7 @@
                     <input type="hidden" name="group_id" id="group_id" class="form-control" value="{{ group.id }}">
                     <div class="md-form mb-5">
                         <label for="group_name" class="active">New member</label>
-                        <select class="mdb-select md-form " name="patient" editable="true" searchable="{% trans %}Search for patient name ...{% endtrans %}" required>
+                        <select class="mdb-select md-form chosen-select" name="patient" editable="true" searchable="{% trans %}Search for patient name ...{% endtrans %}" required>
                                 <option value="" disabled selected>{% trans %}Choose new member{% endtrans %}</option>
                                 {% for patient in patients %}
                                     <option value="{{ patient.id }}">{{patient.firstName}} {{patient.lastName}}</option>
@@ -87,6 +87,7 @@
 <script>
     $(document).ready(function() {
         $('#example1').DataTable();
+        $('.chosen-select').chosen({width: "100%"});
     });
     $('.delete_membres_group').on('click', function(e) {
         e.preventDefault();
@@ -115,5 +116,6 @@
             return false;
         }
     });
+    $('.chosen-select').trigger('chosen:updated');
 </script>
 {% endblock %}

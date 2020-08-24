@@ -196,6 +196,26 @@ class PatientController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/create-rdv", name="create_rdv")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function create_rdv(Request $request)
+    {
+        $rdv = [];
+        $typeRdvArrays = [
+            "consultation" => "CONSULTATION",
+            "vaccination" => "VACCINATION"
+        ];
+        $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
+        return $this->render('patient/_form_rdv.html.twig', [
+            'new' => true,
+            'form' => $form->createView(),
+            'eventData' => $rdv,
+        ]);
+    }
+
 
     /**
      * @Route("/rdv/in", name="rdv_patient")
@@ -250,6 +270,8 @@ class PatientController extends AbstractController
             'mygroup' => $mygroups,
         ]);
     }
+
+
 
     /**
      * @Route("/register-rdv", name="register_rdv")
@@ -367,6 +389,31 @@ class PatientController extends AbstractController
                 $this->entityManager->remove($group_family);
                 $this->entityManager->flush();
             }
+        }
+        return new JsonResponse(['status' => true]);
+    }
+
+    /**
+     * @Route("/delete-group", name="delete_group")
+     */
+    public function delete_group(Request $request)
+    {
+        $user = $this->getUser();
+        $idGroup = $request->request->get('id_group');
+        if ($idGroup != ""){
+
+            $group_by_family = $this->familyRepository->findBy(['groupFamily' => $idGroup]);
+            if($group_by_family && count($group_by_family) >  0){
+                foreach ($group_by_family as $family) {
+                    $this->entityManager->remove($family);
+                }
+            }
+            $group_family = $this->groupFamilyRepository->find($idGroup);
+
+            if($group_family){
+                $this->entityManager->remove($group_family);
+            }
+            $this->entityManager->flush();
         }
         return new JsonResponse(['status' => true]);
     }
