@@ -90,6 +90,14 @@ class RegistrationController extends AbstractController
             );
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
+            $patientRequest = $form->get('enceinte')->getData();
+
+            if($patientRequest == "true"){
+                $etat = true;
+            }else{
+                $etat = false;
+            }
+
             $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
@@ -101,6 +109,7 @@ class RegistrationController extends AbstractController
             $patient->setCity($city);
             $patient->setState($form->get('country')->getData());
             $patient->setPhone($form->get('phone')->getData());
+            $patient->setIsEnceinte($etat);
             $patient->setFatherName($form->get('namedaddy')->getData());
             $patient->setMotherName($form->get('namemonther')->getData());
             $patient->setEtat(1);

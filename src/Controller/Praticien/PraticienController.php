@@ -150,6 +150,8 @@ class PraticienController extends AbstractController
         ]);
     }
 
+    
+
     /**
      * @Route("/intervention/rejected", name="intervention_praticien_reject")
      */

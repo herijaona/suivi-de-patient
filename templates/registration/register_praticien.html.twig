@@ -100,7 +100,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        function getRndInteger(min = 100, max= 1000) {
+        function getRndInteger(min = 10, max= 100) {
             return Math.floor(Math.random() * (max - min + 1) ) + min;
         }
 
@@ -131,7 +131,7 @@
                 }else{
                     var jour = dat.getDate();
                 }
-                var username = fname + lname + anne  + moi + jou + getRndInteger();
+                var username = fname + lname + anne  + moi + jour + getRndInteger();
                 $.ajax({
                     url: "{{ path('check_username') }}",
                     type: 'POST',
