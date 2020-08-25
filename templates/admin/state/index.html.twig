@@ -7,9 +7,10 @@
 
 {% block body %}
     <div class="row head-table col-md-12">
-        <div class="grid-title-table col-md-9 mt-4">
+        <div class="grid-title-table col-md-6 mt-4">
             <h4 class="h4-content">{% trans %}All countries{% endtrans %}</h4>
         </div>
+
         <div class="grid-edit-btn col-md-3 mt-3">
             <button class="btn btn-danger new_state">{% trans %}+ New Country{% endtrans %} </button>
         </div>
@@ -48,7 +49,7 @@
 
                 }
             });
-            $('.mdb-select').materialSelect();
+            /*$('.mdb-select').materialSelect();*/
         });
         $(".new_state").on('click' , function(e) {
             $(".loadBody").css("display", "block");
@@ -127,6 +128,8 @@
                 return false
             }
         });
+
+
 
     </script>
 {% endblock %}
