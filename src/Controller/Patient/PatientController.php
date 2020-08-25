@@ -574,4 +574,16 @@ class PatientController extends AbstractController
         }
         return new JsonResponse(['form_delete' => $delete]);
     }
+
+    /**
+     * @Route("/intervention-patient", name="intervention_patient")
+     */
+    public function intervention()
+    {
+        $user = $this->getUser();
+        $praticien = $this->patientRepository->findOneBy(['user'=>$user]);
+        return $this->render('patient/intervention.html.twig', [
+
+        ]);
+    }
 }
