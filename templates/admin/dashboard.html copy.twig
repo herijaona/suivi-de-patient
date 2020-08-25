@@ -1,0 +1,107 @@
+{% extends 'include/base.html.twig' %}
+
+{% block title %}{% trans %}Dashboard{% endtrans %}{% endblock %}
+
+{% block body %}
+
+
+<!-- Content -->
+
+<h4 class="title-dash">{% trans %}Dashboard{% endtrans %}</h4>
+
+<div class="row admin">
+    <div class="col-3">
+        <div class="card-admin">
+            <i class="fa fa-user"></i>
+            <div class="in-card">
+                <h5>
+                    Patient
+                </h5>
+                <h3 >
+                    {{ patient }}
+                </h3>
+                <span class="note-red">
+                    {{ patRej }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card-admin">
+            <i class="fa fa-user"></i>
+            <div class="in-card">
+                <h5>
+                    Praticien
+                </h5>
+                <h3 >
+                    {{ praticien }}
+                </h3>
+                <span class="note-red">
+                    {{ prtRej }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card-admin">
+            <i class="fa fa-user"></i>
+            <div class="in-card">
+                <h5>
+                    Vaccination
+                </h5>
+                <h3>
+                    {{ vacc }}
+                </h3>
+                <span class="note-red">
+                   {{vaccInPr }}
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="card-admin">
+            <i class="fa fa-user"></i>
+            <div class="in-card">
+                <h5>
+                    Consultation
+                </h5>
+                <h3>
+                    {{ cons }}
+                </h3>
+                <span class="note-red">
+                    {{ consInPr }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-6">
+        <div id="chartContainer2" style="height: 370px; max-width: 920px; margin: 0px auto;margin-top: 23px;"></div>
+    </div>
+    <div class="col-6">
+        <div id="chartContainer3" style="height: 370px; max-width: 920px; margin: 0px auto;margin-top: 23px;"></div>
+    </div>
+</div>
+
+<div id="chartContainer" style="height: 370px; max-width: 1105px; margin: 0px auto;margin-top: 23px;margin-bottom: 24px;"></div>
+
+
+
+<!-- End Content -->
+
+{% endblock %} {% block javascripts %}
+<!-- DataTables -->
+{{ parent() }}
+<script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+<script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+<script>
+    $("#patient").DataTable({
+        language: {
+            url: "{{ asset('vendor/datatables/English.json') }}"
+
+        }
+    });
+</script>
+{% endblock %}

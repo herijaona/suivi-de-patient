@@ -1,0 +1,128 @@
+{% extends 'include/base.html.twig' %} {% block body %}
+
+
+<div class="d-flex w-100">
+    <h2 class="profile-h2">{% trans %}My profile{% endtrans %}</h2>
+    <div class="text-right w-50">
+        <button type="submit" class="btn btn-info button-login btn-edit mb-3">
+            <i class="fas fa-pencil-alt mr-2"></i>
+            <span>{% trans %}Edit{% endtrans %}</span>
+        </button>
+    </div>
+</div>
+<div>
+    <div>
+        {{ form_start(registrationForm, {'attr': {'action': path('editPatient') }}) }}
+        <div class="body-page register edit-register">
+            <div class="container text-center body-content">
+                <form role="form" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Last name{% endtrans %}</label> {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control form-show', 'placeholder': 'Nom', 'value':values.user.lastName}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.lastName }}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}First name{% endtrans %}</label> {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control form-show', 'value': values.user.firstName}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.firstname }}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Date of Birth{% endtrans %}</label> {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control form-show', 'value': values.dateOnBorn|localizeddate('none', 'none', 'fr', null, 'd MMMM Y')}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.dateOnBorn|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Place of birth{% endtrans %}</label> {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control form-show', 'placeholder': 'Lieu de Naissance', 'value':values.addressOnBorn}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.addressOnBorn}}">
+
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Phone{% endtrans %}</label> {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control form-show', 'value': values.phone}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.phone }}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Patient type{% endtrans %}</label> {{ form_widget(registrationForm.type_patient, {'attr': {'class': 'form-control form-show', 'placeholder': 'Type patient'}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.TypePatient.typePatientName }}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Address{% endtrans %}</label> {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-show', 'placeholder': 'Adresse','value': values.address}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.address}}">
+
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Gender{% endtrans %}</label> {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe', 'value':values.sexe }}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.sexe}}">
+
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">E-mail</label> {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control form-show', 'value': values.user.email}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.email }}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Password{% endtrans %}</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe', 'value': values.user.password}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.password }}">
+
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">Username</label> {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant', 'value': values.user.username}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.username }}">
+                        </div>
+                        <div class="col-md-6">
+
+                            <label for="">{% trans %}Name of the Father{% endtrans %}</label> {{ form_widget(registrationForm.namedaddy, {'attr': {'class': 'form-control mb-3 form-show', 'placeholder': 'nom de père' , 'value': values.fatherName}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.fatherName }}">
+
+                        </div>
+
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-6">
+
+                            <label for="">{% trans %}Mother's Name{% endtrans %}</label> {{ form_widget(registrationForm.namemonther, {'attr': {'class': 'form-control mb-3  form-show', 'placeholder': 'nom de mère', 'value': values.motherName }}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.motherName }}">
+
+                        </div>
+                    </div>
+                    <button  class="btn btn-info button-login  button-edit button-edit-class">{% trans %}Save{% endtrans %}</button>
+
+                </form>
+            </div>
+        </div>
+        {{ form_end(registrationForm) }}
+    </div>
+</div>
+
+{% endblock %} {% block javascripts %}
+<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+<script>
+    $('.form-show').css('display', 'none');
+    var i = 1;
+    $(".btn-edit").click(function() {
+        i++;
+        if (i % 2 == 0) {
+            $('.button-edit-class').removeClass('button-edit-class');
+            $('.form-edit').css('display', 'none');
+            $('.form-show').css('display', 'block');
+            $(this).addClass('button-cancel');
+            $(this).children('span').html('<span>{% trans %}Cancel{% endtrans %}</span>');
+            $(this).children('i').remove();
+        } else {
+            $('.button-edit').addClass('button-edit-class');
+            $('.form-edit').css('display', 'block');
+            $('.form-show').css('display', 'none');
+            $(this).removeClass('button-cancel');
+            $(this).children('span').html('<span>{% trans %} Edit {% endtrans %}</span>');
+            $(this).prepend('<i class="fas fa-pencil-alt mr-2"></i>');
+        }
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'include/base.html.twig' %} {% block body %}
+
+<h2 class="profile-h2">Mon profile</h2>
+<div>
+
+    <div>
+        {% for person in isuser %} 
+            {% if person.id == id and person.firstName == slug  %} 
+                {{ include('profile/template/praticien.html.twig') }} 
+            {% endif %} 
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %} 

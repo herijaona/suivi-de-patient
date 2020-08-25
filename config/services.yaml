@@ -4,6 +4,11 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    app.locales: [en, fr]
+    locale: 'en'
+    images_directory: '%kernel.project_dir%/public/uploads'
+    import_directory: '%kernel.project_dir%/public/document'
+
 
 services:
     # default configuration for services in *this* file
@@ -25,3 +30,11 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    Twig\Extra\Intl\IntlExtension: null
+    #Twig\Extensions\DateExtension: null
+    twig.extension.intl:
+        class: Twig_Extensions_Extension_Intl
+        public: false
+        tags:
+            - { name: twig.extension }
+    

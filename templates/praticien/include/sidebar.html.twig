@@ -1,0 +1,23 @@
+<div class="col_exc_1">
+    <h4 class="h4_patient">Espace praticien</h4>
+    <div class="mt-4">
+        <div class="img_profile">
+            <img width="88px" src="{{ asset('assets/images/praticien.jpg') }}" alt="logo" id="logo">
+            <h5>{{ app.user.firstname }}</h5>
+        </div>
+        <ul class="menu_suivi">
+            <li {% if app.request.get('_route') == 'praticien' %} class="active" {% endif %}><a href="{{ path('praticien') }}">Agenda</a></li>
+            <li {% if app.request.get('_route') == 'consultaion_praticien' %} class="active" {% endif %} ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
+            <li {% if app.request.get('_route') == 'vaccination_praticien' %} class="active" {% endif %}><a href="{{ path('vaccination_praticien') }}">Calendrier de Vaccination</a></li>
+            <li {% if app.request.get('_route') == 'rdv_praticien' %} class="active" {% endif %}><a href="{{ path('rdv_praticien') }}">Rendez-Vous</a></li>
+
+        </ul>
+        <ul class="logout_footer">
+            <li>
+                <a href="{{ path('app_logout') }}">
+                    <i class="fas fa-sign-out-alt"></i> Deconnexion
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

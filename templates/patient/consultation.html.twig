@@ -1,0 +1,90 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    Consultations
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %}All consultations{% endtrans %}</h4>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>{% trans %}Consultation date{% endtrans %}</th>
+                <th>{% trans %}Object of consultation{% endtrans %} </th>
+                <th>Praticien</th>
+                <th>Intervention</th>
+
+                {# <th>More</th> #}
+            </tr>
+            </thead>
+            <tbody>
+            {% for rdv in consultation  %}
+                <tr>
+                    <td>
+                        {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale) }}
+                    </td>
+
+                    <td>
+                        {{ rdv.objetConsultation }}
+                    </td>
+                    <td>
+                        {{ rdv.firstName }} {{ rdv.lastName }}
+                    </td>
+                    <td>
+                        {% if rdv.etat == 1 %}
+                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                        {% elseif rdv.etat == 0 %}
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+            {% endfor %}
+            {% for rdv in proposition  %}
+                <tr>
+                    <td>
+                        {{ rdv.dateProposition |format_datetime('full', 'short', locale=app.request.locale) }}
+                    </td>
+
+                    <td>
+                        {{ rdv.descriptionProposition }}
+                    </td>
+                    <td>
+                        {{ rdv.firstName }} {{ rdv.lastName }}
+                    </td>
+                    <td>
+                        {% if rdv.etat == 1 %}
+                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                        {% elseif rdv.etat == 0 %}
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example1').DataTable();
+        });
+    </script>
+{% endblock %}

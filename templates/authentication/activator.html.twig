@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %} {% block body %}
+
+    <!-- Content -->
+
+    <div class="background-img"></div>
+    <div class="body-page">
+        <div class="container text-center body-content">
+            <img class="logo-login" width="88px" src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            <h3 class="main-title">Activer compte ({{ code }})</h3>
+            {{ form_start(activationForm) }}
+            <form role="form" class="form-horizontal">
+                <div class="form-group">
+                    <label for="input-id">
+                        CODE ACTIVATION
+                    </label>
+                    {{ form_widget(activationForm.code, {'attr': {'class': 'form-control', 'placeholder': 'code activation'}}) }}
+                </div>
+                <button type="submit" class="btn btn-info button-login">
+                    Valider
+                </button>
+            {{ form_end(activationForm) }}
+            <div class="col-sm-12">
+                ou
+                <div class="col-sm-12 qr-code-img">
+                    <img  id="qrcode" alt="qrcode" src="{{ qr_code_data_uri(code, { writer: 'png', size: 150 }) }}" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Content -->
+
+    <!-- Footer -->
+
+    <footer class="footer">
+        <div class="container mention-legal mt-5">
+            Copyright © 2020 Olivier RTs
+        </div>
+    </footer>
+
+    <!-- End Footer -->
+
+{% endblock %}

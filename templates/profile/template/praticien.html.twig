@@ -1,0 +1,40 @@
+        <div class="profile">
+            <div>
+                <form action="">
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="">Nom</label>
+                            <input type="text" class="form-control" value="{{ person.firstName }}">
+                        </div>
+                        <div class="col-4">
+                            <label for="">Prenom</label>
+                            <input type="text" class="form-control" value="{{ person.lastName }}">
+                        </div>
+                        <div class="col-4">
+                            <label for="">Age</label>
+                            <input type="text" class="form-control" value="{{ person.dateBorn|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="">Numero telephone</label>
+                            <input type="text" class="form-control" value="{{ person.phone }}">
+                        </div>
+                        <div class="col-4">
+                            <label for="">Email</label>
+                            <input type="text" class="form-control" value="{{ person.user.email }}">
+                        </div>
+                        <div class="col-4">
+                            <label for="">Adresse</label>
+                            <input type="text" class="form-control" value="{{ person.user.address }}">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-4">
+                            <label for="">Fonction</label>
+                            <input type="text" class="form-control" value="{{ person.fonction }}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>

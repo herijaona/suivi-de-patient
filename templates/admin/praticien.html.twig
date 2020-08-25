@@ -1,0 +1,66 @@
+{% extends 'include/base.html.twig' %}
+
+{% block title %}Praticien{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+
+
+<!-- Content -->
+
+<div class="row head-table col-md-12">
+    <div class="grid-title-table col-md-9 mt-4">
+        <h4 class="h4-content">{% trans %}List of praticiens{% endtrans %}</h4>
+    </div>
+    <div class="grid-edit-btn col-md-3 mt-3">
+        <button class="btn btn-info">+ Add membres</button>
+        <button class="btn btn-danger">{% trans %}+ Create praticien{% endtrans %}</button>
+    </div>
+</div>
+
+<div class="row-table table-content">
+    <table class="table table-striped" id="praticien">
+        <thead>
+            <tr>
+                <th>{% trans %}Last name{% endtrans %} </th>
+                <th>{% trans %}first name{% endtrans %} </th>
+                <th>{% trans %}Phone{% endtrans %}</th>
+                <th>E-mail</th>
+                <th>{% trans %}Date of Birth{% endtrans %}</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for praticien in praticiens %}
+                <tr>
+                    <td><a href="#">{{ praticien.lastname }}</a></td>
+                    <td>{{ praticien.firstname }}</td>
+                    <td>{{ praticien.phone }}</td>
+                    <td>{{ praticien.user.email }}</td>
+                    <td>{{ praticien.dateborn|date("d/m/Y") }}</td>
+                    <td>
+                        <i class="fas fa-eye"></i>
+                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-ellipsis-v"></i>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- End Content -->
+
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('#praticien').DataTable();
+        });
+    </script>
+{% endblock %}
+ 

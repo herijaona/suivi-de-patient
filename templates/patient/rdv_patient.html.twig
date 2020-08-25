@@ -1,0 +1,207 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}Appointment {% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %}Appointment {% endtrans %}</h4>
+        </div>
+        <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-danger add_form_rdv">{% trans %}+ Create an Appointment{% endtrans %}</button>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>{% trans %}Appointment date{%  endtrans %}</th>
+                <th>Type</th>
+                <th>{% trans %}Object of consultation{% endtrans %} </th>
+                <th>Praticien</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for rdv in consultation  %}
+                <tr>
+                    <td class="text-left">
+                        {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale)}}
+                    </td>
+                    <td>Consultation</td>
+                    <td>
+                        {{ rdv.objetConsultation }}
+                    </td>
+                    <td>
+                        {{ rdv.firstName }}
+                        {{ rdv.lastName }}
+                    </td>
+                    <td>
+                        {% if rdv.statusConsultation == 1 %}
+                            <span class="badge badge-success badge-style modif-status">{% trans %}activate{% endtrans %}</span>
+                        {% elseif rdv.statusConsultation == 0 %}
+                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
+                        {% elseif rdv.statusConsultation == 2 %}
+                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ rdv.id }}"   data-type="consultation"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ rdv.id }}"  data-type="consultation"><i class="fa fa-trash-o"></i></span>
+                    </td>
+
+                </tr>
+            {% endfor %}
+
+            {% for vac in vaccination  %}
+                <tr>
+                    <td>
+                        {{ vac.datePrise |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {#{ user.createdAt|localizeddate('none', 'none', app.request.locale, null, 'EEEE d MMMM Y') }}#}
+                    </td>
+                    <td>Vaccination</td>
+                    <td>
+
+                    </td>
+                    <td>
+                        {{ vac.firstName }} {{ vac.lastName }} <br>
+                    </td>
+
+                    <td>
+                        {% if vac.statusVaccin == 1 %}
+                            <span class="badge badge-success badge-style modif-status">{% trans %}activate{% endtrans %}</span>
+                        {% elseif vac.statusVaccin == 0 %}
+                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
+                        {% elseif vac.statusVaccin == 2 %}
+                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ vac.id }}" data-type="vaccination"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ vac.id }}" data-type="vaccination"><i class="fa fa-trash-o"></i></span>
+                    </td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $(".add_form_rdv").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            $.ajax({
+                url: "{{ path('add_form_rdv_patient') }}",
+                type: 'post',
+                data: {
+                    action: 'new'
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('#rdv_heureRdv').clockpicker({
+                        donetext: "valider",
+                        autoclose: true,
+                    });
+                    $('#rdv_heureRdv').on('change', function () {
+                        let receivedVal = $(this).val();
+                        $(this).val(receivedVal + ":00");
+                    });
+
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-edit').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            $.ajax({
+                url: "{{ path('add_form_rdv_patient') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                    type: type,
+                    action: 'edit'
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('#rdv_heureRdv').clockpicker({
+                        donetext: "valider",
+                        autoclose: true,
+                    });
+                    $('#rdv_heureRdv').on('change', function () {
+                        let receivedVal = $(this).val();
+                        $(this).val(receivedVal + ":00");
+                    });
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-remove').on('click', function (e) {
+            e.preventDefault();
+            var $delete = confirm('Are you sure you want to delete this appointment?');
+            if($delete){
+                $(".loadBody").css("display", "block");
+                var id = $(this).data('id');
+                var type = $(this).data('type');
+                $.ajax({
+                    url: "{{ path('remove_rdv_patient') }}",
+                    type: 'post',
+                    data: {
+                        id: id,
+                        type: type,
+                    },
+                    dataType: "json",
+                    success: (data) =>{
+                        $(".loadBody").css("display", "none");
+                        location.reload();
+                    },
+                    error: (e) => {
+                        $(".loadBody").css("display", "none");
+                        $(".chargementError").css("display", "block");
+                    }
+                }).done(() => {
+                    $(".loadBody").css("display", "none");
+                });
+            }else {
+                return false
+            }
+        });
+        $(document).ready(function () {
+            $('#example1').DataTable();
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            });
+        });
+    </script>
+{% endblock %}

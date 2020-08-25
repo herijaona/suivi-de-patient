@@ -1,0 +1,199 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+
+    {{ form_start(registrationForm) }}
+        
+    <div class="background-img"></div>
+    <div class="body-page register" style="margin-top: 5%">
+        <div class="container text-center body-content">
+            <img class="logo-login"  src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
+            <h3 class="main-title mb-4">{% trans %}Register Praticien {% endtrans %}</h3>
+            <form role="form" class="form-horizontal">
+                <div class="row form-group">
+                    <div class="col-lg-6">
+                    {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Lastname'}}) }}
+                    </div>
+                    <div class="col-lg-6">
+                    {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Firstname'}}) }}
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6">
+                    {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control'}}) }}
+
+                    </div>
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date of Birth'}}) }}
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Place of birth'}}) }}
+
+                    </div>
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control', 'placeholder': 'Country'}}) }}
+
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6">
+                        <select class="form-control" id="city" name="city" >
+                            <option value="" selected>Select your City</option>
+                        </select>
+
+                    </div>
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control', 'placeholder': 'Function'}}) }}
+
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6">
+                        <input type="button" id="tel" value="" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
+                       {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Phone'}})}}
+
+
+                    </div>
+                    <div class="col-lg-6">
+                        <input type="button" id="tell" value="" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
+                        {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control', 'placeholder': 'Professional phone '}}) }}
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6">
+
+                        {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Address'}}) }}
+                    </div>
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'e-mail'}}) }}
+                    </div>
+                </div>
+                 <div class="row form-group">
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Your center health'}}) }}
+                    </div>
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Your username'}}) }}
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Password'}}) }}
+
+                    </div>
+                </div>
+                <button type="submit " class="btn btn-info button-login mb-3">
+                    {% trans %}Register{% endtrans %}
+                </button>
+            
+        {{ form_end(registrationForm) }}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function getRndInteger(min = 10, max= 100) {
+            return Math.floor(Math.random() * (max - min + 1) ) + min;
+        }
+
+        function createUsername()  {
+
+
+            var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
+            var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
+
+            $('#registration_praticien_form_date_naissance').on('change',function () {
+                var  date = $('#registration_praticien_form_date_naissance').val();
+                var dat = new Date(date);
+                var mois = dat.getMonth();
+                if(mois<9){
+                    var moi = ('0' + (dat.getMonth() + 1) );
+                }else{
+                    var moi = dat.getMonth() + 1;
+                }
+                var ann = dat.getFullYear() ;
+                if (ann<2000){
+                    var anne = dat.getYear();
+                }else {
+                    var anne = dat.getYear()-100;
+                }
+                var jou = dat.getDate();
+                if(jou<10){
+                    var jour = ('0'+ (dat.getDate()));
+                }else{
+                    var jour = dat.getDate();
+                }
+                var username = fname + lname + anne  + moi + jour + getRndInteger();
+                $.ajax({
+                    url: "{{ path('check_username') }}",
+                    type: 'POST',
+                    data: {
+                        'username': username,
+                    },
+                    dataType: "json",
+                    success: (data) => {
+                        console.log(data);
+                        if (data.status == "OK"){
+                            $('#registration_praticien_form_username').val(username);
+                        }else {
+                            createUsername();
+                        }
+                    },
+                    error: (e) => {
+                        console.log(error);
+                    }
+                }).done(() => {
+                });
+
+            });
+            //$('#registration_form_email').val(username);
+        }
+
+        $(document).ready(function () {
+            $('#form-parent').css("display", "none");
+            $('#registration_praticien_form_username').attr("readonly", "true");
+            $("#registration_form_type_patient").on('change', function (e) {
+                if ($("#registration_form_type_patient").val() == 3){
+                    $('#form-parent').css("display", "block");
+                }else {
+                    $('#form-parent').css("display", "none");
+                }
+            });
+
+            $('#registration_praticien_form_firstname').on('keyup', createUsername);
+            $('#registration_praticien_form_lastname').on('keyup', createUsername);
+        });
+
+        $('#registration_praticien_form_country').on('change',function () {
+            var idcountry =$('#registration_praticien_form_country option:selected').val();
+
+            if(idcountry == 3){
+                $value = "+237";
+            } else if (idcountry == 4){
+                $value = "+33";
+            }
+            $('#tel').val($value);
+            $('#tell').val($value);
+            $.ajax({
+                method: "POST",
+                url: "{{ path('country') }}",
+                data: {id: idcountry},
+                success: function(response){
+
+                    $('#city').empty();
+                    $.each(response, function(index,element) {
+                        $('#city').append('<option value="'+ element.id +'" selected="selected">'+ element.nameCity +' </option>');
+                    });
+                }
+            });
+        });
+    </script>
+{% endblock %}

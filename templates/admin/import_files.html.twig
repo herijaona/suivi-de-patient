@@ -1,0 +1,75 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}City{% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<div class="modal-header text-center">
+    {% if new == true %}
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}New country{% endtrans %}</h4>
+    {% else %}
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}Country modification{% endtrans %}</h4>
+    {% endif %}
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="white-text">&times;</span>
+    </button>
+</div>
+<!--Content-->
+{{ form_start(form, {'attr': {'action': path('register_state') }}) }}
+<!--Body-->
+<div class="modal-body">
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}Name{% endtrans %} </label>
+        {{ form_widget(form.nameState, {'attr': { 'class': 'form-control', 'required': 'required' }}) }}
+    </div>
+
+</div>
+<div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" aria-label="Close"><i class="fas fa-remove ml-1"></i> {% trans %}Cancel{% endtrans %} </button>
+    <button type="submit" class="btn btn-outline-primary waves-effect submit_new_center_health"> <i class="fas fa-save ml-1"></i> {% trans %}Save{% endtrans %}</button>
+</div>
+
+{{ form_end(form) }}
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            //$('.mdb-select').materialSelect();
+            $('input[type=file]').change( function (e) {
+                $(".loadBody").css("display", "block");
+                e.preventDefault();
+                var formData = new FormData();
+
+                formData.append("file", $(this)[0].files[0]);
+                formData.append("upload_file", true);
+
+                $.ajax({
+                    url: "{{ path('xlsx_import') }}",
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    //dataType: "json",
+                    success: (data) =>{
+
+                        $(".loadBody").css("display", "none");
+                    },
+                    error: (e) => {
+                        $(".loadBody").css("display", "none");
+                        $(".chargementError").css("display", "block");
+                    }
+                }).done(() => {
+                    $(".loadBody").css("display", "none");
+                });
+            });
+        });
+
+    </script>
+{% endblock %}

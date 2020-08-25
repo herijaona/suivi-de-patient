@@ -1,0 +1,77 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    Vaccination
+{% endblock %}
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %}All Vaccinations {% endtrans %}</h4>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>{% trans %}Vaccination date {% endtrans %}</th>
+                <th>Patient</th>
+                <th>Status</th>
+                <th>Intervention</th>
+                <th>{% trans %}Vaccination schedule {% endtrans %}</th>
+
+            </tr>
+            </thead>
+            <tbody>
+                {# {{dump(vaccination)}} #}
+            {% for vac in vaccination  %}
+                <tr>
+                    <td>
+                        {{ vac.datePrise |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
+                    </td>
+
+                    <td>{{ vac.firstName }} {{ vac.lastName }}</td>
+                    <td>
+                        {% if vac.statusVaccin == 1 %}
+                            <span class="badge badge-info badge-style ">{% trans %}Accepted{% endtrans %}</span>
+                        {% elseif vac.statusVaccin == 0 %}
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                        {% elseif vac.statusVaccin == 2 %}
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+
+                    <td>
+                        {% if vac.statusVaccin == 2 %}
+                        {% else%}
+                            {% if vac.etat == 1 %}
+                                <span class="badge badge-info badge-style modif-status">{% trans %}Realized{% endtrans %}</span>
+                            {% elseif vac.etat == 0 %}
+                                <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
+                            {% endif %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if vac.etat == 1 %}
+                            <a href="{{ path('see_calendar', {'patient_id' : vac.patient}) }}" class="badge badge-success badge-style">{% trans %}See{% endtrans %}</a>
+                        {% endif %}
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script>
+        $(document).ready(function() {
+            $('#example1').DataTable();
+        });
+    </script>
+{% endblock %}

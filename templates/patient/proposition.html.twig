@@ -1,0 +1,98 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}Appointment Proposal{% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %}Appointment proposal {% endtrans %}</h4>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>{% trans %}Date Proposal appointment{% endtrans %}</th>
+                <th>Description</th>
+                <th>Praticien</th>
+                <th>Patient</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for propos in proposition %}
+                <tr>
+                    <td class="text-left">
+                        {{ propos.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
+                    </td>
+                    <td>
+                        {{ propos.descriptionProposition }}
+                    </td>
+                    <td>
+                        {{ propos.firstName }}
+                        {{ propos.lastName }}
+                    </td>
+                    <td>
+                        {{ propos.patientfirst }}
+                        {{ propos.patientlast }}
+                    </td>
+                    <td>
+                        <span class="badge badge-success badge-style modif-etat" data-patient="{{ propos.patient }}" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}"  >{% trans %}Accept{% endtrans %}</span>
+                        <span class="badge badge-success badge-style modif-etat" data-patient="{{ propos.patient }}" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}"  >{% trans %}Accept{% endtrans %}</span>
+
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script>
+        $('.modif-etat').one('click', function () {
+            var id = $(this).data('id');
+            var praticien = $(this).data('praticien');
+            var patient = $(this).data('patient');
+            var date = $(this).data('date');
+            var description = $(this).data('description');
+            $.ajax({
+                url: "{{ path('proposition') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                    praticien: praticien,
+                    patient: patient,
+                    date: date,
+                    description: description
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $(this).attr('disabled','disabled');
+                    $(".loadBody").css("display", "none");
+                    location.reload();
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+
+        });
+        $(document).ready(function() {
+            $('#example1').DataTable();
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            });
+        });
+
+    </script>
+{% endblock %}

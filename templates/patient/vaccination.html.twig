@@ -1,0 +1,69 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    Vaccination
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %}All Vaccinations {% endtrans %}</h4>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
+                <th>{% trans %}Initial Take Date {% endtrans %}</th>
+                <th>{% trans %}Date Reminder{% endtrans %}</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for vac in vaccination  %}
+                <tr>
+                    <td>
+                        {{ vac.vaccinName }}
+                    </td>
+                    <td>
+                        {% if vac.datePriseInitiale != null %}
+                            {{ vac.datePriseInitiale |localizeddate('full', 'short') }}
+                        {% elseif vac.datePriseInitiale == null %}
+                        {% endif %}</td>
+                    <td>
+                        {% if vac.rappelVaccin != null %}
+                        {{ vac.rappelVaccin | localizeddate('full', 'short') }}
+                        {% elseif vac.rappelVaccin == null %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if vac.etat == 1 %}
+                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                        {% elseif vac.etat == 0 %}
+                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $(document).ready(function () {
+            $(document).ready(function() {
+                $('#example1').DataTable();
+            } );
+        });
+    </script>
+{% endblock %}

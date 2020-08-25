@@ -1,0 +1,311 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}Members{% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    <style>
+        /*-------------------------*/
+        .tab-wrap {
+            margin: 10px;
+            padding: 15px;
+        }
+        .tab-list {
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+        }
+        .tab-list:after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .tab-list li {
+            float: left;
+            margin-left: -1px;
+            list-style: none;
+        }
+        .tab-list li a {
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            text-decoration: none;
+        }
+        .tab-list li a span {
+            display: flex;
+            align-items: center;
+            height: 40px;
+            line-height: 40px;
+            padding: 0 15px;
+        }
+        .tab-list li a:hover span {
+            color: #333;
+            background-color: #fff ;
+        }
+        .tab-list li.in span {
+            color: #7d8688;
+            background-color: #f3f3f3;
+        }
+        .tab-item {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+        }
+        .tab-item.in {
+            display: block;
+        }
+        @media (max-width: 700px){
+            .tab-wrap{
+                padding: 0;
+                margin: 0;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %}List of all members{% endtrans %} </h4>
+        </div>
+    </div>
+    <div class="tab-wrap">
+        <ul class="tab-list">
+            <li style="margin-left: 34px;" class=" in"><a href="javascript:;"><span class="btn btn-info">Patient</span></a></li>
+
+            <li style="margin-left: 15px"><a href="javascript:;"><span class="btn btn-info">Praticien</span></a></li>
+        </ul>
+        <div class="tab-items">
+            <div class="tab-item in">
+                <div class="row-table table-content">
+                    <table class="table table-striped" id="table-patients">
+                        <thead>
+                        <tr>
+                            <th>{% trans %}Last name{% endtrans %}</th>
+                            <th>{% trans %}First name{% endtrans %}</th>
+                            <th>{% trans %}Mother's name{% endtrans %}</th>
+                            <th>{% trans %}Phone{% endtrans %}</th>
+                            <th class="text-center">{% trans %}Creation date{% endtrans %}</th>
+                            <th class="text-center">{% trans %}Consultation date{% endtrans %}</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for patient in patients  %}
+                            <tr>
+                                <td>
+                                    {{ patient.lastName }}
+                                </td>
+                                <td>
+                                    {{ patient.firstName }}
+                                </td>
+                                <td>
+                                    {{ patient.motherName }}
+                                </td>
+                                <td>
+                                    {{ patient.phone }}
+                                </td>
+                                <td class="text-center">
+                                    {% if patient.user.createdAt is defined and patient.user.createdAt != null %}{{ patient.user.createdAt|date('d-m-Y')  }}{% else %}  {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if patient.user.updatedAt is defined and patient.user.updatedAt != null %}{{ patient.user.updatedAt|date('d-m-Y') }}{% else %}  {% endif %}
+                                </td>
+                                <td>
+                                    {% if patient.etat == 1 %}
+                                    <span class="badge badge-success badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient"> {% trans %}Activate{% endtrans %} </span>
+                                    {% else %}
+                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient">{% trans %}Deactivate{% endtrans %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="btn btn-primary data-edit" data-id="{{ patient.id }}" data-type="patient"><i class="fa fa-pencil"></i></span>
+                                    <span class="btn btn-danger data-remove" data-id="{{ patient.id }}" data-type="patient"><i class="fa fa-trash-o"></i></span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-item">
+                <div class="row-table table-content">
+                    <table class="table table-striped" id="table-praticiens">
+                        <thead>
+                        <tr>
+                            <th>{% trans %}Last name{% endtrans %}</th>
+                            <th>{% trans %}First name{% endtrans %}</th>
+                            <th>{% trans %}Phone{% endtrans %}</th>
+                            <th class="text-center">{% trans %}Creation date{% endtrans %}</th>
+                            <th class="text-center">{% trans %}Consultation date{% endtrans %}</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for praticien in praticiens  %}
+                            <tr>
+                                <td>
+                                    {{ praticien.lastName }}
+                                </td>
+                                <td>
+                                    {{ praticien.firstName }}
+                                </td>
+                                <td>
+                                    {{ praticien.phone }}
+                                </td>
+                                <td class="text-center">
+                                    {% if praticien.user.updatedAt is defined and praticien.user.updatedAt != null %}{{ praticien.user.createdAt|date('d-m-Y')}}{% else %}  {% endif %}
+                                </td>
+                                <td class="text-center">
+                                    {% if praticien.user.updatedAt is defined and praticien.user.updatedAt != null %}{{ praticien.user.updatedAt|date('d-m-Y') }}{% else %}  {% endif %}
+                                </td>
+                                <td>
+                                    {% if praticien.etat == 1 %}
+                                        <span class="badge badge-success badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien"> {% trans %}Activate{% endtrans %} </span>
+                                    {% else %}
+                                        <span class="badge badge-warning badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien">{% trans %}Deactivate{% endtrans %}</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="btn btn-primary data-edit" data-id="{{ praticien.id }}" data-type="praticien"><i class="fa fa-pencil"></i></span>
+                                    <span class="btn btn-danger data-remove" data-id="{{ praticien.id }}" data-type="praticien"><i class="fa fa-trash-o"></i></span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('#table-patients').DataTable();
+            $("#table-praticiens").DataTable();
+        });
+        $(".new_vaccin").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            $.ajax({
+                url: "{{ path('add_form_vaccin') }}",
+                type: 'post',
+                data: {
+                    action: 'new'
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-edit').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            $(".loadBody").css("display", "block");
+            $.ajax({
+                url: "{{ path('show_change_password_users') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                    type: type,
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $('.create_body').html(data.form_edit_password);
+                    $("#modal_create_body").modal('show');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-remove').on('click', function (e) {
+            e.preventDefault();
+            var $delete = confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');
+            if($delete){
+                $(".loadBody").css("display", "block");
+                var id = $(this).data('id');
+                var type = $(this).data('type');
+                $.ajax({
+                    url: "{{ path('remove_users') }}",
+                    type: 'post',
+                    data: {
+                        id: id,
+                        type: type,
+                    },
+                    dataType: "json",
+                    success: (data) =>{
+                        $(".loadBody").css("display", "none");
+                        location.reload();
+                    },
+                    error: (e) => {
+                        $(".loadBody").css("display", "none");
+                        $(".chargementError").css("display", "block");
+                    }
+                }).done(() => {
+                    $(".loadBody").css("display", "none");
+                });
+            }else {
+                return false
+            }
+        });
+
+        $('.modif-status').on('click', function (e) {
+            e.preventDefault();
+            $(".loadBody").css("display", "block");
+            var id = $(this).data('id');
+            var status = $(this).data('etat');
+            var type = $(this).data('type');
+            $.ajax({
+                url: "{{ path('edit_status_users') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                    status: status,
+                    type: type
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $(".loadBody").css("display", "none");
+                    location.reload();
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $(document).on('click', '.tab-list li a', function() {
+            var $this = $(this),
+                $tabList = $this.parents('ul'),
+                _idx = $this.closest('li').index();
+            $tabList.children().eq(_idx).addClass('in').siblings().removeClass('in');
+            $tabList.next().children().eq(_idx).addClass('in').siblings().removeClass('in');
+        });
+
+
+
+    </script>
+{% endblock %}

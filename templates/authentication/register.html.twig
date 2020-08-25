@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %} {% block body %}
+
+<!-- Content -->
+
+<div class="background-img"></div>
+<div class="body-page register">
+    <div class="container text-center body-content">
+        <img width="88px" src="assets/images/logo2.png" alt="logo" id="logo">
+        <h3 class="main-title mb-4">S'inscrire</h3>
+        <form role="form" class="form-horizontal">
+            <div class="row form-group">
+                <div class="col-lg-6">
+                    <input id="name" type="text" class="form-control" name="name" placeholder="Nom">
+                </div>
+                <div class="col-lg-6">
+                    <input id="firstname" type="text" class="form-control" name="firstname" placeholder="Prenom">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-6">
+                    <input type="date" id="datenaiss" name="datenaiss" class="form-control" placeholder="date de naissance">
+                </div>
+                <div class="col-lg-6">
+                    <input type="text" id="lieunaiss" name="lieunaiss" class="form-control" placeholder="lieu de naissance">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-6">
+                    <input id="" type="number" class="form-control" name="number" placeholder="Phone">
+                </div>
+                <div class="col-lg-6">
+                    <input id="" type="text" class="form-control" name="adresse" placeholder="Adresse">
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-lg-6">
+                    <select class="form-control">
+                        <option value="active">Type</option>
+                        <option>Adulte</option>
+                        <option>Femme enceinte</option>
+                        <option>Enfant</option>
+                    </select>
+                </div>
+                <div class="col-lg-6">
+                    <select class="form-control">
+                        <option value="active ">Sexe</option>
+                        <option>Feminin</option>
+                        <option>Masculin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-md-12">
+                    <input id="nompere" type="text" class="form-control mb-3" name="nompere" placeholder="nom de père">
+                </div>
+                <div class="col-md-12">
+                    <input id="nommere" type="text" class="form-control mb-3" name="nommere" placeholder="nom de mère ">
+                </div>
+            </div>
+            <button type="submit " class="btn btn-info button-login mb-3">
+                S'inscrire
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- End Content -->
+
+<!-- footer -->
+
+<footer class="footer">
+    <div class="container text-center mention-legal mt-3">
+        Copyright © 2020 Olivier RTs
+    </div>
+</footer>
+
+<!-- End footer -->
+
+{% endblock %}

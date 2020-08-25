@@ -1,0 +1,306 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}Health center{% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    <style>
+        .form-row{
+            align-items: center !important;
+            justify-content: flex-end !important;
+        }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-5 mt-4">
+            <h4 class="h4-content">{% trans %}All Health Centers{% endtrans %}</h4>
+        </div>
+        <div class="col-md-7 form-row ">
+
+            <div class="grid-edit-btn  mt-3 p-1">
+                <button class="btn btn-primary new_center_health">{% trans %}+ New{% endtrans %} </button>
+            </div>
+        </div>
+    </div>
+    <div class="row head-table col-md-12">
+        <div class="grid-edit-btn  mt-3  id_vaccin_center_health col-md-10">
+            <select name="vaccin_center_health" id="vaccin_center_health" class="form-control chosen-select" multiple>
+                {% for vacc in vaccinActive %}
+                    <option value="{{ vacc.id }}">{{ vacc.vaccinName }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="grid-edit-btn  mt-3 col-md-2">
+            <button class="btn btn-primary affected_center_health">{% trans %}+ Assign{% endtrans %}</button>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th><input type="checkbox" name="select_all" value="1" id="example-select-all"></th>
+                <th>{% trans %}Center Name{% endtrans %}</th>
+                <th>{% trans %}Center type{% endtrans %}</th>
+                <th>{% trans %}Phone{% endtrans %}</th>
+                <th>{% trans %}in charge of{% endtrans %}</th>
+                <th>{% trans %}Address{% endtrans %}</th>
+                <th>{% trans %}City{% endtrans %}</th>
+                <th>{% trans %}Region{% endtrans %}</th>
+                <th>{% trans %}Country{% endtrans %}</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for centre in centreSante  %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="checkbox_centre" value="{{ centre.id }}" />
+                    </td>
+                    <td>
+                        {{ centre.centreName }}
+                    </td>
+                    <td>
+                        {{ centre.centreType.typeName }}
+                    </td>
+                    <td>
+                        {{ centre.centrePhone }}
+                    </td>
+                    <td>
+                        {{ centre.responsableCentre }}
+                    </td>
+                    <td>
+                        {{ centre.numRue }} - {{ centre.quartier }}
+                    </td>
+                    <td>
+                        {{ centre.city.nameCity }}
+                    </td>
+                    <td>
+                        {{ centre.city.region.nameRegion }}
+                    </td>
+                    <td>
+                        {{ centre.city.region.state.nameState }}
+                    </td>
+                    <td>
+                        <a class="btn btn-primary see_vaccin" style="width: 36px;height: 33px;"  href="{{ path('see_vaccin', {'centre_id' : centre.id}) }}" ><i style="margin-left: -3px" class="fas fa-eye"></i></a>
+                        {#<a href="{{ path('see_vaccin', {'centre_id' : centre.id}) }}" class="btn btn-primary"  style="width: 37px; height: 31px;"><i style="margin-left: -3px" class="fas fa-eye"></i></a>#}
+                        <span class="btn btn-primary data-edit" data-id="{{ centre.id }}" ><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ centre.id }}"><i class="fa fa-trash-o"></i></span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+
+        $(document).ready(function () {
+            var table = $("#example1").DataTable({
+                language: {
+                    url: "{{ asset('vendor/datatables/lang.json') }}"
+                }
+            });
+
+            $('.chosen-select').chosen({width: "100%"});
+            $('#example-select-all').on('click', function(){
+                var rows = table.rows({ 'search': 'applied' }).nodes();
+                $('input[type="checkbox"]', rows).prop('checked', this.checked);
+            });
+
+            $('#example1 tbody').on('change', 'input[type="checkbox"]', function(){
+                if(!this.checked){
+                    var el = $('#example-select-all').get(0);
+                    if(el && el.checked && ('indeterminate' in el)){
+                        el.indeterminate = true;
+                    }
+                }
+                /*if ($('input[name="checkbox_centre"]').is(':checked')){
+                    $(".id_vaccin_center_health").css("display", "block");
+                    $(".affected_center_health").css("display", "block");
+                }else {
+                    $(".id_vaccin_center_health").css("display", "none");
+                    $(".affected_center_health").css("display", "none");
+                }*/
+
+            });
+
+        });
+        function changeState(e) {
+            $(".loadBody").css("display", "block");
+            let idState = $(e).val();
+            $.ajax({
+                type: 'post',
+                url: "{{ path('select_state_center_health') }}",
+                dataType: "json",
+                data: { idState: idState },
+                success: function ($tabRegion) {
+                    $("#center_health_region").empty();
+                    var lastKey = Object.keys($tabRegion)[Object.keys($tabRegion).length - 1];
+                    $("#center_health_region").append('<option value="">{% trans %}Choose Region{% endtrans %} </option>');
+                    $.each($tabRegion, function (key, region) {
+                        $("#center_health_region").append('<option value="' + key + '">' + region + '</option>');
+                    });
+
+                    $('.chosen-select').trigger('chosen:updated');
+                    $(".loadBody").css("display", "none");
+                },
+                error: function () {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                    //alert('Erreur load affaire');
+                }
+            });
+        }
+
+        function changeRegion(e) {
+            $(".loadBody").css("display", "block");
+            let idRegion = $(e).val();
+            $.ajax({
+                type: 'post',
+                url: "{{ path('select_region_center_health') }}",
+                dataType: "json",
+                data: { idRegion: idRegion },
+                success: function ($tabCity) {
+                    $("#center_health_ville").empty();
+                    var lastKey = Object.keys($tabCity)[Object.keys($tabCity).length - 1];
+                    $("#center_health_ville").append('<option value=""> {% trans %}Choose City{% endtrans %} </option>');
+                    $.each($tabCity, function (key, city) {
+                        $("#center_health_ville").append('<option value="' + key + '">' + city + '</option>');
+                    });
+
+                    $('.chosen-select').trigger('chosen:updated');
+                    $(".loadBody").css("display", "none");
+                },
+                error: function () {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                    //alert('Erreur load affaire');
+                }
+            });
+        }
+
+        $(".new_center_health").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            $.ajax({
+                url: "{{ path('add_form_center_health') }}",
+                type: 'post',
+                data: {
+                    action: 'new'
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('.chosen-select').chosen({width: "100%"});
+                    $('.chosen-select').trigger('chosen:updated');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $(".data-edit").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            var id = $(this).data('id');
+            e.preventDefault();
+            $.ajax({
+                url: "{{ path('add_form_center_health') }}",
+                type: 'post',
+                data: {
+                    action: 'edit',
+                    id_health_center: id,
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('.chosen-select').chosen({width: "100%"});
+                    $('.chosen-select').trigger('chosen:updated');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-remove').on('click', function (e) {
+            e.preventDefault();
+            var $delete = confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');
+            if($delete){
+                $(".loadBody").css("display", "block");
+                var id = $(this).data('id');
+                $.ajax({
+                    url: "{{ path('remove_center_health') }}",
+                    type: 'post',
+                    data: {
+                        id_center_health: id
+                    },
+                    dataType: "json",
+                    success: (data) =>{
+                        $(".loadBody").css("display", "none");
+                        location.reload();
+                    },
+                    error: (e) => {
+                        $(".loadBody").css("display", "none");
+                        $(".chargementError").css("display", "block");
+                    }
+                }).done(() => {
+                    $(".loadBody").css("display", "none");
+                });
+            }else {
+                return false
+            }
+
+        });
+
+        $('.affected_center_health').on('click', function (e) {
+            e.preventDefault();
+            var center_health = [];
+            $('input[name=checkbox_centre]:checked').map(function() {
+                center_health.push($(this).val());
+            });
+            var vaccin_center_health = $('#vaccin_center_health').val();
+            if (vaccin_center_health.length > 0 && center_health.length > 0){
+                $(".loadBody").css("display", "block");
+                $.ajax({
+                    url: "{{ path('affected_center_health') }}",
+                    type: 'post',
+                    data: {
+                        center_health: center_health,
+                        vaccin_center_health: vaccin_center_health
+                    },
+                    dataType: "json",
+                    success: (data) =>{
+                        $(".loadBody").css("display", "none");
+                        location.reload();
+                    },
+                    error: (e) => {
+                        $(".loadBody").css("display", "none");
+                        $(".chargementError").css("display", "block");
+                    }
+                }).done(() => {
+                    $(".loadBody").css("display", "none");
+                });
+            }else {
+                alert("Veuillez selectionner au moins un centre de santé ou vaccin !")
+            }
+        });
+
+
+
+    </script>
+{% endblock %}

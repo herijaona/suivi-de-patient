@@ -1,0 +1,144 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+   {% trans %}Group - Family{% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{asset('vendor/datatables-bs4/css/dataTables.bootstrap4.css')}}">
+    <style>
+        .close {
+            line-height: 1.5 !important;
+            padding: .84rem 2.14rem !important;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %}All Groups{% endtrans %}</h4>
+
+        </div>
+        <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-danger btn-class" data-toggle="modal" data-target="#orangeModalSubscription">{% trans %}+ New Family Group{% endtrans %}</button>
+
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>{% trans %}Group name {% endtrans %}</th>
+                <th>Membres</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for my_group in my_groups  %}
+                <tr>
+                    <td>
+                        {{ my_group.Name }}
+                    </td>
+                    <td>
+                        {{ my_group.Membres|length }} familles
+                    </td>
+                    <td>
+                        <span class="btn btn-secondary see_group" data-id="{{ my_group.ID }}" data-href="{{ path('see_my_group', {'group_id': my_group.ID}) }}" ><i class="fas fa-eye"></i></span>
+                        <span class="btn btn-primary edit_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-edit"></i></span>
+                        <span class="btn btn-danger deleted_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-trash"></i></span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="modal fade" id="orangeModalSubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-notify modal-primary" role="document">
+            <!--Content-->
+            <form action="{{ path('register_group') }}" method="post">
+                <div class="modal-content">
+                    <!--Header-->
+                    <div class="modal-header text-center">
+                        <h4 class="modal-title white-text w-100 font-weight-bold py-2 title_modal">{% trans %}Create new group{% endtrans %}</h4>
+
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true" class="white-text">&times;</span>
+                        </button>
+                    </div>
+
+                    <!--Body-->
+
+                    <div class="modal-body">
+                        <input type="hidden" name="group_id" id="group_id" class="form-control" >
+                        <div class="md-form mb-5">
+                            <label  for="group_name" class="active">{% trans %}Name of the group{% endtrans %}</label>
+
+                            <input type="text" id="group_name" name="group_name" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <!--Footer-->
+                    <div class="modal-footer justify-content-center">
+
+                        <button type="button" class="btn btn-outline-danger waves-effect " data-dismiss="modal" aria-label="Close"><i class="fas fa-remove ml-1"></i> {% trans %}Cancel{% endtrans %} </button>
+                        <button type="submit" class="btn btn-outline-primary waves-effect "><i class="fas fa-save ml-1"></i> {% trans %}Save{% endtrans %} </button>
+
+                    </div>
+                </div>
+            </form>
+            <!--/.Content-->
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#example1').DataTable();
+        });
+        $('.edit_group').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var name = $(this).data('name');
+            $('#group_id').val(id);
+            $('#group_name').val(name);
+            $('.title_modal').html('Modification de nom de groupe');
+            $('#orangeModalSubscription').modal('show');
+        });
+        $('.see_group').on('click', function (e) {
+            e.preventDefault();
+            var href = $(this).data('href');
+            location.href =  href;
+        });
+
+        $('.deleted_group').on('click', function(e) {
+            e.preventDefault();
+            var id_group = $(this).data('id');
+            var result = confirm("Are you sure you want to delete from this group?");
+            if (result) {
+                var url = "{{ path('delete_group') }}";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        id_group: id_group,
+                    },
+                    success: (data) => {
+                        if (data.status) {
+                            location.reload()
+                        }
+                    },
+                    error: (e) => {
+                        console.log(error);
+                    }
+                }).done(() => {});
+            } else {
+                return false;
+            }
+        });
+    </script>
+{% endblock %}

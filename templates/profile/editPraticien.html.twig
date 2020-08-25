@@ -1,0 +1,120 @@
+{% extends 'include/base.html.twig' %} {% block body %}
+
+<div class="d-flex w-100">
+    <h2 class="profile-h2">{% trans %}My profile{% endtrans %}</h2>
+    <div class="text-right w-50">
+        <button type="submit " class="btn btn-info button-login btn-edit mb-3">
+            <i class="fas fa-pencil-alt mr-2"></i>
+            {% trans %}Edit{% endtrans %}
+        </button>
+    </div>
+</div>
+<div>
+    <div>
+        {{ form_start(registrationForm) }}
+        <div class="body-page register edit-register">
+            <div class="container text-center body-content">
+                <form role="form" class="form-horizontal">
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Last name{% endtrans %}</label> {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control form-show', 'placeholder': 'Nom', 'value':values.user.lastName}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.lastName }}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}First name{% endtrans %}</label> {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control form-show', 'value': values.user.firstName}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.firstname }}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Date of Birth{% endtrans %}</label> {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control form-show', 'value': values.dateBorn|localizeddate('none', 'none', 'fr', null, 'd MMMM Y')}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.dateBorn|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Place of birth{% endtrans %}</label> {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control form-show', 'placeholder': 'Lieu de Naissance', 'value':values.City.nameCity}}) }}
+                           <input type="text" class="form-control form-edit" placeholder="{{ values.City.nameCity }}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Phone{% endtrans %}</label> {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control form-show', 'value': values.phone}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.phone }}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Professional phone {% endtrans %}</label> {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control form-show','value': values.phoneProfessional }}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.phoneProfessional }}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Address{% endtrans %}</label> {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-show', 'placeholder': 'Adresse', 'value' : values.address }}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.address }}">
+
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Function{% endtrans %}</label> {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control form-show', 'value': values.fonction}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.fonction }}">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">E-mail</label> {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control form-show', 'value': values.user.email}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.email }}">
+                        </div>
+                        <div class="col-lg-6">
+                            {% for  ordo in  values.ordonnaces%}
+                            <label for="">{% trans %}Center Health{% endtrans %}</label>{{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control form-show', 'placeholder': 'Your center health', 'value': ordo.CentreSante.centreName}}) }}
+
+                                <input type="text" class="form-control form-edit" placeholder="{{ ordo.CentreSante.centreName}}">
+                            {% endfor %}
+                            {##}
+
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Username{% endtrans %}</label> {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant', 'value':values.user.username}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.username }}">
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Password{% endtrans %}</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe', 'value': values.user.password}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.password }}">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info button-login mb-3 button-edit button-edit-class">
+                        {% trans %}Save{% endtrans %}
+                    </button>
+                </form>
+            </div>
+        </div>
+        {{ form_end(registrationForm) }}
+    </div>
+</div>
+
+{% endblock %} {% block javascripts %}
+<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+<script>
+    $('.form-show').css('display', 'none');
+    var i = 1;
+    $(".btn-edit").click(function() {
+        i++;
+        if (i % 2 == 0) {
+            $('.button-edit-class').removeClass('button-edit-class');
+            $('.form-edit').css('display', 'none');
+            $('.form-show').css('display', 'block');
+            $(this).addClass('button-cancel');
+            $(this).children('span').html('<span>{% trans %}Cancel{% endtrans %}</span>');
+            $(this).children('i').remove();
+        } else {
+            $('.button-edit').addClass('button-edit-class');
+            $('.form-edit').css('display', 'block');
+            $('.form-show').css('display', 'none');
+            $(this).removeClass('button-cancel');
+            $(this).children('span').html('<span>{% trans %}Edit{% endtrans %}</span>');
+            $(this).prepend('<i class="fas fa-pencil-alt mr-2"></i>');
+        }
+
+
+    });
+</script>
+{% endblock %}

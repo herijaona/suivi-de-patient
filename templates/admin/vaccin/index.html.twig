@@ -1,0 +1,172 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}Vaccines{% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %}All Vaccines{% endtrans %}</h4>
+        </div>
+        <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-danger new_vaccin">{% trans %}+ New Vaccine{% endtrans %} </button>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="table-vaccin">
+            <thead>
+            <tr>
+                <th>{% trans %}Name{% endtrans %}</th>
+                <th>{% trans %}Description{% endtrans %}</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for vaccin in vaccins  %}
+                <tr>
+                    <td>
+                        {{ vaccin.vaccinName }}
+                    </td>
+                    <td>
+                        {{ vaccin.vaccinDescription }}
+                    </td>
+                    <td>
+                        {{ vaccin.typeVaccin.typeName }}
+                    </td>
+                    <td>
+                        {% if vaccin.etat == 1 %}
+                            <span class="badge badge-success badge-style modif-status" data-id="{{ vaccin.id }}" data-etat="{{ vaccin.etat }}"> {% trans %}activate{% endtrans %} </span>
+                        {% else %}
+                            <span class="badge badge-warning badge-style modif-status" data-id="{{ vaccin.id }}" data-etat="{{ vaccin.etat }}">{% trans %}Deactivate{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ vaccin.id }}"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ vaccin.id }}"><i class="fa fa-trash-o"></i></span>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(".new_vaccin").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            $.ajax({
+                url: "{{ path('add_form_vaccin') }}",
+                type: 'post',
+                data: {
+                    action: 'new'
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-edit').on('click', function (e) {
+            e.preventDefault();
+            $(".loadBody").css("display", "block");
+            var id = $(this).data('id');
+            $.ajax({
+                url: "{{ path('add_form_vaccin') }}",
+                type: 'post',
+                data: {
+                    id_vaccin: id,
+                    action: 'edit'
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $('.data-remove').on('click', function (e) {
+            e.preventDefault();
+            var $delete = confirm('Êtes-vous sûr de vouloir supprimer cet événement ?');
+            if($delete){
+                $(".loadBody").css("display", "block");
+                var id = $(this).data('id');
+                $.ajax({
+                    url: "{{ path('remove_vaccin') }}",
+                    type: 'post',
+                    data: {
+                        id_vaccin: id
+                    },
+                    dataType: "json",
+                    success: (data) =>{
+                        $(".loadBody").css("display", "none");
+                        location.reload();
+                    },
+                    error: (e) => {
+                        $(".loadBody").css("display", "none");
+                        $(".chargementError").css("display", "block");
+                    }
+                }).done(() => {
+                    $(".loadBody").css("display", "none");
+                });
+            }else {
+                return false
+            }
+        });
+
+        $('.modif-status').on('click', function (e) {
+            e.preventDefault();
+            $(".loadBody").css("display", "block");
+            var id = $(this).data('id');
+            var status = $(this).data('etat');
+            $.ajax({
+                url: "{{ path('edit_status_vaccin') }}",
+                type: 'post',
+                data: {
+                    id_vaccin: id,
+                    status: status
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $(".loadBody").css("display", "none");
+                    location.reload();
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+        $(document).ready(function () {
+            $("#table-vaccin").DataTable();
+
+        });
+
+    </script>
+{% endblock %}
