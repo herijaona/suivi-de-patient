@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CentreHealth;
+use App\Entity\State;
+use App\Entity\TypeVaccin;
 use App\Entity\Vaccin;
 use App\Entity\VaccinCentreHealth;
 use App\Form\CenterHealthType;
@@ -12,12 +14,15 @@ use App\Repository\OrdoConsultationRepository;
 use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
+use App\Repository\StateRepository;
 use App\Repository\TypeVaccinRepository;
 use App\Repository\UserRepository;
 use App\Repository\VaccinCentreHealthRepository;
 use App\Repository\VaccinRepository;
+use App\Service\FileUploadService;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,6 +46,7 @@ class AdminController extends AbstractController
     protected $entityManager;
     protected $ordoVaccinationRepository;
     protected $ordoConsultationRepository;
+    protected $stateRepository;
 
     function __construct(
         VaccinGenerate $vaccinGenerate,
@@ -51,7 +57,8 @@ class AdminController extends AbstractController
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         OrdoVaccinationRepository $ordoVaccinationRepository,
-        OrdoConsultationRepository $ordoConsultationRepository
+        OrdoConsultationRepository $ordoConsultationRepository,
+        StateRepository $stateRepository
     )
     {
         $this->vaccinGenerate = $vaccinGenerate;
@@ -63,6 +70,7 @@ class AdminController extends AbstractController
         $this->entityManager = $entityManager;
         $this->ordoVaccinationRepository = $ordoVaccinationRepository;
         $this->ordoConsultationRepository = $ordoConsultationRepository;
+        $this->stateRepository = $stateRepository;
     }
     /**
      * @Route("/", name="admin")
@@ -348,6 +356,105 @@ class AdminController extends AbstractController
 
         }
         return $this->redirectToRoute("admin_vaccin");
+    }
+
+    /**
+     * @Route("/upload-excel-vaccin", name="xlsx_import_vaccin")
+     */
+    public function xlsx_import_vaccin(Request $request, FileUploadService $fileUploadService)
+    {
+        $fileFolder =  $this->getParameter('import_directory');
+        $files = $request->files->get("file");
+        $filePathName = $fileUploadService->upload($files);
+        //$filePathName = md5(uniqid()) . $file->getClientOriginalName();
+        if ($filePathName != null){
+            $spreadsheet = IOFactory::load($fileFolder ."/". $filePathName); // Here we are able to read from the excel file
+            $row = $spreadsheet->getActiveSheet()->removeRow(1); // I added this to be able to remove the first file line
+            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true); // here, the read data is turned into an array
+            $i = 0;
+
+
+            foreach ($sheetData as $Row)
+            {
+                if ($i != 0){
+                    $idVacc = $Row['A'];
+                    $NomVaccin= $Row['B'];
+                    $TypeVaccin = $Row['C'];
+                    $Pays = $Row['D'];
+                    $Notes = $Row['E'];
+                    $Actif = $Row['F'];
+                    $DatePriseIn = $Row['G'];
+
+
+                    $state = null;
+                    $tpVaccin = null;
+                    $vaccine = null;
+
+                    $city = null;
+                    if($Pays != null) {
+                        $state = $this->stateRepository->findOneBy([ 'nameState' => $Pays ]);
+                        if ($state == null){
+                            $state = new State();
+                            $state->setNameState($Pays);
+                            $this->entityManager->persist($state);
+                        }
+                    }
+                    if($TypeVaccin != null) {
+                        $tpVaccin = $this->typeVaccinRepository->findOneBy([ 'typeName' => $TypeVaccin ]);
+                        if ($tpVaccin == null){
+                            $tpVaccin = new TypeVaccin();
+                            $tpVaccin->setTypeName($TypeVaccin);
+                            $this->entityManager->persist($tpVaccin);
+                        }
+                    }
+
+                    if($NomVaccin != null) {
+                        $vaccine = $this->vaccinRepository->findOneBy([ 'vaccinName' => $NomVaccin ]);
+                        if ($vaccine == null){
+                            $act = $Actif == 1 ? true : false;
+
+                            $vaccine = new Vaccin();
+                            $vaccine->setVaccinName($NomVaccin);
+                            $vaccine->setEtat($act);
+                            $vaccine->setVaccinDescription($Notes);
+                            $vaccine->setTypeVaccin($tpVaccin);
+                            $vaccine->setState($state);
+                            $vaccine->setDatePriseInitiale($this->variablesDate($Row['G']));
+
+                            $vaccine->setRappel1($this->variablesDate($Row['H']));
+                            $vaccine->setRappel2($this->variablesDate($Row['I']));
+                            $vaccine->setRappel3($this->variablesDate($Row['J']));
+                            $vaccine->setRappel4($this->variablesDate($Row['K']));
+                            $vaccine->setRappel5($this->variablesDate($Row['L']));
+                            $vaccine->setRappel6($this->variablesDate($Row['M']));
+                            $vaccine->setRappel7($this->variablesDate($Row['N']));
+                            $vaccine->setRappel8($this->variablesDate($Row['O']));
+                            $vaccine->setRappel9($this->variablesDate($Row['P']));
+                            $vaccine->setRappel10($this->variablesDate($Row['Q']));
+                            $this->entityManager->persist($vaccine);
+                            $this->entityManager->flush();
+                        }
+                    }
+
+                }
+                $i++;
+            }
+
+        }
+
+        return new JsonResponse(['form_import' => true]);
+    }
+
+    private function variablesDate($args = "") {
+            if (strpos($args, 'SEMAINE')  !== false){
+                return explode('SEMAINE', $args)[1] ." week";
+            }
+            if (strpos($args, 'MOIS')   !== false ||  strpos($args, 'GROSSESSE')  != false ){
+                return explode('MOIS', $args)[1] ." month";
+            }
+            if (strpos($args, 'AN')  !== false){
+                return  explode('AN', $args)[1] ." year";
+            }
     }
 
     /**

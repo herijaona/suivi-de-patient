@@ -294,4 +294,11 @@ class OrdoConsultation
 
         return $this;
     }
+
+    public function setDateRdv(\DateTimeInterface $dateRdv): self
+    {
+        $this->dateRdv = $dateRdv;
+
+        return $this;
+    }
 }
