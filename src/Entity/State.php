@@ -54,13 +54,17 @@ class State
      */
     private $phoneindic;
 
-
+    /**
+     * @ORM\OneToMany(targetEntity=Vaccin::class, mappedBy="state")
+     */
+    private $vaccins;
 
     public function __construct()
     {
         $this->regions = new ArrayCollection();
         $this->patients = new ArrayCollection();
         $this->praticiens = new ArrayCollection();
+        $this->vaccins = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -186,6 +190,37 @@ class State
     public function setPhoneindic(?string $phoneindic): self
     {
         $this->phoneindic = $phoneindic;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Vaccin[]
+     */
+    public function getVaccins(): Collection
+    {
+        return $this->vaccins;
+    }
+
+    public function addVaccin(Vaccin $vaccin): self
+    {
+        if (!$this->vaccins->contains($vaccin)) {
+            $this->vaccins[] = $vaccin;
+            $vaccin->setState($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVaccin(Vaccin $vaccin): self
+    {
+        if ($this->vaccins->contains($vaccin)) {
+            $this->vaccins->removeElement($vaccin);
+            // set the owning side to null (unless already changed)
+            if ($vaccin->getState() === $this) {
+                $vaccin->setState(null);
+            }
+        }
 
         return $this;
     }

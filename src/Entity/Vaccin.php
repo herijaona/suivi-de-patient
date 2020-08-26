@@ -46,6 +46,12 @@ class Vaccin
     private $TypeVaccin;
 
     /**
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="vaccins")
+     * @Groups("read:vaccin")
+     */
+    private $state;
+
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      * @Groups("read:vaccin")
      */
@@ -533,5 +539,17 @@ class Vaccin
     public function __toString()
     {
         return $this->getVaccinName();
+    }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): self
+    {
+        $this->state = $state;
+
+        return $this;
     }
 }
