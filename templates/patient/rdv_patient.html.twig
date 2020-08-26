@@ -12,7 +12,7 @@
             <h4 class="h4-content">{% trans %}Appointment {% endtrans %}</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger add_form_rdv">{% trans %}+ Create an Appointment{% endtrans %}</button>
+            <button class="btn btn-danger add_form_rdv" style="display: none">{% trans %}+ Create an Appointment{% endtrans %}</button>
         </div>
     </div>
     <div class="row-table table-content">
@@ -98,38 +98,6 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
-        $(".add_form_rdv").on('click' , function(e) {
-            $(".loadBody").css("display", "block");
-            e.preventDefault();
-            $.ajax({
-                url: "{{ path('add_form_rdv_patient') }}",
-                type: 'post',
-                data: {
-                    action: 'new'
-                },
-                dataType: 'json',
-                success: (data) => {
-                    $('.create_body').html(data.form_html);
-                    $("#modal_create_body").modal('show');
-                    $('#rdv_heureRdv').clockpicker({
-                        donetext: "valider",
-                        autoclose: true,
-                    });
-                    $('#rdv_heureRdv').on('change', function () {
-                        let receivedVal = $(this).val();
-                        $(this).val(receivedVal + ":00");
-                    });
-
-                    $(".loadBody").css("display", "none");
-                },
-                error: (e) => {
-                    $(".loadBody").css("display", "none");
-                    $(".chargementError").css("display", "block");
-                }
-            }).done(() => {
-                $(".loadBody").css("display", "none");
-            });
-        });
 
         $('.data-edit').on('click', function (e) {
             e.preventDefault();
@@ -146,7 +114,6 @@
                 dataType: "json",
                 success: (data) =>{
                     $('.create_body').html(data.form_html);
-                    $("#modal_create_body").modal('show');
                     $('#rdv_heureRdv').clockpicker({
                         donetext: "valider",
                         autoclose: true,

@@ -19,8 +19,12 @@ use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
@@ -52,8 +56,15 @@ class RegistrationController extends AbstractController
 
     /**
      * @Route("/register", name="app_register")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param LoginFormAuthenticator $authenticator
+     * @param MailerInterface $mailer
+     * @return RedirectResponse|Response
+     * @throws TransportExceptionInterface
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, MailerInterface $mailer)
     {
         if($this->checkConnected()){
             return $this->redirectToRoute($this->checkConnected());
@@ -118,6 +129,16 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             // do anything else you need here, like send an email
+            $email = (new TemplatedEmail())
+                ->from('nyavo@neitic.com')
+                ->to($form->get('email')->getData())
+                ->subject('Confirmation code' )
+                ->htmlTemplate('email/email.html.twig')
+                ->context([
+                    'code' => $code, 'name'=>$last_name
+                ]);
+            // On envoie le mail
+            $mailer->send($email);
 
             return $this->redirectToRoute('app_register_activate',['id'=>$user->getId()]);
         } 
@@ -129,8 +150,15 @@ class RegistrationController extends AbstractController
 
     /**
      * @Route("/register/praticien", name="app_register_praticien")
+     * @param Request $request
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param GuardAuthenticatorHandler $guardHandler
+     * @param LoginFormAuthenticator $authenticator
+     * @param MailerInterface $mailer
+     * @return RedirectResponse|Response
+     * @throws TransportExceptionInterface
      */
-    public function register_praticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator): Response
+    public function register_praticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, MailerInterface $mailer)
     {
         if($this->checkConnected()){
             return $this->redirectToRoute($this->checkConnected());
@@ -196,7 +224,7 @@ class RegistrationController extends AbstractController
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
 
-            $userName2 = $this->random_username($last_name . $first_name);
+            $userName2 = $this->random_username($last_name );
 
             $user2 = new User();
             $user2->setLastName($last_name);
@@ -232,7 +260,16 @@ class RegistrationController extends AbstractController
             $entityManager->persist($patient);
             $entityManager->flush();
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
-            // do anything else you need here, like send an email
+            $email = (new TemplatedEmail())
+                ->from('nyavo@neitic.com')
+                ->to($email)
+                ->subject('Confirmation code' )
+                ->htmlTemplate('email/email.html.twig')
+                ->context([
+                    'code' => $code, 'name'=>$last_name
+                ]);
+            // On envoie le mail
+            $mailer->send($email);
             return $this->redirectToRoute('app_register_activate',['id'=>$user->getId()]);
         }
 
@@ -345,5 +382,15 @@ class RegistrationController extends AbstractController
         $city = $this->cityRepository->searchCity($country);
         return new JsonResponse($city);
         }
+
+    /**
+     * @Route("/num", name="num")
+     */
+    public function num(Request $request){
+        $id = $request->request->get('id');
+        $country = $this->stateRepository->find($id);
+        $num = $this->stateRepository->searchnum($country);
+        return new JsonResponse($num);
+    }
 
 }

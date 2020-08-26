@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block body %}
-<div class="modal-header text-center">
+<div class="test">
     {% if new == true %}
         <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}New appointment{% endtrans %}</h4>
     {% else %}
@@ -28,7 +28,7 @@
 <!--Content-->
 {{ form_start(form, {'attr': {'action': path('register_rdv') }}) }}
 <!--Body-->
-<div class="modal-body">
+<div class="container">
     <div class="md-form">
         <label class="active" for="form1">Praticien </label>
         {{ form_widget(form.praticiens, {'attr': { 'class': 'form-control chosen-select' }}) }}

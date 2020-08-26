@@ -106,10 +106,6 @@
 
         function createUsername()  {
 
-
-            var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
-            var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
-
             $('#registration_praticien_form_date_naissance').on('change',function () {
                 var  date = $('#registration_praticien_form_date_naissance').val();
                 var dat = new Date(date);
@@ -131,6 +127,8 @@
                 }else{
                     var jour = dat.getDate();
                 }
+                var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
+                var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
                 var username = fname + lname + anne  + moi + jour + getRndInteger();
                 $.ajax({
                     url: "{{ path('check_username') }}",
@@ -174,14 +172,6 @@
 
         $('#registration_praticien_form_country').on('change',function () {
             var idcountry =$('#registration_praticien_form_country option:selected').val();
-
-            if(idcountry == 3){
-                $value = "+237";
-            } else if (idcountry == 4){
-                $value = "+33";
-            }
-            $('#tel').val($value);
-            $('#tell').val($value);
             $.ajax({
                 method: "POST",
                 url: "{{ path('country') }}",
@@ -191,6 +181,30 @@
                     $('#city').empty();
                     $.each(response, function(index,element) {
                         $('#city').append('<option value="'+ element.id +'" selected="selected">'+ element.nameCity +' </option>');
+                    });
+                }
+            });
+            $.ajax({
+                method: "POST",
+                url: "{{ path('num') }}",
+                data: {id: idcountry},
+                success: function(response){
+                    $('#tel').empty();
+                    $.each(response, function(index,element) {
+                        $('#tel').val(element.phoneindic);
+                    });
+                }
+            });
+            $.ajax({
+                method: "POST",
+                url: "{{ path('num') }}",
+                data: {id: idcountry},
+                success: function(response){
+                    $('#tel').empty();
+                    $('#tell').empty();
+                    $.each(response, function(index,element) {
+                        $('#tel').val(element.phoneindic);
+                        $('#tell').val(element.phoneindic);
                     });
                 }
             });
