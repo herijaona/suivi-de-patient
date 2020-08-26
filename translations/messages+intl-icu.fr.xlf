@@ -627,7 +627,7 @@
       </trans-unit>
       <trans-unit id="vxmxB8v" resname="Update Image">
         <source>Update Image</source>
-        <target>Mettre à jour l'image</target>
+        <target>Mettre à jour </target>
       </trans-unit>
       <trans-unit id="T1dsGX_" resname="All Region">
         <source>All Region</source>

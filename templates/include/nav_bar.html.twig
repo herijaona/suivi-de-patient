@@ -12,7 +12,7 @@
                 {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                 <img src="/{{ img }}">
                 <a class="edit-profile">
-                    <i  class="fas fa-pencil-alt"></i>
+                    <i   class="fa fa-camera"></i>
                 </a>
                 <input type="file"   id="upload_image" name="upload_image"  accept="image/*" style="display: none"/>
 
