@@ -60,13 +60,13 @@
                 <div class="modal-body">
                     <input type="hidden" name="group_id" id="group_id" class="form-control" value="{{ group.id }}">
                     <div class="md-form mb-5">
-                        <label for="group_name" class="active">New member</label>
+                        <label for="group_name" class="active">{% trans %}New member{% endtrans %}</label>
                         <select class="mdb-select md-form chosen-select" name="patient" editable="true" searchable="{% trans %}Search for patient name ...{% endtrans %}" required>
                                 <option value="" disabled selected>{% trans %}Choose new member{% endtrans %}</option>
                                 {% for patient in patients %}
                                     <option value="{{ patient.id }}">{{patient.firstName}} {{patient.lastName}}</option>
                                 {% endfor %}
-                            </select>
+                        </select>
                     </div>
                 </div>
 

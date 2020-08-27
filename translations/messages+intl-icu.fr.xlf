@@ -821,6 +821,38 @@
         <source>Proposal</source>
         <target>Proposition</target>
       </trans-unit>
+      <trans-unit id="TH5GwJP" resname="Import city">
+        <source>Import city</source>
+        <target>Import Ville</target>
+      </trans-unit>
+      <trans-unit id="q6vu4wi" resname="Import Vaccine">
+        <source>Import Vaccine</source>
+        <target>Import Vaccin</target>
+      </trans-unit>
+      <trans-unit id="TIo2wJf" resname="Associate">
+        <source>Associate</source>
+        <target>Associer</target>
+      </trans-unit>
+      <trans-unit id="1IGPkIp" resname="Pregnant">
+        <source>Pregnant</source>
+        <target>Enceinte</target>
+      </trans-unit>
+      <trans-unit id="ONtUXx0" resname="New member">
+        <source>New member</source>
+        <target>Nouveau Membre</target>
+      </trans-unit>
+      <trans-unit id="fh6eMVv" resname="Appointment Rejected">
+        <source>Appointment Rejected</source>
+        <target>Rendez-vous Rejeté</target>
+      </trans-unit>
+      <trans-unit id="5H4x1Dp" resname="Appointment Validate">
+        <source>Appointment Validate</source>
+        <target>Rendez-vous Valider</target>
+      </trans-unit>
+      <trans-unit id="uy2g4FU" resname="Waiting Appointment">
+        <source>Waiting Appointment</source>
+        <target>Rendez-vous en Attente</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

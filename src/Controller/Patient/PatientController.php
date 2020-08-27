@@ -2,6 +2,7 @@
 
 namespace App\Controller\Patient;
 
+use App\Entity\Associer;
 use App\Entity\Family;
 use App\Entity\GroupFamily;
 use App\Entity\IntervationConsultation;
@@ -12,6 +13,7 @@ use App\Entity\PatientOrdoConsultation;
 use App\Entity\PatientOrdoVaccination;
 use App\Form\RdvType;
 use App\Form\VaccinType;
+use App\Repository\AssocierRepository;
 use App\Repository\CarnetVaccinationRepository;
 use App\Repository\FamilyRepository;
 use App\Repository\GroupFamilyRepository;
@@ -31,6 +33,7 @@ use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -52,6 +55,7 @@ class PatientController extends AbstractController
     protected $propositionRdvRepository;
     protected $userRepository;
     protected $carnetVaccinationRepository;
+    protected $associerRepository;
 
     function __construct(
         VaccinGenerate $vaccinGenerate,
@@ -63,6 +67,7 @@ class PatientController extends AbstractController
         CarnetVaccinationRepository $carnetVaccinationRepository,
         VaccinRepository $vaccinRepository,
         FamilyRepository $familyRepository,
+        AssocierRepository $associerRepository,
         OrdonnaceRepository $ordonnaceRepository,
         UserRepository $userRepository,
         GroupFamilyRepository $groupFamilyRepository,
@@ -71,6 +76,7 @@ class PatientController extends AbstractController
     {
         $this->userRepository= $userRepository;
         $this->vaccinGenerate = $vaccinGenerate;
+        $this->associerRepository = $associerRepository;
         $this->vaccinRepository = $vaccinRepository;
         $this->patientRepository = $patientRepository;
         $this->carnetVaccinationRepository= $carnetVaccinationRepository;
@@ -120,17 +126,31 @@ class PatientController extends AbstractController
     public function consultation_patient()
     {
         $user = $this->getUser();
-
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
         $rvc = $this->ordoConsultationRepository->searchStatus($patient->getId(), 1);
-        $pr= $this->propositionRdvRepository->searchPropositio($patient->getId(), 1);
+
         return $this->render('patient/consultation.html.twig', [
             'consultation'=>$rvc,
-            'proposition'=>$pr,
             'Doctors'=>$doctor,
         ]);
     }
+
+    /**
+     * @Route("/rdv/valider", name="rdv_valider")
+     */
+    public function rdv_valider()
+    {
+        $user = $this->getUser();
+        $patient= $this->patientRepository->findOneBy(['user'=>$user]);
+        $rce = $this->ordoConsultationRepository->searchStatus($patient->getId(), 1);
+        $rve = $this->ordoVaccinationRepository->searchStatus($patient->getId(), 1);
+        return $this->render('patient/rdv_valider_patient.html.twig',[
+            'consultation'=> $rce,
+            'vaccination'=>$rve
+        ]);
+    }
+
 
     /**
      * @Route("/proposition/rdv" , name ="proposisition_rdv")
@@ -199,7 +219,7 @@ class PatientController extends AbstractController
     /**
      * @Route("/create-rdv", name="create_rdv")
      * @param Request $request
-     * @return JsonResponse
+     * @return Response
      */
     public function create_rdv(Request $request)
     {
@@ -278,6 +298,7 @@ class PatientController extends AbstractController
      */
     public function register_rdv(Request $request,TranslatorInterface $translator)
     {
+
         $rdvRequest = $request->request->get("rdv");
         $type = $rdvRequest["typeRdv"];
         $doctor = $rdvRequest["praticiens"];
@@ -287,6 +308,7 @@ class PatientController extends AbstractController
         $Id = $rdvRequest["id"];
         $user = $this->getUser();
         $rdv_date = str_replace("/", "-", $date);
+
         $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
         $ordo = null;
         $vaccination = null;
@@ -294,6 +316,7 @@ class PatientController extends AbstractController
         if($doctor != ''){
             $praticien =  $this->praticienRepository->find($doctor);
             $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
+
         }
         $patient =  $this->patientRepository->findOneBy(['user' => $user]);
 
@@ -303,6 +326,7 @@ class PatientController extends AbstractController
             }else{
                 $ordoconsultation = new OrdoConsultation();
             }
+
             $ordoconsultation->setDatePriseInitiale($Date_Rdv);
             $ordoconsultation->setObjetConsultation($description);
             $ordoconsultation->setStatusConsultation(0);
@@ -312,12 +336,21 @@ class PatientController extends AbstractController
             $ordoconsultation->setStatusNotif(0);
             $this->entityManager->persist($ordoconsultation);
             $this->entityManager->flush();
+            if (isset($rdvRequest["Associer"])){
+                $assoc = new Associer();
+                $assoc->setPraticien($praticien);
+                $assoc->setPatient($patient);
+                $this->entityManager->persist($assoc);
+                $this->entityManager->flush();
+            }
+
         }else{
             if ($Id != ''){
                 $ordovaccination = $this->ordoVaccinationRepository->find($Id);
             }else{
                 $ordovaccination = new OrdoVaccination();
             }
+
             $ordovaccination->setDatePrise($Date_Rdv);
             $ordovaccination->setOrdonnance($ordo);
             $ordovaccination->setReferencePraticienExecutant($praticien);
@@ -327,6 +360,15 @@ class PatientController extends AbstractController
             $ordovaccination->setStatusNotif(0);
             $this->entityManager->persist($ordovaccination);
             $this->entityManager->flush();
+            if (isset($rdvRequest["Associer"])){
+                $assoc = new Associer();
+                $assoc->setPraticien($praticien);
+                $assoc->setPatient($patient);
+                $this->entityManager->persist($assoc);
+                $this->entityManager->flush();
+            }
+
+
         }
             $message=$translator->trans('Appointment registration successful');
             $this->addFlash('success', $message);

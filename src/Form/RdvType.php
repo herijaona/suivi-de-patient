@@ -6,6 +6,7 @@ use App\Entity\OrdoConsultation;
 use App\Entity\Praticien;
 use App\Entity\Vaccin;
 use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -42,6 +43,10 @@ class RdvType extends AbstractType
                 'choices' => array_flip($typeRdvArrays),
                 'required' => true,
             ])
+            ->add('Associer', CheckboxType::class, [
+                'label'    => 'associer',
+                'required' => false,
+            ]);
         ;
     }
 

@@ -10,7 +10,7 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">{% trans %}Appointment Rejected {% endtrans %}</h4>
+            <h4 class="h4-content">{% trans %}Appointment Validate {% endtrans %}</h4>
 
         </div>
 
@@ -42,8 +42,8 @@
                         {{ rdv.lastName }}
                     </td>
                     <td>
-                        {% if rdv.statusConsultation == 2 %}
-                            <span class="badge badge-danger badge-style ">{% trans %}Reject{% endtrans %}</span>
+                        {% if rdv.statusConsultation == 1 %}
+                            <span class="badge badge-success badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}
 
                     </td>
@@ -66,8 +66,8 @@
                     </td>
                     {# <td>{{ vac.vaccinName }}</td> #}
                     <td>
-                        {% if vac.statusVaccin == 2 %}
-                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                        {% if vac.statusVaccin == 1 %}
+                            <span class="badge badge-success badge-style">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}
                     </td>
 
