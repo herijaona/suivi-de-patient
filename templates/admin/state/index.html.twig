@@ -24,7 +24,7 @@
     </div>
      <div class="row head-table col-md-12 col-lg-12 " id="IdDocument">
         <div class="col-md-6">
-            <input type="file" id="import_document" name="document" class="form-control-file fc-adjust-size" accept=".xlsx ,.xls">
+            <input type="file" id="import_document" name="document"  style="margin-left: 117%; width: 50%;margin-top: -49px;" class="form-control-file fc-adjust-size" accept=".xlsx ,.xls">
         </div>
     </div>
     <div class="row-table table-content">
@@ -55,12 +55,7 @@
 {% block javascripts %}
     <script>
         $(document).ready(function () {
-            $("#example1").DataTable({
-                language: {
-                    url: "{{ asset('vendor/datatables/English.json') }}"
-
-                }
-            });
+            $("#example1").DataTable();
             //$('.mdb-select').materialSelect();
             $(".import_country").on('click', function (e) {
                 e.preventDefault();
