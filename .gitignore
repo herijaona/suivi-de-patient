@@ -22,6 +22,8 @@
 /.env
 /composer.lock
 composer.lock
+/public/document/
+public/document/
 
 ###> lexik/jwt-authentication-bundle ###
 # /config/jwt/*.pem

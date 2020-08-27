@@ -4,6 +4,11 @@
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
+    <style>
+        #IdDocument {
+            display: none;
+        }
+    </style>
 {% endblock %}
 
 {% block body %}
@@ -12,7 +17,13 @@
             <h4 class="h4-content">{% trans %}All Region{% endtrans %}</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
+            <button class="btn btn-danger import_region">{% trans %}Import Country{% endtrans %}</button>
             <button class="btn btn-danger new_region">{% trans %}+ New region{% endtrans %}</button>
+        </div>
+    </div>
+    <div class="row head-table col-md-12 col-lg-12 " id="IdDocument">
+        <div class="col-md-6">
+            <input type="file" id="import_document" name="document" class="form-control-file fc-adjust-size" accept=".xlsx ,.xls">
         </div>
     </div>
     <div class="row-table table-content">
@@ -53,7 +64,40 @@
 
                 }
             });
-            $('.mdb-select').materialSelect();
+            //$('.mdb-select').materialSelect();
+            $(".import_region").on('click', function (e) {
+                e.preventDefault();
+                if ($('#import_document')[0].files.length > 0 ){
+                    var formData = new FormData();
+                    $(".loadBody").css("display", "block");
+                    formData.append("file", $('#import_document')[0].files[0]);
+                    formData.append("upload_file", true);
+
+                    $.ajax({
+                        url: "{{ path('xlsx_import_region') }}",
+                        type: 'post',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        //dataType: "json",
+                        success: (data) =>{
+                            location.reload();
+                            $(".loadBody").css("display", "none");
+                        },
+                        error: (e) => {
+                            $(".loadBody").css("display", "none");
+                            $(".chargementError").css("display", "block");
+                        }
+                    }).done(() => {
+                        $(".loadBody").css("display", "none");
+                    });
+                }else {
+
+                    $('#IdDocument').css('display', 'block');
+                }
+                console.log()
+                //if ()
+            })
         });
         $(".new_region").on('click' , function(e) {
             $(".loadBody").css("display", "block");
