@@ -22,7 +22,7 @@ h1 {
     top: 0;
     position: fixed;
     width: 100%;
-    background: url(../images/pharm.png);
+    background: url(../images/accueil.png);
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
@@ -37,7 +37,7 @@ h1 {
     top: 0;
     opacity: 1;
     height: 100%;
-    background:linear-gradient(-18deg, #387b8f54 24%, rgb(95 199 223 / 54%) 45%);
+
 }
 
 .btn-login {
