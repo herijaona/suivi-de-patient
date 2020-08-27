@@ -40,8 +40,11 @@
                         {{ propos.patientlast }}
                     </td>
                     <td>
-                        <span class="badge badge-success badge-style modif-etat" data-patient="{{ propos.patient }}" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}"  >{% trans %}Accept{% endtrans %}</span>
-
+                        {% if propos.statusProposition == 0  %}
+                            <span class="badge badge-success badge-style modif-etat" data-patient="{{ propos.patient }}" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}">{% trans %}Accept{% endtrans %}</span>
+                        {% elseif propos.statusProposition == 1 %}
+                            <span class="badge badge-info badge-style ">{% trans %}Accepted{% endtrans %}</span>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}

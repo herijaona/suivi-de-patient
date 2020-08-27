@@ -260,11 +260,7 @@ class PraticienController extends AbstractController
                             $interConsu->getOrdoConsulataion()->setStatusNotif(1);
                             $this->entityManager->persist($interConsu);
                             $this->entityManager->flush();
-                            $patientintervationconsultation = new PatientIntervationConsultation();
-                            $patientintervationconsultation->setPatient($patient);
-                            $patientintervationconsultation->setInterventionConsultation($interConsu);
-                            $this->entityManager->persist($patientintervationconsultation);
-                            $this->entityManager->flush();
+
                         }
                     }else{
                         $ordoVacc = $this->ordoVaccinationRepository->find($id);

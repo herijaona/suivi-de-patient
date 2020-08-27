@@ -372,8 +372,6 @@ class AdminController extends AbstractController
             $row = $spreadsheet->getActiveSheet()->removeRow(1); // I added this to be able to remove the first file line
             $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true); // here, the read data is turned into an array
             $i = 0;
-
-
             foreach ($sheetData as $Row)
             {
                 if ($i != 0){

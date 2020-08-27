@@ -18,6 +18,15 @@ class AssocierRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Associer::class);
     }
+    public function searchAssocier(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT a.id, p.lastName as patient, pr.lastName as praticien
+            FROM App\Entity\Associer a
+            LEFT JOIN App\Entity\Patient p with p.id=a.patient
+            LEFT JOIN App\Entity\Praticien pr with pr.id=a.praticien
+           ');
+        return $query->getResult();
+    }
 
     // /**
     //  * @return Associer[] Returns an array of Associer objects
