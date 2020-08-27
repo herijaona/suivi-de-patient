@@ -78,7 +78,7 @@ ul {
 }
 
 .col_exc_1 {
-    background: linear-gradient(150deg, #077DF2 4%, #06CF7D 100%);
+   background-color: #077DF2 ;
     min-height: 97.5vh;
     width: 18%;
     position: relative;
