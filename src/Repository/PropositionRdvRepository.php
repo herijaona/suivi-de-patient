@@ -36,32 +36,16 @@ class PropositionRdvRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
-    public function searchPropositio($patient = null, $status = 0){
+    public function searchProposition($patient= null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition,p.statusProposition,p.etat, pr.firstName, pr.lastName, pr.id as praticien
-            FROM App\Entity\PropositionRdv p
-            LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
-            LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
-            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now  AND p.statusProposition = :status
-            ORDER BY p.dateProposition ASC')
-            ->setParameter('status', $status)
-            ->setParameter('patient', $patient)
-            ->setParameter('now', new \DateTime());
-
-        return $query->getResult();
-    }
-
-    public function searchProposition($patient= null, $status = 0){
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition, pr.firstName, pr.lastName, pr.id as praticien, pa.firstName as patientfirst, pa.lastName as patientlast, pa.id as patient 
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition,p.statusProposition ,p.descriptionProposition, pr.firstName, pr.lastName, pr.id as praticien, pa.firstName as patientfirst, pa.lastName as patientlast, pa.id as patient 
             FROM App\Entity\PropositionRdv p
             LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
             LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
             WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now  AND p.statusProposition = :status
             ORDER BY p.dateProposition ASC')
             ->setParameter('now', new \DateTime())
-            ->setParameter('patient', $patient)
-            ->setParameter('status', $status);
+            ->setParameter('patient', $patient);
 
         return $query->getResult();
     }

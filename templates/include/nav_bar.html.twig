@@ -12,7 +12,7 @@
                 {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                 <img src="/{{ img }}">
                 <a class="edit-profile">
-                    <i  class="fas fa-pencil-alt"></i>
+                    <i class="fa fa-camera"></i>
                 </a>
                 <input type="file"   id="upload_image" name="upload_image"  accept="image/*" style="display: none"/>
 
@@ -20,7 +20,6 @@
                 <span>
 
                 </span>
-
                 <h5>{{ app.user.firstname ~' '~ app.user.lastname }}</h5>
                 <label>{% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %}{% trans %}Administrator{% endtrans %}{% endif %}</label>
             </div>
@@ -55,7 +54,6 @@
 
         </div>
 
-
         <ul class="menu_suivi" id="side-bar-menu">
             {% if is_granted('ROLE_ADMIN') %}
                 <li class="{{ (currentPath == path('admin')) ? 'active' :'' }}"><a href="{{ path('admin') }}">{% trans %} Dashboard {% endtrans %}</a></li>
@@ -86,17 +84,20 @@
                 <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}">{% trans %}Appointment Proposal{% endtrans %}</a></li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
-                <!--  <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">Agenda</a></li> -->
-                <li {% if (currentPath == path('vaccination_patient') or currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('vaccination_patient') }}">{% trans %}Vaccination Schedule{% endtrans %}</a></li>
-                <li {% if (currentPath == path('consultation_patient')) ? 'active' :''  %} class="active" {% endif %} ><a href="{{ path('consultation_patient') }}">Consultation</a></li>
-                <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">{% trans %} Appointment {% endtrans %}</a>
+                <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">{% trans %}Vaccination Schedule{% endtrans %}</a></li>
+                <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler') or currentPath == path('rdv_valider') or currentPath == path('create_rdv') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" >{% trans %}Awaiting validation {% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" >{% trans %}New {% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" >{% trans %}Awaiting{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('rdv_valider')) ? 'active' :''  }}"> <a href="{{ path('rdv_valider') }}" >{% trans %}Validate{% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('rdv_annuler')) ? 'active' :''  }}"> <a href="{{ path('rdv_annuler') }}" >{% trans %}Reject{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('proposisition_rdv')) ? 'active' :''  }}"><a href="{{ path('proposisition_rdv') }}">{% trans %}Proposal{% endtrans %}</a></li>
                     </ul>
                 </li>
-                <li {% if (currentPath == path('proposisition_rdv') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('proposisition_rdv') }}">{% trans %}Appointment proposal{% endtrans %}</a></li>
-                <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">{% trans %}Family Group {% endtrans %}</a></li>
+                <li class="{{ (currentPath == path('intervention_patient') ) ? 'active' :'' }}"><a href="{{ path('intervention_patient')}}">Intervention</a></li>
+               
+                    <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">{% trans %}Family Group {% endtrans %}</a></li>
+                
             {% endif %}
         </ul>
     </div>
@@ -109,7 +110,6 @@
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/croppie.js') }}" type="text/javascript"></script>
 <script>
-
     $('.bar-container').click(function(){
         $('.menu-container').toggle('show');
     })
@@ -142,7 +142,6 @@
         $('#uploadimageModal').modal('show');
     });
 
-
     $('.crop_image').click(function(event){
         $image_crop.croppie('result', {
             type: 'canvas',
@@ -156,7 +155,6 @@
                 {
                     $('#uploadimageModal').modal('hide');
                     location.reload();
-                    //$('#uploaded_image').html(data);
                 }
             });
         })

@@ -21,7 +21,7 @@ class IntervationConsultationRepository extends ServiceEntityRepository
 
     public function searchIntervationPraticien($praticien = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT i.id, i.dateConsultation,i.etat,p.firstName as patient_name, p.lastName as patient_lastname, pr.firstName,pr.lastName,o.objetConsultation, pro.descriptionProposition, pro.id as proposition
+        $query = $entityManager->createQuery('SELECT i.id, i.dateConsultation,i.etat,p.firstName as patient_name, p.lastName as patient_lastname, pr.firstName,pr.lastName,o.objetConsultation, pro.descriptionProposition, pro.id as proposition, o.id as consultation
             FROM App\Entity\IntervationConsultation i 
             INNER JOIN App\Entity\Patient p with p.id = i.patient
             LEFT JOIN App\Entity\OrdoConsultation o with o.id = i.ordoConsulataion

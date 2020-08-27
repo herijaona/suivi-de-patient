@@ -7,6 +7,7 @@ parameters:
     app.locales: [en, fr]
     locale: 'en'
     images_directory: '%kernel.project_dir%/public/uploads'
+    import_directory: '%kernel.project_dir%/public/document'
 
 
 services:

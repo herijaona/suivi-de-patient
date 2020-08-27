@@ -22,42 +22,71 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date of Birth'}}) }}
+                    {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control'}}) }}
+
                     </div>
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Place of birth'}}) }}
+                        {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date of Birth'}}) }}
+
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Phone'}}) }}
+                        {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Place of birth'}}) }}
+
                     </div>
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control', 'placeholder': 'Professional phone '}}) }}
+                        {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control', 'placeholder': 'Country'}}) }}
+
+
                     </div>
                 </div>
                 <div class="row form-group">
+                    <div class="col-lg-6">
+                        <select class="form-control" id="city" name="city" >
+                            <option value="" selected>Select your City</option>
+                        </select>
+
+                    </div>
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control', 'placeholder': 'Function'}}) }}
-                    </div>
-                    <div class="col-lg-6">
-                        {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Adress'}}) }}
+
+
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'e-mail'}}) }}
+                        <input type="button" id="tel" value="" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
+                       {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Phone'}})}}
+
+
                     </div>
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Your center health'}}) }}
+                        <input type="button" id="tell" value="" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
+                        {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control', 'placeholder': 'Professional phone '}}) }}
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6">
+
+                        {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Address'}}) }}
+                    </div>
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'e-mail'}}) }}
                     </div>
                 </div>
                  <div class="row form-group">
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Your username'}}) }}
+                        {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Your center health'}}) }}
                     </div>
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Password'}}) }}
+                        {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Your username'}}) }}
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Password'}}) }}
+
                     </div>
                 </div>
                 <button type="submit " class="btn btn-info button-login mb-3">
@@ -71,35 +100,57 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-        function getRndInteger(min = 100, max= 1000) {
+        function getRndInteger(min = 10, max= 100) {
             return Math.floor(Math.random() * (max - min + 1) ) + min;
         }
 
         function createUsername()  {
-            var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
 
-            var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
-            var username = fname + lname + getRndInteger();
-
-            $.ajax({
-                url: "{{ path('check_username') }}",
-                type: 'POST',
-                data: {
-                    'username': username,
-                },
-                dataType: "json",
-                success: (data) => {
-                    console.log(data);
-                    if (data.status == "OK"){
-                        $('#registration_praticien_form_username').val(username);
-                    }else {
-                        createUsername();
-                    }
-                },
-                error: (e) => {
-                    console.log(error);
+            $('#registration_praticien_form_date_naissance').on('change',function () {
+                var  date = $('#registration_praticien_form_date_naissance').val();
+                var dat = new Date(date);
+                var mois = dat.getMonth();
+                if(mois<9){
+                    var moi = ('0' + (dat.getMonth() + 1) );
+                }else{
+                    var moi = dat.getMonth() + 1;
                 }
-            }).done(() => {
+                var ann = dat.getFullYear() ;
+                if (ann<2000){
+                    var anne = dat.getYear();
+                }else {
+                    var anne = dat.getYear()-100;
+                }
+                var jou = dat.getDate();
+                if(jou<10){
+                    var jour = ('0'+ (dat.getDate()));
+                }else{
+                    var jour = dat.getDate();
+                }
+                var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
+                var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
+                var username = fname + lname + anne  + moi + jour + getRndInteger();
+                $.ajax({
+                    url: "{{ path('check_username') }}",
+                    type: 'POST',
+                    data: {
+                        'username': username,
+                    },
+                    dataType: "json",
+                    success: (data) => {
+                        console.log(data);
+                        if (data.status == "OK"){
+                            $('#registration_praticien_form_username').val(username);
+                        }else {
+                            createUsername();
+                        }
+                    },
+                    error: (e) => {
+                        console.log(error);
+                    }
+                }).done(() => {
+                });
+
             });
             //$('#registration_form_email').val(username);
         }
@@ -117,6 +168,46 @@
 
             $('#registration_praticien_form_firstname').on('keyup', createUsername);
             $('#registration_praticien_form_lastname').on('keyup', createUsername);
+        });
+
+        $('#registration_praticien_form_country').on('change',function () {
+            var idcountry =$('#registration_praticien_form_country option:selected').val();
+            $.ajax({
+                method: "POST",
+                url: "{{ path('country') }}",
+                data: {id: idcountry},
+                success: function(response){
+
+                    $('#city').empty();
+                    $.each(response, function(index,element) {
+                        $('#city').append('<option value="'+ element.id +'" selected="selected">'+ element.nameCity +' </option>');
+                    });
+                }
+            });
+            $.ajax({
+                method: "POST",
+                url: "{{ path('num') }}",
+                data: {id: idcountry},
+                success: function(response){
+                    $('#tel').empty();
+                    $.each(response, function(index,element) {
+                        $('#tel').val(element.phoneindic);
+                    });
+                }
+            });
+            $.ajax({
+                method: "POST",
+                url: "{{ path('num') }}",
+                data: {id: idcountry},
+                success: function(response){
+                    $('#tel').empty();
+                    $('#tell').empty();
+                    $.each(response, function(index,element) {
+                        $('#tel').val(element.phoneindic);
+                        $('#tell').val(element.phoneindic);
+                    });
+                }
+            });
         });
     </script>
 {% endblock %}

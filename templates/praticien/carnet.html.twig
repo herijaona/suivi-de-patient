@@ -19,54 +19,48 @@
             <tr>
                 <th>Patient</th>
                 <th>{% trans %}Vaccine{% endtrans %}</th>
-                <th>Date Prise initiale</th>
-                <th>Date Rappel</th>
+                <th>{% trans %}Initial Take Date {% endtrans %}</th>
+                <th>{% trans %}Date Reminder{% endtrans %}</th>
                 <th>Status</th>
-
             </tr>
             </thead>
             <tbody>
             {# {{dump(vaccination)}} #}
-            {% for vaccin in listVaccins %}
-
+            {% for carnet in listVaccins %}
                 <tr>
-                    <td>{{vaccin.firstname}} {{vaccin.lastname}}</td>
-                    <td>{{vaccin.vaccin}}</td>
+                    <td>{{carnet.firstname}} {{carnet.lastname}}</td>
+                    <td>{{carnet.vaccin}}</td>
                     <td>
-                        {% if vaccin.datePriseInitiale %}
-                            {{ vaccin.datePriseInitiale |localizeddate('long', 'short') }}
+                        {% if carnet.datePriseInitiale %}
+                            {{ carnet.datePriseInitiale |localizeddate('long', 'short') }}
                         {% else %}
                             -
                         {% endif %}
                     </td>
                     <td>
-                        {% if vaccin.rappel %}
-                            {{ vaccin.rappel |localizeddate('long', 'short') }}
+                        {% if carnet.rappel %}
+                            {{ carnet.rappel |localizeddate('long', 'short') }}
                         {% else %}
                             -
                         {% endif %}
                     </td>
                     <td>
-                        {% if vaccin.vaccinState == 0 %}
-                            <span class="badge badge-success badge-style modif-carnet" data-etat="{{ vaccin.vaccinState }}" data-id = {{ vaccin.id }} >{% trans %}Realize{% endtrans %}</span>
+                        {% if carnet.vaccinState == 0 %}
+                            <span class="badge badge-success badge-style modif-carnet" data-etat="{{ carnet.vaccinState }}" data-id = {{ carnet.id }} >{% trans %}Realize{% endtrans %}</span>
                         {% else %}
                             <span class="badge badge-info badge-style ">{% trans %}Realized{% endtrans %}</span>
                         {% endif %}
+                        <span class="badge badge-primary badge-style edit-date-carnet" data-id = {{ carnet.id }} >{% trans %}Edit{% endtrans %}</span>
                     </td>
                 </tr>
-
             {% endfor %}
             </tbody>
         </table>
     </div>
 {% endblock %}
-
 {% block javascripts %}
     <!-- DataTables -->
     <script>
-        $(document).ready(function() {
-            $('#example1').DataTable();
-        });
         $('.modif-carnet').on('click', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -90,6 +84,37 @@
             }).done(() => {
                 $(".loadBody").css("display", "none");
             });
+        });
+
+        $('.edit-date-carnet').on('click', function (e) {
+            e.preventDefault();
+            $(".loadBody").css("display", "block");
+            var idCarnet = $(this).data('id');
+            $.ajax({
+                url: "{{ path('show_edit_carnet') }}",
+                type: 'post',
+                data: {
+                    id: idCarnet
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
+
+
+        $(document).ready(function() {
+            $('#example1').DataTable();
         });
     </script>
 {% endblock %}

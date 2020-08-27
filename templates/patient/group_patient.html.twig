@@ -19,10 +19,11 @@
             <h4 class="h4-content">{% trans %}All Groups{% endtrans %}</h4>
 
         </div>
-        <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger btn-class" data-toggle="modal" data-target="#orangeModalSubscription">{% trans %}+ New Family Group{% endtrans %}</button>
-
-        </div>
+         {% if statsService.typePatient.typePatientName == "ADULTE" %}
+            <div class="grid-edit-btn col-md-3 mt-3">
+                <button class="btn btn-danger btn-class" data-toggle="modal" data-target="#orangeModalSubscription">{% trans %}+ New Family Group{% endtrans %}</button>
+            </div>
+        {% endif %}
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
@@ -43,8 +44,11 @@
                         {{ my_group.Membres|length }} familles
                     </td>
                     <td>
-                        <span class="btn btn-primary see_group" data-id="{{ my_group.ID }}" data-href="{{ path('see_my_group', {'group_id': my_group.ID}) }}" ><i class="fas fa-eye"></i></span>
+                        <span class="btn btn-secondary see_group" data-id="{{ my_group.ID }}" data-href="{{ path('see_my_group', {'group_id': my_group.ID}) }}" ><i class="fas fa-eye"></i></span>
+                    {% if statsService.typePatient.typePatientName == "ADULTE" %}
                         <span class="btn btn-primary edit_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-edit"></i></span>
+                        <span class="btn btn-danger deleted_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-trash"></i></span>
+                    {% endif %}
                     </td>
                 </tr>
             {% endfor %}
@@ -112,6 +116,32 @@
             e.preventDefault();
             var href = $(this).data('href');
             location.href =  href;
+        });
+
+        $('.deleted_group').on('click', function(e) {
+            e.preventDefault();
+            var id_group = $(this).data('id');
+            var result = confirm("Are you sure you want to delete from this group?");
+            if (result) {
+                var url = "{{ path('delete_group') }}";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {
+                        id_group: id_group,
+                    },
+                    success: (data) => {
+                        if (data.status) {
+                            location.reload()
+                        }
+                    },
+                    error: (e) => {
+                        console.log(error);
+                    }
+                }).done(() => {});
+            } else {
+                return false;
+            }
         });
     </script>
 {% endblock %}

@@ -23,19 +23,19 @@ class Praticien
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read:VaccinPraticien","read:praticien","read:OrdoConsultation"})
+     * @Groups({"read:VaccinPraticien","read:praticien","read:OrdoConsultation", "read:PropositionRdv"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:VaccinPraticien","read:praticien", "read:carnetvaccination", "read:IntervationConsultation"})
+     * @Groups({"read:VaccinPraticien","read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:VaccinPraticien", "read:praticien", "read:carnetvaccination", "read:IntervationConsultation"})
+     * @Groups({"read:VaccinPraticien", "read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv"})
      */
     private $lastName;
 
@@ -132,10 +132,7 @@ class Praticien
      */
     private $praticienSpecialites;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="praticien")
-     */
-    private $address;
+
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
@@ -166,6 +163,33 @@ class Praticien
      */
     private $propositionRdvs;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $adressOnBorn;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sexe;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="praticiens")
+     */
+    private $state;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Associer::class, mappedBy="praticien")
+     */
+    private $associers;
+
+
+
     public function __construct()
     {
         $this->updatedAt = new \DateTime('now');
@@ -182,6 +206,8 @@ class Praticien
         $this->praticienSpecialites = new ArrayCollection();
         $this->etat = false;
         $this->propositionRdvs = new ArrayCollection();
+        $this->patients = new ArrayCollection();
+        $this->associers = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -607,17 +633,7 @@ class Praticien
         return $this;
     }
 
-    public function getAddress(): ?City
-    {
-        return $this->address;
-    }
 
-    public function setAddress(?City $city): self
-    {
-        $this->address = $city;
-
-        return $this;
-    }
 
     public function __toString()
     {
@@ -703,5 +719,82 @@ class Praticien
         return $this;
     }
 
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
 
+    public function setAddress(?string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getAdressOnBorn(): ?string
+    {
+        return $this->adressOnBorn;
+    }
+
+    public function setAdressOnBorn(?string $adressOnBorn): self
+    {
+        $this->adressOnBorn = $adressOnBorn;
+
+        return $this;
+    }
+
+    public function getSexe(): ?string
+    {
+        return $this->sexe;
+    }
+
+    public function setSexe(string $sexe): self
+    {
+        $this->sexe = $sexe;
+
+        return $this;
+    }
+
+    public function getState(): ?State
+    {
+        return $this->state;
+    }
+
+    public function setState(?State $state): self
+    {
+        $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Associer[]
+     */
+    public function getAssociers(): Collection
+    {
+        return $this->associers;
+    }
+
+    public function addAssocier(Associer $associer): self
+    {
+        if (!$this->associers->contains($associer)) {
+            $this->associers[] = $associer;
+            $associer->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAssocier(Associer $associer): self
+    {
+        if ($this->associers->contains($associer)) {
+            $this->associers->removeElement($associer);
+            // set the owning side to null (unless already changed)
+            if ($associer->getPraticien() === $this) {
+                $associer->setPraticien(null);
+            }
+        }
+
+        return $this;
+    }
 }

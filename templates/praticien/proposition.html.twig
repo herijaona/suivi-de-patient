@@ -55,13 +55,6 @@
 {% block javascripts %}
     <!-- DataTables -->
     <script>
-        $(document).ready(function() {
-            $('#example1').DataTable()
-            $('.date_rdv').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-            })
-        });
         $(".add_form_rdv").on('click' , function(e) {
             $(".loadBody").css("display", "block");
             e.preventDefault();
@@ -93,6 +86,13 @@
             }).done(() => {
                 $(".loadBody").css("display", "none");
             });
+        });
+        $(document).ready(function() {
+            $('#example1').DataTable()
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            })
         });
 
         $('.data-edit').on('click', function (e) {

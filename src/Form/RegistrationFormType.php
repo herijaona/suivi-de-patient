@@ -3,15 +3,19 @@
 namespace App\Form;
 
 use App\Entity\City;
+use App\Entity\State;
 use App\Entity\TypePatient;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
@@ -23,36 +27,16 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
+            ->add('email', EmailType::class)
             ->add('username')
             ->add('lastname')
             ->add('firstname')
             ->add('date_naissance', DateType::class, [
                 'widget' => 'single_text',
             ])
-            ->add('lieu_naissance',EntityType::class ,[
-                'class'=>City::class,
-                'query_builder'=>function(EntityRepository $entityRepository){
-                    return $entityRepository->createQueryBuilder('c');
-                },
-                'choice_value' => 'id',
-                'choice_label' => function(?City $city) {
-                    return $city ? strtoupper($city->getNameCity()) : '';
-                },
-                'placeholder' => 'Lieu de naissance',
-            ])
             ->add('phone')
-            ->add('address',EntityType::class ,[
-                'class'=>City::class,
-                'query_builder'=>function(EntityRepository $entityRepository){
-                    return $entityRepository->createQueryBuilder('c');
-                },
-                'choice_value' => 'id',
-                'choice_label' => function(?City $city) {
-                    return $city ? strtoupper($city->getNameCity()) : '';
-                },
-                'placeholder' => 'Votre adresse',
-            ])
+            ->add('lieu_naissance')
+            ->add('address')
             ->add('type_patient',EntityType::class ,[
                 'class'=>TypePatient::class,
                 'query_builder'=>function(EntityRepository $entityRepository){
@@ -91,6 +75,22 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('country', EntityType::class,[
+                'class'=>State::class,
+                'query_builder'=>function(EntityRepository $entityRepository){
+                    return $entityRepository->createQueryBuilder('s');
+                },
+                'choice_value' => 'id',
+                'choice_label' => function(?State $state){
+                    return $state ? strtoupper($state->getNameState()):'';
+                },
+                'placeholder' => 'Country',
+            ])
+           ->add('enceinte', CheckboxType::class, [
+                'label'    => 'enceinte',
+                'required' => false,
+            ]);
+
         ;
     }
 

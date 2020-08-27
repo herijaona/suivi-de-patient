@@ -3,16 +3,16 @@
 
 <div class="d-flex w-100">
     <h2 class="profile-h2">{% trans %}My profile{% endtrans %}</h2>
-    <div class="text-right w-50">
+    <div class="text-right w-50" style="display: none">
         <button type="submit" class="btn btn-info button-login btn-edit mb-3">
             <i class="fas fa-pencil-alt mr-2"></i>
-            <span>{% trans %}Edit{% endtrans %}</span>
+            <span >{% trans %}Edit{% endtrans %}</span>
         </button>
     </div>
 </div>
 <div>
     <div>
-        {{ form_start(registrationForm) }}
+        {{ form_start(registrationForm, {'attr': {'action': path('editPatient') }}) }}
         <div class="body-page register edit-register">
             <div class="container text-center body-content">
                 <form role="form" class="form-horizontal">
@@ -65,8 +65,8 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.email }}">
                         </div>
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Password{% endtrans %}</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe', 'value': values.user.password}}) }}
-                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.password }}">
+                            <label for="">{% trans %}Country{% endtrans %}</label> {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control form-show', 'placeholder': 'Country', 'value': values.state}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.state }}">
 
                         </div>
                     </div>
@@ -90,10 +90,19 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.motherName }}">
 
                         </div>
+                        <div class="col-md-6 enceinte" >
+                            <label for="">{% trans %}Pregnant{% endtrans %}</label> {{ form_widget(registrationForm.enceinte, {'attr': {'class': 'form-control mb-3  form-show', 'value':  values.isEnceinte }}) }}
+                            <input type="checkbox" class="form-control form-edit" placeholder="{{ values.isEnceinte}}">
+
+                        </div>
+                        <div class="col-lg-6 password">
+                            <label for="">{% trans %}Password{% endtrans %}</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe', 'value': values.user.password}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.user.password }}">
+
+                        </div>
                     </div>
-                    <button type="submit " class="btn btn-info button-login mb-3 button-edit button-edit-class" >
-                        {% trans %}Save{% endtrans %}
-                    </button>
+                    <button  class="btn btn-info button-login  button-edit button-edit-class" style="display: none">{% trans %}Save{% endtrans %}</button>
+
                 </form>
             </div>
         </div>
@@ -105,6 +114,9 @@
 <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
 <script>
     $('.form-show').css('display', 'none');
+    $('.password').css('display', 'none');
+    $('.enceinte').css('display', 'none');
+
     var i = 1;
     $(".btn-edit").click(function() {
         i++;
@@ -124,10 +136,6 @@
             $(this).prepend('<i class="fas fa-pencil-alt mr-2"></i>');
         }
     });
-    $(".button-edit-class").click(function () {
-        console.log("change");
-
-    })
 </script>
 
 {% endblock %}

@@ -9,10 +9,10 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">{% trans %}Appointment {% endtrans %}</h4>
+            <h4 class="h4-content">{% trans %}Waiting Appointment{% endtrans %}</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger add_form_rdv">{% trans %}+ Create an Appointment{% endtrans %}</button>
+            <button class="btn btn-danger add_form_rdv" style="display: none">{% trans %}+ Create an Appointment{% endtrans %}</button>
         </div>
     </div>
     <div class="row-table table-content">
@@ -25,7 +25,6 @@
                 <th>Praticien</th>
                 <th>Status</th>
                 <th></th>
-
             </tr>
             </thead>
             <tbody>
@@ -42,19 +41,14 @@
                         {{ rdv.firstName }}
                         {{ rdv.lastName }}
                     </td>
-
                     <td>
-                        {% if rdv.statusConsultation == 1 %}
-                            <span class="badge badge-success badge-style modif-status">{% trans %}activate{% endtrans %}</span>
-                        {% elseif rdv.statusConsultation == 0 %}
+                        {% if rdv.statusConsultation == 0 %}
                             <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
-                        {% elseif rdv.statusConsultation == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
                     <td>
-                        <span class="btn btn-primary data-edit" data-id="{{ rdv.id }}" data-type="consultation"><i class="fa fa-pencil"></i></span>
-                        <span class="btn btn-danger data-remove" data-id="{{ rdv.id }}" data-type="consultation"><i class="fa fa-trash-o"></i></span>
+                        <span class="btn btn-primary data-edit" data-id="{{ rdv.id }}"   data-type="consultation"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ rdv.id }}"  data-type="consultation"><i class="fa fa-trash-o"></i></span>
                     </td>
 
                 </tr>
@@ -75,12 +69,8 @@
                     </td>
 
                     <td>
-                        {% if vac.statusVaccin == 1 %}
-                            <span class="badge badge-success badge-style modif-status">{% trans %}activate{% endtrans %}</span>
-                        {% elseif vac.statusVaccin == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
-                        {% elseif vac.statusVaccin == 2 %}
-                            <span class="badge badge-danger badge-style modif-status">{% trans %}Reject{% endtrans %}</span>
+                        {% if vac.statusVaccin == 0 %}
+                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
                     <td>
@@ -97,15 +87,9 @@
 {% endblock %}
 
 {% block javascripts %}
-    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
-        $(document).ready(function () {
-            $('#example1').DataTable();
-            $('.date_rdv').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-            });
-        });
         $(".add_form_rdv").on('click' , function(e) {
             $(".loadBody").css("display", "block");
             e.preventDefault();
@@ -176,7 +160,7 @@
 
         $('.data-remove').on('click', function (e) {
             e.preventDefault();
-            var $delete = confirm('Êtes-vous sûr de vouloir supprimer cet rdv ?');
+            var $delete = confirm('Are you sure you want to delete this appointment?');
             if($delete){
                 $(".loadBody").css("display", "block");
                 var id = $(this).data('id');
@@ -203,6 +187,13 @@
             }else {
                 return false
             }
+        });
+        $(document).ready(function () {
+            $('#example1').DataTable();
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            });
         });
     </script>
 {% endblock %}

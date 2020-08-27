@@ -51,7 +51,6 @@ class HomepageController extends AbstractController
     {
         //on stocke la langue démandé dans la session
         $request->getSession()->set('_locale',$locale);
-
         // on revient sur la page précédente
         return $this->redirect($request->headers->get('referer'));
 

@@ -22,7 +22,7 @@ h1 {
     top: 0;
     position: fixed;
     width: 100%;
-    background: url(../images/b.jpg);
+    background: url(../images/accueil.png);
     background-size: cover;
     background-repeat: no-repeat;
     height: 100%;
@@ -37,7 +37,7 @@ h1 {
     top: 0;
     opacity: 1;
     height: 100%;
-    background:linear-gradient(-18deg, #2f8a4282 24%, rgb(13 101 49 / 12%) 45%);
+
 }
 
 .btn-login {

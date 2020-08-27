@@ -46,7 +46,6 @@
                             <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
-
                     <td>
                         {% if rdv.statusConsultation == 2 %}
                         {% else %}
@@ -58,9 +57,6 @@
                         {% endif %}
 
                     </td>
-
-
-
                 </tr>
             {% endfor %}
             {% for rdv in proposition  %}
@@ -82,7 +78,6 @@
                             <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
-
                     <td>
                         {% if rdv.etat == 1 %}
                             <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
@@ -90,11 +85,7 @@
                             <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
 
-
                     </td>
-
-
-
                 </tr>
             {% endfor %}
             </tbody>
@@ -102,7 +93,6 @@
     </div>
 
 {% endblock %}
-
 {% block javascripts %}
     <!-- DataTables -->
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>

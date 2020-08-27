@@ -5,12 +5,10 @@
 {% block stylesheets %}
     {{ parent() }}
 {% endblock %}
-
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">{% trans %}
-                Appointment proposal {% endtrans %}</h4>
+            <h4 class="h4-content">{% trans %}Appointment proposal {% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
@@ -25,7 +23,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for propos in proposition  %}
+            {% for propos in proposition %}
                 <tr>
                     <td class="text-left">
                         {{ propos.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
@@ -42,12 +40,15 @@
                         {{ propos.patientlast }}
                     </td>
                     <td>
-                        <span class="badge badge-success badge-style modif-etat" data-patient="{{ propos.patient }}" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}"  >{% trans %}Accept{% endtrans %}</span>
+                        {% if propos.statusProposition == 0  %}
+                            <span class="badge badge-success badge-style modif-etat" data-patient="{{ propos.patient }}" data-description = "{{ propos.descriptionProposition }}" data-praticien = "{{ propos.praticien }}" data-id ="{{ propos.id }}" data-date="{{ propos.dateProposition | date }}">{% trans %}Accept{% endtrans %}</span>
+                        {% elseif propos.statusProposition == 1 %}
+                            <span class="badge badge-info badge-style ">{% trans %}Accepted{% endtrans %}</span>
+                        {% endif %}
                     </td>
-
                 </tr>
             {% endfor %}
-            </tbody> date
+            </tbody>
         </table>
     </div>
 
@@ -56,13 +57,6 @@
 {% block javascripts %}
     <!-- DataTables -->
     <script>
-        $(document).ready(function() {
-            $('#example1').DataTable();
-            $('.date_rdv').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-            });
-        });
         $('.modif-etat').one('click', function () {
             var id = $(this).data('id');
             var praticien = $(this).data('praticien');
@@ -93,6 +87,13 @@
                 $(".loadBody").css("display", "none");
             });
 
+        });
+        $(document).ready(function() {
+            $('#example1').DataTable();
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            });
         });
 
     </script>

@@ -114,6 +114,7 @@ class ProfileController extends AbstractController
         $currentUser = $this->getUser();
 
         if ($form->isSubmitted() && $form->isValid()) {
+            dd("tonga");
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
          
@@ -158,7 +159,7 @@ class ProfileController extends AbstractController
 
         $coprs = $this->praticienRepository->findByPraticienUser($currentUser->getId());
         
-        $values;
+        $values="";
         foreach ( $coprs as $key => $val) { 
             $values = $val; 
         }
@@ -177,20 +178,18 @@ class ProfileController extends AbstractController
      * @return Response
      */
     public function editPatient(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, TranslatorInterface $translator) : Response{
+
         $user = [];
         $form = $this->createForm(RegistrationFormType::class, $user);
-       
         $form->handleRequest($request);
 
         $currentUser = $this->getUser();
         $user = $this->user->find($currentUser->getId());
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             // encode the plain password
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
-            
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
             $user->setUsername($form->get('username')->getData());
@@ -206,12 +205,9 @@ class ProfileController extends AbstractController
             );
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
-
-
             $idPatient = $this->patientRepository->findByPatientId($currentUser->getId());
-            var_dump($idPatient);
-            $patient = $this->patientRepository->find($idPatient['0']['id']);
 
+            $patient = $this->patientRepository->find($idPatient['0']['id']);
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
 
@@ -235,12 +231,12 @@ class ProfileController extends AbstractController
             return $this->redirectToRoute('editPatient',['id'=>$currentUser->getId()]);
         }
 
-        
+
         $isuser = $this->patientRepository->findByPatient(['user'=>$user]);
 
         $coprs = $this->patientRepository->findByPatientUser($currentUser->getId());
         
-        $values;
+        $values = "";
         foreach ( $coprs as $key => $val) { 
             $values = $val;
         }
@@ -252,7 +248,7 @@ class ProfileController extends AbstractController
             'currentUser' => $currentUser
         ]);
 
-    } 
+    }
 
     public function checkConnected(){
         $securityContext = $this->container->get('security.authorization_checker');

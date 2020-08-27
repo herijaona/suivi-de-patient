@@ -18,6 +18,22 @@ class PatientOrdoConsultationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PatientOrdoConsultation::class);
     }
+    public function searchStatus($patient = null, $status = 0 ){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT 
+            FROM App\Entity\PatientOrdoConsultation p 
+            INNER JOIN App\Entity\Patient p with p.id = o.patient
+            LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
+            LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
+            WHERE p.id = :patient AND o.statusConsultation = :status AND o.dateRdv >= :now 
+            ORDER BY o.dateRdv ASC')
+            ->setParameter('status', $status)
+            ->setParameter('patient', $patient)
+            ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+    }
+
 
     // /**
     //  * @return PatientOrdoConsultation[] Returns an array of PatientOrdoConsultation objects

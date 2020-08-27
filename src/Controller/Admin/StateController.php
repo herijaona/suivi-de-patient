@@ -7,8 +7,11 @@ use App\Form\CenterHealthType;
 use App\Form\StateType;
 use App\Repository\StateRepository;
 use App\Repository\TypeVaccinRepository;
+use App\Service\FileUploadService;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -131,4 +134,43 @@ class StateController extends AbstractController
         }
         return new JsonResponse(['form_delete' => $delete]);
     }
+
+    /**
+     * @Route("/upload-excel-state", name="xlsx_import_state")
+     */
+    public function xlsx_import_state(Request $request, FileUploadService $fileUploadService)
+    {
+        $fileFolder =  $this->getParameter('import_directory');
+        $files = $request->files->get("file");
+        $filePathName = $fileUploadService->upload($files);
+        //$filePathName = md5(uniqid()) . $file->getClientOriginalName();
+        if ($filePathName != null){
+            $spreadsheet = IOFactory::load($fileFolder ."/". $filePathName); // Here we are able to read from the excel file
+            $row = $spreadsheet->getActiveSheet()->removeRow(1); // I added this to be able to remove the first file line
+            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true); // here, the read data is turned into an array
+            $i = 0;
+            foreach ($sheetData as $Row)
+            {
+                if ($i != 0){
+                    $pays = $Row['A'];
+                    $state = null;
+                    if($pays != null) {
+                        $state = $this->stateRepository->findOneBy([ 'nameState' => $pays ]);
+                        if ($state == null){
+                            $state = new State();
+                            $state->setNameState($pays);
+                            $this->entityManager->persist($state);
+                            $this->entityManager->flush();
+                        }
+                    }
+                }
+                $i++;
+            }
+
+        }
+
+        return new JsonResponse(['form_import' => true]);
+    }
+
+
 }

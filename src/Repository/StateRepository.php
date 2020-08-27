@@ -18,6 +18,14 @@ class StateRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, State::class);
     }
+    public function searchnum($state = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT s.id, s.phoneindic
+            FROM App\Entity\State s
+            WHERE s.id = :state')
+            ->setParameter('state', $state);
+        return $query->getResult();
+    }
 
     // /**
     //  * @return State[] Returns an array of State objects

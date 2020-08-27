@@ -21,9 +21,7 @@
                 <th>Type</th>
                 <th>{% trans %}Object of consultation{% endtrans %} </th>
                 <th>Praticien</th>
-
                 <th>Status</th>
-
             </tr>
             </thead>
             <tbody>
@@ -64,7 +62,6 @@
                     <td>
                         {{ vac. statusVaccin }}
                     </td>
-
                 </tr>
             {% endfor %}
 
@@ -80,7 +77,6 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
-
         $(document).ready(function () {
             $('#example1').DataTable();
             $('.date_rdv').datepicker({
