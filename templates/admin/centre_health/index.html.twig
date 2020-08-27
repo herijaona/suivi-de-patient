@@ -8,6 +8,9 @@
             align-items: center !important;
             justify-content: flex-end !important;
         }
+        #IdDocument {
+            display: none;
+        }
 
     </style>
 {% endblock %}
@@ -18,10 +21,15 @@
             <h4 class="h4-content">{% trans %}All Health Centers{% endtrans %}</h4>
         </div>
         <div class="col-md-7 form-row ">
-
             <div class="grid-edit-btn  mt-3 p-1">
+            <button class="btn btn-danger import_center_health">{% trans %}Import Center Health{% endtrans %}</button>
                 <button class="btn btn-primary new_center_health">{% trans %}+ New{% endtrans %} </button>
             </div>
+        </div>
+    </div>
+    <div class="row head-table col-md-12 col-lg-12 " id="IdDocument">
+        <div class="col-md-6">
+            <input type="file" id="import_document" style="margin-left: 117%; width: 50%;margin-top: -49px;" name="document" class="form-control-file fc-adjust-size" accept=".xlsx ,.xls">
         </div>
     </div>
     <div class="row head-table col-md-12">
@@ -127,6 +135,40 @@
                 }*/
 
             });
+
+            $(".import_center_health").on('click', function (e) {
+                e.preventDefault();
+                if ($('#import_document')[0].files.length > 0 ){
+                    var formData = new FormData();
+                    $(".loadBody").css("display", "block");
+                    formData.append("file", $('#import_document')[0].files[0]);
+                    formData.append("upload_file", true);
+
+                    $.ajax({
+                        url: "{{ path('xlsx_import_center_health') }}",
+                        type: 'post',
+                        processData: false,
+                        contentType: false,
+                        data: formData,
+                        //dataType: "json",
+                        success: (data) =>{
+                            location.reload();
+                            $(".loadBody").css("display", "none");
+                        },
+                        error: (e) => {
+                            $(".loadBody").css("display", "none");
+                            $(".chargementError").css("display", "block");
+                        }
+                    }).done(() => {
+                        $(".loadBody").css("display", "none");
+                    });
+                }else {
+
+                    $('#IdDocument').css('display', 'block');
+                }
+                console.log()
+                //if ()
+            })
 
         });
         function changeState(e) {

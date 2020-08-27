@@ -54,15 +54,25 @@
                         {{ vaccin.typeVaccin.typeName }}
                     </td>
                     <td>
-                        {% if vaccin.etat == 1 %}
-                            <span class="badge badge-success badge-style modif-status" data-id="{{ vaccin.id }}" data-etat="{{ vaccin.etat }}"> {% trans %}activate{% endtrans %} </span>
-                        {% else %}
-                            <span class="badge badge-warning badge-style modif-status" data-id="{{ vaccin.id }}" data-etat="{{ vaccin.etat }}">{% trans %}Deactivate{% endtrans %}</span>
-                        {% endif %}
+                        <div class="row">
+                            {% if vaccin.etat == 1 %}
+                                <span class="badge badge-success badge-style modif-status" data-id="{{ vaccin.id }}" data-etat="{{ vaccin.etat }}"> {% trans %}activate{% endtrans %} </span>
+                            {% else %}
+                                <span class="badge badge-warning badge-style modif-status" data-id="{{ vaccin.id }}" data-etat="{{ vaccin.etat }}">{% trans %}Deactivate{% endtrans %}</span>
+                            {% endif %}
+                        </div>
+
                     </td>
                     <td>
-                        <span class="btn btn-primary data-edit" data-id="{{ vaccin.id }}"><i class="fa fa-pencil"></i></span>
-                        <span class="btn btn-danger data-remove" data-id="{{ vaccin.id }}"><i class="fa fa-trash-o"></i></span>
+                        <div class="row">
+                            <div>
+                                <span class="btn btn-primary data-edit" data-id="{{ vaccin.id }}"><i class="fa fa-pencil"></i></span>
+                            </div>
+                            <div>
+                                <span class="btn btn-danger data-remove" style="margin-left:4px" data-id="{{ vaccin.id }}"><i class="fa fa-trash-o"></i></span>
+
+                            </div>
+                        </div>
                     </td>
                 </tr>
             {% endfor %}

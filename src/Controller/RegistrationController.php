@@ -83,11 +83,12 @@ class RegistrationController extends AbstractController
             $adresse= $form->get('address')->getData();
             $city = $request->request->get('city');
             $city = $this->cityRepository->find($city);
+            $username = $form->get('username')->getData();
 
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
-            $user->setUsername($form->get('username')->getData());
+            $user->setUsername($username);
             $user->setEmail($form->get('email')->getData());
             $user->setRoles([self::ROLE_PATIENT]);
             $user->setActivatorId($code);
@@ -135,7 +136,7 @@ class RegistrationController extends AbstractController
                 ->subject('Confirmation code' )
                 ->htmlTemplate('email/email.html.twig')
                 ->context([
-                    'code' => $code, 'name'=>$last_name
+                    'code' => $code, 'name'=>$last_name, 'username'=>$username
                 ]);
             // On envoie le mail
             $mailer->send($email);
@@ -171,6 +172,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // CREATE ACCOUNT PRATICIEN
             $code = $this->generate_code();
+            $username = $form->get('username')->getData();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
             $centre = $form->get('center_health')->getData();
@@ -180,7 +182,7 @@ class RegistrationController extends AbstractController
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
-            $user->setUsername($form->get('username')->getData());
+            $user->setUsername($username);
             $user->setEmail($email);
             $user->setRoles([self::ROLE_PRATICIEN]);
             $user->setActivatorId($code);
@@ -266,7 +268,7 @@ class RegistrationController extends AbstractController
                 ->subject('Confirmation code' )
                 ->htmlTemplate('email/email.html.twig')
                 ->context([
-                    'code' => $code, 'name'=>$last_name
+                    'code' => $code, 'name'=>$last_name,  'username'=>$username
                 ]);
             // On envoie le mail
             $mailer->send($email);
