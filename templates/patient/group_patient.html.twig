@@ -19,10 +19,11 @@
             <h4 class="h4-content">{% trans %}All Groups{% endtrans %}</h4>
 
         </div>
-        <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger btn-class" data-toggle="modal" data-target="#orangeModalSubscription">{% trans %}+ New Family Group{% endtrans %}</button>
-
-        </div>
+         {% if statsService.typePatient.typePatientName == "ADULTE" %}
+            <div class="grid-edit-btn col-md-3 mt-3">
+                <button class="btn btn-danger btn-class" data-toggle="modal" data-target="#orangeModalSubscription">{% trans %}+ New Family Group{% endtrans %}</button>
+            </div>
+        {% endif %}
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
@@ -44,8 +45,10 @@
                     </td>
                     <td>
                         <span class="btn btn-secondary see_group" data-id="{{ my_group.ID }}" data-href="{{ path('see_my_group', {'group_id': my_group.ID}) }}" ><i class="fas fa-eye"></i></span>
+                    {% if statsService.typePatient.typePatientName == "ADULTE" %}
                         <span class="btn btn-primary edit_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-edit"></i></span>
                         <span class="btn btn-danger deleted_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-trash"></i></span>
+                    {% endif %}
                     </td>
                 </tr>
             {% endfor %}

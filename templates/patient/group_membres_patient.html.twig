@@ -11,9 +11,11 @@
     <div class="grid-title-table col-md-9 mt-4">
         <h4 class="h4-content">{% trans %}All Family Members {% endtrans %}</h4>
     </div>
+     {% if statsService.typePatient.typePatientName == "ADULTE" %}
     <div class="grid-edit-btn col-md-3 mt-3">
         <button class="btn btn-danger" data-toggle="modal" data-target="#orangeModalSubscription">{% trans %}+ New Family{% endtrans %}</button>
     </div>
+    {% endif %}
 </div>
 <div class="row-table table-content">
     <table class="table table-striped" id="example1">
@@ -21,7 +23,7 @@
             <tr>
                 <th>{% trans %}Last Name{% endtrans %} </th>
                 <th>{% trans %}First Name{% endtrans %}</th>
-                <th></th>
+                {% if statsService.typePatient.typePatientName == "ADULTE" %}<th></th>{% endif %}
             </tr>
         </thead>
         <tbody>
@@ -32,10 +34,10 @@
                 </td>
                 <td>
                     {{ membre.lastName }}
-                </td>
+                </td>{% if statsService.typePatient.typePatientName == "ADULTE" %}
                 <td>
                     <span class="delete_membres_group" data-id-group="{{ group.id }}" data-id-mmb="{{ membre.id }}"><i class="fa fa-trash"></i></span>
-                </td>
+                </td>{% endif %}
             </tr>
             {% endfor %}
         </tbody>

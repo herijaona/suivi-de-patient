@@ -96,9 +96,9 @@
                     </ul>
                 </li>
                 <li class="{{ (currentPath == path('intervention_patient') ) ? 'active' :'' }}"><a href="{{ path('intervention_patient')}}">Intervention</a></li>
-                {% if statsService.typePatient.typePatientName == "ADULTE" %}
+               
                     <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">{% trans %}Family Group {% endtrans %}</a></li>
-                {% endif %}
+                
             {% endif %}
         </ul>
     </div>
