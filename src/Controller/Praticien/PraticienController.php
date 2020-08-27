@@ -276,22 +276,8 @@ class PraticienController extends AbstractController
                             $interVacc->getOrdoVaccination()->setStatusNotif(1);
                             $this->entityManager->persist($interVacc);
                             $this->entityManager->flush();
-                            $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
-                            $birthday = $patient->getDateOnBorn();
-                            $type_patient = $patient->getTypePatient();
 
-                            switch($type_patient){
-                                case 'ENFANT':
-                                    $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
-                                    break;
-                                case 'ADULTE':
-                                    $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE');
-                                    break;
-                                case 'FEMME ENCEINTE':
-                                    $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE');
-                                    break;
-                            }
-                            $this->vaccinGenerate->generate_vaccin($patient, $birthday, $alls, $interVacc);
+                            $this->vaccinGenerate->generateCalendar($patient, $Date_Rdv);
                         }
                     }
                     $message=$translator->trans('Successful change');
