@@ -235,16 +235,16 @@ ul {
 
 .register .body-content {
     position:relative;
-    width: 534px;
+    width: 621px;
 }
 
 .body-content {
     postion:relative;
     padding-top: 20px;
-    width: 360px;
+    width: 434px;
     background: white;
     margin: 0 auto;
-    margin-top: 24px;
+    margin-top: -38px;
     border-radius: 7px;
     padding-bottom: 8px;
 }
@@ -271,7 +271,7 @@ h3.main-title {
 }
 
 #input-id {
-    width: 70%;
+    width: 83%;
     margin: 0 auto;
 }
 
@@ -579,15 +579,15 @@ select.mdb-select.initialized {
     display: block;
 }
 #registration_praticien_form_phone{
-    width: 189px;
+    width: 233px;
     margin-left: 48px;
 }
 #registration_praticien_form_phone_professional{
-    width: 189px;
+    width: 233px;
     margin-left: 48px;
 }
 #registration_form_phone{
-    width: 189px;
+    width: 233px;
     margin-left: 48px;
 }
 #registration_form_enceinte{

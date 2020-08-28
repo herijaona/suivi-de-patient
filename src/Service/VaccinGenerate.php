@@ -42,7 +42,6 @@ class VaccinGenerate
         if($state != null) {
             switch ($type_patient) {
                 case 'ENFANT':
-
                     $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
                     $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
                     break;

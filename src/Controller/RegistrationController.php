@@ -16,6 +16,7 @@ use App\Repository\PraticienRepository;
 use App\Repository\StateRepository;
 use App\Repository\TypePatientRepository;
 use App\Repository\UserRepository;
+use App\Repository\VaccinRepository;
 use App\Security\LoginFormAuthenticator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,19 +42,22 @@ class RegistrationController extends AbstractController
     protected $userRepository;
     protected $cityRepository;
     protected $stateRepository;
+    protected $vaccinGenerate;
+    protected $vaccinRepository;
 
     const ROLE_PATIENT = 'ROLE_PATIENT';
     const ROLE_PRATICIEN = 'ROLE_PRATICIEN';
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
 
-    function __construct(UserRepository $userRepository, VaccinGenerate $vaccinGenerate, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository)
+    function __construct(UserRepository $userRepository, VaccinGenerate $vaccinGenerate, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository,VaccinRepository $vaccinRepository)
     {
-
+        $this->vaccinGenerate = $vaccinGenerate;
         $this->userRepository = $userRepository;
         $this->typePatientRepository = $typePatientRepository;
         $this->cityRepository= $cityRepository;
         $this->stateRepository=$stateRepository;
+        $this->vaccinRepository = $vaccinRepository;
 
     }
 
@@ -78,7 +82,6 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $code = $this->generate_code();
             // encode the plain password
             $last_name = $form->get('lastname')->getData();
@@ -88,6 +91,7 @@ class RegistrationController extends AbstractController
             $city = $this->cityRepository->find($city);
             $username = $form->get('username')->getData();
             $type_patient = $form->get('type_patient')->getData();
+            $date = new \DateTime();
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
@@ -106,13 +110,11 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $patientRequest = $form->get('enceinte')->getData();
-
             if($patientRequest == "true"){
                 $etat = true;
             }else{
                 $etat = false;
             }
-
             $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
@@ -132,9 +134,8 @@ class RegistrationController extends AbstractController
             $entityManager->persist($patient);
             $entityManager->flush();
             if($type_patient=="ENFANT"){
-                $this->vaccinGenerate->generateCalendar($patient, );
+                $this->vaccinGenerate->generateCalendar($patient, $date);
             }
-
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             // do anything else you need here, like send an email
             $email = (new TemplatedEmail())
@@ -303,7 +304,6 @@ class RegistrationController extends AbstractController
         $dico[1] = Array(1,2,3,4,5,6,7,8,9,0);
         $text = "";
         for($i = 0; $i<$length; $i++) {
-
             $option = mt_rand(0, 1);
             $case = mt_rand(0,count($dico[$option])-1);
             $text .= $dico[$option][$case];
