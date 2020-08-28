@@ -276,7 +276,6 @@ class PraticienController extends AbstractController
                             $interVacc->getOrdoVaccination()->setStatusNotif(1);
                             $this->entityManager->persist($interVacc);
                             $this->entityManager->flush();
-
                             $this->vaccinGenerate->generateCalendar($patient, $Date_Rdv);
                         }
                     }

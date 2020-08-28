@@ -32,6 +32,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use App\Service\VaccinGenerate;
 
 class RegistrationController extends AbstractController
 {
@@ -45,8 +46,10 @@ class RegistrationController extends AbstractController
     const ROLE_PRATICIEN = 'ROLE_PRATICIEN';
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
-    function __construct(UserRepository $userRepository, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository)
+
+    function __construct(UserRepository $userRepository, VaccinGenerate $vaccinGenerate, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository)
     {
+
         $this->userRepository = $userRepository;
         $this->typePatientRepository = $typePatientRepository;
         $this->cityRepository= $cityRepository;
@@ -84,7 +87,7 @@ class RegistrationController extends AbstractController
             $city = $request->request->get('city');
             $city = $this->cityRepository->find($city);
             $username = $form->get('username')->getData();
-
+            $type_patient = $form->get('type_patient')->getData();
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
@@ -117,7 +120,7 @@ class RegistrationController extends AbstractController
             $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($form->get('date_naissance')->getData());
             $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
-            $patient->setTypePatient($form->get('type_patient')->getData());
+            $patient->setTypePatient($type_patient);
             $patient->setCity($city);
             $patient->setState($form->get('country')->getData());
             $patient->setPhone($form->get('phone')->getData());
@@ -128,6 +131,10 @@ class RegistrationController extends AbstractController
             $patient->setUser($user);
             $entityManager->persist($patient);
             $entityManager->flush();
+            if($type_patient=="ENFANT"){
+                $this->vaccinGenerate->generateCalendar($patient, );
+            }
+
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             // do anything else you need here, like send an email
             $email = (new TemplatedEmail())

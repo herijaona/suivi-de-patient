@@ -48,13 +48,15 @@ class VaccinRepository extends ServiceEntityRepository
     }
     */
 
-    public function findVaccinByTYpe($typeVAcccin, $State = null)
+    public function findVaccinByTYpe($typeVAcccin, $state = null)
     {
         $query = $this->createQueryBuilder('v')
             ->distinct(true)
             ->join('v.TypeVaccin', 'tv')
+            ->join('v.state', 'st')
             ->where('tv.typeName = :tpv')
             ->setParameter('tpv', $typeVAcccin)
+            ->setParameter('st', $state)
             ->orderBy('v.id', 'ASC');
         return $query->getQuery()->getResult();
     }
