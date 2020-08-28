@@ -11,32 +11,32 @@
         <div class="container text-center body-content">
             <img class="logo-login"  src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
             <h3 class="main-title mb-4">{% trans %}Register Praticien {% endtrans %}</h3>
-            <form role="form" class="form-horizontal">
+            <form role="form" class="form-horizontal" id="register-form">
                 <div class="row form-group">
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Lastname'}}) }}
+                    {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Lastname', "required":"true", "minlength":"3"  }}) }}
                     </div>
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Firstname'}}) }}
+                    {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Firstname', "required":"true", "minlength":"3" }}) }}
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control'}}) }}
+                    {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control', "required":"true" }}) }}
 
                     </div>
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date of Birth'}}) }}
+                        {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date of Birth', "required":"true" }}) }}
 
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Place of birth'}}) }}
+                        {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Place of birth', "required":"true" }}) }}
 
                     </div>
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control', 'placeholder': 'Country'}}) }}
+                        {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control', 'placeholder': 'Country', "required":"true" }}) }}
 
 
                     </div>
@@ -49,7 +49,7 @@
 
                     </div>
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control', 'placeholder': 'Function'}}) }}
+                        {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control', 'placeholder': 'Function', "required":"true", "minlength":"3" }}) }}
 
 
                     </div>
@@ -57,27 +57,27 @@
                 <div class="row form-group">
                     <div class="col-lg-6">
                         <input type="button" id="tel" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
-                       {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Phone'}})}}
+                       {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Phone', "required":"true", "minlength":"9" }})}}
 
 
                     </div>
                     <div class="col-lg-6">
                         <input type="button" id="tell" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
-                        {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control', 'placeholder': 'Professional phone '}}) }}
+                        {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control', 'placeholder': 'Professional phone ',"required":"true", "minlength":"9" }}) }}
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
 
-                        {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control', 'placeholder': 'Address'}}) }}
+                        {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-textarea', 'placeholder': 'Address', 'rows':'4',"required":"true", "minlength":"3" }}) }}
                     </div>
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'e-mail'}}) }}
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'e-mail', "required":"true", "email": 'true'}}) }}
                     </div>
                 </div>
                  <div class="row form-group">
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Your center health'}}) }}
+                        {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Your center health', "required":"true"}}) }}
                     </div>
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Your username'}}) }}
@@ -85,11 +85,11 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Password'}}) }}
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'Password', "minlength":"12", "matchPassword": "true"}}) }}
 
                     </div>
                 </div>
-                <button type="submit " class="btn btn-info button-login mb-3">
+                <button type="submit " class="btn btn-info button-login mb-3" id="submit_register">
                     {% trans %}Register{% endtrans %}
                 </button>
             
@@ -100,6 +100,14 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+
+        $('#submit_register').click(function(e) {
+            if (!$('#register-form').valid()) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
         function getRndInteger(min = 10, max= 100) {
             return Math.floor(Math.random() * (max - min + 1) ) + min;
         }
@@ -155,9 +163,50 @@
             //$('#registration_form_email').val(username);
         }
 
+        $.validator.addMethod(
+            "matchPassword",
+            function(value) {
+                let res = false;
+                var pswd=   $("#registration_form_plainPassword").val();
+                if(pswd.match(/^.*(?=.{12,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\x20-\x2F|\x3A-\x40|\x5B-\x60|\x7B-\x7E]).*$/)) {
+                    res = true;
+                }
+                return res;
+            },
+            " Le mot de passe doit comporter des majuscules, des minuscules, au moins 1 chiffre et au moins un caractère."
+        );
+
+        jQuery.extend(jQuery.validator.messages, {
+            required: "Ce champ est obligatoire, veuillez le  remplir.",
+            remote: "votre message",
+            email: "Veuillez entrer un adresse email valide ",
+            url: "Vous devriez entrer un lien comme http://exemple.com",
+            date: "Veuillez fournir un date",
+            dateISO: "votre message",
+            number: "Veuillez entre un nombre",
+            digits: "votre message",
+            creditcard: "Veuillez entrer un numero de carte valide",
+            equalTo: "votre message",
+            accept: "votre message",
+            maxlength: jQuery.validator.format("La valeur maximale pour ce champ est de {0} caractéres."),
+            minlength: jQuery.validator.format("La valeur minimale pour ce champ est de {0} caractéres."),
+            rangelength: jQuery.validator.format("votre message  entre {0} et {1} caractéres."),
+            range: jQuery.validator.format("votre message  entre {0} et {1}."),
+            max: jQuery.validator.format("votre message  inférieur ou égal à {0}."),
+            min: jQuery.validator.format("votre message  supérieur ou égal à {0}."),
+            iban: "L'IBAN saisi n'est pas valide"
+        });
+
+        jQuery('label.error').append('<div class="arrow-error"></div>');
+
         $(document).ready(function () {
             $('#form-parent').css("display", "none");
             $('#registration_praticien_form_username').attr("readonly", "true");
+            $('#registration_form_date_naissance').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                endDate: '-0d',
+            });
             $("#registration_form_type_patient").on('change', function (e) {
                 if ($("#registration_form_type_patient").val() == 3){
                     $('#form-parent').css("display", "block");
