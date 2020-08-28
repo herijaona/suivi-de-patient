@@ -43,7 +43,7 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                        <select class="form-control" id="city" name="city" >
+                        <select class="form-control" id="city" name="city"  >
                             <option value="" selected>Select your City</option>
                         </select>
 
@@ -56,13 +56,13 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                        <input type="button" id="tel" value="" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
+                        <input type="button" id="tel" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
                        {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Phone'}})}}
 
 
                     </div>
                     <div class="col-lg-6">
-                        <input type="button" id="tell" value="" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
+                        <input type="button" id="tell" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
                         {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control', 'placeholder': 'Professional phone '}}) }}
                     </div>
                 </div>
@@ -184,6 +184,7 @@
                     });
                 }
             });
+
             $.ajax({
                 method: "POST",
                 url: "{{ path('num') }}",

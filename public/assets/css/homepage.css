@@ -62,10 +62,10 @@ h1 {
 }
 
 .btn-login:hover {
-    background: #ffffff33;
+    background:rgb(6, 186, 113) !important;
 }
 .btn-register:hover {
-    color: #bb0b0b;
+    color: #ec232a;
     background: #ffffff;
 }
 
@@ -81,9 +81,9 @@ h1 {
 .bg-content-h1 h1{
     font-size: 1.6rem;
     margin-top: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3.5rem;
     font-weight: 600;
-    color: rgb(6, 186, 113);
+    color:rgb(124 124 124);
 }
 
 .bg-content-h1 h3 {
@@ -127,3 +127,8 @@ h1 {
     }
 }
 
+.btn-login{
+    color: rgb(6, 186, 113);
+    font-weight: 700;
+    padding-top: 12px;
+}

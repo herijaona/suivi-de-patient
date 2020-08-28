@@ -32,43 +32,28 @@ class VaccinGenerate
 
     public function generateCalendar($patient, $dateNow)
     {
+
         $type_patient = $patient->getTypePatient()->getTypePatientName();
+        $enceinte= $patient->getIsEnceinte();
         $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
         $birthday = $patient->getDateOnBorn();
         $listVaccin = [];
         $day_preg =  $dateNow;
-        if($state == 'FRANCE'){
-            switch ($type_patient){
+        if($state != null) {
+            switch ($type_patient) {
                 case 'ENFANT':
                     $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
                     $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
                     break;
                 case 'ADULTE':
-                    $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE');
-                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
-                    break;
-                case 'FEMME ENCEINTE':
-                    $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE');
+                    $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE',$state);
                     $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
                     break;
             }
-
-        }else{
-            switch ($type_patient){
-                case 'ENFANT':
-                    $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
-                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
-                    break;
-                case 'ADULTE':
-                    $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE');
-                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
-                    break;
-                case 'FEMME ENCEINTE':
-                    $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE');
-                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
-                    break;
+            if ($type_patient == "ADULTE" && $enceinte == 1) {
+                $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE',$state);
+                $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
             }
-
         }
         return $listVaccin;
     }

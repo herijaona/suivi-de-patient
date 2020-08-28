@@ -68,7 +68,7 @@
                         {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Your username'}}) }}
                     </div>
                     <div class="col-lg-6">
-                        <input type="button" id="tel" value="" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
+                        <input type="button" id="tel" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
                         {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Phone'}}) }}
                     </div>
                 </div>
@@ -183,7 +183,6 @@
             $.ajax({
                 method: "POST",
                 url: "{{ path('country') }}",
-
                 data: {id: idcountry},
                 success: function(response){
                     $('#city').empty();
