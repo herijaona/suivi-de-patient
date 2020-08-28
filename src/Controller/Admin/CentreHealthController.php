@@ -5,6 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\CentreHealth;
 use App\Entity\VaccinCentreHealth;
 use App\Form\CenterHealthType;
+use App\Entity\Region;
+use App\Entity\State;
+use App\Entity\City;
+use App\Entity\CentreType;
 use App\Repository\CentreHealthRepository;
 use App\Repository\CentreTypeRepository;
 use App\Repository\CityRepository;
@@ -12,7 +16,10 @@ use App\Repository\RegionRepository;
 use App\Repository\StateRepository;
 use App\Repository\VaccinCentreHealthRepository;
 use App\Repository\VaccinRepository;
+use App\Service\FileUploadService;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Proxies\__CG__\App\Entity\CentreType as EntityCentreType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -247,5 +254,106 @@ class CentreHealthController extends AbstractController
         }
 
         return new JsonResponse(['form_success' => 'OK']);
+    }
+
+    
+    /**
+     * @Route("/upload-excel-center-health", name="xlsx_import_center_health")
+     */
+    public function xlsx_import_center_health(Request $request, FileUploadService $fileUploadService)
+    {
+        $fileFolder =  $this->getParameter('import_directory');
+        $files = $request->files->get("file");
+        $filePathName = $fileUploadService->upload($files);
+        //$filePathName = md5(uniqid()) . $file->getClientOriginalName();
+        if ($filePathName != null){
+            $spreadsheet = IOFactory::load($fileFolder ."/". $filePathName); // Here we are able to read from the excel file
+            $row = $spreadsheet->getActiveSheet()->removeRow(1); // I added this to be able to remove the first file line
+            $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true); // here, the read data is turned into an array
+            $i = 0;
+            foreach ($sheetData as $Row)
+            {
+                if ($i != 0){
+                    $IdCentre = $Row['A'];
+                    $NomCentre = $Row['B'];
+                    $VilleCentre = $Row['C'];
+                    $RégionCentre = $Row['D'];
+                    $PaysCentre = $Row['E'];
+                    $TypeCentre = $Row['F'];
+                    $TelephoneCentre = $Row['G'];
+                    $ReferentCentre = $Row['H'];
+                    $Responsable = $Row['I'];
+                    $NumRueCentre = $Row['J'];
+                    $QuartierCentre = $Row['K'];
+
+                    $state = null;
+                    $regions = null;
+                    $city = null;
+                    $typeCenter = null;
+                    $CenterHealth = null;
+
+
+
+                    if($PaysCentre != null) {
+                        $state = $this->stateRepository->findOneBy([ 'nameState' => $PaysCentre ]);
+                        if ($state == null){
+                            $state = new State();
+                            $state->setNameState($PaysCentre);
+                            $this->entityManager->persist($state);
+                        }
+                    }
+                    if($RégionCentre != null) {
+                        $regions = $this->regionRepository->findOneBy([ 'nameRegion' => $RégionCentre ]);
+                        if ($regions == null){
+                            $regions = new Region();
+                            $regions->setNameRegion($RégionCentre);
+                            $regions->setState($state);
+                            $this->entityManager->persist($regions);
+                        }
+                    }
+
+                    if($VilleCentre != null) {
+                        $city = $this->cityRepository->findOneBy([ 'nameCity' => $VilleCentre ]);
+                        if ($city == null){
+                            $city = new City();
+                            $city->setNameCity($VilleCentre);
+                            $city->setRegion($regions);
+                            $this->entityManager->persist($city);
+                        }
+                    }
+
+                    if($TypeCentre != null) {
+                        $typeCenter = $this->centreTypeRepository->findOneBy([ 'typeName' => $TypeCentre ]);
+                        if ($typeCenter == null){
+                            $typeCenter = new CentreType();
+                            $typeCenter->setTypeName($TypeCentre);
+                            $this->entityManager->persist($typeCenter);
+                        }
+                    }
+
+                    if($NomCentre  != null) {
+                        $CenterHealth = $this->centreHealthRepository->findOneBy([ 'centreName' => $NomCentre ]);
+                        if ($CenterHealth == null){
+                            $CenterHealth = new CentreHealth();
+                            $CenterHealth->setCentreName($NomCentre);
+                            $CenterHealth->setCentrePhone($TelephoneCentre);
+                            $CenterHealth->setResponsableCentre($Responsable);
+                            $CenterHealth->setCentreReferent($ReferentCentre);
+                            $CenterHealth->setNumRue($NumRueCentre);
+                            $CenterHealth->setQuartier($QuartierCentre);
+                            $CenterHealth->setCentreType($typeCenter);
+                            $CenterHealth->setCity($city);
+                            $this->entityManager->persist($CenterHealth);
+                        }
+                    }
+
+                    $this->entityManager->flush();
+                }
+                $i++;
+            }
+
+        }
+
+        return new JsonResponse(['form_import' => true]);
     }
 }
