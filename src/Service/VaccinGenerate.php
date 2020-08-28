@@ -32,6 +32,7 @@ class VaccinGenerate
 
     public function generateCalendar($patient, $dateNow)
     {
+
         $type_patient = $patient->getTypePatient()->getTypePatientName();
         $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
         $birthday = $patient->getDateOnBorn();

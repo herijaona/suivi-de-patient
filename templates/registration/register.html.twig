@@ -158,6 +158,7 @@
         $(document).ready(function () {
             $('#form-parent').css("display", "none");
             $('#form').css("display", "none");
+            $('#tel').css("display","none");
             $('#registration_form_username').attr("readonly", "true");
             $("#registration_form_type_patient").on('change', function (e) {
                 if ($("#registration_form_type_patient").val() == 2){
@@ -183,7 +184,6 @@
             $.ajax({
                 method: "POST",
                 url: "{{ path('country') }}",
-
                 data: {id: idcountry},
                 success: function(response){
                     $('#city').empty();
@@ -193,6 +193,7 @@
                     });
                 }
             });
+            $('#tel').css("display", "block");
             $.ajax({
                 method: "POST",
                 url: "{{ path('num') }}",
