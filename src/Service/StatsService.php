@@ -42,5 +42,12 @@ class StatsService
             return null;
     }
 
+    public function getTypePatientEnfant() {
+        return $this->typePatientRepository->findOneBy(['typePatientName' => 'ENFANT'])->getId();
+    }
+
+    public function getTypePatientAdulte() {
+        return $this->typePatientRepository->findOneBy(['typePatientName' => 'ADULTE'])->getId();
+    }
 
 }

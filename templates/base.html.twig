@@ -9,6 +9,7 @@
             <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.css') }}" />
             <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}" />
             <link rel="stylesheet" href="{{ asset('assets/css/component.css') }}" />
+            <link href="{{ asset('assets/css/datapicker/datepicker3.css') }}" rel="stylesheet">
         {% endblock %}
     </head>
     <body>
@@ -16,6 +17,9 @@
         <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
         <script src="{{ asset('assets/js/popper.min.js') }}"></script>
         <script src="{{ asset('assets/js/bootstrap.min.js') }}" async></script>
+        <script src="{{ asset('assets/js/jquery.validate.min.js') }}" type="text/javascript" charset="utf-8"></script>
+        <script src="{{ asset('assets/js/datapicker/bootstrap-datepicker.js') }}"></script>
+
         {% block javascripts %}{% endblock %}
     </body>
 </html>
