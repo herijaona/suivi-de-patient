@@ -112,6 +112,7 @@ class RegistrationController extends AbstractController
             $patientRequest = $form->get('enceinte')->getData();
             if($patientRequest == "true"){
                 $etat = true;
+                $code =  $last_name[0].$this->generate_code(5);
             }else{
                 $etat = false;
             }
