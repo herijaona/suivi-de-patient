@@ -199,6 +199,10 @@ ul {
     left: 12px;
 }
 
+.form-textarea {
+    height: fit-content !important;
+}
+
 .menu_up .menu_bar i {
     color: #d6d5d5;
     font-size: 17px;

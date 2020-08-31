@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -48,7 +49,11 @@ class RegistrationPraticienFormType extends AbstractType
             ->add('lieu_naissance')
             ->add('phone')
             ->add('phone_professional')
-            ->add('address')
+            ->add('address', TextareaType::class, [
+                'attr' => [
+                    'rows' => '3'
+                ]
+            ])
             ->add('country', EntityType::class,[
                 'class'=>State::class,
                 'query_builder'=>function(EntityRepository $entityRepository){
