@@ -39,15 +39,19 @@
             <label class="active" for="form1">{% trans %}Type of appointment{% endtrans %} </label>
             {{ form_widget(form.typeRdv, {'attr': { 'class': 'form-control chosen-select' }}) }}
         </div>
-        <div class="md-form description_hidden">
+        <div class="md-form vaccin_hidden">
+            <label class="active" for="form1">Vaccin </label>
+            {{ form_widget(form.vaccin, {'attr': { 'class': 'form-control chosen-select' }}) }}
+        </div>
+        <div class="md-form description">
             <label class="active" for="form1">Description</label>
             {{ form_widget(form.description, {'attr': { 'class': 'form-control' }}) }}
         </div>
-        <div class="md-form">
+        <div class="md-form ">
             <label class="active" for="form1">{% trans %}Appointment date{%  endtrans %}</label>
-            {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control date_rdv' }}) }}
+            {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control' }}) }}
         </div>
-        <div class="md-form">
+        <div class="md-form ">
             <label class="active" for="form1">{% trans %}appointment Time {% endtrans %} </label>
             {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
         </div>
@@ -55,8 +59,6 @@
         <div class="md-form">
             <label class="active" for="form1"  style="position: absolute">{% trans %}Associate{% endtrans %} </label>
             {{ form_widget(form.Associer, {'attr': { 'class': 'form-control' }}) }}
-
-
 
         </div>
 
@@ -73,42 +75,34 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.vaccin_hidden').css("display", "none");
-            $('.description_hidden').css("display", "none");
-
             $('.chosen-select').chosen({width: "100%"});
 
-            $('.date_rdv').datepicker({
+            $('#rdv_dateRdv').datepicker({
                 format: 'dd/mm/yyyy',
                 autoclose: true,
                 todayHighlight:'TRUE',
                 startDate: '-0d',
-            })
+            });
             $('#rdv_heureRdv').clockpicker({
                 donetext: "valider",
                 autoclose: true,
             });
             $('#rdv_heureRdv').on('change', function () {
                 let receivedVal = $(this).val();
-                $(this).val(receivedVal + ":00");
+                $(this).val(receivedVal );
             });
-
-            if($('#rdv_typeRdv').val() == 'consultation'){
-                $('.vaccin_hidden').css("display", "none");
-                $('.description_hidden').css("display", "block");
-            }
-            if($('#rdv_typeRdv').val() == 'vaccination'){
-                $('.vaccin_hidden').css("display", "block");
-                $('.description_hidden').css("display", "none");
-            }
 
             $('#rdv_typeRdv').on('change', function (e) {
                 if($(this).val() == 'consultation'){
                     $('.vaccin_hidden').css("display", "none");
-                    $('.description_hidden').css("display", "block");
-                }
-                else if($(this).val() == 'vaccination'){
+                    $('.description').css("display", "block");
+
+                }else if($(this).val() == 'intervention'){
                     $('.vaccin_hidden').css("display", "block");
-                    $('.description_hidden').css("display", "none");
+                    $('.description').css("display", "none");
+                }else if($(this).val() == 'vaccination'){
+                    $('.vaccin_hidden').css("display", "none");
+                    $('.description').css("display", "none");
                 }
             });
 

@@ -23,11 +23,9 @@
                 <div class="row form-group">
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.type_patient, {'attr': {'class': 'form-control', 'placeholder': 'Patient type'}})}}
-
                     </div>
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control', 'placeholder': 'Gender'}}) }}
-
                     </div>
 
                 </div>
@@ -37,15 +35,12 @@
                     </div>
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Place of birth'}}) }}
-
-
                     </div>
                 </div>
 
                 <div class="row form-group">
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.country , {'attr': {'class': 'form-control', 'placeholder': 'country'}}) }}
-
                     </div>
                     <div class="col-lg-6">
                         <select class="form-control" id="city" name="city" >
@@ -60,7 +55,6 @@
                     </div>
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Your email address'}})}}
-
                     </div>
                 </div>
                 <div class="row form-group">
@@ -188,7 +182,6 @@
                     $('#city').empty();
                     $.each(response, function(index,element) {
                         $('#city').append('<option value="'+ element.id +'" selected="selected">'+ element.nameCity +' </option>');
-
                     });
                 }
             });

@@ -20,23 +20,27 @@
             <thead>
             <tr>
                 <th>{% trans %}Date of proposal appointment{% endtrans %}</th>
+                <th>Type</th>
                 <th>{% trans %}Description Proposition{% endtrans %} </th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
                 <th>Patient </th>
                 <th></th>
 
             </tr>
             </thead>
             <tbody>
-            {% for pro in proposition  %}
+            {% for pro in consultation  %}
+                {% if pro.descriptionProposition != null  %}
                 <tr>
                     <td class="text-left">
                         {{ pro.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
                     </td>
+                    <td>Consultation</td>
                     <td>
                         {{ pro.descriptionProposition }}
                     </td>
+                    <td></td>
                     <td>{{ pro.lastName }} {{ pro.firstName }}</td>
-
 
                     <td>
                         <span class="btn btn-primary data-edit" data-id="{{ pro.id }}" ><i class="fa fa-pencil"></i></span>
@@ -44,6 +48,29 @@
                     </td>
 
                 </tr>
+                {% endif %}
+            {% endfor %}
+            {% for vacc in vaccination  %}
+                {% if vacc.vaccinName != null  %}
+                <tr>
+                    <td class="text-left">
+                        {{ vacc.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
+                    </td>
+                    <td>
+                       Vaccin </td>
+                    <td></td>
+                    <td>
+                            {{ vacc.vaccinName }}
+
+                    </td>
+                    <td>{{ vacc.lastName }} {{ vacc.firstName }}</td>
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ vacc.id }}" ><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ vacc.id }}" ><i class="fa fa-trash-o"></i></span>
+                    </td>
+
+                </tr>
+                {% endif %}
             {% endfor %}
             </tbody>
         </table>
@@ -74,7 +101,7 @@
                     });
                     $('#proposition_rdv_heureRdv').on('change', function () {
                         let receivedVal = $(this).val();
-                        $(this).val(receivedVal + ":00");
+                        $(this).val(receivedVal);
                     });
 
                     $(".loadBody").css("display", "none");
@@ -87,14 +114,6 @@
                 $(".loadBody").css("display", "none");
             });
         });
-        $(document).ready(function() {
-            $('#example1').DataTable()
-            $('.date_rdv').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-            })
-        });
-
         $('.data-edit').on('click', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -115,7 +134,7 @@
                     });
                     $('#proposition_rdv_heureRdv').on('change', function () {
                         let receivedVal = $(this).val();
-                        $(this).val(receivedVal + ":00");
+                        $(this).val(receivedVal);
                     });
                     $(".loadBody").css("display", "none");
                 },
@@ -156,8 +175,12 @@
                 return false
             }
         });
-
-
-
+        $(document).ready(function() {
+            $('#example1').DataTable()
+            $('.date_rdv').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+            })
+        });
     </script>
 {% endblock %}

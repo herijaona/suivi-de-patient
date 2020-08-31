@@ -91,7 +91,6 @@ class RegistrationController extends AbstractController
             $city = $this->cityRepository->find($city);
             $username = $form->get('username')->getData();
             $type_patient = $form->get('type_patient')->getData();
-            $date = new \DateTime();
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
@@ -134,9 +133,6 @@ class RegistrationController extends AbstractController
             $patient->setUser($user);
             $entityManager->persist($patient);
             $entityManager->flush();
-            if($type_patient=="ENFANT"){
-                $this->vaccinGenerate->generateCalendar($patient, $date);
-            }
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             // do anything else you need here, like send an email
             $email = (new TemplatedEmail())

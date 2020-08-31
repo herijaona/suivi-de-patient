@@ -20,38 +20,71 @@ class PropositionRdvRepository extends ServiceEntityRepository
 
 
     }
-    public function searchStatusPatientNotif($patient = null, $status = 0,$statusNotif = 0){
+    public function searchStatus($patient = null, $status = 0, $etat = 0, $type= 'consultation'){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT count(p.id) as count
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition,p.descriptionProposition,p.statusProposition,p.etat,pr.firstName , pr.lastName
             FROM App\Entity\PropositionRdv p
             LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
             LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
-            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now  AND p.statusProposition = :status AND p.statusNotif =:etat
+            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now  AND p.statusProposition = :status AND p.etat = :etat AND p.type =:type
             ORDER BY p.dateProposition ASC')
             ->setParameter('status', $status)
-            ->setParameter('etat', $statusNotif)
+            ->setParameter('etat', $etat)
+            ->setParameter('type', $type)
+            ->setParameter('patient', $patient)
+            ->setParameter('now', new \DateTime());
+        return $query->getResult();
+    }
+    public function searchStat($patient = null, $status = 0, $etat = 0,$type = 'vaccination'){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition,p.descriptionProposition,p.statusProposition,p.etat,pr.firstName , pr.lastName, v.vaccinName
+            FROM App\Entity\PropositionRdv p
+            INNER JOIN App\Entity\Vaccin v with v.id = p.vaccin
+            LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
+            LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
+            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now  AND p.statusProposition = :status AND p.etat = :etat AND p.type = :type
+            ORDER BY p.dateProposition ASC')
+            ->setParameter('status', $status)
+            ->setParameter('etat', $etat)
+            ->setParameter('type', $type)
             ->setParameter('patient', $patient)
             ->setParameter('now', new \DateTime());
 
         return $query->getResult();
     }
 
-    public function searchProposition($patient= null){
+    public function searchProposition($patient= null , $type= 'vaccination'){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition,p.statusProposition ,p.descriptionProposition, pr.firstName, pr.lastName, pr.id as praticien, pa.firstName as patientfirst, pa.lastName as patientlast, pa.id as patient 
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition,p.statusProposition ,p.descriptionProposition, pr.firstName, pr.lastName, pr.id as praticien, pa.firstName as patientfirst, pa.lastName as patientlast, pa.id as patient, v.vaccinName,p.type 
+            FROM App\Entity\PropositionRdv p
+            INNER JOIN APP\Entity\Vaccin v with v.id= p.vaccin
+            LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
+            LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
+            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now AND p.type =:type
+            ORDER BY p.dateProposition ASC')
+            ->setParameter('now', new \DateTime())
+            ->setParameter('patient', $patient)
+            ->setParameter('type', $type);
+
+        return $query->getResult();
+    }
+    public function searchPropositio($patient= null, $type = 'consultation'){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition,p.statusProposition ,p.descriptionProposition, pr.firstName, pr.lastName, pr.id as praticien, pa.firstName as patientfirst, pa.lastName as patientlast, pa.id as patient,p.type
             FROM App\Entity\PropositionRdv p
             LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
             LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
-            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now  AND p.statusProposition = :status
+            WHERE(pa.id = :patient OR pa.id IS NULL) AND p.dateProposition >= :now AND p.type =:type
             ORDER BY p.dateProposition ASC')
             ->setParameter('now', new \DateTime())
-            ->setParameter('patient', $patient);
+            ->setParameter('patient', $patient)
+            ->setParameter('type', $type);
 
         return $query->getResult();
     }
     public function searchStatusPraticienEnValid($praticien = null, $status = 0){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id, p.dateProposition, p.descriptionProposition, pa.lastName, pa.firstName
+        $query = $entityManager->createQuery('SELECT distinct p.id, p.dateProposition, p.descriptionProposition, pa.lastName, pa.firstName
             FROM App\Entity\PropositionRdv p
             LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
             LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
@@ -63,15 +96,47 @@ class PropositionRdvRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
-    public function searchStatusPraticien($praticien = null){
+
+    public function searchStatusPraticienv($praticien = null, $status = 0){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT distinct p.id, p.dateProposition, pa.lastName, pa.firstName, v.vaccinName
+            FROM App\Entity\PropositionRdv p
+            INNER JOIN App\Entity\Vaccin v with v.id = p.vaccin
+            LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
+            LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
+            WHERE (pr.id = :praticien OR pr.id IS NULL) AND p.statusProposition = :status AND p.dateProposition >= :now 
+            ORDER BY p.dateProposition ASC')
+            ->setParameter('status', $status)
+            ->setParameter('praticien', $praticien)
+            ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+    }
+    public function searchStatusPraticien($praticien = null,$status =1,$type = 'consultation'){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT p.id,p.etat, p.dateProposition, p.descriptionProposition, pa.lastName, pa.firstName,p.statusProposition
             FROM App\Entity\PropositionRdv p
             LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
             LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
-            WHERE (pr.id = :praticien OR pr.id IS NULL) 
+            WHERE (pr.id = :praticien OR pr.id IS NULL) AND p.statusProposition =:status AND p.type =:type
             ORDER BY p.dateProposition ASC')
-            ->setParameter('praticien', $praticien);
+            ->setParameter('praticien', $praticien)
+            ->setParameter('type', $type)
+            ->setParameter('status', $status);
+        return $query->getResult();
+    }
+    public function searchSta($praticien = null,$status = 1,$type = 'vaccination'){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id,p.etat, p.dateProposition, pa.lastName, pa.firstName,p.statusProposition,v.vaccinName
+            FROM App\Entity\PropositionRdv p
+            INNER JOIN App\Entity\Vaccin v with v.id = p.vaccin
+            LEFT JOIN App\Entity\Praticien pr with pr.id = p.praticien
+            LEFT JOIN App\Entity\Patient pa with pa.id = p.patient
+            WHERE (pr.id = :praticien OR pr.id IS NULL) AND p.statusProposition =:status AND p.type =:type
+            ORDER BY p.dateProposition ASC')
+            ->setParameter('praticien', $praticien)
+            ->setParameter('type', $type)
+            ->setParameter('status', $status);
         return $query->getResult();
     }
 

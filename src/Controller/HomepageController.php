@@ -65,7 +65,7 @@ class HomepageController extends AbstractController
         $users= $this->userRepository->find($user);
         $image = $request->request->get('image');
         $data = $image;
-        list(, $data)      = explode(',', $data);
+        list(,$data) = explode(',', $data);
         $data = base64_decode($data);
         $imageName = time().'.png';
         file_put_contents('uploads/'.$imageName, $data);

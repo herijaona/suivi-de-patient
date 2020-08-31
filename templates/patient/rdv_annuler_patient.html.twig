@@ -22,6 +22,7 @@
                 <th>{% trans %}Appointment date{%  endtrans %}</th>
                 <th>Type</th>
                 <th>{% trans %}Object of consultation{% endtrans %} </th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
                 <th>Praticien</th>
                 <th>Status</th>
 
@@ -37,6 +38,7 @@
                     <td>
                         {{ rdv.objetConsultation }}
                     </td>
+                    <td></td>
                     <td>
                         {{ rdv.firstName }}
                         {{ rdv.lastName }}
@@ -58,20 +60,85 @@
                         {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
                     </td>
                     <td>Vaccination</td>
-                    <td>
-
-                    </td>
+                    <td>Generation Calendrier</td>
+                    <td></td>
                     <td>
                         {{ vac.firstName }} {{ vac.lastName }} <br>
                     </td>
-                    {# <td>{{ vac.vaccinName }}</td> #}
                     <td>
                         {% if vac.statusVaccin == 2 %}
                             <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
+                </tr>
+            {% endfor %}
+            {% for intervention in intervention  %}
+                <tr>
+                    <td>
+                        {{ intervention.datePriseVaccin |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {#{ user.createdAt|localizeddate('none', 'none', app.request.locale, null, 'EEEE d MMMM Y') }}#}
+                    </td>
+                    <td>
+                        <p>Intervention</p>
+                    </td>
+                    <td></td>
+                    <td>{{ intervention.vaccinName }}</td>
+                    <td>
+                        {{ intervention.firstName }} {{ intervention.lastName }}
+                    </td>
+
+                    <td>
+                        {% if intervention.statusVaccin == 2  %}
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for proposition in cons  %}
+                <tr>
+                    <td class="text-left">
+                        {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
+                    </td>
+                    <td>{% trans %}Consultation Proposal{% endtrans %}</td>
+                    <td>
+                        {{ proposition.descriptionProposition }}
+                    </td>
+                    <td></td>
+                    <td>
+                        {{ proposition.firstName }}
+                        {{ proposition.lastName }}
+                    </td>
+                    <td>
+                        {% if proposition.etat == 2 %}
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                        {% endif %}
+                    </td>
 
                 </tr>
+
+            {% endfor %}
+            {% for proposition in vacc  %}
+
+                <tr>
+                    <td class="text-left">
+                        {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
+                    </td>
+                    <td>Proposition Vaccin</td>
+                    <td>
+
+                    </td>
+                    <td>{{ proposition.vaccinName }}</td>
+                    <td>
+                        {{ proposition.firstName }}
+                        {{ proposition.lastName }}
+                    </td>
+                    <td>
+                        {% if proposition.etat == 2 %}
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+
             {% endfor %}
 
             </tbody>

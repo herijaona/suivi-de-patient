@@ -22,6 +22,7 @@
                 <th>{% trans %}Appointment date{%  endtrans %}</th>
                 <th>Type</th>
                 <th>{% trans %}Object of consultation{% endtrans %} </th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
                 <th>Praticien</th>
                 <th>Status</th>
                 <th></th>
@@ -37,6 +38,7 @@
                     <td>
                         {{ rdv.objetConsultation }}
                     </td>
+                    <td></td>
                     <td>
                         {{ rdv.firstName }}
                         {{ rdv.lastName }}
@@ -53,6 +55,62 @@
 
                 </tr>
             {% endfor %}
+            {% for proposition in cons  %}
+                <tr>
+                    <td class="text-left">
+                        {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
+                    </td>
+                    <td>{% trans %}Consultation Proposal{% endtrans %}</td>
+                    <td>
+                        {{ proposition.descriptionProposition }}
+                    </td>
+                    <td></td>
+                    <td>
+                        {{ proposition.firstName }}
+                        {{ proposition.lastName }}
+                    </td>
+                    <td>
+                        {% if proposition.statusProposition == 1 %}
+                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="btn btn-primary data-edi" ><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remov"><i class="fa fa-trash-o"></i></span>
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+            {% for proposition in vacc  %}
+
+                    <tr>
+                        <td class="text-left">
+                            {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
+                        </td>
+                        <td>{% trans %}Vaccine Proposal{% endtrans %}</td>
+                        <td>
+
+                        </td>
+                        <td>{{ proposition.vaccinName }}</td>
+                        <td>
+                            {{ proposition.firstName }}
+                            {{ proposition.lastName }}
+                        </td>
+                        <td>
+                            {% if proposition.statusProposition == 1 %}
+                                <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="btn btn-primary data-edi" ><i class="fa fa-pencil"></i></span>
+                            <span class="btn btn-danger data-remov"><i class="fa fa-trash-o"></i></span>
+                        </td>
+
+                    </tr>
+
+            {% endfor %}
+
 
             {% for vac in vaccination  %}
                 <tr>
@@ -60,12 +118,13 @@
                         {{ vac.datePrise |format_datetime('full', 'short', locale=app.request.locale) }}
                         {#{ user.createdAt|localizeddate('none', 'none', app.request.locale, null, 'EEEE d MMMM Y') }}#}
                     </td>
-                    <td>Vaccination</td>
                     <td>
-
+                        <p>Vaccination</p>
                     </td>
+                    <td>Generation Calendrier</td>
+                    <td></td>
                     <td>
-                        {{ vac.firstName }} {{ vac.lastName }} <br>
+                        {{ vac.firstName }} {{ vac.lastName }}
                     </td>
 
                     <td>
@@ -76,6 +135,32 @@
                     <td>
                         <span class="btn btn-primary data-edit" data-id="{{ vac.id }}" data-type="vaccination"><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ vac.id }}" data-type="vaccination"><i class="fa fa-trash-o"></i></span>
+                    </td>
+                </tr>
+            {% endfor %}
+            {% for intervention in intervention  %}
+                <tr>
+                    <td>
+                        {{ intervention.datePriseVaccin |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {#{ user.createdAt|localizeddate('none', 'none', app.request.locale, null, 'EEEE d MMMM Y') }}#}
+                    </td>
+                    <td>
+                        <p>Intervention</p>
+                    </td>
+                    <td>{{ intervention.vaccinName }}</td>
+                    <td></td>
+                    <td>
+                        {{ intervention.firstName }} {{ intervention.lastName }}
+                    </td>
+
+                    <td>
+                        {% if intervention.statusVaccin == 0 %}
+                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <span class="btn btn-primary data-edit" data-id="{{ intervention.id }}" data-type="intervention"><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ intervention.id }}" data-type="intervention"><i class="fa fa-trash-o"></i></span>
                     </td>
                 </tr>
             {% endfor %}
@@ -109,7 +194,7 @@
                     });
                     $('#rdv_heureRdv').on('change', function () {
                         let receivedVal = $(this).val();
-                        $(this).val(receivedVal + ":00");
+                        $(this).val(receivedVal );
                     });
 
                     $(".loadBody").css("display", "none");
@@ -145,7 +230,7 @@
                     });
                     $('#rdv_heureRdv').on('change', function () {
                         let receivedVal = $(this).val();
-                        $(this).val(receivedVal + ":00");
+                        $(this).val(receivedVal );
                     });
                     $(".loadBody").css("display", "none");
                 },

@@ -79,7 +79,6 @@
                 <li class="{{ (currentPath == path('dashboard')) ? 'active' :'' }}"><a href="{{ path('dashboard') }}">{% trans %} Dashboard {% endtrans %}</a></li>
                 <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Vaccination</a></li>
                 <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
-                <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :'' }}"><a href="{{ path('rdv_praticien') }}" >{% trans %} Appointment {% endtrans %}</a></li>
                 <li class="{{ (currentPath == path('intervention_praticien') ) ? 'active' :'' }}"><a href="{{ path('intervention_praticien')}}">Intervention</a></li>
                 <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}">{% trans %}Appointment Proposal{% endtrans %}</a></li>
             {% endif %}
@@ -94,9 +93,8 @@
                         <li class="{{ (currentPath == path('proposisition_rdv')) ? 'active' :''  }}"><a href="{{ path('proposisition_rdv') }}">{% trans %}Proposal{% endtrans %}</a></li>
                     </ul>
                 </li>
-                <li class="{{ (currentPath == path('intervention_patient') ) ? 'active' :'' }}"><a href="{{ path('intervention_patient')}}">Intervention</a></li>
-               
-                    <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">{% trans %}Family Group {% endtrans %}</a></li>
+
+                <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">{% trans %}Family Group {% endtrans %}</a></li>
                 
             {% endif %}
         </ul>

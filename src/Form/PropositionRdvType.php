@@ -4,6 +4,7 @@ namespace App\Form;
 
 
 use App\Entity\Patient;
+use App\Entity\Vaccin;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -16,29 +17,42 @@ class PropositionRdvType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $patient = $options['patient'];
+        $typeRdvArrays = $options['typeRdvArrays'];
         $builder
             ->add('id', HiddenType::class)
             ->add('dateRdv')
+            ->add('patient', ChoiceType::class, [
+                'choices' => array_flip($patient),
+                'required' => true,
+                'placeholder' => 'Choisir Patient'
+            ])
+            ->add('typeRdv', ChoiceType::class, [
+                'choices' => array_flip($typeRdvArrays),
+                'required' => true,
+            ])
             ->add('heureRdv')
-            ->add('patient',EntityType::class,
-                ['required' => true,
+            ->add('vaccin', EntityType::class,
+                ['required' => false,
                     'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('p')
-                            ->orderBy('p.firstName')
-                            ->orderBy('p.lastName');
+                        return $er->createQueryBuilder('v')
+                            ->orderBy('v.vaccinName');
                     },
-                    'class' => Patient::class,
+                    'class' => Vaccin::class,
                     'attr' => ['class' => 'form-control chosen-select'],
-                    'placeholder' => 'Choose a Patient'
+                    'placeholder' => 'Choisir vaccin'
                 ])
             ->add('description', null, [
-                'required' => true,
+                'required' => false,
             ]);
+
+
     }
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([
-            // Configure your form options here
-        ]);
+        $resolver->setRequired(['typeRdvArrays']);
+        $resolver->setRequired(['patient']);
+
+
     }
 }

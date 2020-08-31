@@ -35,7 +35,7 @@ class VaccinGenerate
 
         $type_patient = $patient->getTypePatient()->getTypePatientName();
         $enceinte= $patient->getIsEnceinte();
-        $state = $patient->getAddressOnBorn()->getRegion()->getState()->getNameState();
+        $state = $patient->getState()->getNameState();
         $birthday = $patient->getDateOnBorn();
         $listVaccin = [];
         $day_preg =  $dateNow;
@@ -43,16 +43,16 @@ class VaccinGenerate
             switch ($type_patient) {
                 case 'ENFANT':
                     $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
-                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
+                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
                     break;
                 case 'ADULTE':
                     $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE',$state);
-                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
+                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
                     break;
             }
             if ($type_patient == "ADULTE" && $enceinte == 1) {
                 $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE',$state);
-                $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
+                $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
             }
         }
         return $listVaccin;
