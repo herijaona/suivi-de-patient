@@ -27,25 +27,23 @@ class RegistrationPraticienFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email',EmailType::class)
+            ->add('email', EmailType::class)
             ->add('username')
             ->add('lastname')
             ->add('firstname')
 
-            ->add('center_health',EntityType::class ,[
-                'class'=>CentreHealth::class,
-                'query_builder'=>function(EntityRepository $entityRepository){
+            ->add('center_health', EntityType::class, [
+                'class' => CentreHealth::class,
+                'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('c');
                 },
                 'choice_value' => 'id',
-                'choice_label' => function(?CentreHealth $centreHealth) {
+                'choice_label' => function (?CentreHealth $centreHealth) {
                     return $centreHealth ? strtoupper($centreHealth->getCentreName()) : '';
                 },
                 'placeholder' => 'Votre centre de santé',
             ])
-            ->add('date_naissance', DateType::class, [
-                'widget' => 'single_text',
-            ])
+            ->add('date_naissance')
             ->add('lieu_naissance')
             ->add('phone')
             ->add('phone_professional')
@@ -54,14 +52,14 @@ class RegistrationPraticienFormType extends AbstractType
                     'rows' => '3'
                 ]
             ])
-            ->add('country', EntityType::class,[
-                'class'=>State::class,
-                'query_builder'=>function(EntityRepository $entityRepository){
+            ->add('country', EntityType::class, [
+                'class' => State::class,
+                'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('s');
                 },
                 'choice_value' => 'id',
-                'choice_label' => function(?State $state){
-                    return $state ? strtoupper($state->getNameState()):'';
+                'choice_label' => function (?State $state) {
+                    return $state ? strtoupper($state->getNameState()) : '';
                 },
                 'placeholder' => 'Country',
             ])
@@ -88,8 +86,7 @@ class RegistrationPraticienFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

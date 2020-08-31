@@ -2,12 +2,20 @@
 
 {% block title %}Register{% endblock %}
 
+{% block stylsheets %}
+    parent()
+    <style>
+        .register {
+            margin: 8rem !important;
+        }
+    </style>
+{% endblock%}
 {% block body %}
 
     {{ form_start(registrationForm) }}
 
     <div class="background-img"></div>
-    <div class="body-page register" style="margin-top: 5%">
+    <div class="body-page register" style="margin: 8rem">
         <div class="container text-center body-content ">
             <img class="logo-login" src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
             <h3 class="main-title mb-4">{% trans %}Register Patient{% endtrans %}</h3>
@@ -124,33 +132,22 @@
 
         function createUsername()  {
 
-            $('#registration_form_date_naissance').on('change',function () {
-
-                var date = $('#registration_form_date_naissance').val();
-                var dat = new Date(date);
-
-                var mois = dat.getMonth();
-                console.log(mois);
-                if(mois<9){
-                    var moi = ('0' + (dat.getMonth() + 1) );
-                }else{
-                    var moi = dat.getMonth() + 1;
-                }
-                var ann = dat.getFullYear() ;
-                if (ann<2000){
-                    var anne = dat.getYear();
-                }else {
-                    var anne = dat.getYear()-100;
-                }
-                var jou = dat.getDate();
-                if(jou<10){
-                    var jour = ('0'+ (dat.getDate()));
-                }else{
-                    var jour = dat.getDate();
-                }
+                var dateSelect = $('#registration_form_date_naissance').val();
                 var sexe = $('#registration_form_sexe').val().substring(0,1);
+                var mois = "00";
+                var jour = "00";
+                var anne = "0000";
+                if(dateSelect != ''){
+                var datChoice = dateSelect.split("/");
+                    mois = datChoice[1];
+                    anne = datChoice[2]; 
+                    jour = datChoice[0];
+                }
+                
+               
 
-                var username = sexe + anne + moi + jour + getRndInteger() ;
+                var username = sexe + anne + mois + jour + getRndInteger() ;
+
                 $.ajax({
                     url: "{{ path('check_username') }}",
                     type: 'POST',
@@ -159,7 +156,6 @@
                     },
                     dataType: "json",
                     success: (data) => {
-                        console.log(data);
                         if (data.status == "OK"){
                             $('#registration_form_username').val(username);
                         }else {
@@ -171,8 +167,7 @@
                     }
                 }).done(() => {
                 });
-            });
-        }
+        } 
 
 
         $.validator.addMethod(
@@ -205,8 +200,7 @@
             rangelength: jQuery.validator.format("votre message  entre {0} et {1} caractéres."),
             range: jQuery.validator.format("votre message  entre {0} et {1}."),
             max: jQuery.validator.format("votre message  inférieur ou égal à {0}."),
-            min: jQuery.validator.format("votre message  supérieur ou égal à {0}."),
-            iban: "L'IBAN saisi n'est pas valide"
+            min: jQuery.validator.format("votre message  supérieur ou égal à {0}.")
         });
 
         jQuery('label.error').append('<div class="arrow-error"></div>');
@@ -216,19 +210,31 @@
             $('#form-parent').css("display", "none");
             $('#form').css("display", "none");
             $('#registration_form_username').attr("readonly", "true");
+            $('#registration_form_firstname').on('keyup', createUsername);
+            $('#registration_form_lastname').on('keyup', createUsername);
+            $('#registration_form_sexe').on('change', createUsername);
+            $('#registration_form_date_naissance').on('change', createUsername);
+            $("#registration_form_type_patient").on('change', createUsername);
+            function cb(d) {
+                $('#registration_form_date_naissance').datepicker({
+                    language: 'fr',
+                    format: 'dd/mm/yyyy',
+                    autoclose: true,
+                    endDate: d,
+                    todayHighlight: true
+                });
+            }
 
-            $('#registration_form_date_naissance').datepicker({
-                language: 'fr',
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-                todayHighlight: true
-            })
+            
             $("#registration_form_type_patient").on('change', function (e) {
-                if ($("#registration_form_type_patient").val() == $('#patient-enfant').val()) {
+                loadDatePicker($("#registration_form_type_patient").val());
+
+                if ($("#registration_form_type_patient").val() == $('#patient-enfant').val()){
                     $('#form-parent').css("display", "block");
                 } else {
                     $('#form-parent').css("display", "none");
                 }
+                
                 $("#registration_form_sexe").on('change', function (e) {
                     if ($("#registration_form_type_patient").val() == $('#patient-adulte').val() && $("#registration_form_sexe").val() == "Feminin") {
                         $('#form').css("display", "flex");
@@ -238,8 +244,21 @@
                 });
             });
 
-            $('#registration_form_firstname').on('keyup', createUsername);
-            $('#registration_form_lastname').on('keyup', createUsername);
+            function loadDatePicker(type){
+                if(type == $('#patient-adulte').val()){
+                    var past = new Date();
+                    past.setDate(past.getDate() - (16 * 365));
+                    $('#registration_form_date_naissance').datepicker("refresh");
+                    $('#registration_form_date_naissance')
+                        .datepicker("setEndDate", past)
+                            .datepicker("update",past);
+                }else{
+                    $('#registration_form_date_naissance').datepicker("refresh");
+                    $('#registration_form_date_naissance').datepicker("setEndDate", new Date()).datepicker("update", new Date());
+                }
+                
+            }
+        
 
             $('#registration_form_country').on('change', function () {
                 var idcountry = $('#registration_form_country option:selected').val();
