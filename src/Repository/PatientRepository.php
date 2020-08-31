@@ -18,6 +18,16 @@ class PatientRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Patient::class);
     }
+   /** public function searchTypePatient($patient = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT  p.id,t.typePatientName,p.sexe,p.isEnceinte
+            FROM App\Entity\Patient p 
+            INNER JOIN App\Entity\TypePatient t with t.id = p.typePatient
+            WHERE p.id = :patient 
+            ORDER BY p.id ASC')
+            ->setParameter('patient', $patient);
+        return $query->getResult();
+    } **/
 
     // /**
     //  * @return Patient[] Returns an array of Patient objects

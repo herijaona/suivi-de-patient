@@ -42,7 +42,7 @@ class PropositionRdv
     private $dateProposition;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups({"read:PropositionRdv"})
      */
     private $descriptionProposition;
@@ -83,6 +83,16 @@ class PropositionRdv
      * @Groups({"read:PropositionRdv"})
      */
     private $statusNotif;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Vaccin::class, inversedBy="propositionRdvs")
+     */
+    private $vaccin;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
 
     public function __construct()
     {
@@ -224,6 +234,30 @@ class PropositionRdv
     public function setStatusNotif(int $statusNotif): self
     {
         $this->statusNotif = $statusNotif;
+
+        return $this;
+    }
+
+    public function getVaccin(): ?Vaccin
+    {
+        return $this->vaccin;
+    }
+
+    public function setVaccin(?Vaccin $vaccin): self
+    {
+        $this->vaccin = $vaccin;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

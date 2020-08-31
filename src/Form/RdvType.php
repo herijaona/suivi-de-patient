@@ -35,6 +35,16 @@ class RdvType extends AbstractType
                     'placeholder' => 'Choose a Praticien'
                 ])
             ->add('dateRdv')
+            ->add('vaccin', EntityType::class,
+                ['required' => false,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('v')
+                            ->orderBy('v.vaccinName');
+                    },
+                    'class' => Vaccin::class,
+                    'attr' => ['class' => 'form-control chosen-select'],
+                    'placeholder' => 'Choisir vaccin'
+                ])
             ->add('heureRdv')
             ->add('description', null, [
                 'required' => false,

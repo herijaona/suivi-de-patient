@@ -25,11 +25,9 @@
                 <div class="row form-group">
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.type_patient, {'attr': {'class': 'form-control', 'placeholder': 'Patient type'}})}}
-
                     </div>
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control', 'placeholder': 'Gender'}}) }}
-
                     </div>
 
                 </div>
@@ -38,7 +36,10 @@
                         {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date of Birth'}}) }}
                     </div>
                     <div class="col-lg-6">
+
+
                         {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Place of birth', "minlength":"3"}}) }}
+
                     </div>
                 </div>
 
@@ -58,6 +59,7 @@
                         {{ form_widget(registrationForm.address, {'attr': { 'class': 'form-control form-textarea', 'placeholder': 'Address', 'rows':'4', "minlength":"3" }}) }}
                     </div>
                     <div class="col-lg-6">
+
                         <div class=" pt-2 pb-2">
                             {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Your email address', "minlength":"3"}})}}
                         </div>
@@ -73,6 +75,7 @@
                     </div>
                     <div class="col-md-12">
                         {{ form_widget(registrationForm.namemonther, {'attr': {'class': 'form-control mb-3', 'placeholder': 'mother name'}}) }}
+
                     </div>
                 </div>
                 <div class="row form-group">
@@ -125,7 +128,9 @@
 
                 var date = $('#registration_form_date_naissance').val();
                 var dat = new Date(date);
+
                 var mois = dat.getMonth();
+                console.log(mois);
                 if(mois<9){
                     var moi = ('0' + (dat.getMonth() + 1) );
                 }else{
@@ -207,15 +212,18 @@
         jQuery('label.error').append('<div class="arrow-error"></div>');
 
         $(document).ready(function () {
+            
             $('#form-parent').css("display", "none");
             $('#form').css("display", "none");
             $('#registration_form_username').attr("readonly", "true");
 
             function cb(d) {
                 $('#registration_form_date_naissance').datepicker({
+                    language: 'fr',
                     format: 'dd/mm/yyyy',
                     autoclose: true,
                     endDate: d,
+                    todayHighlight: true
                 });
             }
 
@@ -225,14 +233,14 @@
 
                 if ($("#registration_form_type_patient").val() == $('#patient-enfant').val()){
                     $('#form-parent').css("display", "block");
-                }else {
+                } else {
                     $('#form-parent').css("display", "none");
                 }
                 
                 $("#registration_form_sexe").on('change', function (e) {
-                    if ($("#registration_form_type_patient").val() == $('#patient-adulte').val() && $("#registration_form_sexe").val() == "Feminin" ){
+                    if ($("#registration_form_type_patient").val() == $('#patient-adulte').val() && $("#registration_form_sexe").val() == "Feminin") {
                         $('#form').css("display", "flex");
-                    }else {
+                    } else {
                         $('#form').css("display", "none");
                     }
                 });
@@ -257,33 +265,51 @@
             $('#registration_form_firstname').on('keyup', createUsername);
             $('#registration_form_lastname').on('keyup', createUsername);
 
-            $('#registration_form_country').on('change',function () {
+            $('#registration_form_country').on('change', function () {
                 var idcountry = $('#registration_form_country option:selected').val();
                 $.ajax({
                     method: "POST",
                     url: "{{ path('country') }}",
                     data: {id: idcountry},
-                    success: function(response){
+                    success: function (response) {
                         $('#city').empty();
-                        $.each(response, function(index,element) {
-                            $('#city').append('<option value="'+ element.id +'" selected="selected">'+ element.nameCity +' </option>');
-
+                        $.each(response, function (index, element) {
+                            $('#city').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
                         });
                     }
                 });
+            });
+
+
+            $('#registration_form_country').on('change', function () {
+                var idcountry = $('#registration_form_country option:selected').val();
+                $.ajax({
+                    method: "POST",
+                    url: "{{ path('country') }}",
+                    data: {id: idcountry},
+                    success: function (response) {
+                        $('#city').empty();
+                        $.each(response, function (index, element) {
+                            $('#city').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
+                        });
+                    }
+                });
+
                 $.ajax({
                     method: "POST",
                     url: "{{ path('num') }}",
                     data: {id: idcountry},
-                    success: function(response){
+                    success: function (response) {
                         $('#tel').empty();
-                        $.each(response, function(index,element) {
+                        $.each(response, function (index, element) {
                             $('#tel').val(element.phoneindic);
                         });
                     }
                 });
             });
-        });
+
+            });
+
 
 
 

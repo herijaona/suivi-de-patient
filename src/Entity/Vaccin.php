@@ -154,6 +154,11 @@ class Vaccin
      */
     private $vaccinPraticiens;
 
+    /**
+     * @ORM\OneToMany(targetEntity=PropositionRdv::class, mappedBy="vaccin")
+     */
+    private $propositionRdvs;
+
     function __construct()
     {
         $this->etat = false;
@@ -163,6 +168,7 @@ class Vaccin
         $this->patientVaccins = new ArrayCollection();
         $this->vaccinCentreHealths = new ArrayCollection();
         $this->vaccinPraticiens = new ArrayCollection();
+        $this->propositionRdvs = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -549,6 +555,37 @@ class Vaccin
     public function setState(?State $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PropositionRdv[]
+     */
+    public function getPropositionRdvs(): Collection
+    {
+        return $this->propositionRdvs;
+    }
+
+    public function addPropositionRdv(PropositionRdv $propositionRdv): self
+    {
+        if (!$this->propositionRdvs->contains($propositionRdv)) {
+            $this->propositionRdvs[] = $propositionRdv;
+            $propositionRdv->setVaccin($this);
+        }
+
+        return $this;
+    }
+
+    public function removePropositionRdv(PropositionRdv $propositionRdv): self
+    {
+        if ($this->propositionRdvs->contains($propositionRdv)) {
+            $this->propositionRdvs->removeElement($propositionRdv);
+            // set the owning side to null (unless already changed)
+            if ($propositionRdv->getVaccin() === $this) {
+                $propositionRdv->setVaccin(null);
+            }
+        }
 
         return $this;
     }

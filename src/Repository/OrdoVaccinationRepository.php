@@ -19,9 +19,11 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
         parent::__construct($registry, OrdoVaccination::class);
     }
 
-    public function searchStatus($patient = null, $status = 0){
+
+    public function searchGe($patient = null, $status = 0){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id, o.datePrise,o.etat,  o.statusVaccin, pr.firstName, pr.lastName FROM App\Entity\OrdoVaccination o 
+        $query = $entityManager->createQuery('SELECT o.id, o.datePrise,o.etat,o.statusVaccin, pr.firstName, pr.lastName
+        FROM App\Entity\OrdoVaccination o 
         INNER JOIN App\Entity\Patient p with p.id= o.patient
         LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
         LEFT JOIN App\Entity\Praticien pr with pr.id=d.praticien
@@ -53,9 +55,10 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
     public function searchStatusPraticienEnValid($praticien = null, $status = 0, $etat = 0){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('
-            SELECT o.id, o.datePrise, o.etat, o.statusVaccin, p.firstName, p.lastName, pr.id as praticien, p.id as patient
+            SELECT o.id, o.datePrise, o.etat, o.statusVaccin, p.firstName, p.lastName, pr.id as praticien, p.id as patient, v.vaccinName , v.id as vaccin            
             FROM App\Entity\OrdoVaccination o 
             INNER JOIN App\Entity\Patient p with p.id= o.patient
+            INNER JOIN App\Entity\Vaccin v with v.id= o.vaccin
             LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
             LEFT JOIN App\Entity\Praticien pr with pr.id=o.referencePraticienExecutant
             WHERE (pr.id= :praticien OR pr.id IS NULL) AND o.statusVaccin= :status AND o.etat= :etat AND o.datePrise >= :now
@@ -64,6 +67,24 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
           ->setParameter('status', $status)
           ->setParameter('praticien', $praticien)
           ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+    }
+
+    public function searchStatusPraticienGe($praticien = null, $status = 0, $etat = 0){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            SELECT o.id, o.datePrise, o.etat, o.statusVaccin, p.firstName, p.lastName, pr.id as praticien, p.id as patient          
+            FROM App\Entity\OrdoVaccination o 
+            INNER JOIN App\Entity\Patient p with p.id= o.patient
+            LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
+            LEFT JOIN App\Entity\Praticien pr with pr.id=o.referencePraticienExecutant
+            WHERE (pr.id= :praticien OR pr.id IS NULL) AND o.statusVaccin= :status AND o.etat= :etat AND o.datePrise >= :now
+            ORDER BY o.datePrise ASC
+        ')->setParameter('etat', $etat)
+            ->setParameter('status', $status)
+            ->setParameter('praticien', $praticien)
+            ->setParameter('now', new \DateTime());
 
         return $query->getResult();
     }

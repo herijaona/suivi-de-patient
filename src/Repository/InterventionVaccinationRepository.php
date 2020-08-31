@@ -18,18 +18,33 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, InterventionVaccination::class);
     }
+
+    public function  searchinterventionPatient($patient = null, $status = 0){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT i.id, i.datePriseVaccin,i.etat,i.statusVaccin,p.firstName , p.lastName ,v.vaccinName
+            FROM App\Entity\InterventionVaccination i 
+            INNER JOIN App\Entity\Patient p with p.id = i.patient
+            LEFT JOIN App\Entity\Vaccin v with v.id = i.vaccin
+            WHERE p.id = :patient   AND i.datePriseVaccin >= :now AND i.statusVaccin = :status 
+            ORDER BY i.datePriseVaccin ASC')
+            ->setParameter('patient', $patient)
+            ->setParameter('status', $status)
+            ->setParameter('now', new \DateTime());
+
+        return $query->getResult();
+
+
+    }
     public function searchIntervationPraticien($praticien = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT i.id, i.datePriseVaccin,i.etat,p.firstName as patient_name, p.lastName as patient_lastname, pr.firstName,pr.lastName, ov.id as vaccination
+        $query = $entityManager->createQuery('SELECT i.id, i.datePriseVaccin,i.etat,i.statusVaccin,p.firstName , p.lastName ,v.vaccinName
             FROM App\Entity\InterventionVaccination i 
-            INNER JOIN App\Entity\OrdoVaccination ov with ov.id = i.ordoVaccination
             INNER JOIN App\Entity\Patient p with p.id = i.patient
             LEFT JOIN App\Entity\Praticien pr with pr.id = i.praticienPrescripteur
             LEFT JOIN App\Entity\Vaccin v with v.id = i.vaccin
-            WHERE pr.id = :praticien   AND i.datePriseVaccin >= :now
+            WHERE pr.id = :praticien   
             ORDER BY i.datePriseVaccin ASC')
-            ->setParameter('praticien', $praticien)
-            ->setParameter('now', new \DateTime());
+            ->setParameter('praticien', $praticien);
 
         return $query->getResult();
     }
