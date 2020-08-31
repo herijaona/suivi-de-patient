@@ -167,7 +167,7 @@
                 }).done(() => {
                 });
             });
-        }
+        } 
 
 
         $.validator.addMethod(
@@ -210,17 +210,25 @@
             $('#form-parent').css("display", "none");
             $('#form').css("display", "none");
             $('#registration_form_username').attr("readonly", "true");
-            $('#registration_form_date_naissance').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-                endDate: '-0d',
-            });
+
+            function cb(d) {
+                $('#registration_form_date_naissance').datepicker({
+                    format: 'dd/mm/yyyy',
+                    autoclose: true,
+                    endDate: d,
+                });
+            }
+
+            
             $("#registration_form_type_patient").on('change', function (e) {
+                loadDatePicker($("#registration_form_type_patient").val());
+
                 if ($("#registration_form_type_patient").val() == $('#patient-enfant').val()){
                     $('#form-parent').css("display", "block");
                 }else {
                     $('#form-parent').css("display", "none");
                 }
+                
                 $("#registration_form_sexe").on('change', function (e) {
                     if ($("#registration_form_type_patient").val() == $('#patient-adulte').val() && $("#registration_form_sexe").val() == "Feminin" ){
                         $('#form').css("display", "flex");
@@ -229,6 +237,22 @@
                     }
                 });
             });
+
+            function loadDatePicker(type){
+                if(type == $('#patient-adulte').val()){
+                    var past = new Date();
+                    past.setDate(past.getDate() - (16 * 365));
+                    $('#registration_form_date_naissance').datepicker("refresh");
+                    $('#registration_form_date_naissance')
+                        .datepicker("setEndDate", past)
+                            .datepicker("update",past);
+                }else{
+                    $('#registration_form_date_naissance').datepicker("refresh");
+                    $('#registration_form_date_naissance').datepicker("setEndDate", new Date()).datepicker("update", new Date());
+                }
+                
+            }
+            
 
             $('#registration_form_firstname').on('keyup', createUsername);
             $('#registration_form_lastname').on('keyup', createUsername);

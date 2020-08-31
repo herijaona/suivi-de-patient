@@ -158,7 +158,7 @@ ul {
 }
 
 .menu_suivi li {
-    padding-left: 40px;
+    padding-left: 10px;
 }
 
 .menu_suivi .active {
@@ -460,7 +460,7 @@ select.mdb-select.initialized {
 }
 
 .profile label {
-    color: #052748;
+    color: #00bb33;
     font-size: 14px;
     font-family: "roboto-medium";
 }
@@ -472,7 +472,7 @@ select.mdb-select.initialized {
     font-size: 12px;
     right: -2px;
     text-align: right;
-    background: #032743;
+    background: #00bb33;
     padding: 6px 11px;
     border-radius: 2px;
     top: 29px;

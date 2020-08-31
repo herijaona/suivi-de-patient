@@ -1,5 +1,11 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
-
+<style>
+    .img-left-menu {
+        width: 20px;
+        height: 20px;
+        margin-right: .5rem;
+    }
+</style>
 <div class="col_exc_1" style="position: relative;">
     <link href="{{ asset('assets/css/croppie.css') }}" rel="stylesheet" type="text/css">
         <h4 class="h4_patient"> {% if is_granted('ROLE_PATIENT') %}Patient{% elseif is_granted('ROLE_PRATICIEN') %}Praticien{% elseif is_granted('ROLE_ADMIN') %} Admin{% endif %} {% trans %} Area {% endtrans %}
@@ -7,7 +13,7 @@
         <div class="bar-container">
             <i style="position: absolute" class="fas fa-bars bar-icon"></i>
         </div>
-    <div class="mt-4 menu-container">
+        <div class="mt-4 menu-container">
             <div class="img_profile">
                 {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                 <img src="/{{ img }}">
@@ -77,27 +83,25 @@
             {% if is_granted('ROLE_PRATICIEN') %}
                 <!-- <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li> -->
                 <li class="{{ (currentPath == path('dashboard')) ? 'active' :'' }}"><a href="{{ path('dashboard') }}">{% trans %} Dashboard {% endtrans %}</a></li>
-                <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}">Vaccination</a></li>
-                <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}">Consultation</a></li>
+                <li class="{{ (currentPath == path('vaccination_praticien') or currentPath == path('praticien')) ? 'active' :''  }}"><a href="{{ path('vaccination_praticien') }}"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">Vaccination</a></li>
+                <li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}"><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">Consultation</a></li>
                 <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :'' }}"><a href="{{ path('rdv_praticien') }}" >{% trans %} Appointment {% endtrans %}</a></li>
-                <li class="{{ (currentPath == path('intervention_praticien') ) ? 'active' :'' }}"><a href="{{ path('intervention_praticien')}}">Intervention</a></li>
-                <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}">{% trans %}Appointment Proposal{% endtrans %}</a></li>
+                <li class="{{ (currentPath == path('intervention_praticien') ) ? 'active' :'' }}"><a href="{{ path('intervention_praticien')}}"><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">Intervention</a></li>
+                <li class="{{ (currentPath == path('rdv_proposition')) ? 'active' :'' }}"><a href="{{ path('rdv_proposition') }}"><img src="{{ asset('assets/images/icon/badge-5.png') }}" class="img-left-menu rounded-circle">{% trans %}Appointment Proposal{% endtrans %}</a></li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
-                <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}">{% trans %}Vaccination Schedule{% endtrans %}</a></li>
-                <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler') or currentPath == path('rdv_valider') or currentPath == path('create_rdv') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv">{% trans %} Appointment {% endtrans %}</a>
+                <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">{% trans %}Vaccination Schedule{% endtrans %}</a></li>
+                <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler') or currentPath == path('rdv_valider') or currentPath == path('create_rdv') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv"><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
-                        <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" >{% trans %}New {% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" >{% trans %}Awaiting{% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('rdv_valider')) ? 'active' :''  }}"> <a href="{{ path('rdv_valider') }}" >{% trans %}Validate{% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('rdv_annuler')) ? 'active' :''  }}"> <a href="{{ path('rdv_annuler') }}" >{% trans %}Reject{% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('proposisition_rdv')) ? 'active' :''  }}"><a href="{{ path('proposisition_rdv') }}">{% trans %}Proposal{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}New {% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" ><img src="{{ asset('assets/images/icon/progress.png') }}" class="img-left-menu rounded-circle">{% trans %}Awaiting{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('rdv_valider')) ? 'active' :''  }}"> <a href="{{ path('rdv_valider') }}" ><img src="{{ asset('assets/images/icon/accept.png') }}" class="img-left-menu rounded-circle">{% trans %}Validate{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('rdv_annuler')) ? 'active' :''  }}"> <a href="{{ path('rdv_annuler') }}" ><img src="{{ asset('assets/images/icon/reject.png') }}" class="img-left-menu rounded-circle">{% trans %}Reject{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('proposisition_rdv')) ? 'active' :''  }}"><a href="{{ path('proposisition_rdv') }}"><img src="{{ asset('assets/images/icon/badge-5.png') }}" class="img-left-menu rounded-circle">{% trans %}Proposal{% endtrans %}</a></li>
                     </ul>
                 </li>
                 <li class="{{ (currentPath == path('intervention_patient') ) ? 'active' :'' }}"><a href="{{ path('intervention_patient')}}">Intervention</a></li>
-               
-                    <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}">{% trans %}Family Group {% endtrans %}</a></li>
-                
+                <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}"><img src="{{ asset('assets/images/icon/group_family.png') }}" class="img-left-menu rounded-circle">{% trans %}Family Group {% endtrans %}</a></li>
             {% endif %}
         </ul>
     </div>
@@ -143,12 +147,18 @@
     });
 
     $('.crop_image').click(function(event){
+        var url = "";
+        {% if  is_granted('ROLE_ADMIN') %}
+            url = "{{ path('modif_avatar') }}";
+        {% else %}
+            url = "{{ path('modif_photo') }}";
+        {% endif %}
         $image_crop.croppie('result', {
             type: 'canvas',
             size: 'viewport'
         }).then(function(response){
             $.ajax({
-                url:"{{ path('modif_photo') }}",
+                url: url,
                 type: "POST",
                 data:{"image": response},
                 success:function(data)
