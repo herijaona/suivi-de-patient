@@ -17,7 +17,7 @@
             <thead>
             <tr>
                 <th>{% trans %}Vaccination date{% endtrans %}</th>
-                <th>{% trans %}Detail{% endtrans %}</th>
+
                 <th>{% trans %}Patient{% endtrans %}</th>
                 <th>{% trans %}Praticien{% endtrans %}</th>
                 <th>{% trans %}Validation{% endtrans %}</th>
@@ -30,9 +30,6 @@
                 <tr>
                     <td>
                         {{ rdv.datePrise|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
-                    </td>
-                    <td>
-                      
                     </td>
                     <td>
                         {{ rdv.patient.lastName ~' '~ rdv.patient.firstName }} <br>
