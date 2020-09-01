@@ -40,7 +40,7 @@
                         {{ rdv.firstName }} {{ rdv.lastName }}
                     </td>
 
-                    <td>
+                    <td style="text-align: right">
                         {% if rdv.statusConsultation == 1 %}
                             <span class="badge badge-info badge-style">{% trans %}Accepted{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
@@ -64,7 +64,7 @@
                     <td>
                         {{ rdv.firstName }} {{ rdv.lastName }}
                     </td>
-                    <td>
+                    <td style="text-align: right">
                         {% if rdv.etat == 1 %}
                             <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
                         {% elseif rdv.etat == 0 %}

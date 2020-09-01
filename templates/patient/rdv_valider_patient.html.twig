@@ -43,7 +43,7 @@
                         {{ rdv.firstName }}
                         {{ rdv.lastName }}
                     </td>
-                    <td>
+                    <td style="text-align: right">
                         {% if rdv.statusConsultation == 1 %}
                             <span class="badge badge-success badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}
@@ -64,7 +64,7 @@
                         {{ proposition.firstName }}
                         {{ proposition.lastName }}
                     </td>
-                    <td>
+                    <td style="text-align: right">
                         {% if proposition.etat == 1 %}
                             <span class="badge badge-success badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}
@@ -86,7 +86,7 @@
                         {{ intervention.firstName }} {{ intervention.lastName }}
                     </td>
 
-                    <td>
+                    <td style="text-align: right">
                         {% if intervention.statusVaccin == 1 %}
                             <span class="badge badge-success badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}
@@ -107,7 +107,7 @@
                         {{ proposition.firstName }}
                         {{ proposition.lastName }}
                     </td>
-                    <td>
+                    <td style="text-align: right">
                         {% if proposition.etat == 1 %}
                             <span class="badge badge-success badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}

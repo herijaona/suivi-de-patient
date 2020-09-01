@@ -40,7 +40,7 @@
                     <td>
                         {% if rdv.ordonnance is defined and rdv.ordonnance is not null %} {{ rdv.ordonnance.praticien.lastName ~' '~ rdv.ordonnance.praticien.firstName }} {% endif %} <br>
                     </td>
-                    <td>
+                    <td style="text-align: right">
                         {% if rdv.statusConsultation == 1 %}
                             <span class="badge badge-success badge-style ">{% trans %}Validate{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
@@ -50,7 +50,7 @@
                         {% endif %}
 
                     </td>
-                    <td>
+                    <td style="text-align: right">
                         {% if rdv.etat == 0 %}
                             <button class="btn btn-deep-orange  validation_width" >{% trans %}Not Done{% endtrans %}</button>
                         {% else %}
