@@ -680,8 +680,7 @@ class AdminController extends AbstractController
         $image = $request->request->get('image');
         //$data = $image;
         //list(, $data)      = explode(',', $data);
-        $data = explode( ',', $image );
-        //dd($image, $data);
+        dd($image);
         $data = base64_decode(explode( ',', $image )[1]);
         $imageName = time().'.png';
         file_put_contents('uploads/'.$imageName, $data);
