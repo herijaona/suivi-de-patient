@@ -158,10 +158,13 @@
                 type: 'canvas',
                 size: 'viewport'
             }).then(function(response){
+                console.log(response)
                     $.ajax({
                         url: url,
                         type: "POST",
-                        data:{"image": response},
+                        data:{
+                            "image": response
+                        },
                         success:function(data)
                         {
                             $('#uploadimageModal').modal('hide');
