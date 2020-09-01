@@ -19,54 +19,62 @@
             <tr>
                 <th>{% trans %}Intervention date{% endtrans %}</th>
                 <th>Type</th>
-                <th>{% trans %}Object of consultation{% endtrans %}</th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
                 <th>Patient</th>
                 <th>{% trans %}State Intervention{% endtrans %}</th>
             </tr>
             </thead>
             <tbody>
-            {% for icp in consultation  %}
+            {% for vac in vaccination  %}
                 <tr>
-                    <td class="text-left">
-                        {{ icp.dateConsultation |format_datetime('full', 'short', locale=app.request.locale)}}
-                    </td>
-                    <td>Consultation</td>
                     <td>
-                        {% if icp.descriptionProposition == null %}
-                             {{ icp.objetConsultation }}
-                        {% else %}
-                            {{ icp.descriptionProposition }}
-                        {% endif %}
+                        {{ vac.datePriseVaccin |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {#{ user.createdAt|localizeddate('none', 'none', app.request.locale, null, 'EEEE d MMMM Y') }}#}
                     </td>
-                    <td>{{ icp.patient_name }} {{ icp.patient_lastname }} </td>
+                    <td>Intervention</td>
                     <td>
-                        {% if icp.etat == 0  %}
-                            <span class="badge badge-success badge-style modif-etat" data-etat="{{ icp.etat }}" data-id = "{{ icp.id }}" data-proposition = "{{ icp.proposition }}" data-consultation="{{ icp.consultation }}"   data-type="consultation"  >{% trans %}Realize{% endtrans %}</span>
-                        {% elseif icp.etat == 1 %}
+                        {{ vac.vaccinName }}
+                    </td>
+                    <td>
+                        {{ vac.firstName }} {{ vac.lastName }} <br>
+                    </td>
+                    <td style="text-align: right">
+                        {% if vac.statusVaccin == 0  %}
+                            <span class="badge badge-success badge-style modif-status"  data-type="intervention"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePriseVaccin |date}}">{% trans %}Realize{% endtrans %}</span>
+                            <span  class="badge badge-danger badge-style modif-status" data-type="intervention"   data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePriseVaccin |date}}">{% trans %}Reject{% endtrans %}</span>
+                        {% elseif vac.statusVaccin == 1 %}
                             <span class="badge badge-info badge-style ">{% trans %}Realized{% endtrans %}</span>
+                        {% elseif vac.statusVaccin == 2 %}
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
-
-            {% for ivp in vaccination  %}
+            {% for proposition in proposition  %}
                 <tr>
                     <td>
-                        {{ ivp.datePriseVaccin |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale) }}
+                        {#{ user.createdAt|localizeddate('none', 'none', app.request.locale, null, 'EEEE d MMMM Y') }}#}
                     </td>
-                    <td>Vaccination</td>
-                    <td></td>
-                    <td>{{ ivp.patient_name }} {{ ivp.patient_lastname }} {{ ivp.vaccination }}   </td>
+                    <td>{% trans %}Vaccine Proposal{% endtrans %}</td>
                     <td>
-                        {% if ivp.etat == 0  %}
-                        <span class="badge badge-success badge-style modif-etat" data-etat="{{ ivp.etat }}" data-id = "{{ ivp.id }}" data-vaccination ="{{ ivp.vaccination }}"  data-type="vaccination"  >{% trans %}Realize{% endtrans %}</span>
-                        {% elseif ivp.etat == 1 %}
-                            <span class="badge badge-info badge-style ">{% trans %}Realized{% endtrans %}</span>
+                        {{ proposition.vaccinName }}
+                    </td>
+                    <td>
+                        {{ proposition.firstName }} {{ proposition.lastName }} <br>
+                    </td>
+                    <td style="text-align: right">
+                        {% if proposition.etat == 1 %}
+                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                        {% elseif proposition.etat == 0 %}
+                            <span  class="badge badge-success badge-style modif-status" data-id="{{ proposition.id }}" data-type="proposition" data-action="active" data-etat="{{ proposition.etat }}">{% trans %}Accept{% endtrans %}</span>
+                            <span  class="badge badge-danger badge-style modif-status" data-id="{{ proposition.id }}" data-type="proposition" data-action="reject" data-etat="{{ proposition.etat }}">{% trans %}Reject{% endtrans %}</span>
+                        {% elseif proposition.etat == 2 %}
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
-
             </tbody>
         </table>
     </div>
@@ -77,25 +85,23 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
-    $('.modif-etat').on('click', function (e) {
+    $('.modif-status').on('click', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
         var type = $(this).data('type');
-        var etat = $(this).data('etat');
-        var proposition = $(this).data('proposition');
-        var consultation = $(this).data('consultation');
-        var vaccination = $(this).data('vaccination');
-        $.ajax({
-            url: "{{ path('update_etat') }}",
-            type: 'post',
+        var action = $(this).data('action');
+        var status = $(this).data('status');
+        var date = $(this).data('date');
 
+        $.ajax({
+            url: "{{ path('change_status') }}",
+            type: 'post',
             data: {
                 id: id,
                 type: type,
-                etat: etat,
-                proposition: proposition,
-                consultation: consultation,
-                vaccination: vaccination,
+                action:action,
+                status:status,
+                date : date
             },
             dataType: "json",
             cache: false,

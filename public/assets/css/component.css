@@ -273,13 +273,13 @@ select {
 }
 
 .data-edit {
-    color: #fff;
-    background-color: #0789e2 !important;
-    border-color: #007bff;
-    padding: 3px 7px;
-    font-size: 14px;
-    border-radius: .25rem;
-}
+     color: #fff;
+     background-color: #0789e2 !important;
+     border-color: #007bff;
+     padding: 3px 7px;
+     font-size: 14px;
+     border-radius: .25rem;
+ }
 
 .data-remove {
     color: #fff;
@@ -288,6 +288,32 @@ select {
     padding: 3px 7px;
     font-size: 14px;
     border-radius: .25rem;
+}
+.data-edi {
+    color: #fff;
+    background-color: #0789e2 !important;
+    border-color: #007bff;
+    padding: 3px 7px;
+    font-size: 14px;
+    border-radius: .25rem;
+}
+
+.data-remov {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #dc3545;
+    padding: 3px 7px;
+    font-size: 14px;
+    border-radius: .25rem;
+}
+.see_group{
+    color: #fff;
+    background-color: rgba(108, 117, 125, 0.58) !important;
+    border-color: rgba(108, 117, 125, 0.58) ;
+    padding: 3px 7px;
+    font-size: 14px;
+    border-radius: .25rem;
+
 }
 
 div.dataTables_wrapper div.dataTables_length label {

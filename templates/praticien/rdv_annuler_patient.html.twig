@@ -40,7 +40,7 @@
                         {{ rdv.lastName }}
                     </td>
                     <td></td>
-                    <td>
+                    <td style="text-align: right">
                         {% if rdv.statusConsultation == 1 %}
                             <span class="badge badge-success badge-style modif-status">{% trans %}activate{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
@@ -65,7 +65,7 @@
                         {{ vac.firstName }} {{ vac.lastName }} <br>
                     </td>
                     <td>{{ vac.vaccinName }}</td>
-                    <td>
+                    <td style="text-align: right">
                         {% if vac.statusVaccin == 1 %}
                             <span class="badge badge-success badge-style modif-status"> {% trans %}activate{% endtrans %}</span>
                         {% elseif vac.statusVaccin == 0 %}

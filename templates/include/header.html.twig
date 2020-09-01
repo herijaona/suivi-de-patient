@@ -15,10 +15,10 @@
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                     <img class="rounded-circle" style="background-color: #077DF2 ;position: absolute; height: 30px; margin-left: -25px;margin-top: 3px;" src="/{{ img }}" width="30px">
                 </a>
-                <div style="margin-top: 11px; width: 110px" class="menu_">
+                <div style="margin-top: 11px; width: 118px" class="menu_">
                     <a  style="font-size: 14px" href="{{ path('editPatient')}}">{% trans %}My profile{% endtrans %}</a>
                     <hr>
-                    <a style="font-size: 14px; margin-left: -19px " href="{{ path('app_logout')}}">{% trans %}Logout{% endtrans %}</a>
+                    <a style="font-size: 14px;" href="{{ path('app_logout')}}">{% trans %}Logout{% endtrans %}</a>
                 </div>
             {% endif %}
             {% if is_granted('ROLE_PRATICIEN') %}
@@ -26,10 +26,10 @@
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                     <img class="rounded-circle" style=" background-color: #077DF2 ; position: absolute; height: 30px; margin-left: -25px;margin-top: 3px;" src="/{{ img }}" width="30px">
                 </a>
-                <div style="margin-top: 11px;  width: 110px" class="menu_">
+                <div style="margin-top: 11px;  width: 118px" class="menu_">
                     <a  style="font-size: 14px" href="{{ path('editPraticien')}}">{% trans %}My profile{% endtrans %}</a>
                     <hr>
-                    <a style="font-size: 14px; margin-left: -19px " href="{{ path('app_logout')}}">{% trans %}Logout{% endtrans %}</a>
+                    <a style="font-size: 14px;" href="{{ path('app_logout')}}">{% trans %}Logout{% endtrans %}</a>
                 </div>
             {% endif %}
             {% if is_granted('ROLE_ADMIN') %}
@@ -37,8 +37,8 @@
                         {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
                         <img class="rounded-circle" style="  background-color: #077DF2 ; position: absolute; height: 30px; margin-left: -20px; margin-top: 3px;" src="/{{ img }}" >
                     </a>
-                    <div style="margin-top: 11px; background: linear-gradient(150deg, #077DF2 4%, #06CF7D 100%); width: 110px" class="menu_">
-                        <a style="font-size: 14px; margin-left: -19px " href="{{ path('admin_logout')}}">{% trans %}Logout{% endtrans %}</a>
+                    <div style="margin-top: 11px; width: 130px" class="menu_">
+                        <a style="font-size: 14px; " href="{{ path('app_logout')}}">{% trans %}Logout{% endtrans %}</a>
                     </div>
             {% endif %}
         </li>

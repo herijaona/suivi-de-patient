@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RadioType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -31,14 +33,16 @@ class RegistrationFormType extends AbstractType
             ->add('username')
             ->add('lastname')
             ->add('firstname')
-            ->add('date_naissance', DateType::class, [
-                'widget' => 'single_text',
-            ])
+            ->add('date_naissance')
             ->add('phone')
             ->add('lieu_naissance')
-            ->add('address')
+            ->add('address', TextareaType::class, [
+                'attr' => [
+                    'rows' => '3'
+                ]
+            ])
             ->add('type_patient',EntityType::class ,[
-                'class'=>TypePatient::class,
+                'class' => TypePatient::class,
                 'query_builder'=>function(EntityRepository $entityRepository){
                     return $entityRepository->createQueryBuilder('t');
                 },
@@ -76,7 +80,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('country', EntityType::class,[
-                'class'=>State::class,
+                'class' => State::class,
                 'query_builder'=>function(EntityRepository $entityRepository){
                     return $entityRepository->createQueryBuilder('s');
                 },
@@ -86,10 +90,15 @@ class RegistrationFormType extends AbstractType
                 },
                 'placeholder' => 'Country',
             ])
-           ->add('enceinte', CheckboxType::class, [
-                'label'    => 'enceinte',
-                'required' => false,
-            ]);
+           ->add('enceinte', ChoiceType::class, [
+               'choices'  => [
+                   'Oui' => 'true',
+                   'Non' => 'false'
+               ],
+               'expanded' => true,
+               'multiple' => false,
+               'placeholder' => 'Choose an option',
+           ]);
 
         ;
     }

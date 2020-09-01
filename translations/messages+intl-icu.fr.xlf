@@ -853,6 +853,36 @@
         <source>Waiting Appointment</source>
         <target>Rendez-vous en Attente</target>
       </trans-unit>
+      <trans-unit id="lEAF1Qc" resname="Proposition Appointment Accepted">
+        <source>Proposition Appointment Accepted</source>
+        <target>__Proposition Appointment Accepted</target>
+      </trans-unit>
+      <trans-unit id="tUCb2dO" resname="Import Center Health">
+        <source>Import Center Health</source>
+        <target>Importer centre de santé </target>
+      </trans-unit>
+      <trans-unit id="eY.rXLB" resname="Import Country">
+        <source>Import Country</source>
+        <target>Importer Pays</target>
+      </trans-unit>
+      <trans-unit id="Vg4TzQ_" resname="Vaccine Proposal">
+        <source>Vaccine Proposal</source>
+        <target>Proposition Vaccin</target>
+      </trans-unit>
+      <trans-unit id="K66d0L5" resname="Consultation Proposal">
+        <source>Consultation Proposal</source>
+        <target>Proposition Consultation</target>
+      </trans-unit>
+      <trans-unit id="e5Z8fuI" resname="Proposal Vaccine">
+        <source>Proposal Vaccine</source>
+        <target>Proposition Vaccin</target>
+      </trans-unit>
+  
+      <trans-unit id="Snm478u" resname="phone number code">
+        <source>phone number code</source>
+        <target>code du numéro de téléphone</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

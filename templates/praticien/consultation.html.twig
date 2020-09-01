@@ -18,10 +18,11 @@
             <thead>
             <tr>
                 <th>{% trans %}Consultation date{% endtrans %}</th>
+                <th>Type</th>
                 <th>{% trans %}Object of consultation{% endtrans %}</th>
                 <th>Patient</th>
                 <th>Status</th>
-                <th>Intervention</th>
+
             </tr>
             </thead>
             <tbody>
@@ -30,6 +31,7 @@
                     <td>
                         {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale) }}
                     </td>
+                    <td>Consultation</td>
 
                     <td>
                         {{ rdv.objetConsultation }}
@@ -37,25 +39,16 @@
                     <td>
                         {{ rdv.firstName }} {{ rdv.lastName }}
                     </td>
-                    <td>
+
+                    <td style="text-align: right">
                         {% if rdv.statusConsultation == 1 %}
                             <span class="badge badge-info badge-style">{% trans %}Accepted{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
-                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                            <span  class="badge badge-success badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="active" data-status="{{rdv.statusConsultation}}">{% trans %}Accept{% endtrans %}</span>
+                            <span class="badge badge-danger badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="reject" data-status="{{rdv.statusConsultation}}">{% trans %}Reject{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 2 %}
                             <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
-                    </td>
-                    <td>
-                        {% if rdv.statusConsultation == 2 %}
-                        {% else %}
-                            {% if rdv.etat == 1 %}
-                                <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
-                            {% elseif rdv.etat == 0 %}
-                                <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
-                            {% endif %}
-                        {% endif %}
-
                     </td>
                 </tr>
             {% endfor %}
@@ -64,27 +57,22 @@
                     <td>
                         {{ rdv.dateProposition |format_datetime('full', 'short', locale=app.request.locale) }}
                     </td>
-
+                    <td>{% trans %}Consultation Proposal{% endtrans %}</td>
                     <td>
                         {{ rdv.descriptionProposition }}
                     </td>
                     <td>
                         {{ rdv.firstName }} {{ rdv.lastName }}
                     </td>
-                    <td>
-                        {% if rdv.statusProposition == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Accepted{% endtrans %}</span>
-                        {% elseif rdv.statusProposition == 0 %}
-                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
-                        {% endif %}
-                    </td>
-                    <td>
+                    <td style="text-align: right">
                         {% if rdv.etat == 1 %}
                             <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
                         {% elseif rdv.etat == 0 %}
-                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                            <span  class="badge badge-success badge-style modif-status" data-id="{{ rdv.id }}" data-type="proposition" data-action="active" data-etat="{{rdv.etat}}">{% trans %}Accept{% endtrans %}</span>
+                            <span  class="badge badge-danger badge-style modif-status" data-id="{{ rdv.id }}" data-type="proposition" data-action="reject" data-etat="{{ rdv.etat }}">{% trans %}Reject{% endtrans %}</span>
+                        {% elseif rdv.etat == 2 %}
+                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
-
                     </td>
                 </tr>
             {% endfor %}
@@ -100,6 +88,46 @@
     <script>
         $(document).ready(function() {
             $('#example1').DataTable();
+        });
+
+        $('.modif-status').on('click', function (e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            var status = $(this).data('status');
+            var action = $(this).data('action');
+            var date = $(this).data('date');
+            var praticien = $(this).data('praticien');
+            var patient = $(this).data('patient');
+            var etat = $(this).data('etat');
+
+            $.ajax({
+                url: "{{ path('change_status') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                    type: type,
+                    status: status,
+                    date: date,
+                    praticien: praticien,
+                    patient: patient,
+                    etat: etat,
+                    action: action
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $(".loadBody").css("display", "none");
+                    location.reload();
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+
         });
 
     </script>

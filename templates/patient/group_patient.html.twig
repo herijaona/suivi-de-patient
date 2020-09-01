@@ -43,11 +43,11 @@
                     <td>
                         {{ my_group.Membres|length }} familles
                     </td>
-                    <td>
+                    <td style="text-align: right">
                         <span class="btn btn-secondary see_group" data-id="{{ my_group.ID }}" data-href="{{ path('see_my_group', {'group_id': my_group.ID}) }}" ><i class="fas fa-eye"></i></span>
                     {% if statsService.typePatient.typePatientName == "ADULTE" %}
-                        <span class="btn btn-primary edit_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-edit"></i></span>
-                        <span class="btn btn-danger deleted_group" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-trash"></i></span>
+                        <span class="btn btn-primary data-edit" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-edit"></i></span>
+                        <span class="btn btn-danger data-remove" data-id="{{ my_group.ID }}" data-name="{{ my_group.Name }}"><i class="fa fa-trash"></i></span>
                     {% endif %}
                     </td>
                 </tr>
@@ -103,7 +103,7 @@
         $(document).ready(function() {
             $('#example1').DataTable();
         });
-        $('.edit_group').on('click', function (e) {
+        $('.data-edit').on('click', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
             var name = $(this).data('name');
@@ -118,7 +118,7 @@
             location.href =  href;
         });
 
-        $('.deleted_group').on('click', function(e) {
+        $('.data-remove').on('click', function(e) {
             e.preventDefault();
             var id_group = $(this).data('id');
             var result = confirm("Are you sure you want to delete from this group?");
