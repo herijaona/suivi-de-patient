@@ -20,8 +20,8 @@
 
                 <th>{% trans %}Patient{% endtrans %}</th>
                 <th>{% trans %}Praticien{% endtrans %}</th>
-                <th>{% trans %}Validation{% endtrans %}</th>
-                <th>{% trans %}Status{% endtrans %}</th>
+                <th style="text-align: center">{% trans %}Validation{% endtrans %}</th>
+                <th style="text-align: center">{% trans %}Status{% endtrans %}</th>
                 {# <th>More</th> #}
             </tr>
             </thead>
@@ -37,7 +37,7 @@
                     <td>
                        {% if rdv.ordonnance is defined and rdv.ordonnance is not null %} {{ rdv.ordonnance.praticien.lastName ~' '~ rdv.ordonnance.praticien.firstName }} {% endif %} <br>
                     </td>
-                    <td>
+                    <td style="text-align: right">
                         {% if rdv.statusVaccin == 0 %}
                             <button class="btn btn-info validation_width" >{% trans %}waiting{% endtrans %}</button>
                         {% elseif rdv.statusVaccin == 1 %}
