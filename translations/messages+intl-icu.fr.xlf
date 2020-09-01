@@ -877,6 +877,12 @@
         <source>Proposal Vaccine</source>
         <target>Proposition Vaccin</target>
       </trans-unit>
+  
+      <trans-unit id="Snm478u" resname="phone number code">
+        <source>phone number code</source>
+        <target>code du numéro de téléphone</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>
