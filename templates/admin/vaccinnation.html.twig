@@ -32,7 +32,7 @@
                         {{ rdv.datePrise|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
                     </td>
                     <td>
-                        {% if rdv.vaccin is defined and rdv.vaccin.vaccinName is not null %}{{ rdv.vaccin.vaccinName }}{% endif %}
+                      
                     </td>
                     <td>
                         {{ rdv.patient.lastName ~' '~ rdv.patient.firstName }} <br>
