@@ -15,8 +15,12 @@
 <!--Body-->
 <div class="modal-body">
     <div class="md-form">
-        <label class="active" for="form1">{% trans %}Name{% endtrans %} </label>
+        <label class="active" for="form1">{% trans %}Country Name{% endtrans %}</label>
         {{ form_widget(form.nameState, {'attr': { 'class': 'form-control', 'required': 'required' }}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}Phone Number Code{% endtrans %} </label>
+        {{ form_widget(form.phoneindic, {'attr': { 'class': 'form-control', 'required': 'required' }}) }}
     </div>
 
 </div>

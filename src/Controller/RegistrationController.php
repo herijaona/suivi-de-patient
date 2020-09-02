@@ -18,6 +18,9 @@ use App\Repository\TypePatientRepository;
 use App\Repository\UserRepository;
 use App\Repository\VaccinRepository;
 use App\Security\LoginFormAuthenticator;
+use DateTime;
+use DateTimeZone;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -34,6 +37,7 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use App\Service\VaccinGenerate;
+
 
 class RegistrationController extends AbstractController
 {
@@ -70,6 +74,7 @@ class RegistrationController extends AbstractController
      * @param MailerInterface $mailer
      * @return RedirectResponse|Response
      * @throws TransportExceptionInterface
+     * @throws Exception
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, MailerInterface $mailer)
     {
@@ -78,13 +83,15 @@ class RegistrationController extends AbstractController
         }
         $user = [];
         $form = $this->createForm(RegistrationFormType::class, $user);
-       
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $code = $this->generate_code();
             // encode the plain password
             $last_name = $form->get('lastname')->getData();
+            $date= $form->get('date_naissance')->getData();
+            $date= new DateTime($date);
             $first_name = $form->get('firstname')->getData();
             $adresse= $form->get('address')->getData();
             $city = $request->request->get('city');
@@ -120,7 +127,7 @@ class RegistrationController extends AbstractController
             $patient->setLastName($last_name);
             $patient->setAddress($adresse);
             $patient->setSexe($form->get('sexe')->getData());
-            $patient->setDateOnBorn($form->get('date_naissance')->getData());
+            $patient->setDateOnBorn($date);
             $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
             $patient->setTypePatient($type_patient);
             $patient->setCity($city);
@@ -163,6 +170,7 @@ class RegistrationController extends AbstractController
      * @param MailerInterface $mailer
      * @return RedirectResponse|Response
      * @throws TransportExceptionInterface
+     * @throws Exception
      */
     public function register_praticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, MailerInterface $mailer)
     {
@@ -177,6 +185,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // CREATE ACCOUNT PRATICIEN
             $code = $this->generate_code();
+
             $username = $form->get('username')->getData();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
@@ -184,6 +193,10 @@ class RegistrationController extends AbstractController
             $email = $form->get('email')->getData();
             $city = $request->request->get('city');
             $city = $this->cityRepository->find($city);
+
+            $date = $form->get('date_naissance')->getData();
+            $date= DateTime::CreateFromFormat("d/m/Y", $date);
+
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);
@@ -206,7 +219,7 @@ class RegistrationController extends AbstractController
             $praticien->setLastName($last_name);
             $praticien->setSexe($form->get('sexe')->getData());
             $praticien->setCreatedAt(new \DateTime('now'));
-            $praticien->setDateBorn($form->get('date_naissance')->getData());
+            $praticien->setDateBorn($date);
             $praticien->setAdressOnBorn($form->get('lieu_naissance')->getData());
             $praticien->setAddress($form->get('address')->getData());
             $praticien->setCity($city);
@@ -255,7 +268,7 @@ class RegistrationController extends AbstractController
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
             $patient->setSexe($form->get('sexe')->getData());
-            $patient->setDateOnBorn($form->get('date_naissance')->getData());
+            $patient->setDateOnBorn($date);
             $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
             $patient->setCity($city);
             $patient->setState($form->get('country')->getData());

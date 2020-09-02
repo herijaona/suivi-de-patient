@@ -12,6 +12,7 @@ use App\Repository\VaccinRepository;
 use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\ORMException;
+use Exception;
 
 class VaccinGenerate
 {
@@ -43,10 +44,12 @@ class VaccinGenerate
             switch ($type_patient) {
                 case 'ENFANT':
                     $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
+
                     $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
                     break;
                 case 'ADULTE':
                     $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE',$state);
+                   
                     $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
                     break;
             }
@@ -63,6 +66,7 @@ class VaccinGenerate
      * @param $birthday
      * @param $vaccinAll
      * @param $IntervationVaccination
+     * @throws Exception
      */
     public function generate_vaccin($patient, $birthday, $vaccinAll, $intervention)
     {

@@ -15,6 +15,7 @@ class StateType extends AbstractType
         $builder
             ->add('id', HiddenType::class)
             ->add('nameState')
+            ->add('phoneindic')
         ;
     }
 
