@@ -57,22 +57,17 @@ class HomepageController extends AbstractController
 
     /**
      * @Route("/modification/photo", name="modif_photo")
-     */
+     * */
 
     public function ModifPhoto(Request $request, FileUploadService $fileUploadService)
     {
         $user = $this->getUser();
         $users = $this->userRepository->find($user);
-        $image = $request->request->get('image');
-        if($image != ''){
-            $data = base64_decode(explode( ',', $image )[1]);
-            $imageName = time().'.png';
-            file_put_contents('uploads/'.$imageName, $data);
-            if(!empty($imageName)){
-                $users->setPhoto($imageName);
-                $this->entityManager->persist($users);
-                $this->entityManager->flush();
-            }
+        $image = $request->files->get('images');
+        if ($image != '') {
+            $users->setPhoto($fileUploadService->upload($image, $this->getParameter('images_directory')));
+            $this->entityManager->persist($users);
+            $this->entityManager->flush();
         }
         return new JsonResponse(array("data" => "OK"));
     }

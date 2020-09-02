@@ -59,8 +59,7 @@ class AdminController extends AbstractController
         OrdoVaccinationRepository $ordoVaccinationRepository,
         OrdoConsultationRepository $ordoConsultationRepository,
         StateRepository $stateRepository
-    )
-    {
+    ) {
         $this->vaccinGenerate = $vaccinGenerate;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
@@ -95,7 +94,6 @@ class AdminController extends AbstractController
             'vaccInPr' => $vaccInPr,
             'consInPr' => $consInPr,
         ]);
-
     }
 
     /**
@@ -136,11 +134,11 @@ class AdminController extends AbstractController
     {
         $evolut_vacc = $this->ordoVaccinationRepository->getQueryVacc();
         $evacc = [];
-        if (count($evolut_vacc) > 0){
+        if (count($evolut_vacc) > 0) {
             $i = 0;
-            foreach ($evolut_vacc as $evolut_vac){
-                $evacc[$i]['x']= $evolut_vac['year'].'-'.$evolut_vac['month'].'-01';
-                $evacc[$i]['y']= intval($evolut_vac['nb_vaccin']);
+            foreach ($evolut_vacc as $evolut_vac) {
+                $evacc[$i]['x'] = $evolut_vac['year'] . '-' . $evolut_vac['month'] . '-01';
+                $evacc[$i]['y'] = intval($evolut_vac['nb_vaccin']);
                 $i++;
             }
         }
@@ -157,11 +155,11 @@ class AdminController extends AbstractController
         $evolut_patient = $this->patientRepository->findNbrPatientGroupByType();
 
         $epat = [];
-        if (count($evolut_patient) > 0){
+        if (count($evolut_patient) > 0) {
             $i = 0;
-            foreach ($evolut_patient as $evolut_pat){
-                $epat[$i]['label']= $evolut_pat['typePatientName'];
-                $epat[$i]['y']= intval($evolut_pat['nb_patient']);
+            foreach ($evolut_patient as $evolut_pat) {
+                $epat[$i]['label'] = $evolut_pat['typePatientName'];
+                $epat[$i]['y'] = intval($evolut_pat['nb_patient']);
                 $i++;
             }
         }
@@ -177,7 +175,7 @@ class AdminController extends AbstractController
         $praticien = $this->praticienRepository->count(['etat' => 1]);
         $patient = $this->patientRepository->count(['etat' => 1]);
 
-        $data =[];
+        $data = [];
         $data['patient'] = $patient;
         $data['praticien'] = $praticien;
         return new JsonResponse($data);
@@ -194,7 +192,6 @@ class AdminController extends AbstractController
         return $this->render('admin/praticien.html.twig', [
             'praticiens' => $praticien,
         ]);
-
     }
 
     /**
@@ -206,7 +203,6 @@ class AdminController extends AbstractController
         return $this->render('admin/patient.html.twig', [
             'patients' => $patient,
         ]);
-
     }
 
     /**
@@ -236,7 +232,7 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('homepage');
         }
 
-        $vaccin = $this->vaccinRepository->findBy([],['vaccinName' => 'ASC']);
+        $vaccin = $this->vaccinRepository->findBy([], ['vaccinName' => 'ASC']);
         return $this->render('admin/vaccin/index.html.twig', [
             'vaccins' => $vaccin,
         ]);
@@ -282,7 +278,7 @@ class AdminController extends AbstractController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function register_vaccin(Request $request,TranslatorInterface $translator)
+    public function register_vaccin(Request $request, TranslatorInterface $translator)
     {
         $vaccinRequest = $request->request->get('vaccin');
 
@@ -301,16 +297,16 @@ class AdminController extends AbstractController
         $rappel9 = $vaccinRequest['rappel9'];
         $rappel10 = $vaccinRequest['rappel10'];
         $Status = false;
-        if (isset($vaccinRequest['etat'])){
+        if (isset($vaccinRequest['etat'])) {
             $Status = true;
         }
         $TpVaccin = null;
-        if ($TypeVaccin){
+        if ($TypeVaccin) {
             $TpVaccin = $this->typeVaccinRepository->find($TypeVaccin);
         }
 
         $idVaccin = $vaccinRequest['id'];
-        if($idVaccin != '' && $idVaccin != null){
+        if ($idVaccin != '' && $idVaccin != null) {
             $Vaccin = $this->vaccinRepository->find($idVaccin);
             $Vaccin->setVaccinName($VaccinName);
             $Vaccin->setTypeVaccin($TpVaccin);
@@ -331,8 +327,7 @@ class AdminController extends AbstractController
             $this->entityManager->flush();
             $message = $translator->trans('modification successfully!');
             $this->addFlash('success', $message);
-
-        }else{
+        } else {
             $VaccinNew = new Vaccin();
             $VaccinNew->setVaccinName($VaccinName);
             $VaccinNew->setTypeVaccin($TpVaccin);
@@ -353,7 +348,6 @@ class AdminController extends AbstractController
             $this->entityManager->flush();
             $message = $translator->trans('The city name has been registered successfully!');
             $this->addFlash('success', $message);
-
         }
         return $this->redirectToRoute("admin_vaccin");
     }
@@ -367,16 +361,15 @@ class AdminController extends AbstractController
         $files = $request->files->get("file");
         $filePathName = $fileUploadService->upload($files);
         //$filePathName = md5(uniqid()) . $file->getClientOriginalName();
-        if ($filePathName != null){
-            $spreadsheet = IOFactory::load($fileFolder ."/". $filePathName); // Here we are able to read from the excel file
+        if ($filePathName != null) {
+            $spreadsheet = IOFactory::load($fileFolder . "/" . $filePathName); // Here we are able to read from the excel file
             $row = $spreadsheet->getActiveSheet()->removeRow(1); // I added this to be able to remove the first file line
             $sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true); // here, the read data is turned into an array
             $i = 0;
-            foreach ($sheetData as $Row)
-            {
-                if ($i != 0){
+            foreach ($sheetData as $Row) {
+                if ($i != 0) {
                     $idVacc = $Row['A'];
-                    $NomVaccin= $Row['B'];
+                    $NomVaccin = $Row['B'];
                     $TypeVaccin = $Row['C'];
                     $Pays = $Row['D'];
                     $Notes = $Row['E'];
@@ -389,26 +382,26 @@ class AdminController extends AbstractController
                     $vaccine = null;
 
                     $city = null;
-                    if($Pays != null) {
-                        $state = $this->stateRepository->findOneBy([ 'nameState' => $Pays ]);
-                        if ($state == null){
+                    if ($Pays != null) {
+                        $state = $this->stateRepository->findOneBy(['nameState' => $Pays]);
+                        if ($state == null) {
                             $state = new State();
                             $state->setNameState($Pays);
                             $this->entityManager->persist($state);
                         }
                     }
-                    if($TypeVaccin != null) {
-                        $tpVaccin = $this->typeVaccinRepository->findOneBy([ 'typeName' => $TypeVaccin ]);
-                        if ($tpVaccin == null){
+                    if ($TypeVaccin != null) {
+                        $tpVaccin = $this->typeVaccinRepository->findOneBy(['typeName' => $TypeVaccin]);
+                        if ($tpVaccin == null) {
                             $tpVaccin = new TypeVaccin();
                             $tpVaccin->setTypeName($TypeVaccin);
                             $this->entityManager->persist($tpVaccin);
                         }
                     }
 
-                    if($NomVaccin != null) {
-                        $vaccine = $this->vaccinRepository->findOneBy([ 'vaccinName' => $NomVaccin ]);
-                        if ($vaccine == null){
+                    if ($NomVaccin != null) {
+                        $vaccine = $this->vaccinRepository->findOneBy(['vaccinName' => $NomVaccin]);
+                        if ($vaccine == null) {
                             $act = $Actif == 1 ? true : false;
 
                             $vaccine = new Vaccin();
@@ -433,26 +426,25 @@ class AdminController extends AbstractController
                             $this->entityManager->flush();
                         }
                     }
-
                 }
                 $i++;
             }
-
         }
 
         return new JsonResponse(['form_import' => true]);
     }
 
-    private function variablesDate($args = "") {
-            if (strpos($args, 'SEMAINE')  !== false){
-                return explode('SEMAINE', $args)[1] ." week";
-            }
-            if (strpos($args, 'MOIS')   !== false ||  strpos($args, 'GROSSESSE')  != false ){
-                return explode('MOIS', $args)[1] ." month";
-            }
-            if (strpos($args, 'AN')  !== false){
-                return  explode('AN', $args)[1] ." year";
-            }
+    private function variablesDate($args = "")
+    {
+        if (strpos($args, 'SEMAINE')  !== false) {
+            return explode('SEMAINE', $args)[1] . " week";
+        }
+        if (strpos($args, 'MOIS')   !== false ||  strpos($args, 'GROSSESSE')  != false) {
+            return explode('MOIS', $args)[1] . " month";
+        }
+        if (strpos($args, 'AN')  !== false) {
+            return  explode('AN', $args)[1] . " year";
+        }
     }
 
     /**
@@ -462,9 +454,9 @@ class AdminController extends AbstractController
     {
         $idVaccin = $request->request->get('id_vaccin');
         $delete = false;
-        if ($idVaccin != '' && $idVaccin != null){
+        if ($idVaccin != '' && $idVaccin != null) {
             $Vaccin = $this->vaccinRepository->find($idVaccin);
-            if (null !=  $Vaccin ){
+            if (null !=  $Vaccin) {
                 $VaccinCentreHealths = $Vaccin->getVaccinCentreHealths();
                 $OrdoVaccinations = $Vaccin->getOrdoVaccinations();
                 $InterventionVaccinations = $Vaccin->getInterventionVaccinations();
@@ -476,12 +468,12 @@ class AdminController extends AbstractController
                     ($InterventionVaccinations && count($InterventionVaccinations) > 0) ||
                     ($CarnetVaccinations && count($CarnetVaccinations) > 0) ||
                     ($VaccinPraticiens && count($VaccinPraticiens) > 0) ||
-                    ($PatientVaccins && count($PatientVaccins) > 0))
-                {
+                    ($PatientVaccins && count($PatientVaccins) > 0)
+                ) {
                     $message = $translator->trans('Error deleting this element!');
                     $delete = false;
                     $this->addFlash('error', $message);
-                }else{
+                } else {
                     $this->entityManager->remove($Vaccin);
                     $this->entityManager->flush();
                     $message = $translator->trans('city has been successfully deleted!');
@@ -497,16 +489,16 @@ class AdminController extends AbstractController
     /**
      * @Route("/vaccin/edit-status", name="edit_status_vaccin", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function edit_status_vaccin(Request $request,TranslatorInterface $translator)
+    public function edit_status_vaccin(Request $request, TranslatorInterface $translator)
     {
         $idVaccin = $request->request->get('id_vaccin');
         $status = $request->request->get('status');
 
         $modif = false;
 
-        if ($idVaccin != '' && $idVaccin != null){
+        if ($idVaccin != '' && $idVaccin != null) {
             $etat = true;
-            if ($status == 1){
+            if ($status == 1) {
                 $etat = false;
             }
             $Vaccin = $this->vaccinRepository->find($idVaccin);
@@ -529,17 +521,16 @@ class AdminController extends AbstractController
         $id = $request->request->get('id');
         $type = $request->request->get('type');
         $delete = false;
-        if ($type != '' && $type != null){
-            if ($type == 'patient'){
+        if ($type != '' && $type != null) {
+            if ($type == 'patient') {
                 $Patient = $this->patientRepository->find($id);
-                if($Patient && $Patient->getUser() != null){
+                if ($Patient && $Patient->getUser() != null) {
                     $this->entityManager->remove($Patient->getUser());
                 }
                 $this->entityManager->remove($Patient);
-            }
-            elseif ($type == 'praticien'){
+            } elseif ($type == 'praticien') {
                 $Praticien = $this->praticienRepository->find($id);
-                if($Praticien && $Praticien->getUser() != null){
+                if ($Praticien && $Praticien->getUser() != null) {
                     $this->entityManager->remove($Praticien->getUser());
                 }
                 $this->entityManager->remove($Praticien);
@@ -556,32 +547,31 @@ class AdminController extends AbstractController
     /**
      * @Route("/users/edit-status", name="edit_status_users", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      */
-    public function edit_status_users(Request $request,TranslatorInterface $translator)
+    public function edit_status_users(Request $request, TranslatorInterface $translator)
     {
         $id = $request->request->get('id');
         $type = $request->request->get('type');
         $status = $request->request->get('status');
 
         $Etat = false;
-        if ($status == 0){
+        if ($status == 0) {
             $Etat = true;
         }
         $modif = false;
-        if ($type != '' && $type != null){
-            if ($type == 'patient'){
+        if ($type != '' && $type != null) {
+            if ($type == 'patient') {
                 $Patient = $this->patientRepository->find($id);
                 $Patient->setEtat($Etat);
-                if($Patient && $Patient->getUser() != null){
+                if ($Patient && $Patient->getUser() != null) {
                     $User = $this->userRepository->find($Patient->getUser()->getId());
                     $User->setEtat($Etat);
                     $this->entityManager->persist($User);
                 }
                 $this->entityManager->persist($Patient);
-            }
-            elseif ($type == 'praticien'){
+            } elseif ($type == 'praticien') {
                 $Praticien = $this->praticienRepository->find($id);
                 $Praticien->setEtat($Etat);
-                if($Praticien && $Praticien->getUser() != null){
+                if ($Praticien && $Praticien->getUser() != null) {
                     $User = $this->userRepository->find($Praticien->getUser()->getId());
                     $User->setEtat($Etat);
                     $this->entityManager->persist($User);
@@ -607,16 +597,15 @@ class AdminController extends AbstractController
 
         $modif = false;
         $eventData = null;
-        if ($type == 'patient'){
+        if ($type == 'patient') {
             $Patient = $this->patientRepository->find($id);
-            if($Patient && $Patient->getUser() != null){
+            if ($Patient && $Patient->getUser() != null) {
                 //$User = $this->userRepository->find($Patient->getUser()->getId());
                 $eventData = $Patient->getUser();
             }
-        }
-        elseif ($type == 'praticien'){
+        } elseif ($type == 'praticien') {
             $Praticien = $this->praticienRepository->find($id);
-            if($Praticien && $Praticien->getUser() != null){
+            if ($Praticien && $Praticien->getUser() != null) {
                 //$User = $this->userRepository->find($Praticien->getUser()->getId());
                 $eventData = $Praticien->getUser();
             }
@@ -636,20 +625,20 @@ class AdminController extends AbstractController
      * @param UserPasswordEncoderInterface $userPasswordEncoder
      * @Route("/resetting-mdp", name="resetting_password")
      */
-    public function resetting_password(Request $request, UserPasswordEncoderInterface $userPasswordEncoder,TranslatorInterface $translator)
+    public function resetting_password(Request $request, UserPasswordEncoderInterface $userPasswordEncoder, TranslatorInterface $translator)
     {
         $requestUser = $request->request->get('change_password');
         $IdUser = $requestUser['id'];
         $PasswordUser = $requestUser['password']['first'];
         $user =  $this->userRepository->find($IdUser);
-        if($user){
+        if ($user) {
             $password = $userPasswordEncoder->encodePassword($user, $PasswordUser);
             $user->setPassword($password);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
             $message = $translator->trans('Password updated');
             $this->addFlash('success', $message);
-        }else{
+        } else {
             $message = $translator->trans('Password change error');
             $this->addFlash('error', $message);
         }
@@ -661,36 +650,29 @@ class AdminController extends AbstractController
     /**
      * @Route("/centre/health/{centre_id}", name="see_vaccin")
      */
-    public function see_vaccin($centre_id, VaccinCentreHealthRepository $repository,Request $request){
-        $cv = $repository->findListVaccinsInCentre($centre_id) ;
-        return $this->render('admin/centre_health/centre_vaccin.html.twig',[
-            'centre'=>$cv,
+    public function see_vaccin($centre_id, VaccinCentreHealthRepository $repository, Request $request)
+    {
+        $cv = $repository->findListVaccinsInCentre($centre_id);
+        return $this->render('admin/centre_health/centre_vaccin.html.twig', [
+            'centre' => $cv,
         ]);
-
     }
 
     /**
      * @Route("/modification/avatar", name="modif_avatar")
      */
 
-    public function ModifPhoto(Request $request)
+    public function ModifPhoto(Request $request, FileUploadService $fileUploadService)
     {
         $user = $this->getUser();
         $users = $this->userRepository->find($user);
-        $image = $request->request->get('image');
-        if($image != ''){
-            $data = base64_decode(explode( ',', $image )[1]);
-            $imageName = time().'.png';
-            file_put_contents('uploads/'.$imageName, $data);
-            if(!empty($imageName)){
-                $users->setPhoto($imageName);
-                $this->entityManager->persist($users);
-                $this->entityManager->flush();
-            }
+        $image = $request->files->get('images');
+        if ($image != '') {
+            $users->setPhoto($fileUploadService->upload($image, $this->getParameter('images_directory')));
+            $this->entityManager->persist($users);
+            $this->entityManager->flush();
         }
 
         return new JsonResponse(array("data" => "OK"));
-
     }
-
 }

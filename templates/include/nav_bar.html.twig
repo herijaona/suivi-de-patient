@@ -143,7 +143,30 @@
             });
         }
         reader.readAsDataURL(this.files[0]);
-        $('#uploadimageModal').modal('show');
+        //$('#uploadimageModal').modal('show');
+       var form = new FormData();
+       form.append('images', this.files[0]);
+
+        var url = "";
+        {% if  is_granted('ROLE_ADMIN') %}
+            url = "{{ path('modif_avatar') }}";
+        {% else %}
+            url = "{{ path('modif_photo') }}";
+        {% endif %}
+         $.ajax({
+            url: url,
+            type: "POST",
+            data: form,
+            contentType:false,
+            processData:false,
+            cache:false,
+            dataType:"json",
+            success:function(data)
+            {
+                //$('#uploadimageModal').modal('hide');
+                location.reload();
+            }
+        });
     });
 
     $('.crop_image').click(function(event){

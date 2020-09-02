@@ -17,7 +17,7 @@
                     {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Nom', "required":"true", "minlength":"3"  }}) }}
                     </div>
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Prénoms', "required":"true", "minlength":"3" }}) }}
+                    {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Prénom(s)', "required":"true", "minlength":"3" }}) }}
                     </div>
                 </div>
                 <div class="row form-group">
@@ -55,19 +55,19 @@
                 <div class="row form-group">
                     <div class="col-lg-6">
                         <input type="button" id="tel" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
-                       {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Numéro télephone', "required":"true", "minlength":"9" }})}}
+                       {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Numéro de télephone', "required":"true", "minlength":"9" }})}}
 
 
                     </div>
                     <div class="col-lg-6">
                         <input type="button" id="tell" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
-                        {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control', 'placeholder': 'Numéro téléphone professionnel ',"required":"true", "minlength":"9" }}) }}
+                        {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control', 'placeholder': 'Numéro  professionnel ',"required":"true", "minlength":"9" }}) }}
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
 
-                        {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-textarea', 'placeholder': 'Adresse exact', 'rows':'4',"required":"true", "minlength":"3" }}) }}
+                        {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-textarea', 'placeholder': 'Adresse exacte', 'rows':'4',"required":"true", "minlength":"3" }}) }}
                     </div>
                     <div class="col-lg-6">
                         <div class=" pt-2 pb-2">
@@ -83,7 +83,7 @@
                         {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Votre centre de santé', "required":"true"}}) }}
                     </div>
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'votre mote de passe ', "minlength":"12", "matchPassword": "true"}}) }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'votre mot de passe ', "minlength":"12", "matchPassword": "true"}}) }}
 
                        
                     </div>
@@ -110,44 +110,44 @@
         function getRndInteger(min = 10, max= 100) {
             return Math.floor(Math.random() * (max - min + 1) ) + min;
         }
-
-        function createUsername()  {
-
-                var dateSelect = $('#registration_praticien_form_date_naissance').val();
-                var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
-                var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
-                var mois = "00";
-                var jour = "00";
-                var anne = "0000";
-                if(dateSelect != ''){
+        $('#registration_praticien_form_date_naissance').on('change',function () {
+            var dateSelect = $('#registration_praticien_form_date_naissance').val();
+            var mois = "00";
+            var jour = "00";
+            var anne = "0000";
+            if(dateSelect != ''){
                 var datChoice = dateSelect.split("/");
-                    mois = datChoice[1];
-                    anne = datChoice[2]; 
-                    jour = datChoice[0];
-                }
+                mois = datChoice[1];
+                anne = datChoice[2];
+                jour = datChoice[0];
+            }
+            var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
+            var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
 
-                var username = fname + lname + anne + mois + jour + getRndInteger() ;
-                
-                $.ajax({
-                    url: "{{ path('check_username') }}",
-                    type: 'POST',
-                    data: {
-                        'username': username,
-                    },
-                    dataType: "json",
-                    success: (data) => {
-                        if (data.status == "OK"){
-                            $('#registration_praticien_form_username').val(username);
-                        }else {
-                            createUsername();
-                        }
-                    },
-                    error: (e) => {
-                        console.log(error);
+            var username = fname + lname + anne + mois + jour + getRndInteger() ;
+
+            $.ajax({
+                url: "{{ path('check_username') }}",
+                type: 'POST',
+                data: {
+                    'username': username,
+                },
+                dataType: "json",
+                success: (data) => {
+                    if (data.status == "OK"){
+                        $('#registration_praticien_form_username').val(username);
+                    }else {
+                        createUsername();
                     }
-                }).done(() => {
-                });
-        } 
+                },
+                error: (e) => {
+                    console.log(error);
+                }
+            }).done(() => {
+            });
+
+        });
+
 
 
         $.validator.addMethod(
@@ -202,9 +202,6 @@
                     $('#form-parent').css("display", "none");
                 }
             });
-
-            $('#registration_praticien_form_firstname').on('keyup', createUsername);
-            $('#registration_praticien_form_lastname').on('keyup', createUsername);
         });
 
         $('#registration_praticien_form_country').on('change',function () {

@@ -83,9 +83,11 @@ class StateController extends AbstractController
     {
         $stateRequest = $request->request->get('state');
         $nameState = $stateRequest['nameState'];
+        $phone = $stateRequest['phoneindic'];
         if ($stateRequest['id'] != '' && $stateRequest['id'] != null){
             $State = $this->stateRepository->find($stateRequest['id']);
             $State->setNameState($nameState);
+            $State->setPhoneindic($phone);
             $this->entityManager->persist($State);
             $this->entityManager->flush();
             $message = $translator->trans('The country name has been changed successfully!');
@@ -97,6 +99,7 @@ class StateController extends AbstractController
             }else{
                 $stateNew = new State();
                 $stateNew->setNameState($nameState);
+                $stateNew->setPhoneindic($phone);
                 $this->entityManager->persist($stateNew);
                 $this->entityManager->flush();
 

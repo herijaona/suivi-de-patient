@@ -69,11 +69,11 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a password',
+                        'message' => 'Veuillez entrer un mot de passe',
                     ]),
                     new Length([
                         'min' => 8,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => 'Votre mot de passe doit être au moins {{ limit }} caractère',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),
@@ -88,16 +88,17 @@ class RegistrationFormType extends AbstractType
                 'choice_label' => function(?State $state){
                     return $state ? strtoupper($state->getNameState()):'';
                 },
-                'placeholder' => 'Country',
+                'placeholder' => 'Choisir Votre Pays',
             ])
            ->add('enceinte', ChoiceType::class, [
                'choices'  => [
                    'Oui' => 'true',
                    'Non' => 'false'
                ],
+               'required'   => false,
                'expanded' => true,
                'multiple' => false,
-               'placeholder' => 'Choose an option',
+               'placeholder' => 'Choisire une option',
            ]);
 
         ;

@@ -13,21 +13,20 @@ class FileUploadService
 
     private $container;
 
-    public function __construct
-    (
+    public function __construct(
         ContainerInterface $container
-    )
-    {
+    ) {
         $this->container = $container;
     }
 
-    public function upload(UploadedFile $file = null) {
-        if(!$file)
+    public function upload(UploadedFile $file = null, $fileDir = null)
+    {
+        if (!$file)
             return null;
         //$fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $fileName = uniqid().'.'.$file->getClientOriginalExtension();
-
-        $fileDir = $this->container->getParameter('import_directory');
+        $fileName = uniqid() . '.' . $file->getClientOriginalExtension();
+        if (!$fileDir)
+            $fileDir = $this->container->getParameter('import_directory');
 
         if (!file_exists($fileDir))
             mkdir($fileDir, 0777, true);
@@ -43,8 +42,9 @@ class FileUploadService
         return $fileName;
     }
 
-    public function removeFile($dir, $file) {
-        if(!$file)
+    public function removeFile($dir, $file)
+    {
+        if (!$file)
             return;
         $baseDir = $this->container->getParameter('import_directory');
         unlink($baseDir . "/" . $file);
