@@ -13,7 +13,7 @@
             {% if is_granted('ROLE_PATIENT') %}
                 <a class="clickTr">
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
-                    <img class="rounded-circle" style="background-color: #077DF2 ;position: absolute; height: 30px; margin-left: -25px;margin-top: 3px;" src="/{{ img }}" width="30px">
+                    <img class="rounded-circle" style="background-color: #077DF2 ;position: absolute; height: 30px; margin-left: -25px;margin-top: 3px;width: 30px;" src="/{{ img }}" width="30px">
                 </a>
                 <div style="margin-top: 11px; width: 118px" class="menu_">
                     <a  style="font-size: 14px" href="{{ path('editPatient')}}">{% trans %}My profile{% endtrans %}</a>
@@ -24,7 +24,7 @@
             {% if is_granted('ROLE_PRATICIEN') %}
                 <a class="clickTr">
                     {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
-                    <img class="rounded-circle" style=" background-color: #077DF2 ; position: absolute; height: 30px; margin-left: -25px;margin-top: 3px;" src="/{{ img }}" width="30px">
+                    <img class="rounded-circle" style=" background-color: #077DF2 ; position: absolute; height: 30px; margin-left: -25px;margin-top: 3px;width: 30px;" src="/{{ img }}" width="30px">
                 </a>
                 <div style="margin-top: 11px;  width: 118px" class="menu_">
                     <a  style="font-size: 14px" href="{{ path('editPraticien')}}">{% trans %}My profile{% endtrans %}</a>
@@ -35,7 +35,7 @@
             {% if is_granted('ROLE_ADMIN') %}
                     <a class="clickTr">
                         {% set img = (app.user.photo == null)? 'assets/images/praticien.jpg' : 'uploads/' ~ app.user.photo %}
-                        <img class="rounded-circle" style="  background-color: #077DF2 ; position: absolute; height: 30px; margin-left: -20px; margin-top: 3px;" src="/{{ img }}" >
+                        <img class="rounded-circle" style="  background-color: #077DF2 ; position: absolute; height: 30px; margin-left: -20px; margin-top: 3px; width: 30px;" src="/{{ img }}" >
                     </a>
                     <div style="margin-top: 11px; width: 130px" class="menu_">
                         <a style="font-size: 14px; " href="{{ path('app_logout')}}">{% trans %}Logout{% endtrans %}</a>

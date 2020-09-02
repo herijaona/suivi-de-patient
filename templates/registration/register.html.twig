@@ -64,7 +64,7 @@
 
                 <div class="row form-group">
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.address, {'attr': { 'class': 'form-control form-textarea', 'placeholder': 'Adresse exact', 'rows':'4', "minlength":"3" }}) }}
+                        {{ form_widget(registrationForm.address, {'attr': { 'class': 'form-control form-textarea', 'placeholder': 'Adresse exacte', 'rows':'4', "minlength":"3" }}) }}
                     </div>
                     <div class="col-lg-6">
 
@@ -143,8 +143,6 @@
                     anne = datChoice[2]; 
                     jour = datChoice[0];
                 }
-                
-               
 
                 var username = sexe + anne + mois + jour + getRndInteger() ;
 
@@ -210,8 +208,7 @@
             $('#form-parent').css("display", "none");
             $('#form').css("display", "none");
             $('#registration_form_username').attr("readonly", "true");
-            $('#registration_form_firstname').on('keyup', createUsername);
-            $('#registration_form_lastname').on('keyup', createUsername);
+
             $('#registration_form_sexe').on('change', createUsername);
             $('#registration_form_date_naissance').on('change', createUsername);
             $("#registration_form_type_patient").on('change', createUsername);
