@@ -153,23 +153,18 @@
         {% else %}
             url = "{{ path('modif_photo') }}";
         {% endif %}
-        setTimeout(
             $image_crop.croppie('result', {
                 type: 'canvas',
-                size: 'viewport'
+                size: 'viewport',
+                format: 'png',
+                quality: 1
             }).then(function(response){
-                if(response != '') {
-                    var base64ImageContent = response.replace(/^data:image\/(png|jpg);base64,/, "");
-                    var blob = base64ToBlob(base64ImageContent, 'image/png');
-                    var formData = new FormData();
-                    formData.append('image', blob);
+                console.log('Return image =>', response)
+                if(response ){
                     $.ajax({
                         url: url,
                         type: "POST",
-                        data: formData,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
+                        data:{"image": response},
                         success:function(data)
                         {
                             $('#uploadimageModal').modal('hide');
@@ -177,34 +172,8 @@
                         }
                     });
                 }
-
-            }),2000
-        )
-
+            })
     });
-
-    function base64ToBlob(base64, mime)
-    {
-        mime = mime || '';
-        var sliceSize = 1024;
-        var byteChars = window.atob(base64);
-        var byteArrays = [];
-
-        for (var offset = 0, len = byteChars.length; offset < len; offset += sliceSize) {
-            var slice = byteChars.slice(offset, offset + sliceSize);
-
-            var byteNumbers = new Array(slice.length);
-            for (var i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-
-            var byteArray = new Uint8Array(byteNumbers);
-
-            byteArrays.push(byteArray);
-        }
-
-        return new Blob(byteArrays, {type: mime});
-    }
 
 
 </script>
