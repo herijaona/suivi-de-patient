@@ -357,47 +357,51 @@ class PraticienController extends AbstractController
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $associer = $this->associerRepository->searchAssocier($praticien);
-        foreach ($associer as $value){
-            $lastname = $value["lastName"];
-            $firstname = $value["firstName"];
-            $pat= $value["patient"];
-        }
-        $patient = [
-            $pat=>$lastname.'  '.$firstname
-        ];
-        $typeRdvArrays = [
-            "consultation" => "Proposition Consultation",
-            "vaccination" => "Proposition Vaccin"
-        ];
-        $action = $request->request->get('action');
-        $rdv = [];
-        if ($action == "new") {
-            $form = $this->createForm(PropositionRdvType::class, $rdv,['patient' => $patient, 'typeRdvArrays'=>$typeRdvArrays]);
-            $response = $this->renderView('praticien/_form_proposition.html.twig', [
-                'new' => true,
-                'form' => $form->createView(),
-                'eventData' => $rdv,
-            ]);
-        } else {
-            $action = $request->request->get('id');
-            $rdv['id'] = $request->request->get('id');
-            $propos = $this->propositionRdvRepository->find($rdv['id']);
-            $rdv['description'] = $propos->getDescriptionProposition();
-            $rdv['dateRdv'] = $propos->getDateProposition();
-            if ($rdv['dateRdv'] != ''){
-                $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
-                $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
-                $rdv['heureRdv'] = explode(' ', $date)[1];
+
+            foreach ($associer as $value) {
+                $lastname = $value["lastName"];
+                $firstname = $value["firstName"];
+                $pat = $value["patient"];
             }
-            $form = $this->createForm(PropositionRdvType::class, $rdv,['patient' => $patient]);
-            $response = $this->renderView('praticien/_form_proposition.html.twig', [
-                'new' => false,
-                'form' => $form->createView(),
-                'eventData' => $rdv,
-            ]);
-        }
-        $form->handleRequest($request);
-        return new JsonResponse(['form_html' => $response]);
+
+            $patient = [
+                $pat => $lastname . '  ' . $firstname
+                ];
+
+            $typeRdvArrays = [
+                "consultation" => "Proposition Consultation",
+                "vaccination" => "Proposition Vaccin"
+            ];
+            $action = $request->request->get('action');
+            $rdv = [];
+            if ($action == "new") {
+                $form = $this->createForm(PropositionRdvType::class, $rdv, ['patient' => $patient, 'typeRdvArrays' => $typeRdvArrays]);
+                $response = $this->renderView('praticien/_form_proposition.html.twig', [
+                    'new' => true,
+                    'form' => $form->createView(),
+                    'eventData' => $rdv,
+                ]);
+            } else {
+                $action = $request->request->get('id');
+                $rdv['id'] = $request->request->get('id');
+                $propos = $this->propositionRdvRepository->find($rdv['id']);
+                $rdv['description'] = $propos->getDescriptionProposition();
+                $rdv['dateRdv'] = $propos->getDateProposition();
+                if ($rdv['dateRdv'] != '') {
+                    $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
+                    $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
+                    $rdv['heureRdv'] = explode(' ', $date)[1];
+                }
+                $form = $this->createForm(PropositionRdvType::class, $rdv, ['patient' => $patient]);
+                $response = $this->renderView('praticien/_form_proposition.html.twig', [
+                    'new' => false,
+                    'form' => $form->createView(),
+                    'eventData' => $rdv,
+                ]);
+            }
+            $form->handleRequest($request);
+
+            return new JsonResponse(['form_html' => $response]);
     }
 
     /**
@@ -504,19 +508,17 @@ class PraticienController extends AbstractController
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $patientCons = $this->intervationConsultationRepository->searchPatient($praticien);
-        $patientVacc = $this->interventionVaccinationRepository->searchPatient($praticien);
+
+        $patient = $this->associerRepository->searchAssocier($praticien);
 
         // Get Number of both Unrealized and Realized Vaccination
         $nbUnrealizedVacc = $this->interventionVaccinationRepository->countUnrealizedVacc($praticien);
         $nbRealizedVacc = $this->interventionVaccinationRepository->countRealizedVacc($praticien);
 
-        foreach ($patientCons as $patientt){
-          foreach ($patientVacc as $patient){
-            $patientv = $patient[1];
-            $patientc = $patientt[1];
-            $patient = $patientv + $patientc;
+          foreach ($patient as $pat){
+            $patient = $pat["patient"];
           }
-        }
+
         return $this->render('praticien/dashboard.html.twig', [
             "nbPatient"=>$patient,
             "nbUnrealizedVacc" => $nbUnrealizedVacc[0][1],

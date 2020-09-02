@@ -45,7 +45,7 @@
                         {{ rdv.lastName }}
                     </td>
 
-                    <td style="text-align: right">
+                    <td style="text-align: center">
                         <span  class="badge badge-success badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="active" data-status="{{rdv.statusConsultation}}">{% trans %}Accept{% endtrans %}</span>
                         <span class="badge badge-danger badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="reject" data-status="{{rdv.statusConsultation}}">{% trans %}Reject{% endtrans %}</span>
                     </td>

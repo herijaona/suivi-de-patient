@@ -31,22 +31,27 @@ class AssocierRepository extends ServiceEntityRepository
     }
 
 
-    // /**
-    //  * @return Associer[] Returns an array of Associer objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findByExampleField($patient)
     {
         return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
+            ->join('v.patient','p')
+            ->where('p.id =:p')
             ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+    public function searchPatient($praticien = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT count(p.id)
+            FROM App\Entity\Associer a
+            INNER JOIN App\Entity\Patient p with p.id = a.patient
+            LEFT JOIN App\Entity\Praticien pr with pr.id = a.praticien
+            WHERE pr.id = :praticien')
+            ->setParameter('praticien', $praticien);
+
+        return $query->getResult();
+    }
 
     /*
     public function findOneBySomeField($value): ?Associer

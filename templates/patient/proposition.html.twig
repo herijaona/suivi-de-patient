@@ -38,7 +38,7 @@
                         <td></td>
                         <td>{{ pro.lastName }} {{ pro.firstName }}</td>
                         <td>{{ pro.patientfirst }} {{ pro.patientlast }}</td>
-                        <td style="text-align: right">
+                        <td style="text-align: center">
                             {% if pro.statusProposition == 0  %}
                                 <span class="badge badge-success badge-style modif-etat" data-id ="{{ pro.id }}">{% trans %}Accept{% endtrans %}</span>
                             {% elseif pro.statusProposition == 1 %}
