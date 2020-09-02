@@ -38,7 +38,7 @@
                     <td>
                         {{ vac.firstName }} {{ vac.lastName }} <br>
                     </td>
-                    <td style="text-align: right">
+                    <td style="text-align: center">
                         {% if vac.statusVaccin == 0  %}
                             <span class="badge badge-success badge-style modif-status"  data-type="intervention"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePriseVaccin |date}}">{% trans %}Realize{% endtrans %}</span>
                             <span  class="badge badge-danger badge-style modif-status" data-type="intervention"   data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePriseVaccin |date}}">{% trans %}Reject{% endtrans %}</span>

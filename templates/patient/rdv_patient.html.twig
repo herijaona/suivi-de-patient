@@ -147,18 +147,18 @@
                     <td>
                         <p>Intervention</p>
                     </td>
-                    <td>{{ intervention.vaccinName }}</td>
                     <td></td>
+                    <td>{{ intervention.vaccinName }}</td>
                     <td>
                         {{ intervention.firstName }} {{ intervention.lastName }}
                     </td>
 
-                    <td style="text-align: right">
+                    <td style="text-align: center">
                         {% if intervention.statusVaccin == 0 %}
                             <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
-                    <td style="text-align: right">
+                    <td style="text-align: center">
                         <span class="btn btn-primary data-edit" data-id="{{ intervention.id }}" data-type="intervention"><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ intervention.id }}" data-type="intervention"><i class="fa fa-trash-o"></i></span>
                     </td>
