@@ -12,6 +12,7 @@ use App\Entity\OrdoVaccination;
 use App\Entity\PatientIntervationConsultation;
 use App\Entity\PatientOrdoConsultation;
 use App\Entity\PatientOrdoVaccination;
+use App\Entity\Praticien;
 use App\Form\RdvType;
 use App\Form\VaccinType;
 use App\Repository\AssocierRepository;
@@ -550,7 +551,7 @@ class PatientController extends AbstractController
                 $rdv['vaccin'] = $ordoCon->getVaccin();
                 $rdv['dateRdv'] = $ordoCon->getDatePrise();
             }
-            if ($ordoCon->getOrdonnance() != null && $ordoCon->getOrdonnance()->getPraticien() != null) $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien()->getId();
+            if ($ordoCon->getOrdonnance() != null && $ordoCon->getOrdonnance()->getPraticien() != null) $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien();
             if ($rdv['dateRdv'] != ''){
                 $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
 
@@ -559,7 +560,7 @@ class PatientController extends AbstractController
             }
 
             $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
-            $response = $this->renderView('patient/_form_rdv.html.twig', [
+            $response = $this->renderView('patient/_form_edit.html.twig', [
                 'new' => false,
                 'form' => $form->createView(),
                 'eventData' => $rdv,
@@ -622,5 +623,22 @@ class PatientController extends AbstractController
         }
         return new JsonResponse(['form_delete' => $delete]);
     }
+
+    /**
+     * @Route("/check-association/{praticien}", name="check_association", defaults={0})
+     */
+    public function check_association(Request $request, Praticien $praticien = null)
+    {
+        $user = $this->getUser();
+        $data = 'KO';
+        if ($praticien){
+            $associate = $this->associerRepository->findOneBy(['patient' => $this->patientRepository->find($user->getId()), 'praticien' => $praticien]);
+            if ($associate != null) $data = 'OK';
+
+            return new JsonResponse(['status' => $data]);
+        }
+    }
+
+
 
 }
