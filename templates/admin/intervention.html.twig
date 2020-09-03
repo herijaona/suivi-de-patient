@@ -1,6 +1,6 @@
 {% extends 'include/base.html.twig' %}
 {%  block title %}
-    Consultation
+    Intervention
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -9,15 +9,15 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">{% trans %}All consultations{% endtrans %}</h4>
+            <h4 class="h4-content">{% trans %}All Intervention{% endtrans %}</h4>
         </div>
     </div>
     <div class="row-table table-content">
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>{% trans %}Consultation date{% endtrans %}</th>
-                <th style="width: 267px">{% trans %}Object of consultation{% endtrans %} </th>
+                <th>{% trans %}Intervention date{% endtrans %}</th>
+                <th style="width: 267px">{% trans %}Vaccine{% endtrans %} </th>
                 <th>Patient</th>
                 <th>Praticien</th>
                 <th>Validation</th>
@@ -26,27 +26,27 @@
             </tr>
             </thead>
             <tbody>
-            {% for rdv in consultations  %}
+            {% for rdv in intervention  %}
                 <tr>
                     <td>
-                        {{ rdv.dateRdv|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                        {{ rdv.datePriseVaccin|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
                     </td>
                     <td>
-                        {% if rdv.objetConsultation is defined and rdv.objetConsultation is not null %}{{ rdv.objetConsultation }}{% endif %}
+                        {{ rdv.vaccinName }}
                     </td>
                     <td>
-                        {{ rdv.patientlast ~' '~ rdv.patientfirst }} <br>
+                        {{ rdv.lastName ~' '~ rdv.firstName }} <br>
                     </td>
                     <td>
-                        {{ rdv.lastName ~' '~ rdv.firstName }}
+                        {{ rdv.praticienlast ~' '~  rdv.praticienfirst }}
                     </td>
                     <td>
-                        {% if rdv.statusConsultation == 1 %}
+                        {% if rdv.statusVaccin == 1 %}
                             <span class="btn btn-primary validation_width ">{% trans %}Validate{% endtrans %}</span>
-                        {% elseif rdv.statusConsultation == 0 %}
-                            <span class="btn btn-secondary  validation_width ">{% trans %}waiting{% endtrans %}</span>
-                        {% elseif rdv.statusConsultation == 2 %}
-                            <span class="btn btn-danger  validation_width ">{% trans %}Reject{% endtrans %}</span>
+                        {% elseif rdv.statusVaccin == 0 %}
+                            <span class="btn  btn-secondary  validation_width ">{% trans %}waiting{% endtrans %}</span>
+                        {% elseif rdv.statusVaccin == 2 %}
+                            <span class="btn  btn-danger  validation_width ">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
                     </td>
                 </tr>
