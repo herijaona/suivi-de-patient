@@ -121,6 +121,29 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    public function countUnrealizedVacc($praticien){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT COUNT(o.id)
+            FROM App\Entity\OrdoVaccination o
+            INNER JOIN App\Entity\Praticien p with p.id = o.referencePraticienExecutant
+            WHERE o.statusVaccin= :status AND p.id = :praticien')
+            ->setParameter('status', 0)
+            ->setParameter('praticien', $praticien);
+        return $query->getResult();
+    }
+
+    public function countrealizedVacc($praticien){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT COUNT(o.id)
+            FROM App\Entity\OrdoVaccination o
+            INNER JOIN App\Entity\Praticien p with p.id = o.referencePraticienExecutant
+            WHERE o.statusVaccin= :status AND p.id = :praticien')
+            ->setParameter('status', 1)
+            ->setParameter('praticien', $praticien);
+        return $query->getResult();
+    }
+
+
 
 
 

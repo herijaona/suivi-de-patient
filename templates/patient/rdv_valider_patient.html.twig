@@ -35,7 +35,7 @@
                         {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale)}}
                     </td>
                     <td>Consultation</td>
-                    <td>
+                    <td style="width: 289px;">
                         {{ rdv.objetConsultation }}
                     </td>
                     <td></td>
@@ -43,7 +43,7 @@
                         {{ rdv.firstName }}
                         {{ rdv.lastName }}
                     </td>
-                    <td style="text-align: right">
+                    <td >
                         {% if rdv.statusConsultation == 1 %}
                             <span class="badge badge-success badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}
@@ -56,7 +56,7 @@
                         {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale) }}
                     </td>
                     <td> {% trans %}Consultation Proposal<{% endtrans %}/td>
-                    <td>
+                    <td style="width: 289px;">
                         {{ proposition.descriptionProposition }}
                     </td>
                     <td></td>
@@ -64,7 +64,7 @@
                         {{ proposition.firstName }}
                         {{ proposition.lastName }}
                     </td>
-                    <td style="text-align: right">
+                    <td >
                         {% if proposition.etat == 1 %}
                             <span class="badge badge-success badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}
@@ -80,13 +80,13 @@
                     <td>
                         <p>Intervention</p>
                     </td>
+                    <td style="width: 289px;"></td>
                     <td>{{ intervention.vaccinName }}</td>
-                    <td></td>
                     <td>
                         {{ intervention.firstName }} {{ intervention.lastName }}
                     </td>
 
-                    <td style="text-align: right">
+                    <td>
                         {% if intervention.statusVaccin == 1 %}
                             <span class="badge badge-success badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}
@@ -99,7 +99,7 @@
                         {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale) }}
                     </td>
                     <td>{% trans %}Vaccine Proposal{% endtrans %}</td>
-                    <td>
+                    <td style="width: 289px;">
 
                     </td>
                     <td>{{ proposition.vaccinName }}</td>
@@ -107,7 +107,7 @@
                         {{ proposition.firstName }}
                         {{ proposition.lastName }}
                     </td>
-                    <td style="text-align: right">
+                    <td>
                         {% if proposition.etat == 1 %}
                             <span class="badge badge-success badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% endif %}

@@ -33,14 +33,14 @@
                     </td>
                     <td>Consultation</td>
 
-                    <td>
+                    <td style="width: 300px;">
                         {{ rdv.objetConsultation }}
                     </td>
                     <td>
                         {{ rdv.firstName }} {{ rdv.lastName }}
                     </td>
 
-                    <td style="text-align: center">
+                    <td>
                         {% if rdv.statusConsultation == 1 %}
                             <span class="badge badge-info badge-style">{% trans %}Accepted{% endtrans %}</span>
                         {% elseif rdv.statusConsultation == 0 %}
@@ -58,13 +58,13 @@
                         {{ rdv.dateProposition |format_datetime('full', 'short', locale=app.request.locale) }}
                     </td>
                     <td>{% trans %}Consultation Proposal{% endtrans %}</td>
-                    <td>
+                    <td style="width: 300px;">
                         {{ rdv.descriptionProposition }}
                     </td>
                     <td>
                         {{ rdv.firstName }} {{ rdv.lastName }}
                     </td>
-                    <td style="text-align: right">
+                    <td >
                         {% if rdv.etat == 1 %}
                             <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
                         {% elseif rdv.etat == 0 %}
