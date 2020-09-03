@@ -877,10 +877,17 @@
         <source>Proposal Vaccine</source>
         <target>Proposition Vaccin</target>
       </trans-unit>
-
       <trans-unit id="Snm478u" resname="phone number code">
         <source>phone number code</source>
         <target>code du numéro de téléphone</target>
+      </trans-unit>
+      <trans-unit id="ITtLI8x" resname="All Intervention">
+        <source>All Intervention</source>
+        <target>Toutes les interventions</target>
+      </trans-unit>
+      <trans-unit id="bH9rBFE" resname="Phone Number Code">
+        <source>Phone Number Code</source>
+        <target>Code du Numéro de Téléphone</target>
       </trans-unit>
 
     </body>
