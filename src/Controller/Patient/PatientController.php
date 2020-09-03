@@ -580,45 +580,33 @@ class PatientController extends AbstractController
         $delete = false;
         if ($type == 'consultation'){
             $ordoCon = $this->ordoConsultationRepository->find($Id);
-
             if ( $ordoCon != null){
-                $IntervationConsultations = $ordoCon->getIntervationConsultations();
-                $PatientOrdoConsultations = $ordoCon->getPatientOrdoConsultations();
-
-                if ($IntervationConsultations && count($IntervationConsultations) > 0)
-                {
-                    $message = $translator->trans('Error deleting this element!');
-                    $delete = false;
-                    $this->addFlash('error', $message );
-                }else{
-
                     $this->entityManager->remove($ordoCon);
                     $this->entityManager->flush();
                     $message = $translator->trans('Appointment has been deleted successfully!');
                     $delete = true;
                     $this->addFlash('success', $message);
-                }
             }
         }
         elseif ($type == 'vaccination'){
             $ordoCon = $this->ordoVaccinationRepository->find($Id);
             if ( $ordoCon != null){
-                $InterventionVaccinations = $ordoCon->getInterventionVaccinations();
-                $PatientOrdoVaccinations = $ordoCon->getPatientOrdoVaccinations();
-                if ($InterventionVaccinations && count($InterventionVaccinations) > 0)
-                {
-                    $message = $translator->trans('Error deleting this element!');
-                    $delete = false;
-                    $this->addFlash('error', $message);
-                }else{
-
                     $this->entityManager->remove($ordoCon);
                     $this->entityManager->flush();
                     $message = $translator->trans('Appointment has been deleted successfully!');
                     $delete = true;
                     $this->addFlash('success', $message);
-                }
             }
+        }else{
+            $intervention = $this->interventionVaccinationRepository->find($Id);
+            if ($intervention != null){
+                $this->entityManager->remove($intervention);
+                $this->entityManager->flush();
+                $message = $translator->trans('Appointment has been deleted successfully!');
+                $delete = true;
+                $this->addFlash('success', $message);
+            }
+
         }
         return new JsonResponse(['form_delete' => $delete]);
     }

@@ -20,8 +20,8 @@
 
                 <th>{% trans %}Patient{% endtrans %}</th>
                 <th>{% trans %}Praticien{% endtrans %}</th>
-                <th style="text-align: center">{% trans %}Validation{% endtrans %}</th>
-                <th style="text-align: center">{% trans %}Status{% endtrans %}</th>
+                <th >{% trans %}Validation{% endtrans %}</th>
+
                 {# <th>More</th> #}
             </tr>
             </thead>
@@ -32,25 +32,18 @@
                         {{ rdv.datePrise|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
                     </td>
                     <td>
-                        {{ rdv.patient.lastName ~' '~ rdv.patient.firstName }} <br>
+                        {{ rdv.patientlast ~' '~ rdv.patientfirst }} <br>
                     </td>
                     <td>
-                       {% if rdv.ordonnance is defined and rdv.ordonnance is not null %} {{ rdv.ordonnance.praticien.lastName ~' '~ rdv.ordonnance.praticien.firstName }} {% endif %} <br>
+                        {{ rdv.lastName ~' '~ rdv.firstName }}
                     </td>
-                    <td style="text-align: right">
+                    <td>
                         {% if rdv.statusVaccin == 0 %}
                             <button class="btn btn-info validation_width" >{% trans %}waiting{% endtrans %}</button>
                         {% elseif rdv.statusVaccin == 1 %}
                             <button class="btn btn-primary validation_width" >{% trans %}Validate{% endtrans %}</button>
                         {% else %}
                             <button class="btn btn-danger validation_width" >{% trans %}Reject{% endtrans %}</button>
-                        {% endif %}
-                    </td>
-                    <td style="text-align: center">
-                        {% if rdv.etat == 0 %}
-                            <button class="btn btn-deep-orange  validation_width" >{% trans %}Not Done{% endtrans %}</button>
-                        {% else %}
-                            <button class="btn btn-primary validation_width" >{% trans %}Done{% endtrans %}</button>
                         {% endif %}
                     </td>
                 </tr>
