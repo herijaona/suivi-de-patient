@@ -508,18 +508,18 @@ class PraticienController extends AbstractController
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $patientCons = $this->ordoConsultationRepository->searchConsultation($praticien);
-
-        $patient = $this->associerRepository->searchAssocier($praticien);
+        $patient = $this->associerRepository->searchPatient($praticien);
         $nb= $this->ordoVaccinationRepository->countUnrealizedVacc($praticien);
         $realize = $this->ordoVaccinationRepository->countrealizedVacc($praticien);
 
         $nbUnrealizedVacc = $this->interventionVaccinationRepository->countUnrealizedVacc($praticien);
 
         $nbRealizedVacc = $this->interventionVaccinationRepository->countRealizedVacc($praticien);
-
-          foreach ($patient as $pat){
-            $patient = $pat["patient"];
-          }
+         if($patient != null) {
+             foreach ($patient as $pat) {
+                 $patient = $pat[1];
+             }
+         }
           foreach ($nb as $n){
               $unreal = $n[1];
               foreach ($nbUnrealizedVacc as $nb){

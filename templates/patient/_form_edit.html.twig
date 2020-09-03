@@ -15,6 +15,9 @@
                 {% trans %}Appointment modification{% endtrans %}
             </h4>
         {% endif %}
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true" class="white-text">&times;</span>
+        </button>
     </div>
     <!--Content-->
     {{ form_start(form, {'attr': {'action': path('register_rdv') }}) }}
@@ -92,21 +95,21 @@
                 }
             });
 
+
             $('#rdv_praticiens').on('change', function (e) {
 
-                var particien = $(this).val();
+                var praticien = $(this).val();
                 var url = "{{ path('check_association', { "praticien": "id"}) }}";
-                url = url.replace("id", particien);
+                url = url.replace("id", praticien);
                 $.ajax({
                     url: url,
                     type: 'post',
                     dataType: "json",
                     success: (data) => {
-                        console.log(data)
-                        if(data.status = 'KO'){
-                            $('.association-form').css('display', 'block')
+                        if(data.status == "OK"){
+                            $('.association-form').css('display', 'none');
                         }else{
-                            $('.association-form').css('display', 'none')
+                            $('.association-form').css('display', 'block');
                         }
                     },
                     error: (e) => {
