@@ -74,7 +74,7 @@ ul {
 }
 
 .col_exc_1 {
-  background-color: #00bb33;
+  background-color: #495057;
   min-height: 97.5vh;
   width: 18%;
   position: relative;
@@ -458,7 +458,7 @@ select.mdb-select.initialized {
   font-size: 12px;
   right: -2px;
   /*text-align: right;*/
-  background: #00bb33;
+  background: #495057;
   padding: 6px 11px;
   border-radius: 2px;
   top: 29px;
