@@ -37,6 +37,7 @@
                 <th>{% trans %}Name{% endtrans %}</th>
                 <th>{% trans %}Description{% endtrans %}</th>
                 <th>Type</th>
+                <th>{% trans %}Country{% endtrans %}</th>
                 <th>Status</th>
                 <th></th>
             </tr>
@@ -53,6 +54,7 @@
                     <td>
                         {{ vaccin.typeVaccin.typeName }}
                     </td>
+                    <td>{{ vaccin.state.nameState }}</td>
                     <td>
                         <div class="row">
                             {% if vaccin.etat == 1 %}

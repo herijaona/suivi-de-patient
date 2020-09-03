@@ -286,6 +286,8 @@ class AdminController extends AbstractController
         $TypeVaccin = $vaccinRequest['TypeVaccin'];
         $vaccinDescription = $vaccinRequest['vaccinDescription'];
         $datePriseInitiale = $vaccinRequest['datePriseInitiale'];
+        $state = $vaccinRequest['state'];
+        $state= $this->stateRepository->find($state);
         $rappel1 = $vaccinRequest['rappel1'];
         $rappel2 = $vaccinRequest['rappel2'];
         $rappel3 = $vaccinRequest['rappel3'];
@@ -312,6 +314,7 @@ class AdminController extends AbstractController
             $Vaccin->setTypeVaccin($TpVaccin);
             $Vaccin->setVaccinDescription($vaccinDescription);
             $Vaccin->setDatePriseInitiale($datePriseInitiale);
+            $Vaccin->setState($state);
             $Vaccin->setRappel1($rappel1);
             $Vaccin->setRappel2($rappel2);
             $Vaccin->setRappel3($rappel3);
@@ -333,6 +336,7 @@ class AdminController extends AbstractController
             $VaccinNew->setTypeVaccin($TpVaccin);
             $VaccinNew->setVaccinDescription($vaccinDescription);
             $VaccinNew->setDatePriseInitiale($datePriseInitiale);
+            $VaccinNew->setState($state);
             $VaccinNew->setRappel1($rappel1);
             $VaccinNew->setRappel2($rappel2);
             $VaccinNew->setRappel3($rappel3);
