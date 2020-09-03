@@ -114,7 +114,7 @@ class VaccinRepository extends ServiceEntityRepository
     // AND carnet_vaccination.date_prise_initiale IS NOT NULL
     // GROUP BY type_vaccin.id
 // -------------------------------------------------------------------------------------------
-    public function countPriseVaccinParType($userId){
+    public function countPriseVaccinParType($praticien){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('
             SELECT tv.typeName as typeVaccin, COUNT(tv.id) as nb
@@ -123,10 +123,10 @@ class VaccinRepository extends ServiceEntityRepository
             INNER JOIN App\Entity\CarnetVaccination cv WITH cv.vaccin = v.id
             INNER JOIN App\Entity\InterventionVaccination iv WITH iv.id = cv.intervationVaccination
             INNER JOIN App\Entity\Praticien pr WITH pr.id = iv.praticienPrescripteur
-            INNER JOIN App\Entity\User u WITH u.id = pr.user
-            WHERE u.id = :user AND cv.datePriseInitiale IS NOT NULL
+        
+            WHERE pr.id = :praticien AND cv.datePriseInitiale IS NOT NULL
             GROUP BY tv.id
-        ')->setParameter('user', $userId);
+        ')->setParameter('praticien', $praticien);
         return $query->getResult();
     }
 // -------------------------------------------------------------------------------------------

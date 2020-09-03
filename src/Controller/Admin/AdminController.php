@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\CentreHealth;
+use App\Entity\InterventionVaccination;
 use App\Entity\State;
 use App\Entity\TypeVaccin;
 use App\Entity\Vaccin;
@@ -10,6 +11,7 @@ use App\Entity\VaccinCentreHealth;
 use App\Form\CenterHealthType;
 use App\Form\ChangePasswordType;
 use App\Form\VaccinType;
+use App\Repository\InterventionVaccinationRepository;
 use App\Repository\OrdoConsultationRepository;
 use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
@@ -47,6 +49,7 @@ class AdminController extends AbstractController
     protected $ordoVaccinationRepository;
     protected $ordoConsultationRepository;
     protected $stateRepository;
+    protected $interventionVaccinationRepository;
 
     function __construct(
         VaccinGenerate $vaccinGenerate,
@@ -54,6 +57,7 @@ class AdminController extends AbstractController
         PraticienRepository $praticienRepository,
         VaccinRepository $vaccinRepository,
         TypeVaccinRepository $typeVaccinRepository,
+        InterventionVaccinationRepository $interventionVaccinationRepository,
         UserRepository $userRepository,
         EntityManagerInterface $entityManager,
         OrdoVaccinationRepository $ordoVaccinationRepository,
@@ -66,6 +70,7 @@ class AdminController extends AbstractController
         $this->vaccinRepository = $vaccinRepository;
         $this->typeVaccinRepository = $typeVaccinRepository;
         $this->userRepository = $userRepository;
+        $this->interventionVaccinationRepository=$interventionVaccinationRepository;
         $this->entityManager = $entityManager;
         $this->ordoVaccinationRepository = $ordoVaccinationRepository;
         $this->ordoConsultationRepository = $ordoConsultationRepository;
@@ -104,7 +109,7 @@ class AdminController extends AbstractController
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('homepage');
         }
-        $all_rdv = $this->ordoVaccinationRepository->findBy(['statusVaccin' => 1]);
+        $all_rdv = $this->ordoVaccinationRepository->searchVaccin();
         return $this->render('admin/vaccinnation.html.twig', [
             'Vaccinations' => $all_rdv,
             'type' => 1
@@ -119,10 +124,24 @@ class AdminController extends AbstractController
         if (!$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('homepage');
         }
-        $all_rdv = $this->ordoConsultationRepository->findBy(['statusConsultation' => 1]);
+        $all_rdv = $this->ordoConsultationRepository->searchCons();
 
         return $this->render('admin/consultation.html.twig', [
             'consultations' => $all_rdv,
+            'type' => 1
+        ]);
+    }
+
+    /**
+     * @Route("/intervention", name="intervention_admin")
+     */
+    public function intervention_admin(){
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('homepage');
+        }
+        $rdv = $this->interventionVaccinationRepository->searchintervention();
+        return $this->render('admin/intervention.html.twig', [
+            'intervention' => $rdv,
             'type' => 1
         ]);
     }
@@ -286,6 +305,8 @@ class AdminController extends AbstractController
         $TypeVaccin = $vaccinRequest['TypeVaccin'];
         $vaccinDescription = $vaccinRequest['vaccinDescription'];
         $datePriseInitiale = $vaccinRequest['datePriseInitiale'];
+        $state = $vaccinRequest['state'];
+        $state= $this->stateRepository->find($state);
         $rappel1 = $vaccinRequest['rappel1'];
         $rappel2 = $vaccinRequest['rappel2'];
         $rappel3 = $vaccinRequest['rappel3'];
@@ -312,6 +333,7 @@ class AdminController extends AbstractController
             $Vaccin->setTypeVaccin($TpVaccin);
             $Vaccin->setVaccinDescription($vaccinDescription);
             $Vaccin->setDatePriseInitiale($datePriseInitiale);
+            $Vaccin->setState($state);
             $Vaccin->setRappel1($rappel1);
             $Vaccin->setRappel2($rappel2);
             $Vaccin->setRappel3($rappel3);
@@ -333,6 +355,7 @@ class AdminController extends AbstractController
             $VaccinNew->setTypeVaccin($TpVaccin);
             $VaccinNew->setVaccinDescription($vaccinDescription);
             $VaccinNew->setDatePriseInitiale($datePriseInitiale);
+            $VaccinNew->setState($state);
             $VaccinNew->setRappel1($rappel1);
             $VaccinNew->setRappel2($rappel2);
             $VaccinNew->setRappel3($rappel3);

@@ -19,7 +19,7 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>{% trans %}Appointment date{%  endtrans %}</th>
+                <th >{% trans %}Appointment date{%  endtrans %}</th>
                 <th>Type</th>
                 <th>{% trans %}Object of consultation{% endtrans %} </th>
                 <th>{% trans %}Vaccine{% endtrans %}</th>
@@ -31,11 +31,11 @@
             <tbody>
             {% for rdv in consultation  %}
                 <tr>
-                    <td class="text-left">
+                    <td >
                         {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale)}}
                     </td>
                     <td>Consultation</td>
-                    <td>
+                    <td style="width: 289px;">
                         {{ rdv.objetConsultation }}
                     </td>
                     <td></td>
@@ -61,10 +61,10 @@
                         {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
                     </td>
                     <td>{% trans %}Consultation Proposal{% endtrans %}</td>
-                    <td>
+                    <td style="width: 289px;">
                         {{ proposition.descriptionProposition }}
                     </td>
-                    <td></td>
+                    <td style="width: 111px;"></td>
                     <td>
                         {{ proposition.firstName }}
                         {{ proposition.lastName }}
@@ -89,10 +89,10 @@
                             {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
                         </td>
                         <td>{% trans %}Vaccine Proposal{% endtrans %}</td>
-                        <td>
+                        <td style="width: 289px;">
 
                         </td>
-                        <td>{{ proposition.vaccinName }}</td>
+                        <td style="width: 111px;">{{ proposition.vaccinName }}</td>
                         <td>
                             {{ proposition.firstName }}
                             {{ proposition.lastName }}
@@ -147,18 +147,18 @@
                     <td>
                         <p>Intervention</p>
                     </td>
-                    <td></td>
-                    <td>{{ intervention.vaccinName }}</td>
+                    <td style="width: 289px;"></td>
+                    <td style="width: 111px;">{{ intervention.vaccinName }}</td>
                     <td>
                         {{ intervention.firstName }} {{ intervention.lastName }}
                     </td>
 
-                    <td style="text-align: center">
+                    <td >
                         {% if intervention.statusVaccin == 0 %}
                             <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
-                    <td style="text-align: center">
+                    <td>
                         <span class="btn btn-primary data-edit" data-id="{{ intervention.id }}" data-type="intervention"><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ intervention.id }}" data-type="intervention"><i class="fa fa-trash-o"></i></span>
                     </td>
@@ -208,6 +208,40 @@
             });
         });
 
+        $('.data-edit').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            $.ajax({
+                url: "{{ path('add_form_rdv_patient') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                    type: type,
+                    action: 'edit'
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('#rdv_heureRdv').clockpicker({
+                        donetext: "valider",
+                        autoclose: true,
+                    });
+                    $('#rdv_heureRdv').on('change', function () {
+                        let receivedVal = $(this).val();
+                        $(this).val(receivedVal + ":00");
+                    });
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+        });
 
 
         $('.data-remove').on('click', function (e) {

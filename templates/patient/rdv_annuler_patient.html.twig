@@ -35,7 +35,7 @@
                         {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale) }}
                     </td>
                     <td>Consultation</td>
-                    <td>
+                    <td style="width: 289px;">
                         {{ rdv.objetConsultation }}
                     </td>
                     <td></td>
@@ -43,7 +43,7 @@
                         {{ rdv.firstName }}
                         {{ rdv.lastName }}
                     </td>
-                    <td style="text-align: center">
+                    <td>
                         {% if rdv.statusConsultation == 2 %}
                             <span class="badge badge-danger badge-style ">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
@@ -60,8 +60,8 @@
                         {#{ user.createdAt|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}#}
                     </td>
                     <td>Vaccination</td>
-                    <td>Generation Calendrier</td>
-                    <td></td>
+                    <td style="width: 289px;">Generation Calendrier</td>
+                    <td ></td>
                     <td>
                         {{ vac.firstName }} {{ vac.lastName }} <br>
                     </td>
@@ -81,13 +81,13 @@
                     <td>
                         <p>Intervention</p>
                     </td>
-                    <td></td>
+                    <td style="width: 289px;"></td>
                     <td>{{ intervention.vaccinName }}</td>
                     <td>
                         {{ intervention.firstName }} {{ intervention.lastName }}
                     </td>
 
-                    <td style="text-align: right">
+                    <td>
                         {% if intervention.statusVaccin == 2  %}
                             <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
@@ -100,7 +100,7 @@
                         {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
                     </td>
                     <td>{% trans %}Consultation Proposal{% endtrans %}</td>
-                    <td>
+                    <td style="width: 289px;">
                         {{ proposition.descriptionProposition }}
                     </td>
                     <td></td>
@@ -108,7 +108,7 @@
                         {{ proposition.firstName }}
                         {{ proposition.lastName }}
                     </td>
-                    <td style="text-align: right">
+                    <td>
                         {% if proposition.etat == 2 %}
                             <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}
@@ -124,7 +124,7 @@
                         {{ proposition.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
                     </td>
                     <td>Proposition Vaccin</td>
-                    <td>
+                    <td style="width: 289px;">
 
                     </td>
                     <td>{{ proposition.vaccinName }}</td>
@@ -132,7 +132,7 @@
                         {{ proposition.firstName }}
                         {{ proposition.lastName }}
                     </td>
-                    <td style="text-align: right">
+                    <td>
                         {% if proposition.etat == 2 %}
                             <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
                         {% endif %}

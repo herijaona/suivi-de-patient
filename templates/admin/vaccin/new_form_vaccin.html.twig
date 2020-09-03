@@ -24,6 +24,10 @@
         {{ form_widget(form.vaccinName, {'attr': { 'class': 'form-control', 'required': 'required' }}) }}
     </div>
     <div class="md-form">
+        <label class="active" for="form1">{% trans %}Country{% endtrans %}</label>
+        {{ form_widget(form.state, {'attr': { 'class': 'form-control', 'required': 'required' }}) }}
+    </div>
+    <div class="md-form">
         <label class="active" for="form1">Description </label>
         {{ form_widget(form.vaccinDescription, {'attr': { 'class': 'form-control' }}) }}
     </div>

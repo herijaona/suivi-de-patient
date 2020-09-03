@@ -16,10 +16,10 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>{% trans %}Vaccination date {% endtrans %}</th>
+                <th style="width: 294.6px;">{% trans %}Vaccination date {% endtrans %}</th>
                 <th>Patient</th>
-                <th>Status</th>
-                <th>{% trans %}Vaccination schedule {% endtrans %}</th>
+                <th style="width: 178.8px;">Status</th>
+                <th style="width: 153.6px;">{% trans %}Vaccination schedule {% endtrans %}</th>
 
             </tr>
             </thead>
@@ -33,7 +33,7 @@
                     </td>
 
                     <td>{{ vac.firstName }} {{ vac.lastName }}</td>
-                    <td style="text-align: center">
+                    <td >
                         {% if vac.statusVaccin == 1 %}
                             <span class="badge badge-info badge-style ">{% trans %}Accepted{% endtrans %}</span>
                         {% elseif vac.statusVaccin == 0 %}
@@ -44,7 +44,7 @@
                         {% endif %}
                     </td>
 
-                    <td style="text-align: center">
+                    <td style="padding-left: 41px;">
                         {% if vac.statusVaccin == 1 %}
                             <a href="{{ path('see_calendar', {'patient_id' : vac.patient}) }}" class="badge badge-success badge-style">{% trans %}See{% endtrans %}</a>
                         {% endif %}

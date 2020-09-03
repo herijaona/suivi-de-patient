@@ -34,13 +34,13 @@
                             {{ vac.datePriseInitiale |localizeddate('full', 'short') }}
                         {% elseif vac.datePriseInitiale == null %}
                         {% endif %}</td>
-                    <td style="text-align: center">
+                    <td>
                         {% if vac.rappelVaccin != null %}
                         {{ vac.rappelVaccin | localizeddate('full', 'short') }}
                         {% elseif vac.rappelVaccin == null %}
                         {% endif %}
                     </td>
-                    <td style="text-align: center">
+                    <td>
                         {% if vac.etat == 1 %}
                             <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
                         {% elseif vac.etat == 0 %}

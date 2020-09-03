@@ -507,22 +507,38 @@ class PraticienController extends AbstractController
     {
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $patientCons = $this->intervationConsultationRepository->searchPatient($praticien);
+        $patientCons = $this->ordoConsultationRepository->searchConsultation($praticien);
 
         $patient = $this->associerRepository->searchAssocier($praticien);
+        $nb= $this->ordoVaccinationRepository->countUnrealizedVacc($praticien);
+        $realize = $this->ordoVaccinationRepository->countrealizedVacc($praticien);
 
-        // Get Number of both Unrealized and Realized Vaccination
         $nbUnrealizedVacc = $this->interventionVaccinationRepository->countUnrealizedVacc($praticien);
+
         $nbRealizedVacc = $this->interventionVaccinationRepository->countRealizedVacc($praticien);
 
           foreach ($patient as $pat){
             $patient = $pat["patient"];
           }
+          foreach ($nb as $n){
+              $unreal = $n[1];
+              foreach ($nbUnrealizedVacc as $nb){
+                    $unre = $nb[1];
+                    $nbUnrealizedVacc =$unreal+$unre;
+              }
+          }
+          foreach ($realize as $real){
+              $rea = $real[1];
+              foreach ($nbRealizedVacc as $nbr){
+                $nbRealized = $nbr[1];
+                $nbRealizedVacc = $rea + $nbRealized;
+              }
+          }
 
         return $this->render('praticien/dashboard.html.twig', [
             "nbPatient"=>$patient,
-            "nbUnrealizedVacc" => $nbUnrealizedVacc[0][1],
-            "nbRealizedVacc" => $nbRealizedVacc[0][1],
+            "nbUnrealizedVacc" => $nbUnrealizedVacc,
+            "nbRealizedVacc" => $nbRealizedVacc,
             "nbConsultation" => $patientCons[0][1]
         ]);
     }
@@ -531,8 +547,9 @@ class PraticienController extends AbstractController
     * @Route("/chart/nb_prise_type_vacc", name="chart/nb_prise_type_vacc"), methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
     */
     public function nb_prise_type_vacc(){
-      $userId = $this->getUser()->getId();
-      $queryResult = $this->vaccinRepository->countPriseVaccinParType($userId);
+      $user=$this->getUser();
+      $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+      $queryResult = $this->vaccinRepository->countPriseVaccinParType($praticien);
       $result = [];
       foreach($queryResult as $res){
         array_push($result, array(

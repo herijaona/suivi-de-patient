@@ -19,12 +19,12 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>{% trans %}Date of proposal appointment{% endtrans %}</th>
-                <th>Type</th>
-                <th>{% trans %}Description Proposition{% endtrans %} </th>
-                <th>{% trans %}Vaccine{% endtrans %}</th>
-                <th>Patient </th>
-                <th></th>
+                <th style="width: 222px;">{% trans %}Date of proposal appointment{% endtrans %}</th>
+                <th style="width: 68px;">Type</th>
+                <th style="width: 200px;">{% trans %}Description Proposition{% endtrans %} </th>
+                <th style="width: 114px;">{% trans %}Vaccine{% endtrans %}</th>
+                <th style="width: 182px;">Patient </th>
+                <th style="width: 40px;"></th>
 
             </tr>
             </thead>
@@ -42,7 +42,7 @@
                     <td></td>
                     <td>{{ pro.lastName }} {{ pro.firstName }}</td>
 
-                    <td style="text-align: center">
+                    <td >
                         <span class="btn btn-primary data-edit" data-id="{{ pro.id }}" ><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ pro.id }}" ><i class="fa fa-trash-o"></i></span>
                     </td>
@@ -64,7 +64,7 @@
 
                     </td>
                     <td>{{ vacc.lastName }} {{ vacc.firstName }}</td>
-                    <td style="text-align: center">
+                    <td >
                         <span class="btn btn-primary data-edit" data-id="{{ vacc.id }}" ><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ vacc.id }}" ><i class="fa fa-trash-o"></i></span>
                     </td>

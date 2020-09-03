@@ -15,12 +15,11 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>{% trans %}Date Proposal appointment{% endtrans %}</th>
+                <th >{% trans %}Date Proposal appointment{% endtrans %}</th>
                 <th>Type</th>
                 <th>Description</th>
-                <th>{% trans %}Vaccine{% endtrans %}</th>
+                <th style="width: 140px;">{% trans %}Vaccine{% endtrans %}</th>
                 <th>Praticien</th>
-                <th>Patient</th>
                 <th></th>
             </tr>
             </thead>
@@ -28,17 +27,16 @@
             {% for pro in propos  %}
                 {% if pro.descriptionProposition != null  %}
                     <tr>
-                        <td class="text-left">
+                        <td>
                             {{ pro.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
                         </td>
-                        <td>{% trans %}Consultation Proposal{% endtrans %}</td>
-                        <td>
+                        <td>Consultation </td>
+                        <td style="width: 289px;">
                             {{ pro.descriptionProposition }}
                         </td>
                         <td></td>
                         <td>{{ pro.lastName }} {{ pro.firstName }}</td>
-                        <td>{{ pro.patientfirst }} {{ pro.patientlast }}</td>
-                        <td style="text-align: center">
+                        <td>
                             {% if pro.statusProposition == 0  %}
                                 <span class="badge badge-success badge-style modif-etat" data-id ="{{ pro.id }}">{% trans %}Accept{% endtrans %}</span>
                             {% elseif pro.statusProposition == 1 %}
@@ -52,18 +50,16 @@
             {% for vacc in proposition  %}
 
                     <tr>
-                        <td class="text-left">
+                        <td >
                             {{ vacc.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
                         </td>
-                        <td>{% trans %}Vaccine Proposal{% endtrans %} </td>
-                        <td></td>
+                        <td>{% trans %}Vaccine{% endtrans %} </td>
+                        <td style="width: 289px;"></td>
                         <td>
                             {{ vacc.vaccinName }}
 
                         </td>
                         <td>{{ vacc.lastName }} {{ vacc.firstName }}</td>
-                        <td>{{ vacc.patientfirst }}
-                            {{ vacc.patientlast }}</td>
                         <td>
                             {% if vacc.statusProposition == 0  %}
                                 <span class="badge badge-success badge-style modif-etat" data-id ="{{ vacc.id }}" >{% trans %}Accept{% endtrans %}</span>

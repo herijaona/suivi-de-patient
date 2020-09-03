@@ -271,6 +271,15 @@ select {
     color: rgba(108, 117, 125, 0.58) !important;
     letter-spacing: 1px;
 }
+.see_vaccin{
+    color: #fff;
+    background-color: #0789e2 !important;
+    border-color: #007bff;
+    padding: 3px 7px;
+    font-size: 14px;
+    border-radius: .25rem;
+
+}
 
 .data-edit {
      color: #fff;
