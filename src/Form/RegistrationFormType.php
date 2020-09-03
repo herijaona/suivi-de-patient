@@ -41,21 +41,23 @@ class RegistrationFormType extends AbstractType
                     'rows' => '3'
                 ]
             ])
-            ->add('type_patient',EntityType::class ,[
+            ->add('type_patient', EntityType::class, [
                 'class' => TypePatient::class,
-                'query_builder'=>function(EntityRepository $entityRepository){
+                'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('t');
                 },
                 'choice_value' => 'id',
-                'choice_label' => function(?TypePatient $typePatient) {
+                'choice_label' => function (?TypePatient $typePatient) {
                     return $typePatient ? strtoupper($typePatient->getTypePatientName()) : '';
                 },
                 'placeholder' => 'Type de patient',
             ])
             ->add('namedaddy', null, [
-                'required'   => false])
+                'required'   => false
+            ])
             ->add('namemonther', null, [
-                'required'   => false])
+                'required'   => false
+            ])
             ->add('sexe', ChoiceType::class, array(
                 'choices' => array(
                     'Feminin' => 'Feminin',
@@ -79,29 +81,25 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('country', EntityType::class,[
+            ->add('country', EntityType::class, [
                 'class' => State::class,
-                'query_builder'=>function(EntityRepository $entityRepository){
+                'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('s');
                 },
                 'choice_value' => 'id',
-                'choice_label' => function(?State $state){
-                    return $state ? strtoupper($state->getNameState()):'';
+                'choice_label' => function (?State $state) {
+                    return $state ? strtoupper($state->getNameState()) : '';
                 },
                 'placeholder' => 'Choisir Votre Pays',
             ])
-           ->add('enceinte', ChoiceType::class, [
-               'choices'  => [
-                   'Oui' => 'true',
-                   'Non' => 'false'
-               ],
-               'required'   => false,
-               'expanded' => true,
-               'multiple' => false,
-               'placeholder' => 'Choisire une option',
-           ]);
-
-        ;
+            ->add('enceinte', ChoiceType::class, [
+                'choices'  => [
+                    'Oui' => true,
+                    'Non' => false
+                ],
+                'required'   => false,
+                'expanded' => true
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -11,6 +11,9 @@
             flex-direction: row;
             display: flex;
         }
+        .association-form {
+            display: none;
+        }
     </style>
 {% endblock %}
 
@@ -54,7 +57,7 @@
             {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
         </div>
 
-        <div class="md-form">
+        <div class="md-form association-form ">
             <label class="active" for="form1"  style="position: absolute">{% trans %}Associate{% endtrans %} </label>
             {{ form_widget(form.Associer, {'attr': { 'class': 'form-control' }}) }}
         </div>
@@ -87,6 +90,28 @@
             $('#rdv_heureRdv').on('change', function () {
                 let receivedVal = $(this).val();
                 $(this).val(receivedVal );
+            });
+
+            $('#rdv_praticiens').on('change', function (e) {
+
+                var particien = $(this).val();
+                var url = "{{ path('check_association', { "praticien": "id"}) }}";
+                url = url.replace("id", particien);
+                $.ajax({
+                    url: url,
+                    type: 'post',
+                    dataType: "json",
+                    success: (data) => {
+                        if(data.status = 'KO'){
+                            $('.association-form').css('display', 'block');
+                        }else{
+                            $('.association-form').css('display', 'none');
+                        }
+                    },
+                    error: (e) => {
+                    }
+                }).done(() => {
+                });
             });
 
             $('#rdv_typeRdv').on('change', function (e) {
