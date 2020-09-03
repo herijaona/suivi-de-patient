@@ -75,6 +75,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.vaccin_hidden').css("display", "none");
+            $('.association-form').css("display", "none");
             $('.chosen-select').chosen({width: "100%"});
 
             $('#rdv_dateRdv').datepicker({
@@ -102,10 +103,10 @@
                     type: 'post',
                     dataType: "json",
                     success: (data) => {
-                        if(data.status = 'KO'){
-                            $('.association-form').css('display', 'block');
-                        }else{
+                        if(data.status == "OK"){
                             $('.association-form').css('display', 'none');
+                        }else{
+                            $('.association-form').css('display', 'block');
                         }
                     },
                     error: (e) => {

@@ -614,17 +614,20 @@ class PatientController extends AbstractController
 
     /**
      * @Route("/check-association/{praticien}", name="check_association", defaults={0})
+     * @param Request $request
+     * @param Praticien $praticien
+     * @return JsonResponse
      */
-    public function check_association(Request $request, Praticien $praticien = null)
+    public function check_association(Request $request, Praticien $praticien)
     {
         $user = $this->getUser();
         $data = 'KO';
         if ($praticien){
             $associate = $this->associerRepository->findOneBy(['patient' => $this->patientRepository->find($user->getId()), 'praticien' => $praticien]);
-            if ($associate != null) $data = 'OK';
 
-            return new JsonResponse(['status' => $data]);
+            if ($associate != null) $data = 'OK';
         }
+        return new JsonResponse(['status' => $data]);
     }
 
 
