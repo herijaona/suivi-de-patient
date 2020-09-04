@@ -359,9 +359,9 @@ class PraticienController extends AbstractController
         $associer = $this->associerRepository->searchAssocier($praticien);
 
             foreach ($associer as $value) {
-                $lastname = $value["lastName"];
-                $firstname = $value["firstName"];
-                $pat = $value["patient"];
+                    $lastname = $value["lastName"];
+                    $firstname = $value["firstName"];
+                    $pat = $value["patient"];
             }
 
             $patient = [
@@ -399,9 +399,11 @@ class PraticienController extends AbstractController
                     'eventData' => $rdv,
                 ]);
             }
+
             $form->handleRequest($request);
 
-            return new JsonResponse(['form_html' => $response]);
+
+        return new JsonResponse(['form_html' => $response]);
     }
 
     /**
@@ -413,14 +415,18 @@ class PraticienController extends AbstractController
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $prop = $this->propositionRdvRepository->searchStatusPraticienEnValid($praticien);
         $vaccin= $this->propositionRdvRepository->searchStatusPraticienv($praticien);
+        $associer = $this->associerRepository->searchAssocier($praticien);
+
         return $this->render('praticien/proposition.html.twig',[
             'consultation'=>$prop,
             'vaccination'=>$vaccin,
+            'associer'=>$associer,
         ]);
     }
 
     /**
      * @Route("/register_proposition", name ="register_proposition")
+     * @throws Exception
      */
 
     public  function register_proposition(Request $request)
@@ -665,6 +671,7 @@ class PraticienController extends AbstractController
 
     /**
      * @Route("/edit/carnet-vaccination", name ="edit_carnet_vaccination")
+     * @throws Exception
      */
 
     public  function edit_carnet_vaccination(Request $request)

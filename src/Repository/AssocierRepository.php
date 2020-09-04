@@ -20,7 +20,7 @@ class AssocierRepository extends ServiceEntityRepository
     }
     public function searchAssocier($praticien = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.lastName , p.firstName, p.id as patient
+        $query = $entityManager->createQuery('SELECT a.id,p.lastName , p.firstName, p.id as patient
             FROM App\Entity\Associer a
             LEFT JOIN App\Entity\Patient p with p.id=a.patient
             LEFT JOIN App\Entity\Praticien pr with pr.id=a.praticien

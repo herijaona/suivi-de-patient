@@ -3,7 +3,7 @@
 <div class="d-flex w-100">
     <h2 class="profile-h2">{% trans %}My profile{% endtrans %}</h2>
     <div class="text-right w-50">
-        <button type="submit " class="btn btn-info button-login btn-edit mb-3">
+        <button type="submit" class="btn btn-info button-login btn-edit mb-3" style="display: none">
             <i class="fas fa-pencil-alt mr-2"></i>
             {% trans %}Edit{% endtrans %}
         </button>
@@ -62,7 +62,7 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.email }}">
                         </div>
                         <div class="col-lg-6">
-                            {% for  ordo in  values.ordonnaces%}
+                            {% for  ordo in  values.ordonnaces %}
                             <label for="">{% trans %}Center Health{% endtrans %}</label>{{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control form-show', 'placeholder': 'Your center health', 'value': ordo.CentreSante.centreName}}) }}
 
                                 <input type="text" class="form-control form-edit" placeholder="{{ ordo.CentreSante.centreName}}">
@@ -76,12 +76,24 @@
                             <label for="">{% trans %}Username{% endtrans %}</label> {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant', 'value':values.user.username}}) }}
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.username }}">
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-6 pass" >
                             <label for="">{% trans %}Password{% endtrans %}</label> {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe', 'value': values.user.password}}) }}
                             <input type="text" class="form-control form-edit" placeholder="{{ values.user.password }}">
                         </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Country{% endtrans %}</label> {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control form-show', 'placeholder': 'Country', 'value': values.state}}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.state }}">
+
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-info button-login mb-3 button-edit button-edit-class">
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Gender{% endtrans %}</label> {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe', 'value':values.sexe }}) }}
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.sexe}}">
+
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info button-login mb-3 button-edit button-edit-class" style="display: none">
                         {% trans %}Save{% endtrans %}
                     </button>
                 </form>
@@ -95,6 +107,7 @@
 <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
 <script>
     $('.form-show').css('display', 'none');
+    $('.pass').css('display', 'none');
     var i = 1;
     $(".btn-edit").click(function() {
         i++;
