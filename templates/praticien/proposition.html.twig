@@ -12,7 +12,12 @@
             <h4 class="h4-content">{% trans %}Appointment proposal{% endtrans %}</h4>
         </div>
         <div class="grid-edit-btn col-md-3 mt-3">
-            <button class="btn btn-danger add_form_rdv">{% trans %}+ Create appointment proposal{% endtrans %}</button>
+            {% for associer in associer  %}
+                {% if associer.id != null  %}
+                <button class="btn btn-danger add_form_rdv">{% trans %}+ Create appointment proposal{% endtrans %}</button>
+
+                {% endif %}
+            {% endfor %}
         </div>
     </div>
     <div class="row-table table-content">
@@ -25,7 +30,6 @@
                 <th style="width: 114px;">{% trans %}Vaccine{% endtrans %}</th>
                 <th style="width: 182px;">Patient </th>
                 <th style="width: 40px;"></th>
-
             </tr>
             </thead>
             <tbody>
@@ -41,12 +45,10 @@
                     </td>
                     <td></td>
                     <td>{{ pro.lastName }} {{ pro.firstName }}</td>
-
-                    <td >
+                    <td>
                         <span class="btn btn-primary data-edit" data-id="{{ pro.id }}" ><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ pro.id }}" ><i class="fa fa-trash-o"></i></span>
                     </td>
-
                 </tr>
                 {% endif %}
             {% endfor %}
@@ -56,15 +58,11 @@
                     <td class="text-left">
                         {{ vacc.dateProposition |format_datetime('full', 'short', locale=app.request.locale)}}
                     </td>
-                    <td>
-                       Vaccin </td>
+                    <td>{% trans %}Vaccine{% endtrans %} </td>
                     <td></td>
-                    <td>
-                            {{ vacc.vaccinName }}
-
-                    </td>
+                    <td>{{ vacc.vaccinName }}</td>
                     <td>{{ vacc.lastName }} {{ vacc.firstName }}</td>
-                    <td >
+                    <td>
                         <span class="btn btn-primary data-edit" data-id="{{ vacc.id }}" ><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ vacc.id }}" ><i class="fa fa-trash-o"></i></span>
                     </td>
