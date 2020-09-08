@@ -532,6 +532,9 @@ class VaccinationController extends AbstractController
         return new JsonResponse(['status' => $delete]);
     }
 
+
+    //update carnet vaccination
+
     /**
      * @Route("/apip/update/{id}/carnet_vaccination", name="update_carnet_vaccination", methods={"POST"})
      * @param $id

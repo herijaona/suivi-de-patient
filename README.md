@@ -140,3 +140,5 @@
 ####url pour lister vaccin affecté à praticien avec authorization Bearer token
     http://localhost:8000/api/vaccin_praticiens
     http://localhost:8000/api/vaccin_praticiens/{id}
+
+####http://localhost:9000/apip/associers
