@@ -31,14 +31,14 @@ class RegistrationPraticienFormType extends AbstractType
             ->add('username')
             ->add('lastname')
             ->add('firstname')
-
             ->add('center_health', EntityType::class, [
                 'class' => CentreHealth::class,
-                'required'   => false,
+
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('c');
                 },
                 'choice_value' => 'id',
+                'required'   => false,
 
                 'choice_label' => function (?CentreHealth $centreHealth) {
                     return $centreHealth ? strtoupper($centreHealth->getCentreName()) : '';
@@ -47,7 +47,9 @@ class RegistrationPraticienFormType extends AbstractType
             ])
             ->add('date_naissance')
             ->add('phone')
-            ->add('numero')
+            ->add('numero' , null,[
+                'required'   => false,
+            ])
             ->add('address', TextareaType::class, [
                 'attr' => [
                     'rows' => '3'
