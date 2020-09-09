@@ -10,6 +10,7 @@ use App\Entity\Patient;
 use App\Repository\OrdonnaceRepository;
 use App\Repository\PatientRepository;
 
+use App\Repository\TypePatientRepository;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Form\RegistrationFormType;
@@ -46,6 +47,7 @@ class ProfileController extends AbstractController
     protected $praticienRepository;
     protected $ordonnaceRepository;
     protected $entityManager;
+    protected $typePatientRepository;
     private $userCurrent;
 
     const ROLE_PATIENT = 'ROLE_PATIENT';
@@ -57,17 +59,40 @@ class ProfileController extends AbstractController
         OrdonnaceRepository $ordonnaceRepository,
         PraticienRepository $praticienRepository,
         TokenStorageInterface $tokenStorage,
+        TypePatientRepository $typePatientRepository,
         UserRepository $userRepository,
         EntityManagerInterface $entityManager
 
     )
     {
         $this->user = $userRepository;
+        $this->typePatientRepository=$typePatientRepository;
         $this->ordonnaceRepository= $ordonnaceRepository;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
         $this->userCurrent = $tokenStorage->getToken()->getUser();
         $this->entityManager = $entityManager;
+    }
+    /**
+     * @Route("/form-edit", name="add_edit", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function form_edit(Request $request){
+        $pro= [];
+        $pro['id'] = $request->request->get('id');
+        $type = $this->typePatientRepository->find( $pro['id']);
+        $pro['type_patient']=$type->getTypePatientName();
+        $patient = $this->patientRepository->find($pro['id']);
+        $pro['address']= $patient->getAddress();
+        $form = $this->createForm(RegistrationFormType::class, $pro);
+        $response = $this->renderView('profile/_form_edit.html.twig', [
+            'new' => false,
+            'form' => $form->createView(),
+            'eventData' => $pro,
+        ]);
+        $form->handleRequest($request);
+        return new JsonResponse(['form_html' => $response]);
     }
 
     /**

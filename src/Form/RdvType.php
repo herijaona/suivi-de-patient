@@ -37,15 +37,10 @@ class RdvType extends AbstractType
                          $first = $category->getFirstName();
                          $fonc = $category->getFonction();
                          $adresse = $category->getAddress();
-                         $centre = $category->getOrdonnaces();
-
-                         foreach ($centre as $cent){
-                            $cent= $cent->getCentreSante()->getCentreName();
-                         }
 
 
 
-                         $praticien = $last .'   '. $first.'   '. $fonc.'  '. $adresse.' '. $cent;
+                         $praticien = $last .'   '. $first.'   '. $fonc.'  '. $adresse;
                          return $praticien;
                     },
                     'attr' => array('class' => 'form-control chosen-select'),
