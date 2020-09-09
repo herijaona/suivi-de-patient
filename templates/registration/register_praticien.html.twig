@@ -9,9 +9,7 @@
     <div class="background-img"></div>
     <div class="body-page register" style="margin: 8rem">
         <div class="container text-center body-content">
-            <div class="conex">
-                <a class="btn btn-info button-login " style="width: 115px;margin-left: 437px; " href="{{ path('app_login') }}">Se Connecter</a>
-            </div>
+            
             <img class="logo-login"  src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
             <h3 class="main-title mb-4">Inscription Praticien</h3>
             <form role="form" class="form-horizontal" id="register-form">
@@ -76,6 +74,7 @@
                 <button type="submit" class="btn btn-info button-login mb-3" id="submit_register">
                     {% trans %}Register{% endtrans %}
                 </button>
+                <p><a href="{{ path('app_login') }}">Se connecter</a></p>
             
         {{ form_end(registrationForm) }}
         </div>
