@@ -38,7 +38,7 @@ class RdvType extends AbstractType
                          $fonc = $category->getFonction();
                          $adresse = $category->getAddress();
                          $centre = $category->getOrdonnaces();
-                         
+
                          foreach ($centre as $cent){
                             $cent= $cent->getCentreSante()->getCentreName();
                          }

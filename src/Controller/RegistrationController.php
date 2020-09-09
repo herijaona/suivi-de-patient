@@ -188,7 +188,7 @@ class RegistrationController extends AbstractController
             $first_name = $form->get('firstname')->getData();
             $email = $form->get('email')->getData();
 
-
+            $centre = $form->get('center_health')->getData();
             $date = $form->get('date_naissance')->getData();
             $date= DateTime::CreateFromFormat("d/m/Y", $date);
 
@@ -228,6 +228,7 @@ class RegistrationController extends AbstractController
             $ordonance->setPraticien($praticien);
             $ordonance->setDatePrescription(new \DateTime('now'));
             $ordonance->setMedecinTraitant($praticien);
+            $ordonance->setCentreSante($centre);
             $entityManager->persist($ordonance);
             $entityManager->flush();
 
