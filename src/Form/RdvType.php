@@ -24,16 +24,31 @@ class RdvType extends AbstractType
         $builder
             ->add('id', HiddenType::class)
             ->add('praticiens',EntityType::class,
-                ['required' => true,
+                array('required' => true,
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('p')
                             ->orderBy('p.firstName')
                             ->orderBy('p.lastName');
                     },
+
                     'class' => Praticien::class,
-                    'attr' => ['class' => 'form-control chosen-select'],
+                    'choice_label' => function ($category) {
+                         $last = $category->getLastName();
+                         $first = $category->getFirstName();
+                         $fonc = $category->getFonction();
+                         $adresse = $category->getAddress();
+                         $centre = $category->getOrdonnaces();
+                         foreach ($centre as $centre){
+                            $cent= $centre->getCentreSante()->getCentreName();
+                         }
+
+
+                         $praticien = $last .'   '. $first.'   '. $fonc.'  '. $adresse.' '. $cent;
+                         return $praticien;
+                    },
+                    'attr' => array('class' => 'form-control chosen-select'),
                     'placeholder' => 'Choose a Praticien'
-                ])
+                ))
             ->add('dateRdv')
             ->add('vaccin', EntityType::class,
                 ['required' => false,

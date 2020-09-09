@@ -156,12 +156,14 @@ class StateController extends AbstractController
             {
                 if ($i != 0){
                     $pays = $Row['A'];
+                    $code = $Row['B'];
                     $state = null;
-                    if($pays != null) {
+                    if($pays != null && $code != null) {
                         $state = $this->stateRepository->findOneBy([ 'nameState' => $pays ]);
                         if ($state == null){
                             $state = new State();
                             $state->setNameState($pays);
+                            $state->setPhoneindic($code);
                             $this->entityManager->persist($state);
                             $this->entityManager->flush();
                         }

@@ -70,15 +70,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username'],'etat'=>1]);
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            throw new CustomUserMessageAuthenticationException('Votre identifiant est incorect ou votre compte pas activé ');
         }
 
         if(!in_array($credentials['roles'], $user->getRoles())){
-            throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
+            throw new CustomUserMessageAuthenticationException("Vous n'êtes pas autorisé à accéder à cette page.");
         }
 
         return $user;
@@ -95,7 +95,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             return true;
         }
         else{
-            throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
+            throw new CustomUserMessageAuthenticationException("Vous n'êtes pas autorisé à accéder à cette page.");
         }
 
         return true;

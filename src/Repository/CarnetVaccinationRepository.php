@@ -27,10 +27,9 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
             FROM App\Entity\CarnetVaccination c 
             INNER JOIN App\Entity\Patient p with p.id = c.patient
             LEFT JOIN App\Entity\Vaccin v with v.id = c.vaccin
-            WHERE (p.id = :patient OR p.id IS NULL) AND (c.datePriseInitiale >= :now OR c.rappelVaccin >= :now) 
+            WHERE (p.id = :patient OR p.id IS NULL) 
             ORDER BY c.datePriseInitiale DESC')
-            ->setParameter('patient', $patient)
-            ->setParameter('now', new \DateTime());
+            ->setParameter('patient', $patient);
 
         return $query->getResult();
     }
@@ -44,9 +43,8 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
             FROM App\Entity\CarnetVaccination c
              INNER JOIN App\Entity\Patient p with p.id = c.patient
             INNER JOIN App\Entity\Vaccin v with v.id=c.vaccin
-            WHERE p.id= :patient AND (c.datePriseInitiale >= :now OR c.rappelVaccin >= :now)')
-            ->setParameter('patient', $patient)
-            ->setParameter('now', new \DateTime());
+            WHERE p.id= :patient ')
+            ->setParameter('patient', $patient);
 
         return $query->getResult();
     }

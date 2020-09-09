@@ -37,7 +37,7 @@ class HomepageController extends AbstractController
      */
     public function check_users()
     {
-        if ($this->isGranted('ROLE_PATIENT')) {
+        if ($this->isGranted('ROLE_PATIENT') ) {
             return $this->redirectToRoute('patient');
         } elseif ($this->isGranted('ROLE_PRATICIEN')) {
             return $this->redirectToRoute('praticien');

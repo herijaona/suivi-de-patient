@@ -19,6 +19,12 @@ class PraticienRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Praticien::class);
     }
+    public function searchPraticien(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id,p.lastName, p.firstName, p.fonction
+            FROM App\Entity\Praticien p');
+        return $query->getResult();
+    }
 
 
     // /**

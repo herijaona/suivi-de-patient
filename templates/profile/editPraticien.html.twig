@@ -3,7 +3,7 @@
 <div class="d-flex w-100">
     <h2 class="profile-h2">{% trans %}My profile{% endtrans %}</h2>
     <div class="text-right w-50">
-        <button type="submit" class="btn btn-info button-login btn-edit mb-3" style="display: none">
+        <button type="submit" class="btn btn-info button-login btn-edit mb-3" data-toggle="modal" data-target="#exampleModal">
             <i class="fas fa-pencil-alt mr-2"></i>
             {% trans %}Edit{% endtrans %}
         </button>
@@ -11,7 +11,7 @@
 </div>
 <div>
     <div>
-        {{ form_start(registrationForm) }}
+
         <div class="body-page register edit-register">
             <div class="container text-center body-content">
                 <form role="form" class="form-horizontal">
@@ -31,23 +31,15 @@
                             <input type="text" class="form-control form-edit" placeholder="{{ values.dateBorn|localizeddate('none', 'none', 'fr', null, 'd MMMM Y') }}">
                         </div>
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Place of birth{% endtrans %}</label> {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control form-show', 'placeholder': 'Lieu de Naissance', 'value':values.City.nameCity}}) }}
-                           <input type="text" class="form-control form-edit" placeholder="{{ values.City.nameCity }}">
-                        </div>
-                    </div>
-                    <div class="row form-group">
-                        <div class="col-lg-6">
                             <label for="">{% trans %}Phone{% endtrans %}</label> {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control form-show', 'value': values.phone}}) }}
                             <input type="text" class="form-control form-edit" placeholder="{{ values.phone }}">
                         </div>
-                        <div class="col-lg-6">
-                            <label for="">{% trans %}Professional phone {% endtrans %}</label> {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control form-show','value': values.phoneProfessional }}) }}
-                            <input type="text" class="form-control form-edit" placeholder="{{ values.phoneProfessional }}">
-                        </div>
+
                     </div>
+
                     <div class="row form-group">
                         <div class="col-lg-6">
-                            <label for="">{% trans %}Address{% endtrans %}</label> {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-show', 'placeholder': 'Adresse', 'value' : values.address }}) }}
+                            <label for="">{% trans %}Address{% endtrans %}</label>
                             <input type="text" class="form-control form-edit" placeholder="{{ values.address }}">
 
                         </div>
@@ -63,12 +55,9 @@
                         </div>
                         <div class="col-lg-6">
                             {% for  ordo in  values.ordonnaces %}
-                            <label for="">{% trans %}Center Health{% endtrans %}</label>{{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control form-show', 'placeholder': 'Your center health', 'value': ordo.CentreSante.centreName}}) }}
-
+                            <label for="">{% trans %}Center Health{% endtrans %}</label>
                                 <input type="text" class="form-control form-edit" placeholder="{{ ordo.CentreSante.centreName}}">
                             {% endfor %}
-                            {##}
-
                         </div>
                     </div>
                     <div class="row form-group">
@@ -90,13 +79,44 @@
                         <div class="col-lg-6">
                             <label for="">{% trans %}Gender{% endtrans %}</label> {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe', 'value':values.sexe }}) }}
                             <input type="text" class="form-control form-edit" placeholder="{{ values.sexe}}">
-
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="">{% trans %}Business number{% endtrans %}</label>
+                            <input type="text" class="form-control form-edit" placeholder="{{ values.NumeroProfessionnel}}">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-info button-login mb-3 button-edit button-edit-class" style="display: none">
-                        {% trans %}Save{% endtrans %}
-                    </button>
                 </form>
+            </div>
+        </div>
+        {{ form_start(registrationForm, {'attr': {'action': path('editPr') }}) }}
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modification</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="md-form">
+                            <label class="active" for="form1">{% trans %}Center Health{% endtrans %}</label>
+                            {{ form_widget(registrationForm.center_health, {'attr': { 'class': 'form-control chosen-select' }}) }}
+                        </div>
+                        <div class="md-form">
+                            <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
+                            {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-textarea', 'rows':'4', "minlength":"3"  }}) }}
+                        </div>
+                        <div class="md-form">
+                            <label class="active" for="form1">{% trans %}Business number{% endtrans %}</label>
+                            {{ form_widget(registrationForm.numero, {'attr': {'class': 'form-control'}}) }}
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+                        <button type="submit" class="btn btn-primary">{% trans %}Save{% endtrans %}</button>
+                    </div>
+                </div>
             </div>
         </div>
         {{ form_end(registrationForm) }}
@@ -107,27 +127,10 @@
 <script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
 <script>
     $('.form-show').css('display', 'none');
+
     $('.pass').css('display', 'none');
-    var i = 1;
-    $(".btn-edit").click(function() {
-        i++;
-        if (i % 2 == 0) {
-            $('.button-edit-class').removeClass('button-edit-class');
-            $('.form-edit').css('display', 'none');
-            $('.form-show').css('display', 'block');
-            $(this).addClass('button-cancel');
-            $(this).children('span').html('<span>{% trans %}Cancel{% endtrans %}</span>');
-            $(this).children('i').remove();
-        } else {
-            $('.button-edit').addClass('button-edit-class');
-            $('.form-edit').css('display', 'block');
-            $('.form-show').css('display', 'none');
-            $(this).removeClass('button-cancel');
-            $(this).children('span').html('<span>{% trans %}Edit{% endtrans %}</span>');
-            $(this).prepend('<i class="fas fa-pencil-alt mr-2"></i>');
-        }
 
 
-    });
+
 </script>
 {% endblock %}

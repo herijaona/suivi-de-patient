@@ -241,7 +241,7 @@ ul {
   width: 434px;
   background: white;
   margin: 0 auto;
-  margin-top: -38px;
+  margin-top: -85px;
   border-radius: 7px;
   padding-bottom: 8px;
 }
@@ -502,7 +502,7 @@ select.mdb-select.initialized {
 .logo-login {
   width: 40%;
   margin-bottom: 13px;
-  margin-top: 19px;
+
 }
 
 .form-control {

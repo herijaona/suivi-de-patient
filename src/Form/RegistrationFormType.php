@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\RadioType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
@@ -35,7 +36,6 @@ class RegistrationFormType extends AbstractType
             ->add('firstname')
             ->add('date_naissance')
             ->add('phone')
-            ->add('lieu_naissance')
             ->add('address', TextareaType::class, [
                 'attr' => [
                     'rows' => '3'
@@ -58,11 +58,14 @@ class RegistrationFormType extends AbstractType
             ->add('namemonther', null, [
                 'required'   => false
             ])
+
+
             ->add('sexe', ChoiceType::class, array(
                 'choices' => array(
                     'Feminin' => 'Feminin',
                     'Masculin' => 'Masculin'
                 ),
+                'required'=>false,
                 'placeholder' => 'Sexe',
             ))
             ->add('plainPassword', PasswordType::class, [
@@ -82,6 +85,7 @@ class RegistrationFormType extends AbstractType
                 ],
             ])
             ->add('country', EntityType::class, [
+                'required'=>false,
                 'class' => State::class,
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('s');
@@ -90,17 +94,27 @@ class RegistrationFormType extends AbstractType
                 'choice_label' => function (?State $state) {
                     return $state ? strtoupper($state->getNameState()) : '';
                 },
-                'placeholder' => 'Choisir Votre Pays',
-            ])
-            ->add('enceinte', ChoiceType::class, [
-                'choices'  => [
-                    'Oui' => true,
-                    'Non' => false
-                ],
-                'required'   => false,
-                'expanded' => true
+                'placeholder' => 'Choisir Votre Pays de domicile',
             ]);
+
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            $form = $event->getForm();
+
+            $form->add(
+                'enceinte',
+                ChoiceType::class,
+                [
+                    'expanded' => true,
+                    'multiple' => false,
+                    'choices' => [
+                        'Oui' => true,
+                        'Non' => false
+                    ],
+                    'data' => $event->getData() ?: false
+                ]);
+        });
     }
+
 
     public function configureOptions(OptionsResolver $resolver)
     {
