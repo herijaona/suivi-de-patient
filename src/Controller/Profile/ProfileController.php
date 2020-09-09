@@ -2,10 +2,12 @@
 
 namespace App\Controller\Profile;
 
+use App\Entity\Ordonnace;
 use App\Entity\Praticien;
 use App\Entity\User;
 
 use App\Entity\Patient;
+use App\Repository\OrdonnaceRepository;
 use App\Repository\PatientRepository;
 
 use Symfony\Component\Routing\Annotation\Route;
@@ -42,6 +44,8 @@ class ProfileController extends AbstractController
     protected $user;
     protected $patientRepository;
     protected $praticienRepository;
+    protected $ordonnaceRepository;
+    protected $entityManager;
     private $userCurrent;
 
     const ROLE_PATIENT = 'ROLE_PATIENT';
@@ -50,15 +54,20 @@ class ProfileController extends AbstractController
 
     function __construct(
         PatientRepository $patientRepository,
+        OrdonnaceRepository $ordonnaceRepository,
         PraticienRepository $praticienRepository,
         TokenStorageInterface $tokenStorage,
-        UserRepository $userRepository
+        UserRepository $userRepository,
+        EntityManagerInterface $entityManager
+
     )
     {
         $this->user = $userRepository;
+        $this->ordonnaceRepository= $ordonnaceRepository;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
         $this->userCurrent = $tokenStorage->getToken()->getUser();
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -107,53 +116,13 @@ class ProfileController extends AbstractController
      */
     public function editPraticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator,TranslatorInterface $translator) : Response{
         $user = [];
+
         $form = $this->createForm(RegistrationPraticienFormType::class, $user);
 
         $form->handleRequest($request);
 
         $currentUser = $this->getUser();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            dd("tonga");
-            $last_name = $form->get('lastname')->getData();
-            $first_name = $form->get('firstname')->getData();
-         
-            $user = $this->user->find($currentUser->getId());
-
-            $user->setLastName($last_name);
-            $user->setFirstName($first_name);
-            $user->setEmail($form->get('email')->getData());
-            $user->setRoles(['ROLE_PRATICIEN']);
-            $user->setEtat(0);
-            // encode the plain password
-            $user->setPassword( 
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-
-            $idPraticien = $this->praticienRepository->findByPraticienId($currentUser->getId());
-            $praticien = $this->praticienRepository->find($idPraticien['0']['id']);
-
-            $praticien->setFirstName($first_name);
-            $praticien->setLastName($last_name);
-            $praticien->setCreatedAt(new \DateTime('now'));
-            $praticien->setAdress($form->get('address')->getData());
-            $praticien->setDateBorn($form->get('date_naissance')->getData());
-            $praticien->setAdressBorn($form->get('lieu_naissance')->getData());
-            $praticien->setFonction($form->get('fonction')->getData());
-            $praticien->setPhone($form->get('phone')->getData());
-            $praticien->setPhoneProfessional($form->get('phone_professional')->getData());
-            $praticien->setUser($user);
-            $entityManager->persist($praticien);
-            $entityManager->flush();
-            $message = $translator->trans('The user has been registered successfully!');
-            $this->addFlash('success', $message);
-            return $this->redirectToRoute('editPraticien',['id'=>$idPraticien['0']['id']]);
-        }
 
         $isuser = $this->praticienRepository->findByPraticien(['user'=>$user]);
 
@@ -172,6 +141,57 @@ class ProfileController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/praticien/pr", name="editPr")
+     * @return Response
+     */
+    public function editPr(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, TranslatorInterface $translator) : Response{
+
+        $user = [];
+
+        $form = $this->createForm(RegistrationPraticienFormType::class, $user);
+        $form->handleRequest($request);
+        $centre = $form->get('center_health')->getData();
+        $address =$form->get('address')->getData();
+        $numero =  $form->get('numero')->getData();
+        $user = $this->getUser();
+        $praticien =  $this->praticienRepository->findOneBy(['user' => $user]);
+        $praticien->setNumeroProfessionnel($numero);
+        $praticien->setAddress($address);
+        $this->entityManager->persist($praticien);
+        $this->entityManager->flush();
+        $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
+        $ordo->setCentreSante($centre);
+        $this->entityManager->persist($ordo);
+        $this->entityManager->flush();
+
+        return $this->redirectToRoute('editPraticien');
+
+    }
+    /**
+     * @Route("/patient/pro", name="editP")
+     * @return Response
+     */
+    public function editP(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, TranslatorInterface $translator) : Response{
+
+        $user = [];
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+        $type = $form->get('type_patient')->getData();
+        $address =$form->get('address')->getData();
+        $currentUser = $this->getUser();
+        $user = $this->user->find($currentUser->getId());
+        $patient =$this->patientRepository->find($user);
+        $patient->setTypePatient($type);
+        $patient->setAddress($address);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($patient);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('editPatient');
+
+    }
+
     
     /**
      * @Route("/patient/profile", name="editPatient")
@@ -186,50 +206,6 @@ class ProfileController extends AbstractController
         $currentUser = $this->getUser();
         $user = $this->user->find($currentUser->getId());
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
-            $last_name = $form->get('lastname')->getData();
-            $first_name = $form->get('firstname')->getData();
-            $user->setLastName($last_name);
-            $user->setFirstName($first_name);
-            $user->setUsername($form->get('username')->getData());
-            $user->setEmail($form->get('email')->getData());
-            $user->setRoles([self::ROLE_PATIENT]);
-            $user->setEtat(0);
-            // encode the plain password
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $idPatient = $this->patientRepository->findByPatientId($currentUser->getId());
-
-            $patient = $this->patientRepository->find($idPatient['0']['id']);
-            $patient->setFirstName($first_name);
-            $patient->setLastName($last_name);
-
-            $patient->setAddress($form->get('address')->getData());
-            $patient->setSexe($form->get('sexe')->getData());
-            $patient->setDateOnBorn($form->get('date_naissance')->getData());
-            $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
-
-            $patient->setTypePatient($form->get('type_patient')->getData());
-            $patient->setPhone($form->get('phone')->getData());
-            $patient->setFatherName($form->get('namedaddy')->getData());
-            $patient->setMotherName($form->get('namemonther')->getData());
-            $patient->setEtat(1);
-            $patient->setUser($user);
-            $entityManager->persist($patient);
-            $entityManager->flush();
-            $message = $translator->trans('The user has been registered successfully!');
-            $this->addFlash('success', $message);
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('editPatient',['id'=>$currentUser->getId()]);
-        }
 
 
         $isuser = $this->patientRepository->findByPatient(['user'=>$user]);

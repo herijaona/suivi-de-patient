@@ -77,7 +77,7 @@ class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator implements 
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Email could not be found.');
+            throw new CustomUserMessageAuthenticationException('Le nom d\'utilisateur est introuvable.');
         }
 
         return $user;
@@ -91,7 +91,7 @@ class AdminLoginAuthenticator extends AbstractFormLoginAuthenticator implements 
         }
 
         if (!in_array('ROLE_ADMIN', $user->getRoles())) { /*$user->hasRole('ROLE_ADMIN')*/
-            throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
+            throw new CustomUserMessageAuthenticationException("Vous n'êtes pas autorisé à accéder à cette page.");
         }
 
         return true;

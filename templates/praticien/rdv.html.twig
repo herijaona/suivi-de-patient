@@ -78,7 +78,7 @@
                     <td>
                         {{ vac.firstName }} {{ vac.lastName }} <br>
                     </td>
-                    <td style="text-align: right">
+                    <td>
                         <span class="badge badge-success badge-style modif-status"  data-type="vaccination" data-vaccin="{{ vac.vaccin }}" data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Realize{% endtrans %}</span>
                         <span  class="badge badge-danger badge-style modif-status" data-type="vaccination" data-type="vaccination" data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePrise |date}}"  data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Reject{% endtrans %}</span>
                     </td>
@@ -101,7 +101,7 @@
                     <td>
                         {{ ge.firstName }} {{ ge.lastName }} <br>
                     </td>
-                    <td style="text-align: right">
+                    <td>
                         <span class="badge badge-success badge-style modif-status"  data-type="generation" data-action="active" data-id="{{ ge.id }}" data-status="{{ge.statusVaccin}}" data-date="{{ ge.datePrise |date}}"  data-praticien="{{ ge.praticien }}" data-patient="{{ ge.patient }}" >{% trans %}Realize{% endtrans %}</span>
                         <span  class="badge badge-danger badge-style modif-status" data-type="generation"  data-action="reject" data-id="{{ ge.id }}" data-status="{{ge.statusVaccin}}" data-date="{{ ge.datePrise |date}}"  data-praticien="{{ ge.praticien }}" data-patient="{{ ge.patient }}" >{% trans %}Reject{% endtrans %}</span>
                     </td>

@@ -91,11 +91,9 @@ class RegistrationController extends AbstractController
             // encode the plain password
             $last_name = $form->get('lastname')->getData();
             $date= $form->get('date_naissance')->getData();
-            $date= new DateTime($date);
+            $date= DateTime::CreateFromFormat("d/m/Y", $date);
             $first_name = $form->get('firstname')->getData();
             $adresse= $form->get('address')->getData();
-            $city = $request->request->get('city');
-            $city = $this->cityRepository->find($city);
             $username = $form->get('username')->getData();
             $type_patient = $form->get('type_patient')->getData();
             $user = new User();
@@ -128,9 +126,8 @@ class RegistrationController extends AbstractController
             $patient->setAddress($adresse);
             $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($date);
-            $patient->setAddressOnBorn($form->get('lieu_naissance')->getData());
             $patient->setTypePatient($type_patient);
-            $patient->setCity($city);
+
             $patient->setState($form->get('country')->getData());
             $patient->setPhone($form->get('phone')->getData());
             $patient->setIsEnceinte($etat);
@@ -143,12 +140,12 @@ class RegistrationController extends AbstractController
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             // do anything else you need here, like send an email
             $email = (new TemplatedEmail())
-                ->from('nyavo@neitic.com')
+                ->from('hello@neitic.com')
                 ->to($form->get('email')->getData())
                 ->subject('Confirmation code' )
                 ->htmlTemplate('email/email.html.twig')
                 ->context([
-                    'code' => $code, 'name'=>$last_name, 'username'=>$username
+                    'code' => $code, 'name'=>$last_name, 'username'=>$username,'id'=>$user->getId()
                 ]);
             // On envoie le mail
             $mailer->send($email);
@@ -220,13 +217,11 @@ class RegistrationController extends AbstractController
             $praticien->setSexe($form->get('sexe')->getData());
             $praticien->setCreatedAt(new \DateTime('now'));
             $praticien->setDateBorn($date);
-            $praticien->setAdressOnBorn($form->get('lieu_naissance')->getData());
             $praticien->setAddress($form->get('address')->getData());
             $praticien->setCity($city);
             $praticien->setState($form->get('country')->getData());
             $praticien->setFonction($form->get('fonction')->getData());
             $praticien->setPhone($form->get('phone')->getData());
-            $praticien->setPhoneProfessional($form->get('phone_professional')->getData());
             $praticien->setEtat(false);
             $praticien->setUser($user);
             $entityManager->persist($praticien);
@@ -281,7 +276,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             $email = (new TemplatedEmail())
-                ->from('nyavo@neitic.com')
+                ->from('hello@neitic.com')
                 ->to($email)
                 ->subject('Confirmation code' )
                 ->htmlTemplate('email/email.html.twig')
@@ -364,7 +359,6 @@ class RegistrationController extends AbstractController
                     $entityManager->persist($auser);
                     $entityManager->flush();
                 }
-
                 if ($patientUser && $patientUser->getEtat() != 1 ){
                     $patientUser->setEtat(true);
                     $entityManager->persist($patientUser);

@@ -392,7 +392,7 @@ class PraticienController extends AbstractController
                     $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
                     $rdv['heureRdv'] = explode(' ', $date)[1];
                 }
-                $form = $this->createForm(PropositionRdvType::class, $rdv, ['patient' => $patient]);
+                $form = $this->createForm(PropositionRdvType::class, $rdv, ['patient' => $patient, 'typeRdvArrays' => $typeRdvArrays]);
                 $response = $this->renderView('praticien/_form_proposition.html.twig', [
                     'new' => false,
                     'form' => $form->createView(),

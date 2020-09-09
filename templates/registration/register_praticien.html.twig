@@ -9,8 +9,11 @@
     <div class="background-img"></div>
     <div class="body-page register" style="margin: 8rem">
         <div class="container text-center body-content">
+            <div class="conex">
+                <a class="btn btn-info button-login " style="width: 115px;margin-left: 437px; " href="{{ path('app_login') }}">Se Connecter</a>
+            </div>
             <img class="logo-login"  src="{{asset('assets/images/logo_suivi.png')}}" alt="logo" id="logo">
-            <h3 class="main-title mb-4">{% trans %}Register Praticien {% endtrans %}</h3>
+            <h3 class="main-title mb-4">Inscription Praticien</h3>
             <form role="form" class="form-horizontal" id="register-form">
                 <div class="row form-group">
                     <div class="col-lg-6">
@@ -27,68 +30,50 @@
                     </div>
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date de naissance', "required":"true" }}) }}
-
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-lg-6">
-                        {{ form_widget(registrationForm.lieu_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Lieu de naissance', "required":"true" }}) }}
-
-                    </div>
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control', 'placeholder': 'Votre pays', "required":"true" }}) }}
                     </div>
-                </div>
-                <div class="row form-group">
-                    <div class="col-lg-6">
-                        <select class="form-control" id="city" name="city"  >
-                            <option value="" selected>Sélectionner votre ville</option>
-                        </select>
-
-                    </div>
-                    <div class="col-lg-6">
-                        {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control', 'placeholder': 'Votre fonction', "required":"true", "minlength":"3" }}) }}
-
-
-                    </div>
-                </div>
-                <div class="row form-group">
                     <div class="col-lg-6">
                         <input type="button" id="tel" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
-                       {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Numéro de télephone', "required":"true", "minlength":"9" }})}}
-
-
+                        {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Numéro de télephone', "required":"true", "minlength":"9" }})}}
                     </div>
-                    <div class="col-lg-6">
-                        <input type="button" id="tell" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
-                        {{ form_widget(registrationForm.phone_professional, {'attr': {'class': 'form-control', 'placeholder': 'Numéro  professionnel ',"required":"true", "minlength":"9" }}) }}
-                    </div>
+
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
+                        {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control', 'placeholder': 'Votre fonction', "required":"true", "minlength":"3" }}) }}
+                    </div>
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'adresse e-mail',"required":"true", "email": 'true'}}) }}
+                    </div>
+                </div>
 
+                <div class="row form-group">
+                    <div class="col-lg-6">
                         {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-textarea', 'placeholder': 'Adresse exacte', 'rows':'4',"required":"true", "minlength":"3" }}) }}
                     </div>
                     <div class="col-lg-6">
                         <div class=" pt-2 pb-2">
-                            {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'adresse e-mail',"required":"true", "email": 'true'}}) }}
-                        </div>
-                        <div class=" pt-2 pb-2">
                             {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control', 'placeholder': 'Identifiant', "minlength":"3"}}) }}
                         </div>
+                        <div class=" pt-2 pb-2">
+                            {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'votre mot de passe ', "minlength":"12", "matchPassword": "true"}}) }}
+                        </div>
                     </div>
                 </div>
-                 <div class="row form-group">
+                 <div class="row form-group" style="display: none">
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Votre centre de santé', "required":"true"}}) }}
-                    </div>
-                    <div class="col-lg-6">
-                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'votre mot de passe ', "minlength":"12", "matchPassword": "true"}}) }}
 
-                       
                     </div>
+                     <div class="col-lg-6" style="display: none">
+                         {{ form_widget(registrationForm.numero, {'attr': {'class': 'form-control'}}) }}
+                     </div>
                 </div>
-                <button type="submit " class="btn btn-info button-login mb-3" id="submit_register">
+                <button type="submit" class="btn btn-info button-login mb-3" id="submit_register">
                     {% trans %}Register{% endtrans %}
                 </button>
             
@@ -206,18 +191,6 @@
 
         $('#registration_praticien_form_country').on('change',function () {
             var idcountry =$('#registration_praticien_form_country option:selected').val();
-            $.ajax({
-                method: "POST",
-                url: "{{ path('country') }}",
-                data: {id: idcountry},
-                success: function(response){
-
-                    $('#city').empty();
-                    $.each(response, function(index,element) {
-                        $('#city').append('<option value="'+ element.id +'" selected="selected">'+ element.nameCity +' </option>');
-                    });
-                }
-            });
 
             $.ajax({
                 method: "POST",
@@ -230,19 +203,7 @@
                     });
                 }
             });
-            $.ajax({
-                method: "POST",
-                url: "{{ path('num') }}",
-                data: {id: idcountry},
-                success: function(response){
-                    $('#tel').empty();
-                    $('#tell').empty();
-                    $.each(response, function(index,element) {
-                        $('#tel').val(element.phoneindic);
-                        $('#tell').val(element.phoneindic);
-                    });
-                }
-            });
+
         });
     </script>
 {% endblock %}

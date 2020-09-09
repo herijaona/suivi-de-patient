@@ -104,20 +104,20 @@
                                 <td>
                                     {{ patient.phone }}
                                 </td>
-                                <td class="text-center">
+                                <td>
                                     {% if patient.user.createdAt is defined and patient.user.createdAt != null %}{{ patient.user.createdAt|date('d-m-Y')  }}{% else %}  {% endif %}
                                 </td>
                                 <td class="text-center">
                                     {% if patient.user.updatedAt is defined and patient.user.updatedAt != null %}{{ patient.user.updatedAt|date('d-m-Y') }}{% else %}  {% endif %}
                                 </td>
-                                <td style="text-align: center">
+                                <td>
                                     {% if patient.etat == 1 %}
                                     <span class="badge badge-success badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient"> {% trans %}Activate{% endtrans %} </span>
                                     {% else %}
                                         <span class="badge badge-warning badge-style modif-status" data-id="{{ patient.id }}" data-etat="{{ patient.etat }}" data-type="patient">{% trans %}Deactivate{% endtrans %}</span>
                                     {% endif %}
                                 </td>
-                                <td style="text-align: center">
+                                <td>
                                     <span class="btn btn-primary data-edit" data-id="{{ patient.id }}" data-type="patient"><i class="fa fa-pencil"></i></span>
                                     <span class="btn btn-danger data-remove" data-id="{{ patient.id }}" data-type="patient"><i class="fa fa-trash-o"></i></span>
                                 </td>
@@ -159,14 +159,14 @@
                                 <td class="text-center">
                                     {% if praticien.user.updatedAt is defined and praticien.user.updatedAt != null %}{{ praticien.user.updatedAt|date('d-m-Y') }}{% else %}  {% endif %}
                                 </td>
-                                <td style="text-align: center">
+                                <td>
                                     {% if praticien.etat == 1 %}
                                         <span class="badge badge-success badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien"> {% trans %}Activate{% endtrans %} </span>
                                     {% else %}
                                         <span class="badge badge-warning badge-style modif-status" data-id="{{ praticien.id }}" data-etat="{{ praticien.etat }}" data-type="praticien">{% trans %}Deactivate{% endtrans %}</span>
                                     {% endif %}
                                 </td>
-                                <td style="text-align: center">
+                                <td>
                                     <span class="btn btn-primary data-edit" data-id="{{ praticien.id }}" data-type="praticien"><i class="fa fa-pencil"></i></span>
                                     <span class="btn btn-danger data-remove" data-id="{{ praticien.id }}" data-type="praticien"><i class="fa fa-trash-o"></i></span>
                                 </td>

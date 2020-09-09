@@ -24,6 +24,7 @@ use App\Repository\VaccinRepository;
 use App\Service\FileUploadService;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -377,6 +378,7 @@ class AdminController extends AbstractController
 
     /**
      * @Route("/upload-excel-vaccin", name="xlsx_import_vaccin")
+     * @throws Exception
      */
     public function xlsx_import_vaccin(Request $request, FileUploadService $fileUploadService)
     {

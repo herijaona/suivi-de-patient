@@ -23,19 +23,19 @@ class Praticien
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read:VaccinPraticien","read:praticien","read:OrdoConsultation", "read:PropositionRdv"})
+     * @Groups({"read:VaccinPraticien","read:praticien","read:OrdoConsultation", "read:PropositionRdv", "read:associer"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:VaccinPraticien","read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv"})
+     * @Groups({"read:VaccinPraticien","read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv", "read:associer"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:VaccinPraticien", "read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv"})
+     * @Groups({"read:VaccinPraticien", "read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv", "read:associer"})
      */
     private $lastName;
 
@@ -45,11 +45,7 @@ class Praticien
      */
     private $phone;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:praticien", "read:carnetvaccination", "read:IntervationConsultation"})
-     */
-    private $phoneProfessional;
+
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -188,6 +184,11 @@ class Praticien
      */
     private $associers;
 
+    /**
+     * @ORM\Column(type="string", length=255,nullable = true)
+     */
+    private $NumeroProfessionnel;
+
 
 
     public function __construct()
@@ -250,17 +251,7 @@ class Praticien
         return $this;
     }
 
-    public function getPhoneProfessional(): ?string
-    {
-        return $this->phoneProfessional;
-    }
-
-    public function setPhoneProfessional(?string $phone_professional): self
-    {
-        $this->phoneProfessional = $phone_professional;
-
-        return $this;
-    }
+   
 
     public function getFonction(): ?string
     {
@@ -794,6 +785,18 @@ class Praticien
                 $associer->setPraticien(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNumeroProfessionnel(): ?string
+    {
+        return $this->NumeroProfessionnel;
+    }
+
+    public function setNumeroProfessionnel(string $NumeroProfessionnel): self
+    {
+        $this->NumeroProfessionnel = $NumeroProfessionnel;
 
         return $this;
     }

@@ -14,6 +14,8 @@ use App\Entity\PatientOrdoConsultation;
 use App\Entity\PatientOrdoVaccination;
 use App\Entity\Praticien;
 use App\Form\RdvType;
+use App\Form\RegistrationFormType;
+use App\Form\RegistrationPraticienFormType;
 use App\Form\VaccinType;
 use App\Repository\AssocierRepository;
 use App\Repository\CarnetVaccinationRepository;
@@ -530,6 +532,8 @@ class PatientController extends AbstractController
             "vaccination" => "VACCINATION",
             "intervention" =>"INTERVENTION"
         ];
+
+
         if ($action == "new") {
             $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
             $response = $this->renderView('patient/_form_rdv.html.twig', [
@@ -554,7 +558,6 @@ class PatientController extends AbstractController
             if ($ordoCon->getOrdonnance() != null && $ordoCon->getOrdonnance()->getPraticien() != null) $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien();
             if ($rdv['dateRdv'] != ''){
                 $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
-
                 $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
                 $rdv['heureRdv'] = explode(' ', $date)[1];
             }

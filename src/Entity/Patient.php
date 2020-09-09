@@ -24,19 +24,19 @@ class Patient
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read:patient","read:OrdoConsultation", "read:Family", "read:PropositionRdv"})
+     * @Groups({"read:patient","read:OrdoConsultation", "read:Family", "read:PropositionRdv", "read:associer"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:patient", "read:carnetvaccination", "read:Family", "read:PropositionRdv"})
+     * @Groups({"read:patient", "read:carnetvaccination", "read:Family", "read:PropositionRdv","read:associer"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
-     * @Groups({"read:patient", "read:carnetvaccination", "read:Family", "read:PropositionRdv"})
+     * @Groups({"read:patient", "read:carnetvaccination", "read:Family", "read:PropositionRdv","read:associer"})
      */
     private $lastName;
 
@@ -78,6 +78,7 @@ class Patient
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"read:patient"})
      */
     private $updatedAt;
 
@@ -198,12 +199,14 @@ class Patient
 
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"read:patient"})
      */
     private $addressOnBorn;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"read:patient"})
      */
     private $address;
 

@@ -889,6 +889,10 @@
         <source>Phone Number Code</source>
         <target>Code du Numéro de Téléphone</target>
       </trans-unit>
+      <trans-unit id="sSk3ZcG" resname="+ New Member">
+        <source>+ New Member</source>
+        <target>+ Nouveau Membre</target>
+      </trans-unit>
 
     </body>
   </file>
