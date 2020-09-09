@@ -23,19 +23,19 @@ class Praticien
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"read:VaccinPraticien","read:praticien","read:OrdoConsultation", "read:PropositionRdv"})
+     * @Groups({"read:VaccinPraticien","read:praticien","read:OrdoConsultation", "read:PropositionRdv", "read:associer"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"read:VaccinPraticien","read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv"})
+     * @Groups({"read:VaccinPraticien","read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv", "read:associer"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:VaccinPraticien", "read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv"})
+     * @Groups({"read:VaccinPraticien", "read:praticien", "read:carnetvaccination", "read:IntervationConsultation", "read:PropositionRdv", "read:associer"})
      */
     private $lastName;
 
