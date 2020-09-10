@@ -39,7 +39,6 @@ class RdvType extends AbstractType
                          $adresse = $category->getAddress();
 
 
-
                          $praticien = $last .'   '. $first.'   '. $fonc.'  '. $adresse;
                          return $praticien;
                     },

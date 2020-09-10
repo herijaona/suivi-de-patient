@@ -549,19 +549,24 @@ class PatientController extends AbstractController
                 $ordoCon = $this->ordoConsultationRepository->find($rdv['id']);
                 $rdv['description'] = $ordoCon->getObjetConsultation();
                 $rdv['dateRdv'] = $ordoCon->getDateRdv();
+                $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien();
+                if ($rdv['dateRdv'] != ''){
+                    $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
+                    $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
+                    $rdv['heureRdv'] = explode(' ', $date)[1];
+                }
             }
             elseif ($rdv['typeRdv'] == 'vaccination'){
                 $ordoCon = $this->ordoVaccinationRepository->find($rdv['id']);
                 $rdv['vaccin'] = $ordoCon->getVaccin();
                 $rdv['dateRdv'] = $ordoCon->getDatePrise();
+                $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien();
+                if ($rdv['dateRdv'] != ''){
+                    $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
+                    $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
+                    $rdv['heureRdv'] = explode(' ', $date)[1];
+                }
             }
-            if ($ordoCon->getOrdonnance() != null && $ordoCon->getOrdonnance()->getPraticien() != null) $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien();
-            if ($rdv['dateRdv'] != ''){
-                $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
-                $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
-                $rdv['heureRdv'] = explode(' ', $date)[1];
-            }
-
             $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
             $response = $this->renderView('patient/_form_edit.html.twig', [
                 'new' => false,

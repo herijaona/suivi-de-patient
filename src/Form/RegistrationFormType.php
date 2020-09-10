@@ -30,12 +30,24 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('username')
-            ->add('lastname')
-            ->add('firstname')
-            ->add('date_naissance')
-            ->add('phone')
+            ->add('email', EmailType::class, [
+                'required'   => false
+            ])
+            ->add('username',null, [
+                'required'   => false
+            ])
+            ->add('lastname',null, [
+                'required'   => false
+            ])
+            ->add('firstname',null, [
+                'required'   => false
+            ])
+            ->add('date_naissance',null, [
+                'required'   => false
+            ])
+            ->add('phone',null, [
+                'required'   => false
+            ])
             ->add('address', TextareaType::class, [
                 'attr' => [
                     'rows' => '3'
@@ -72,6 +84,7 @@ class RegistrationFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
+                'required'=>false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un mot de passe',
@@ -95,24 +108,19 @@ class RegistrationFormType extends AbstractType
                     return $state ? strtoupper($state->getNameState()) : '';
                 },
                 'placeholder' => 'Choisir Votre Pays de domicile',
-            ]);
+            ])
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $form = $event->getForm();
+        ->add('enceinte', ChoiceType::class, [
+        'choices'  => [
+            'Oui' => 'true',
+            'Non' => 'false'
+        ],
+        'required'   => false,
+        'expanded' => true,
+        'multiple' => false,
+        'placeholder' => 'Choisire une option',
+    ]);
 
-            $form->add(
-                'enceinte',
-                ChoiceType::class,
-                [
-                    'expanded' => true,
-                    'multiple' => false,
-                    'choices' => [
-                        'Oui' => true,
-                        'Non' => false
-                    ],
-                    'data' => $event->getData() ?: false
-                ]);
-        });
     }
 
 

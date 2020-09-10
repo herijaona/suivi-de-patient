@@ -7,6 +7,8 @@ use App\Entity\Praticien;
 use App\Entity\User;
 
 use App\Entity\Patient;
+use App\Form\edit;
+use App\Form\RegistrationPraticienFormType;
 use App\Repository\OrdonnaceRepository;
 use App\Repository\PatientRepository;
 
@@ -36,7 +38,7 @@ use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use App\Form\RegistrationPraticienFormType;
+
 use App\Security\LoginFormAuthenticator;
 use App\Repository\UserRepository;
 
@@ -74,6 +76,29 @@ class ProfileController extends AbstractController
         $this->entityManager = $entityManager;
     }
     /**
+     * @Route("/form-edit/praticien", name="add_edit_praticien", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function  form_edit_praticien(Request $request){
+        $pra=[];
+        $pra['id']= $request->request->get('id');
+        $praticien = $this->praticienRepository->find($pra['id']);
+        $pra['numero']= $praticien->getNumeroProfessionnel();
+        $pra['address']=$praticien->getAddress();
+
+        $ordonance= $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+        $pra['center_health']= $ordonance->getCentreSante();
+        $form = $this->createForm(RegistrationPraticienFormType::class, $pra);
+        $response = $this->renderView('profile/_form_edit_praticien.html.twig', [
+            'form' => $form->createView(),
+            'eventData' => $pra,
+        ]);
+        $form->handleRequest($request);
+        return new JsonResponse(['form_html' => $response]);
+    }
+
+    /**
      * @Route("/form-edit", name="add_edit", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
      * @param Request $request
      * @return JsonResponse
@@ -81,13 +106,13 @@ class ProfileController extends AbstractController
     public function form_edit(Request $request){
         $pro= [];
         $pro['id'] = $request->request->get('id');
-        $type = $this->typePatientRepository->find( $pro['id']);
-        $pro['type_patient']=$type->getTypePatientName();
+
         $patient = $this->patientRepository->find($pro['id']);
+        $pro['type_patient'] = $patient->getTypePatient();
         $pro['address']= $patient->getAddress();
+        $pro['enceinte']=$patient->getIsEnceinte();
         $form = $this->createForm(RegistrationFormType::class, $pro);
         $response = $this->renderView('profile/_form_edit.html.twig', [
-            'new' => false,
             'form' => $form->createView(),
             'eventData' => $pro,
         ]);
@@ -198,20 +223,17 @@ class ProfileController extends AbstractController
      * @return Response
      */
     public function editP(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, TranslatorInterface $translator) : Response{
-
-        $user = [];
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $pro= [];
+        $form = $this->createForm(RegistrationFormType::class, $pro);
         $form->handleRequest($request);
+        $address= $form->get('address')->getData();
         $type = $form->get('type_patient')->getData();
-        $address =$form->get('address')->getData();
-        $currentUser = $this->getUser();
-        $user = $this->user->find($currentUser->getId());
-        $patient =$this->patientRepository->find($user);
+        $user= $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $patient->setTypePatient($type);
         $patient->setAddress($address);
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->persist($patient);
-        $entityManager->flush();
+        $this->entityManager->persist($patient);
+        $this->entityManager->flush();
 
         return $this->redirectToRoute('editPatient');
 

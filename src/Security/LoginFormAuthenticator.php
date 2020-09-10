@@ -74,7 +74,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Votre identifiant est incorect ou votre compte pas activé ');
+            throw new CustomUserMessageAuthenticationException('Votre identifiant est incorect ou votre compte n\'est pas activé ');
         }
 
         if(!in_array($credentials['roles'], $user->getRoles())){

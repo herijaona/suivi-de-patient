@@ -3,10 +3,7 @@
 <div class="d-flex w-100">
     <h2 class="profile-h2">{% trans %}My profile{% endtrans %}</h2>
     <div class="text-right w-50">
-        <button type="submit" class="btn btn-info button-login btn-edit mb-3" data-toggle="modal" data-target="#exampleModal">
-            <i class="fas fa-pencil-alt mr-2"></i>
-            {% trans %}Edit{% endtrans %}
-        </button>
+        <span class="btn btn-info button-login btn-edit mb-3" data-id="{{ values.id }}" style="margin-right: 61px;"><i class="fa fa-pencil"></i>{% trans %}Edit{% endtrans %}</span>
     </div>
 </div>
 <div>
@@ -89,47 +86,40 @@
                 </form>
             </div>
         </div>
-        {{ form_start(registrationForm, {'attr': {'action': path('editPr') }}) }}
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modification</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="md-form">
-                            <label class="active" for="form1">{% trans %}Center Health{% endtrans %}</label>
-                            {{ form_widget(registrationForm.center_health, {'attr': { 'class': 'form-control chosen-select' }}) }}
-                        </div>
-                        <div class="md-form">
-                            <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
-                            {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-textarea', 'rows':'4', "minlength":"3"  }}) }}
-                        </div>
-                        <div class="md-form">
-                            <label class="active" for="form1">{% trans %}Business number{% endtrans %}</label>
-                            {{ form_widget(registrationForm.numero, {'attr': {'class': 'form-control'}}) }}
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
-                        <button type="submit" class="btn btn-primary">{% trans %}Save{% endtrans %}</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{ form_end(registrationForm) }}
     </div>
 </div>
 
-{% endblock %} {% block javascripts %}
-<script src="{{ asset('assets/js/jquery-3.1.1.min.js') }}"></script>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
 <script>
     $('.form-show').css('display', 'none');
 
     $('.pass').css('display', 'none');
+      $('.btn-edit').on('click', function (e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+            $.ajax({
+                url: "{{ path('add_edit_praticien') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                },
+                dataType: "json",
+                success: (data) =>{
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
+    });
 
 
 

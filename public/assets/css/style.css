@@ -623,6 +623,7 @@ select.mdb-select.initialized {
     box-shadow: none;
   }
 
+
   .table tr {
     background-color: #eee;
     border: none;
@@ -656,3 +657,4 @@ select.mdb-select.initialized {
     margin-bottom: 1rem;
   }
 }
+

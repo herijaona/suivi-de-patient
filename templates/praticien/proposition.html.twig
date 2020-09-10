@@ -46,7 +46,7 @@
                     <td></td>
                     <td>{{ pro.lastName }} {{ pro.firstName }}</td>
                     <td>
-                        <span class="btn btn-primary data-edit" data-id="{{ pro.id }}" ><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-primary data-edit" data-id="{{ pro.id }}" data-type="consultation" ><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ pro.id }}" ><i class="fa fa-trash-o"></i></span>
                     </td>
                 </tr>
@@ -63,7 +63,7 @@
                     <td>{{ vacc.vaccinName }}</td>
                     <td>{{ vacc.lastName }} {{ vacc.firstName }}</td>
                     <td>
-                        <span class="btn btn-primary data-edit" data-id="{{ vacc.id }}" ><i class="fa fa-pencil"></i></span>
+                        <span class="btn btn-primary data-edit" data-id="{{ vacc.id }}" data-type="vaccination" ><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ vacc.id }}" ><i class="fa fa-trash-o"></i></span>
                     </td>
 
@@ -115,11 +115,13 @@
         $('.data-edit').on('click', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
+            var type = $(this).data('type');
             $.ajax({
                 url: "{{ path('add_form_proposition_rdv') }}",
                 type: 'post',
                 data: {
                     id: id,
+                    type:type,
                     action: 'edit'
                 },
                 dataType: "json",
@@ -179,6 +181,7 @@
                 format: 'dd/mm/yyyy',
                 autoclose: true,
             })
+
         });
     </script>
 {% endblock %}

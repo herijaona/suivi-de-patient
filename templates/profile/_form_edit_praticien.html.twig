@@ -1,0 +1,87 @@
+<style>
+    .md-form.row-check {
+        flex-direction: row;
+        display: flex;
+    }
+
+</style>
+<div class="modal-header text-center">
+    <h4 class="modal-title white-text w-100 font-weight-bold py-2">
+        Modification
+    </h4>
+
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true" class="white-text">&times;</span>
+    </button>
+</div>
+<!--Content-->
+{{ form_start(form , {'attr': {'action': path('editPr') }}) }}
+<!--Body-->
+<div class="modal-body" style="width:100%; padding: 2rem">
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}Centre Health{% endtrans %}</label>
+        {{ form_widget(form.center_health, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
+        {{ form_widget(form.address, {'attr': {'class': 'form-control form-textarea'}}) }}
+    </div>
+    <div class="md-form " >
+        <label for="">{% trans %}Number Professional{% endtrans %}</label>
+        {{ form_widget(form.numero, {'attr': {'class': 'form-control'}}) }}
+
+    </div>
+</div>
+    <div class="md-form " style="display: none">
+        <label for="">{% trans %}Last name{% endtrans %}</label>
+        {{ form_widget(form.lastname, {'attr': {'class': 'form-control form-show'}}) }}
+
+    </div>
+    <div class="md-form " style="display: none">
+        <label for="">{% trans %}First name{% endtrans %}</label>
+        {{ form_widget(form.firstname, {'attr': {'class': 'form-control form-show'}}) }}
+
+    </div>
+
+<div class="md-form " style="display: none">
+    <label for="">{% trans %}Date of Birth{% endtrans %}</label>
+    {{ form_widget(form.date_naissance, {'attr': {'class': 'form-control form-show'}}) }}
+
+</div>
+<div class="md-form " style="display: none">
+    <label for="">{% trans %}Phone{% endtrans %}</label>
+    {{ form_widget(form.phone, {'attr': {'class': 'form-control form-show'}}) }}
+</div>
+<div class="md-form " style="display: none">
+    <label for="">{% trans %}Gender{% endtrans %}</label>
+    {{ form_widget(form.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe'}}) }}
+</div>
+<div class="md-form " style="display: none">
+    <label for="">{% trans %}Function{% endtrans %}</label>
+    {{ form_widget(form.fonction, {'attr': {'class': 'form-control form-show', 'placeholder': 'votre fonction'}}) }}
+</div>
+<div class="md-form " style="display: none">
+    <label for="">E-mail</label>
+    {{ form_widget(form.email, {'attr': {'class': 'form-control form-show'}}) }}
+</div>
+<div class="md-form " style="display: none">
+    <label for="">{% trans %}Country{% endtrans %}</label>
+    {{ form_widget(form.country, {'attr': {'class': 'form-control form-show', 'placeholder': 'Country'}}) }}
+</div>
+<div class="md-form " style="display: none">
+    <label for="">Username</label>
+    {{ form_widget(form.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant'}}) }}
+</div>
+
+<div class="md-form " style="display: none">
+    <label for="">{% trans %}Password{% endtrans %}</label>
+    {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe'}}) }}
+</div>
+
+
+<div class="modal-footer justify-content-center">
+    <button type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" aria-label="Close"><i class="fas fa-remove ml-1"></i> {% trans %}Cancel{% endtrans %} </button>
+    <button type="submit" class="btn btn-outline-primary waves-effect submit_new_center_health"><i class="fas fa-save ml-1"></i> {% trans %}Save{% endtrans %} </button>
+</div>
+
+{{ form_end(form) }}
