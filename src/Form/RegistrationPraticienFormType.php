@@ -27,10 +27,18 @@ class RegistrationPraticienFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('username')
-            ->add('lastname')
-            ->add('firstname')
+            ->add('email', EmailType::class,[
+                'required'   => false,
+            ])
+            ->add('username', null,[
+                'required'   => false,
+            ])
+            ->add('lastname', null,[
+                'required'   => false,
+            ])
+            ->add('firstname', null,[
+                'required'   => false,
+            ])
             ->add('center_health', EntityType::class, [
                 'class' => CentreHealth::class,
 
@@ -45,8 +53,12 @@ class RegistrationPraticienFormType extends AbstractType
                 },
                 'placeholder' => 'Votre centre de santé',
             ])
-            ->add('date_naissance')
-            ->add('phone')
+            ->add('date_naissance', null,[
+                'required'   => false,
+            ])
+            ->add('phone', null,[
+                'required'   => false,
+            ])
             ->add('numero' , null,[
                 'required'   => false,
             ])
@@ -60,14 +72,18 @@ class RegistrationPraticienFormType extends AbstractType
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('s');
                 },
+                'required'=>false,
                 'choice_value' => 'id',
                 'choice_label' => function (?State $state) {
                     return $state ? strtoupper($state->getNameState()) : '';
                 },
                 'placeholder' => 'Choisir Votre Pays de domicile',
             ])
-            ->add('fonction')
+            ->add('fonction', null,[
+                'required'   => false,
+            ])
             ->add('sexe', ChoiceType::class, array(
+                'required'=>false,
                 'choices' => array(
                     'Feminin' => 'Feminin',
                     'Masculin' => 'Masculin'
@@ -78,6 +94,7 @@ class RegistrationPraticienFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
+                'required'=>false,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un mot de passe',

@@ -45,7 +45,7 @@
                     </td>
                     <td>
                         {% if rdv.statusConsultation == 0 %}
-                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
+                            <p class="badge badge-warning textf">{% trans %}waiting{% endtrans %}</p>
                         {% endif %}
                     </td>
                     <td>
@@ -71,7 +71,7 @@
                     </td>
                     <td>
                         {% if proposition.statusProposition == 1 %}
-                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
+                            <p class="badge badge-warning textf ">{% trans %}waiting{% endtrans %}</p>
                         {% endif %}
                     </td>
                     <td>
@@ -99,7 +99,7 @@
                         </td>
                         <td>
                             {% if proposition.statusProposition == 1 %}
-                                <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
+                                <p class="badge badge-warning textf ">{% trans %}waiting{% endtrans %}</p>
                             {% endif %}
                         </td>
                         <td>
@@ -129,7 +129,7 @@
 
                     <td>
                         {% if vac.statusVaccin == 0 %}
-                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
+                            <p class="badge badge-warning textf ">{% trans %}waiting{% endtrans %}</p>
                         {% endif %}
                     </td>
                     <td>
@@ -155,7 +155,7 @@
 
                     <td >
                         {% if intervention.statusVaccin == 0 %}
-                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
+                            <p class="badge badge-warning textf ">{% trans %}waiting{% endtrans %}</p>
                         {% endif %}
                     </td>
                     <td>

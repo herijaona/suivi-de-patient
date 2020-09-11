@@ -48,7 +48,7 @@
                         {% if carnet.vaccinState == 0 %}
                             <span class="badge badge-success badge-style modif-carnet" data-etat="{{ carnet.vaccinState }}" data-id = {{ carnet.id }} >{% trans %}Realize{% endtrans %}</span>
                         {% else %}
-                            <span class="badge badge-info badge-style ">{% trans %}Realized{% endtrans %}</span>
+                            <p class="badge badge-info textf">{% trans %}Realized{% endtrans %}</p>
                         {% endif %}
                         <span class="badge badge-primary badge-style edit-date-carnet" data-id = {{ carnet.id }} >{% trans %}Edit{% endtrans %}</span>
                     </td>

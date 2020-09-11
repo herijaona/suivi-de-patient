@@ -40,9 +40,9 @@
                     </td>
                     <td>
                         {% if rdv.etat == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                            <p class="badge badge-info textf">{% trans %}Realized{% endtrans %}</p>
                         {% elseif rdv.etat == 0 %}
-                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                            <p class="badge badge-warning textf">{% trans %}waiting{% endtrans %}</p>
                         {% endif %}
 
                     </td>
@@ -63,9 +63,9 @@
                     </td>
                     <td>
                         {% if rdv.etat == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                            <p class="badge badge-info textf">{% trans %}Realized{% endtrans %}</p>
                         {% elseif rdv.etat == 0 %}
-                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
+                            <p class="badge badge-warning textf">{% trans %}waiting{% endtrans %}</p>
                         {% endif %}
 
                     </td>

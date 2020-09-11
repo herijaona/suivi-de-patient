@@ -42,11 +42,11 @@
                     </td>
                     <td>
                         {% if rdv.statusVaccin == 1 %}
-                            <span class="btn btn-primary validation_width ">{% trans %}Validate{% endtrans %}</span>
+                            <p class="badge badge-info validation_width">{% trans %}Validate{% endtrans %}</p>
                         {% elseif rdv.statusVaccin == 0 %}
-                            <span class="btn  btn-secondary  validation_width ">{% trans %}waiting{% endtrans %}</span>
+                            <p class="badge badge-warning validation_width">{% trans %}waiting{% endtrans %}</p>
                         {% elseif rdv.statusVaccin == 2 %}
-                            <span class="btn  btn-danger  validation_width ">{% trans %}Reject{% endtrans %}</span>
+                            <p class="badge badge-danger validation_width">{% trans %}Reject{% endtrans %}</p>
                         {% endif %}
                     </td>
                 </tr>

@@ -43,9 +43,9 @@
                             <span class="badge badge-success badge-style modif-status"  data-type="intervention"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePriseVaccin |date}}">{% trans %}Realize{% endtrans %}</span>
                             <span  class="badge badge-danger badge-style modif-status" data-type="intervention"   data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}" data-date="{{ vac.datePriseVaccin |date}}">{% trans %}Reject{% endtrans %}</span>
                         {% elseif vac.statusVaccin == 1 %}
-                            <span class="badge badge-info badge-style ">{% trans %}Realized{% endtrans %}</span>
+                            <p class="badge badge-info textf">{% trans %}Realized{% endtrans %}</p>
                         {% elseif vac.statusVaccin == 2 %}
-                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                            <p class="badge badge-danger textf">{% trans %}Reject{% endtrans %}</p>
                         {% endif %}
                     </td>
                 </tr>
@@ -65,12 +65,12 @@
                     </td>
                     <td >
                         {% if proposition.etat == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
+                            <p class="badge badge-info textf">{% trans %}Realized{% endtrans %}</p>
                         {% elseif proposition.etat == 0 %}
                             <span  class="badge badge-success badge-style modif-status" data-id="{{ proposition.id }}" data-type="proposition" data-action="active" data-etat="{{ proposition.etat }}">{% trans %}Accept{% endtrans %}</span>
                             <span  class="badge badge-danger badge-style modif-status" data-id="{{ proposition.id }}" data-type="proposition" data-action="reject" data-etat="{{ proposition.etat }}">{% trans %}Reject{% endtrans %}</span>
                         {% elseif proposition.etat == 2 %}
-                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                            <p class="badge badge-danger textf">{% trans %}Reject{% endtrans %}</p>
                         {% endif %}
                     </td>
                 </tr>

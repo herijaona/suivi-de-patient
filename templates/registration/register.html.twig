@@ -199,17 +199,13 @@
             $('#registration_form_sexe').on('change', createUsername);
             $('#registration_form_date_naissance').on('change', createUsername);
             $("#registration_form_type_patient").on('change', createUsername);
-            function cb(d) {
                 $('#registration_form_date_naissance').datepicker({
                     language: 'fr',
                     format: 'dd/mm/yyyy',
                     autoclose: true,
-                    endDate: d,
+                    endDate: '-16y',
                     todayHighlight: true
                 });
-            }
-
-
             $("#registration_form_type_patient").on('change', function (e) {
                 loadDatePicker($("#registration_form_type_patient").val());
 

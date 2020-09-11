@@ -328,6 +328,8 @@ select.mdb-select.initialized {
 
 .validation_width {
   width: 10rem !important;
+  height: 29px;
+  font-size: 20px;
 }
 
 /* Dashboard */
@@ -582,6 +584,12 @@ select.mdb-select.initialized {
   margin-top: 1px;
   margin-left: 96px;
   height: 35px;
+}
+.textf{
+  font-size: 13px;
+  width: 75px;
+  height: 31px;
+  padding-top: 8px;
 }
 
 @media (max-width: 700px) {

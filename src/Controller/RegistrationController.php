@@ -88,6 +88,7 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $code = $this->generate_code();
+
             // encode the plain password
             $last_name = $form->get('lastname')->getData();
             $date= $form->get('date_naissance')->getData();
@@ -116,7 +117,6 @@ class RegistrationController extends AbstractController
             $patientRequest = $form->get('enceinte')->getData();
             if($patientRequest == "true"){
                 $etat = true;
-                $code =  $last_name[0].$this->generate_code(5);
             }else{
                 $etat = false;
             }
