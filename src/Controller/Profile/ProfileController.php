@@ -80,7 +80,7 @@ class ProfileController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      */
-    public function  form_edit_praticien(Request $request){
+    public function form_edit_praticien(Request $request){
         $pra=[];
         $pra['id']= $request->request->get('id');
         $praticien = $this->praticienRepository->find($pra['id']);

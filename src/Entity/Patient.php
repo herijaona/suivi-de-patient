@@ -215,6 +215,11 @@ class Patient
      */
     private $associers;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $dateEnceinte;
+
 
 
 
@@ -983,6 +988,18 @@ class Patient
                 $associer->setPatient(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateEnceinte(): ?\DateTimeInterface
+    {
+        return $this->dateEnceinte;
+    }
+
+    public function setDateEnceinte(?\DateTimeInterface $dateEnceinte): self
+    {
+        $this->dateEnceinte = $dateEnceinte;
 
         return $this;
     }

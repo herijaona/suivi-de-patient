@@ -115,7 +115,6 @@ class RegistrationFormType extends AbstractType
             'Oui' => 'true',
             'Non' => 'false'
         ],
-        'required'   => false,
         'expanded' => true,
         'multiple' => false,
         'placeholder' => 'Choisire une option',

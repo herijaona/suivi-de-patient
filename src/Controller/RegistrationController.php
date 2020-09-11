@@ -115,19 +115,22 @@ class RegistrationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $patientRequest = $form->get('enceinte')->getData();
+
+            $patient = new Patient();
             if($patientRequest == "true"){
                 $etat = true;
+                $dateenceinte = new DateTime();
+
+                $patient->setDateEnceinte($dateenceinte);
             }else{
                 $etat = false;
             }
-            $patient = new Patient();
             $patient->setFirstName($first_name);
             $patient->setLastName($last_name);
             $patient->setAddress($adresse);
             $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($date);
             $patient->setTypePatient($type_patient);
-
             $patient->setState($form->get('country')->getData());
             $patient->setPhone($form->get('phone')->getData());
             $patient->setIsEnceinte($etat);

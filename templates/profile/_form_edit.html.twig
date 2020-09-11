@@ -26,6 +26,10 @@
         <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
         {{ form_widget(form.address, {'attr': {'class': 'form-control form-textarea'}}) }}
     </div>
+    <div class="md-form" style="display: none" >
+        <label class="active" for="form1">{% trans %}Pregnant{% endtrans %}</label>
+        {{ form_widget(form.enceinte, {'attr': {'class': 'form-control'}})}}
+    </div>
     <div class="md-form " style="display: none">
         <label for="">{% trans %}Last name{% endtrans %}</label>
         {{ form_widget(form.lastname, {'attr': {'class': 'form-control form-show', 'placeholder': 'm style="display: none" '}}) }}
@@ -71,10 +75,7 @@
         {{ form_widget(form.namemonther, {'attr': {'class': 'form-control mb-3  form-show'}}) }}
 
     </div>
-    <div class="md-form " style="display: none" >
-        <label for="">{% trans %}Pregnant{% endtrans %}</label>
-        {{ form_widget(form.enceinte, {'attr': {'class': 'form-control mb-3  form-show'}}) }}
-    </div>
+
     <div class="md-form " style="display: none">
         <label for="">{% trans %}Password{% endtrans %}</label>
         {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe'}}) }}
@@ -85,5 +86,17 @@
         <button type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" aria-label="Close"><i class="fas fa-remove ml-1"></i> {% trans %}Cancel{% endtrans %} </button>
         <button type="submit" class="btn btn-outline-primary waves-effect submit_new_center_health"><i class="fas fa-save ml-1"></i> {% trans %}Save{% endtrans %} </button>
     </div>
-
 {{ form_end(form) }}
+{% block javascripts %}
+<script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+<script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+<script>
+
+    $("#registration_form_enceinte_1").attr("checked", true);
+
+
+</script>
+{% endblock %}
+
+
+

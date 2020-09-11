@@ -630,9 +630,9 @@ class PatientController extends AbstractController
     {
         $user = $this->getUser();
         $data = 'KO';
+        $patient =$this->patientRepository->findOneBy(['user'=>$user]);
         if ($praticien){
-            $associate = $this->associerRepository->findOneBy(['patient' => $this->patientRepository->find($user->getId()), 'praticien' => $praticien]);
-
+            $associate = $this->associerRepository->findOneBy(['patient' => $patient, 'praticien' => $praticien]);
             if ($associate != null) $data = 'OK';
         }
         return new JsonResponse(['status' => $data]);

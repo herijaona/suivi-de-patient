@@ -31,9 +31,9 @@
                     </div>
                 </div>
                 <div class="row form-group">
-                    <div class="col-lg-6">
+                    <div class="col-lg-6 ">
                         <label for="">{% trans %}Patient type{% endtrans %}</label> {{ form_widget(registrationForm.type_patient, {'attr': {'class': 'form-control form-show', 'placeholder': 'Type patient'}}) }}
-                        <input type="text" class="form-control form-edit" placeholder="{{ values.TypePatient.typePatientName }}">
+                        <input type="text" class="form-control form-edit type" value="{{ values.TypePatient.typePatientName }}">
                     </div>
                     <div class="col-lg-6">
                         <label for="">{% trans %}Address{% endtrans %}</label> {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-show', 'placeholder': 'Adresse','value': values.address}}) }}
@@ -44,7 +44,7 @@
                 <div class="row form-group">
                     <div class="col-lg-6">
                         <label for="">{% trans %}Gender{% endtrans %}</label> {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe', 'value':values.sexe }}) }}
-                        <input type="text" class="form-control form-edit" placeholder="{{ values.sexe}}">
+                        <input type="text" class="form-control form-edit sexe" value="{{ values.sexe}}">
 
                     </div>
                     <div class="col-lg-6">
@@ -82,7 +82,18 @@
 
                     <div class="col-md-6 enceinte" >
                         <label for="">{% trans %}Pregnant{% endtrans %}</label> {{ form_widget(registrationForm.enceinte, {'attr': {'class': 'form-control mb-3  form-show', 'value':  values.isEnceinte }}) }}
-                        <input type="checkbox" class="form-control form-edit" placeholder="{{ values.isEnceinte}}">
+                        {% if values.isEnceinte == 1%}
+                            <label>Oui</label>
+                            <input  type="checkbox" style="position: relative; margin-top: -29px;margin-left: 42px;width: 24px;" class="form-control form-edit" checked >
+                            <label>Non</label>
+                            <input type="checkbox" style="margin-top: -27px; margin-left: 40px;width: 24px;" class="form-control form-edit">
+                        {% else %}
+                            <label>Oui</label>
+                            <input type="checkbox" style="position: relative; margin-top: -29px;margin-left: 42px;" class="form-control form-edit" >
+                            <label>Non</label>
+                            <input type="checkbox" class="form-control form-edit non" checked>
+                        {% endif %}
+
 
                     </div>
                     <div class="col-lg-6 password">
@@ -105,6 +116,7 @@
     <script>
     $('.form-show').css('display', 'none');
     $('.password').css('display', 'none');
+
     $('.enceinte').css('display', 'none');
     $('.btn-edit').on('click', function (e) {
             e.preventDefault();
@@ -129,6 +141,9 @@
                 $(".loadBody").css("display", "none");
             });
     });
+    if ($('.type').val()=="ADULTE" && $('.sexe').val()=="Feminin" ){
+        $('.enceinte').css('display', 'block');
+    }
 
 
 

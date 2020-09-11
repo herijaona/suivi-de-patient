@@ -86,7 +86,7 @@
                 <div class="row form-group ml-3" id="form" >
                     <label> Enceinte</label>
                     <div class="row form-group ">
-                        {{ form_widget(registrationForm.enceinte)  }}
+                        {{ form_widget(registrationForm.enceinte)   }}
                     </div>
                 </div>
 
@@ -102,7 +102,7 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
-
+        $("#registration_form_enceinte_1").attr("checked", true);
         $('#submit_register').click(function(e) {
             if (!$('#register-form').valid()) {
                 e.preventDefault();
@@ -284,9 +284,6 @@
             });
 
             });
-
-
-
 
     </script>
 {% endblock %}

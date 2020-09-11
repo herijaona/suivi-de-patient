@@ -103,6 +103,7 @@
                     type: 'post',
                     dataType: "json",
                     success: (data) => {
+                        console.log(data);
                         if(data.status == "OK"){
                             $('.association-form').css('display', 'none');
                         }else{

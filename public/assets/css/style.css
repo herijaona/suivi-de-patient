@@ -85,6 +85,12 @@ ul {
 .col_exc_2 {
   width: 82%;
 }
+.oui{
+  position: relative;
+  margin-top: -29px;
+
+  margin-left: 42px;
+}
 
 .h4_patient {
   font-family: "roboto-medium";
