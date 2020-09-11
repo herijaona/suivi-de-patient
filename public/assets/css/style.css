@@ -665,6 +665,9 @@ select.mdb-select.initialized {
     font-weight: bold;
   }
 }
+input {
+  text-align: center
+}
 
 @media (max-width: 990px) {
   .col-lg-6 .form-control {
