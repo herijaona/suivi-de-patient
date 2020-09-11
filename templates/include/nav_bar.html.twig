@@ -116,9 +116,7 @@
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/croppie.js') }}" type="text/javascript"></script>
 <script>
-    $test= $('.active').parent().addClass('parentactive');
-    console.log($test);
-
+    $('.active').parent().addClass('parentactive');
     $('.bar-container').click(function(){
         $('.menu-container').toggle('show');
     })
