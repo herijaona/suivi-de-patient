@@ -666,7 +666,7 @@ select.mdb-select.initialized {
   }
 }
 input {
-  text-align: center
+  text-align: center;
 }
 
 @media (max-width: 990px) {
