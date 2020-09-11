@@ -92,8 +92,9 @@
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
                 <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}"><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Vaccination Schedule{% endtrans %}</a></li>
+
                 <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler') or currentPath == path('rdv_valider') or currentPath == path('create_rdv') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">{% trans %} Appointment {% endtrans %}</a>
-                    <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
+                    <ul id="rdv" class="collapse"  aria-labelledby="rdv" data-parent="#side-bar-menu">
                         <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}New {% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" ><img src="{{ asset('assets/images/icon/progress.png') }}" class="img-left-menu rounded-circle">{% trans %}Awaiting{% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('rdv_valider')) ? 'active' :''  }}"> <a href="{{ path('rdv_valider') }}" ><img src="{{ asset('assets/images/icon/accept.png') }}" class="img-left-menu rounded-circle">{% trans %}Validate{% endtrans %}</a></li>
@@ -115,6 +116,9 @@
     <script src="{{ asset('assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/croppie.js') }}" type="text/javascript"></script>
 <script>
+    $test= $('.active').parent().addClass('parentactive');
+    console.log($test);
+
     $('.bar-container').click(function(){
         $('.menu-container').toggle('show');
     })
@@ -198,6 +202,7 @@
                 }
             })
     });
+
 
 
 </script>
