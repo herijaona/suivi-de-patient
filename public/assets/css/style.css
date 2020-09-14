@@ -515,6 +515,7 @@ select.mdb-select.initialized {
 
 .form-control {
   height: 38px;
+  text-align: center;
 }
 
 .form-edit {
