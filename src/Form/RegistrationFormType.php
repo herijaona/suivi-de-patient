@@ -110,15 +110,15 @@ class RegistrationFormType extends AbstractType
                 'placeholder' => 'Choisir Votre Pays de domicile',
             ])
 
-        ->add('enceinte', ChoiceType::class, [
-        'choices'  => [
-            'Oui' => 'true',
-            'Non' => 'false'
-        ],
-        'expanded' => true,
-        'multiple' => false,
-        'placeholder' => 'Choisire une option',
-    ]);
+            ->add('enceinte', ChoiceType::class, [
+            'choices'  => [
+                'Oui' => 'true',
+                'Non' => 'false'
+            ],
+            'expanded' => true,
+            'multiple' => false,
+            'placeholder' => 'Choisire une option',
+        ]);
 
     }
 

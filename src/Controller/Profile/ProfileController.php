@@ -86,7 +86,6 @@ class ProfileController extends AbstractController
         $praticien = $this->praticienRepository->find($pra['id']);
         $pra['numero']= $praticien->getNumeroProfessionnel();
         $pra['address']=$praticien->getAddress();
-
         $ordonance= $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
         $pra['center_health']= $ordonance->getCentreSante();
         $form = $this->createForm(RegistrationPraticienFormType::class, $pra);
@@ -110,10 +109,13 @@ class ProfileController extends AbstractController
         $patient = $this->patientRepository->find($pro['id']);
         $pro['type_patient'] = $patient->getTypePatient();
         $pro['address']= $patient->getAddress();
-        $pro['enceinte']=$patient->getIsEnceinte();
+        $pro['sexe']=$patient->getSexe();
+        $pro['type_patient']=$patient->getTypePatient();
+        $enceinte= $patient->getIsEnceinte();
         $form = $this->createForm(RegistrationFormType::class, $pro);
         $response = $this->renderView('profile/_form_edit.html.twig', [
             'form' => $form->createView(),
+            'enceinte'=>$enceinte,
             'eventData' => $pro,
         ]);
         $form->handleRequest($request);
@@ -227,9 +229,19 @@ class ProfileController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $pro);
         $form->handleRequest($request);
         $address= $form->get('address')->getData();
+        $enceinte = $request->request->get('liste');
+        $date = new \DateTime();
         $type = $form->get('type_patient')->getData();
         $user= $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        if($enceinte != null ){
+            if($enceinte == 1) {
+                $patient->setIsenceinte($enceinte);
+                $patient->setDateEnceinte($date);
+            }elseif($enceinte == 0){
+                $patient->setIsenceinte($enceinte);
+            }
+        }
         $patient->setTypePatient($type);
         $patient->setAddress($address);
         $this->entityManager->persist($patient);

@@ -26,12 +26,23 @@
         <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
         {{ form_widget(form.address, {'attr': {'class': 'form-control form-textarea'}}) }}
     </div>
-    <div class="md-form" style="display: none" >
-        <label class="active" for="form1">{% trans %}Pregnant{% endtrans %}</label>
-        {{ form_widget(form.enceinte, {'attr': {'class': 'form-control'}})}}
+    <div class="md-form enceinte">
+        <label class="active" for="form1">{% trans %}Pregnant{% endtrans %}</label><br>
+        {% if enceinte == true %}
+            <input type="radio" id="true" name="liste" value= 1 checked>
+            <label for="true">Oui</label>
+            <input type="radio" id="false" name="liste" value= 0 >
+            <label for="true">Non</label>
+        {% else %}
+            <input type="radio" id="true" name="liste" value= 1 >
+            <label for="true">Oui</label>
+            <input type="radio" id="false" name="liste" value= 0 checked>
+            <label for="true">Non</label>
+        {% endif %}
     </div>
     <div class="md-form " style="display: none">
         <label for="">{% trans %}Last name{% endtrans %}</label>
+        {{ form_widget(form.enceinte, {'attr': {'class': 'form-control' }}) }}
         {{ form_widget(form.lastname, {'attr': {'class': 'form-control form-show', 'placeholder': 'm style="display: none" '}}) }}
 
     </div>
@@ -91,9 +102,14 @@
 <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
 <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
 <script>
-
-
+    $('.enceinte').css('display', 'none');
+    if ($('.type').val()=="ADULTE" && $('.sexe').val()=="Feminin" ){
+        $('.enceinte').css('display', 'block');
+    }
     $("#registration_form_enceinte_1").attr("checked", true);
+
+
+
 
 
 </script>

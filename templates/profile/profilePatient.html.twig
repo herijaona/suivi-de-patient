@@ -84,14 +84,14 @@
                         <label for="">{% trans %}Pregnant{% endtrans %}</label> {{ form_widget(registrationForm.enceinte, {'attr': {'class': 'form-control mb-3  form-show', 'value':  values.isEnceinte }}) }}
                         {% if values.isEnceinte == 1%}
                             <label>Oui</label>
-                            <input  type="checkbox" style="position: relative; margin-top: -29px;margin-left: 42px;width: 24px;" class="form-control form-edit" checked >
+                            <input  type="checkbox" style="position: relative; margin-top: -29px;margin-left: 42px;width: 25px;" class="form-control form-edit" checked >
                             <label>Non</label>
-                            <input type="checkbox" style="margin-top: -27px; margin-left: 40px;width: 24px;" class="form-control form-edit">
+                            <input type="checkbox" style="margin-top: -27px; margin-left: 40px;width: 25px;" class="form-control form-edit">
                         {% else %}
                             <label>Oui</label>
-                            <input type="checkbox" style="position: relative; margin-top: -29px;margin-left: 42px;" class="form-control form-edit" >
+                            <input type="checkbox" style="position: relative; margin-top: -29px;margin-left: 42px;width: 25px; " class="form-control form-edit" >
                             <label>Non</label>
-                            <input type="checkbox" class="form-control form-edit non" checked>
+                            <input type="checkbox" style="margin-top: -27px; margin-left: 40px;width: 25px;"  class="form-control form-edit non" checked>
                         {% endif %}
 
 
