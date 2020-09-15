@@ -95,6 +95,8 @@ class RegistrationController extends AbstractController
             $date= DateTime::CreateFromFormat("d/m/Y", $date);
             $first_name = $form->get('firstname')->getData();
             $adresse= $form->get('address')->getData();
+            $city = $request->request->get('city');
+            $city =$this->cityRepository->find($city);
             $username = $form->get('username')->getData();
             $type_patient = $form->get('type_patient')->getData();
             $user = new User();
@@ -130,6 +132,7 @@ class RegistrationController extends AbstractController
             $patient->setAddress($adresse);
             $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($date);
+            $patient->setCity($city);
             $patient->setTypePatient($type_patient);
             $patient->setState($form->get('country')->getData());
             $patient->setPhone($form->get('phone')->getData());
@@ -194,7 +197,6 @@ class RegistrationController extends AbstractController
             $centre = $form->get('center_health')->getData();
             $date = $form->get('date_naissance')->getData();
             $date= DateTime::CreateFromFormat("d/m/Y", $date);
-
             $user = new User();
             $user->setLastName($last_name);
             $user->setFirstName($first_name);

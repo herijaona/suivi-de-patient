@@ -62,6 +62,7 @@ class RegistrationFormType extends AbstractType
                 'choice_label' => function (?TypePatient $typePatient) {
                     return $typePatient ? strtoupper($typePatient->getTypePatientName()) : '';
                 },
+                'attr' => array('class' => 'form-control chosen-select'),
                 'placeholder' => 'Type de patient',
             ])
             ->add('namedaddy', null, [
@@ -70,8 +71,6 @@ class RegistrationFormType extends AbstractType
             ->add('namemonther', null, [
                 'required'   => false
             ])
-
-
             ->add('sexe', ChoiceType::class, array(
                 'choices' => array(
                     'Feminin' => 'Feminin',
@@ -107,7 +106,7 @@ class RegistrationFormType extends AbstractType
                 'choice_label' => function (?State $state) {
                     return $state ? strtoupper($state->getNameState()) : '';
                 },
-                'placeholder' => 'Choisir Votre Pays de domicile',
+                'placeholder' => 'Choisir Votre Pays de Residence',
             ])
 
             ->add('enceinte', ChoiceType::class, [

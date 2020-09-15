@@ -665,8 +665,6 @@ select.mdb-select.initialized {
     font-weight: bold;
   }
 }
-
-
 @media (max-width: 990px) {
   .col-lg-6 .form-control {
     margin-bottom: 1rem;
