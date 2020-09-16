@@ -193,7 +193,8 @@ class RegistrationController extends AbstractController
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
             $email = $form->get('email')->getData();
-
+            $city = $request->request->get('city');
+            $city =$this->cityRepository->find($city);
             $centre = $form->get('center_health')->getData();
             $date = $form->get('date_naissance')->getData();
             $date= DateTime::CreateFromFormat("d/m/Y", $date);
@@ -217,6 +218,7 @@ class RegistrationController extends AbstractController
             $praticien = new Praticien();
             $praticien->setFirstName($first_name);
             $praticien->setLastName($last_name);
+            $praticien->setCity($city);
             $praticien->setSexe($form->get('sexe')->getData());
             $praticien->setCreatedAt(new \DateTime('now'));
             $praticien->setDateBorn($date);
@@ -272,6 +274,7 @@ class RegistrationController extends AbstractController
             $patient->setPhone($form->get('phone')->getData());
             $patient->setAddress($form->get('address')->getData());
             $patient->setTypePatient($typePatient);
+            $patient->setCity($city);
             $patient->setEtat(false);
             $patient->setUser($user2);
             $entityManager->persist($patient);

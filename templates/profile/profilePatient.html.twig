@@ -43,8 +43,10 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                        <label for="">{% trans %}Gender{% endtrans %}</label> {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe', 'value':values.sexe }}) }}
-                        <input type="text" class="form-control form-edit sexe" value="{{ values.sexe}}">
+
+                        <label for="">{% trans %}City of Residence{% endtrans %}</label>
+                        <input type="text" class="form-control form-edit " value="{{ values.city}}">
+
 
                     </div>
                     <div class="col-lg-6">
@@ -56,8 +58,7 @@
 
                     <div class="col-lg-6">
                         <label for="">{% trans %}Country{% endtrans %}</label> {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control form-show', 'placeholder': 'Country', 'value': values.state}}) }}
-                        <input type="text" class="form-control form-edit" placeholder="{{ values.state }}">
-
+                        <input type="text" class="form-control form-edit" placeholder="{{ values.state }} {{ values.city }}">
                     </div>
                     <div class="col-lg-6">
                         <label for="">Username</label> {{ form_widget(registrationForm.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant', 'value': values.user.username}}) }}
@@ -65,19 +66,28 @@
                     </div>
                 </div>
                 <div class="row form-group">
-
                     <div class="col-md-6">
+                        <label for="">{% trans %}Gender{% endtrans %}</label> {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe', 'value':values.sexe }}) }}
+                        <input type="text" class="form-control form-edit sexe" value="{{ values.sexe}}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="">{% trans %}Place of Birth{% endtrans %}</label>
+                        <input type="text" class="form-control form-edit" value="{{ values.addressOnBorn}}">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6 pere">
                         <label for="">{% trans %}Name of the Father{% endtrans %}</label> {{ form_widget(registrationForm.namedaddy, {'attr': {'class': 'form-control mb-3 form-show', 'placeholder': 'nom de père' , 'value': values.fatherName}}) }}
                         <input type="text" class="form-control form-edit" placeholder="{{ values.fatherName }}">
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 mere">
 
                         <label for="">{% trans %}Mother's Name{% endtrans %}</label> {{ form_widget(registrationForm.namemonther, {'attr': {'class': 'form-control mb-3  form-show', 'placeholder': 'nom de mère', 'value': values.motherName }}) }}
                         <input type="text" class="form-control form-edit" placeholder="{{ values.motherName }}">
 
                     </div>
-
                 </div>
+
                 <div class="row form-group">
 
                     <div class="col-md-6 enceinte" >
@@ -118,6 +128,8 @@
     $('.password').css('display', 'none');
 
     $('.enceinte').css('display', 'none');
+    $('.mere').css('display', 'none');
+    $('.pere').css('display', 'none');
     $('.btn-edit').on('click', function (e) {
             e.preventDefault();
             var id = $(this).data('id');
@@ -143,6 +155,10 @@
     });
     if ($('.type').val()=="ADULTE" && $('.sexe').val()=="Feminin" ){
         $('.enceinte').css('display', 'block');
+    }
+    if($('.type').val()=="ENFANT"){
+        $('.mere').css('display', 'block');
+        $('.pere').css('display', 'block');
     }
 
 

@@ -111,11 +111,16 @@ class ProfileController extends AbstractController
         $pro['address']= $patient->getAddress();
         $pro['sexe']=$patient->getSexe();
         $pro['type_patient']=$patient->getTypePatient();
+        $pro['email']=$patient->getUser()->getEmail();
+        $phone= $patient->getPhone();
         $enceinte= $patient->getIsEnceinte();
+        $lieu = $patient->getAddressOnBorn();
         $form = $this->createForm(RegistrationFormType::class, $pro);
         $response = $this->renderView('profile/_form_edit.html.twig', [
             'form' => $form->createView(),
             'enceinte'=>$enceinte,
+            'lieu'=>$lieu,
+            'phone'=>$phone,
             'eventData' => $pro,
         ]);
         $form->handleRequest($request);
@@ -230,6 +235,8 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
         $address= $form->get('address')->getData();
         $enceinte = $request->request->get('liste');
+        $lieu = $request->request->get('lieu');
+        $phone = $request->request->get('phone');
         $date = new \DateTime();
         $type = $form->get('type_patient')->getData();
         $user= $this->getUser();
@@ -244,6 +251,8 @@ class ProfileController extends AbstractController
         }
         $patient->setTypePatient($type);
         $patient->setAddress($address);
+        $patient->setPhone($phone);
+        $patient->setAddressOnBorn($lieu);
         $this->entityManager->persist($patient);
         $this->entityManager->flush();
 

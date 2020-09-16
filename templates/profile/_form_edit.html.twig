@@ -26,6 +26,19 @@
         <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
         {{ form_widget(form.address, {'attr': {'class': 'form-control form-textarea'}}) }}
     </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}Phone{% endtrans %}</label>
+        <input type="text" class="form-control" value="{{ phone }}" name="phone">
+
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}Place of Birth{% endtrans %}</label>
+        <input type="text" class="form-control" value="{{ lieu }}" name="lieu">
+    </div>
+    <div class="md-form" >
+        <label class="active" for="form1">E-mail</label>
+        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+    </div>
     <div class="md-form enceinte">
         <label class="active" for="form1">{% trans %}Pregnant{% endtrans %}</label><br>
         {% if enceinte == true %}
@@ -40,6 +53,7 @@
             <label for="true">Non</label>
         {% endif %}
     </div>
+
     <div class="md-form " style="display: none">
         <label for="">{% trans %}Last name{% endtrans %}</label>
         {{ form_widget(form.enceinte, {'attr': {'class': 'form-control' }}) }}
@@ -51,23 +65,17 @@
         {{ form_widget(form.firstname, {'attr': {'class': 'form-control form-show'}}) }}
 
     </div>
+
 </div>
     <div class="md-form " style="display: none">
         <label for="">{% trans %}Date of Birth{% endtrans %}</label>
         {{ form_widget(form.date_naissance, {'attr': {'class': 'form-control form-show'}}) }}
 
     </div>
-    <div class="md-form " style="display: none">
-        <label for="">{% trans %}Phone{% endtrans %}</label>
-        {{ form_widget(form.phone, {'attr': {'class': 'form-control form-show'}}) }}
-    </div>
+
     <div class="md-form " style="display: none">
         <label for="">{% trans %}Gender{% endtrans %}</label>
         {{ form_widget(form.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe'}}) }}
-    </div>
-    <div class="md-form " style="display: none">
-        <label for="">E-mail</label>
-        {{ form_widget(form.email, {'attr': {'class': 'form-control form-show'}}) }}
     </div>
     <div class="md-form " style="display: none">
         <label for="">{% trans %}Country{% endtrans %}</label>
@@ -90,6 +98,7 @@
     <div class="md-form " style="display: none">
         <label for="">{% trans %}Password{% endtrans %}</label>
         {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe'}}) }}
+        {{ form_widget(form.phone, {'attr': {'class': 'form-control'}}) }}
     </div>
 
 

@@ -210,7 +210,6 @@ class PatientController extends AbstractController
         }elseif ($carnet != null){
             $typeRdvArrays = [
                 "consultation" => "CONSULTATION",
-                "intervention" =>"INTERVENTION"
             ];
         }
         $rdv = [];
@@ -311,7 +310,7 @@ class PatientController extends AbstractController
         $rdvRequest = $request->request->get("rdv");
         $type = $rdvRequest["typeRdv"];
         $doctor = $rdvRequest["praticiens"];
-        $vaccine = $rdvRequest["vaccin"];
+        $vaccine = $request->request->get('vaccin');
         $vaccine = $this->vaccinRepository->find($vaccine);
         $date = $rdvRequest["dateRdv"];
         $da= new \DateTime();
@@ -556,7 +555,7 @@ class PatientController extends AbstractController
         $typeRdvArrays = [
             "consultation" => "CONSULTATION",
             "vaccination" => "GENERATION CALENDRIER",
-            "intervention" =>"INTERVENTION"
+
         ];
 
 
@@ -662,6 +661,15 @@ class PatientController extends AbstractController
             if ($associate != null) $data = 'OK';
         }
         return new JsonResponse(['status' => $data]);
+    }
+    /**
+     * @Route("/vaccina", name="vaccinca")
+     */
+    public function vaccin(Request $request){
+        $user= $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $vaccin= $this->carnetVaccinationRepository->searchvaccinCar($patient);
+        return new JsonResponse($vaccin);
     }
 
 
