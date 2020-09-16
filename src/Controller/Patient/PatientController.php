@@ -13,6 +13,7 @@ use App\Entity\PatientIntervationConsultation;
 use App\Entity\PatientOrdoConsultation;
 use App\Entity\PatientOrdoVaccination;
 use App\Entity\Praticien;
+use App\Form\GenerationType;
 use App\Form\RdvType;
 use App\Form\RegistrationFormType;
 use App\Form\RegistrationPraticienFormType;
@@ -198,13 +199,21 @@ class PatientController extends AbstractController
      */
     public function create_rdv(Request $request)
     {
-        $typeRdvArrays = [
-             "consultation" => "CONSULTATION",
-             "vaccination" => "VACCINATION",
-             "intervention" =>"INTERVENTION"
+        $user = $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $carnet = $this->carnetVaccinationRepository->find($patient);
+        if($carnet == null){
+            $typeRdvArrays = [
+                "consultation" => "CONSULTATION",
+                "vaccination" => "GENERATION CALENDRIER"
             ];
+        }elseif ($carnet != null){
+            $typeRdvArrays = [
+                "consultation" => "CONSULTATION",
+                "intervention" =>"INTERVENTION"
+            ];
+        }
         $rdv = [];
-
         $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
         return $this->render('patient/_form_rdv.html.twig', [
             'new' => true,
@@ -275,6 +284,22 @@ class PatientController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/generation", name="generation")
+
+    public function generation(Request $request){
+        $generation = [];
+        $form = $this->createForm(GenerationType::class, $generation);
+        return $this->render('patient/_form_generation.html.twig', [
+            'new' => true,
+            'form' => $form->createView(),
+            'eventData' => $generation,
+        ]);
+
+
+    }
+     */
+
 
 
     /**
@@ -289,6 +314,7 @@ class PatientController extends AbstractController
         $vaccine = $rdvRequest["vaccin"];
         $vaccine = $this->vaccinRepository->find($vaccine);
         $date = $rdvRequest["dateRdv"];
+        $da= new \DateTime();
         $description = $rdvRequest["description"];
         $heure = $rdvRequest["heureRdv"];
         $Id = $rdvRequest["id"];
@@ -336,7 +362,7 @@ class PatientController extends AbstractController
                 }else{
                     $ordovaccination = new OrdoVaccination();
                 }
-                $ordovaccination->setDatePrise($Date_Rdv);
+                $ordovaccination->setDatePrise($da);
                 $ordovaccination->setOrdonnance($ordo);
                 $ordovaccination->setReferencePraticienExecutant($praticien);
                 $ordovaccination->setPatient($patient);
@@ -529,7 +555,7 @@ class PatientController extends AbstractController
         $rdv = [];
         $typeRdvArrays = [
             "consultation" => "CONSULTATION",
-            "vaccination" => "VACCINATION",
+            "vaccination" => "GENERATION CALENDRIER",
             "intervention" =>"INTERVENTION"
         ];
 

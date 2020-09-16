@@ -48,11 +48,11 @@
             <label class="active" for="form1">Description</label>
             {{ form_widget(form.description, {'attr': { 'class': 'form-control' }}) }}
         </div>
-        <div class="md-form ">
+        <div class="md-form date">
             <label class="active" for="form1">{% trans %}Appointment date{%  endtrans %}</label>
             {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control' }}) }}
         </div>
-        <div class="md-form ">
+        <div class="md-form heure ">
             <label class="active" for="form1">{% trans %}appointment Time {% endtrans %} </label>
             {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
         </div>
@@ -120,13 +120,19 @@
                 if($(this).val() == 'consultation'){
                     $('.vaccin_hidden').css("display", "none");
                     $('.description').css("display", "block");
+                    $('.date').css("display", "block");
+                    $('.heure').css("display", "block");
 
                 }else if($(this).val() == 'intervention'){
                     $('.vaccin_hidden').css("display", "block");
+                    $('.date').css("display", "block");
+                    $('.heure').css("display", "block");
                     $('.description').css("display", "none");
                 }else if($(this).val() == 'vaccination'){
                     $('.vaccin_hidden').css("display", "none");
                     $('.description').css("display", "none");
+                    $('.date').css("display", "none");
+                    $('.heure').css("display", "none");
                 }
             });
 

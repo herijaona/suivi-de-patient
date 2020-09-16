@@ -75,8 +75,6 @@
                         <li class="{{ (currentPath == path('admin_centre_health')) ? 'active' : '' }}"><a href="{{ path('admin_centre_health') }}"><img src="{{ asset('assets/images/icon/centre-de-sante.png') }}" class="img-left-menu rounded-circle">{% trans %}Health center {% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('admin_type_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_type_vaccin') }}"><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Vaccine Types{% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('admin_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_vaccin') }}"><img src="{{ asset('assets/images/icon/vaccin.png') }}" class="img-left-menu ">{% trans %}Vaccine {% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('admin_state')) ? 'active' : '' }}"><a href="{{ path('admin_state') }}"><img src="{{ asset('assets/images/icon/pays.png') }}" class="img-left-menu rounded-circle">{% trans %}Country{% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('admin_region')) ? 'active' : '' }}"><a href="{{ path('admin_region') }}"><img src="{{ asset('assets/images/icon/region.png') }}" class="img-left-menu rounded-circle">{% trans %}Region{% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('admin_city')) ? 'active' : '' }}"><a href="{{ path('admin_city') }}"><img src="{{ asset('assets/images/icon/ville.png') }}" class="img-left-menu rounded-circle">{% trans %}City{% endtrans %}</a></li>
                     </ul>
                 </li>
@@ -92,7 +90,6 @@
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
                 <li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}"><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Vaccination Schedule{% endtrans %}</a></li>
-
                 <li {% if (currentPath == path('rdv_patient') or currentPath == path('rdv_annuler') or currentPath == path('rdv_valider') or currentPath == path('create_rdv') or currentPath == path('rdv_annuler')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdv" class="collapse"  aria-labelledby="rdv" data-parent="#side-bar-menu">
                         <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}New {% endtrans %}</a></li>

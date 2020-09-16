@@ -16,6 +16,7 @@ class CityType extends AbstractType
             ->add('id', HiddenType::class)
             ->add('nameCity')
             ->add('region')
+            ->add('departement')
         ;
     }
 

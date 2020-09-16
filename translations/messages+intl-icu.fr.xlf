@@ -893,7 +893,30 @@
         <source>+ New Member</source>
         <target>+ Nouveau Membre</target>
       </trans-unit>
-
+      <trans-unit id="UwSrmOW" resname="Department">
+        <source>Department</source>
+        <target>Département</target>
+      </trans-unit>
+      <trans-unit id="WT3AGT7" resname="Business number">
+        <source>Business number</source>
+        <target>Numéro d'entreprise</target>
+      </trans-unit>
+      <trans-unit id="059BS0t" resname="Patient Type">
+        <source>Patient Type</source>
+        <target>Type de Patient</target>
+      </trans-unit>
+      <trans-unit id="6V1nTYO" resname="Centre Health">
+        <source>Centre Health</source>
+        <target>Centre de Santé</target>
+      </trans-unit>
+      <trans-unit id="xtSn67a" resname="Number Professional">
+        <source>Number Professional</source>
+        <target>Numéro Professionnel</target>
+      </trans-unit>
+      <trans-unit id="nffP7bU" resname="Generation request">
+        <source>Generation request</source>
+        <target>Demande Generation</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

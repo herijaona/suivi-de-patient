@@ -28,6 +28,7 @@ use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -162,7 +163,6 @@ class AdminController extends AbstractController
                 $i++;
             }
         }
-
         return new JsonResponse($evacc);
     }
 
@@ -296,7 +296,7 @@ class AdminController extends AbstractController
     /**
      * @Route("/vaccin/register", name="register_vaccin", methods={"POST"})
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function register_vaccin(Request $request, TranslatorInterface $translator)
     {

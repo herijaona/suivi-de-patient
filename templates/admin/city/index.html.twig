@@ -32,7 +32,8 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>{% trans %}city{% endtrans %}</th>
+                <th>{% trans %}City{% endtrans %}</th>
+                <th>{% trans %}Department{% endtrans %}</th>
                 <th>{% trans %}Region{% endtrans %}</th>
                 <th>{% trans %}Country{% endtrans %}</th>
                 <th></th>
@@ -41,15 +42,10 @@
             <tbody>
             {% for city in cities  %}
                 <tr>
-                    <td>
-                        {{ city.nameCity }}
-                    </td>
-                    <td>
-                        {{ city.region.nameRegion }}
-                    </td>
-                    <td>
-                        {{ city.region.state.nameState }}
-                    </td>
+                    <td>{{ city.nameCity }}</td>
+                    <td>{{ city.departement }}</td>
+                    <td>{{ city.region.nameRegion }}</td>
+                    <td>{{ city.region.state.nameState }}</td>
                     <td style="text-align: center">
                         <span class="btn btn-primary data-edit" data-id="{{ city.id }}"><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ city.id }}"><i class="fa fa-trash-o"></i></span>
@@ -101,7 +97,7 @@
                     $('#IdDocument').css('display', 'block');
                 }
                 console.log()
-                //if ()
+                //if ()k
             })
         });
         $(".new_city").on('click' , function(e) {
