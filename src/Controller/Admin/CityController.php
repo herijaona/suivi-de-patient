@@ -170,6 +170,7 @@ class CityController extends AbstractController
                     $region = $Row['C'];
                     $pays = $Row['D'];
                     $phone = $Row['E'];
+                    $arrondissement = $Row['F'];
                     $state = null;
                     $regions = null;
                     $city = null;
@@ -197,6 +198,7 @@ class CityController extends AbstractController
                         if ($city == null){
                             $city = new City();
                             $city->setNameCity($cityOrCommune);
+                            $city->setArrondissement($arrondissement);
                             $city->setRegion($regions);
                             $city->setDepartement($departement);
                             $this->entityManager->persist($city);

@@ -79,6 +79,11 @@ class City
      */
     private $departement;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Arrondissement;
+
  
 
 
@@ -352,6 +357,18 @@ class City
     public function setDepartement(?string $departement): self
     {
         $this->departement = $departement;
+
+        return $this;
+    }
+
+    public function getArrondissement(): ?string
+    {
+        return $this->Arrondissement;
+    }
+
+    public function setArrondissement(?string $Arrondissement): self
+    {
+        $this->Arrondissement = $Arrondissement;
 
         return $this;
     }
