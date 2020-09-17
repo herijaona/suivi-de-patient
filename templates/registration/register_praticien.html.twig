@@ -66,12 +66,10 @@
                 </div>
                  <div class="row form-group" >
                     <div class="col-lg-6">
-
-                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'votre mot de passe ', "minlength":"12", "matchPassword": "true"}}) }}
-
+                        {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Votre centre de santé'}}) }}
                     </div>
                      <div class="col-lg-6">
-                         {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Votre centre de santé'}}) }}
+                         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'votre mot de passe ', "minlength":"12", "matchPassword": "true"}}) }}
                      </div>
                      <div class="col-lg-6" style="display: none">
                          {{ form_widget(registrationForm.numero, {'attr': {'class': 'form-control'}}) }}
