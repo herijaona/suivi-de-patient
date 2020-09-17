@@ -34,6 +34,7 @@
             <tr>
                 <th>{% trans %}City{% endtrans %}</th>
                 <th>{% trans %}Department{% endtrans %}</th>
+                <th>{% trans %}Boroungh{% endtrans %}</th>
                 <th>{% trans %}Region{% endtrans %}</th>
                 <th>{% trans %}Country{% endtrans %}</th>
                 <th></th>
@@ -44,6 +45,7 @@
                 <tr>
                     <td>{{ city.nameCity }}</td>
                     <td>{{ city.departement }}</td>
+                    <td>{{ city.arrondissement }}</td>
                     <td>{{ city.region.nameRegion }}</td>
                     <td>{{ city.region.state.nameState }}</td>
                     <td style="text-align: center">

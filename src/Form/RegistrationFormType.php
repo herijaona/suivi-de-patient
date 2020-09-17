@@ -106,6 +106,7 @@ class RegistrationFormType extends AbstractType
                 'choice_label' => function (?State $state) {
                     return $state ? strtoupper($state->getNameState()) : '';
                 },
+
                 'placeholder' => 'Choisir Votre Pays de Residence',
             ])
 

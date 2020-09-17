@@ -44,7 +44,7 @@
                         {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date de naissance'}}) }}
                     </div>
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.country , {'attr': {'class': 'form-control', 'placeholder': 'Pays', "minlength":"3"}}) }}
+                        {{ form_widget(registrationForm.country , {'attr': {'class': 'form-control chosen-select', 'placeholder': 'Pays', "minlength":"3"}}) }}
                     </div>
                 </div>
 
@@ -55,7 +55,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class=" pt-2 pb-2">
-                            <select class="form-control" id="city" name="city" >
+                            <select class="form-control chosen-select" id="city" name="city" >
                                 <option value="" selected>Choisir ville de résidence</option>
                             </select>
                         </div>
@@ -198,6 +198,7 @@
 
         $(document).ready(function () {
 
+
             $('#form-parent').css("display", "none");
             $('#form').css("display", "none");
             $('#registration_form_username').attr("readonly", "true");
@@ -290,8 +291,10 @@
                     }
                 });
             });
+            $('.chosen-select').chosen();
 
             });
+
 
 
     </script>
