@@ -917,6 +917,18 @@
         <source>Generation request</source>
         <target>Demande Generation</target>
       </trans-unit>
+      <trans-unit id="UnGS9ir" resname="City of Residence">
+        <source>City of Residence</source>
+        <target>Ville de Résidence</target>
+      </trans-unit>
+      <trans-unit id="C1Epy29" resname="Place of Birth">
+        <source>Place of Birth</source>
+        <target>Lieu de Naissance</target>
+      </trans-unit>
+      <trans-unit id="PZU5.RF" resname="Borough">
+        <source>Borough</source>
+        <target>Arrondissement</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
