@@ -13,7 +13,6 @@
 {% block body %}
 
     {{ form_start(registrationForm) }}
-
     <div class="background-img"></div>
     <div class="body-page register" style="margin: 8rem">
         <div class="container text-center body-content ">
@@ -115,8 +114,6 @@
                 return false;
             }
         });
-
-
 
         $("#register-form").validate()
         function getRndInteger(min = 10000, max= 100000) {

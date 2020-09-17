@@ -75,6 +75,8 @@
                         <li class="{{ (currentPath == path('admin_centre_health')) ? 'active' : '' }}"><a href="{{ path('admin_centre_health') }}"><img src="{{ asset('assets/images/icon/centre-de-sante.png') }}" class="img-left-menu rounded-circle">{% trans %}Health center {% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('admin_type_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_type_vaccin') }}"><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Vaccine Types{% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('admin_vaccin')) ? 'active' : '' }}"><a href="{{ path('admin_vaccin') }}"><img src="{{ asset('assets/images/icon/vaccin.png') }}" class="img-left-menu ">{% trans %}Vaccine {% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('admin_state')) ? 'active' : '' }}"><a href="{{ path('admin_state') }}"><img src="{{ asset('assets/images/icon/pays.png') }}" class="img-left-menu rounded-circle">{% trans %}Country{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('admin_region')) ? 'active' : '' }}"><a href="{{ path('admin_region') }}"><img src="{{ asset('assets/images/icon/region.png') }}" class="img-left-menu rounded-circle">{% trans %}Region{% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('admin_city')) ? 'active' : '' }}"><a href="{{ path('admin_city') }}"><img src="{{ asset('assets/images/icon/ville.png') }}" class="img-left-menu rounded-circle">{% trans %}City{% endtrans %}</a></li>
                     </ul>
                 </li>
