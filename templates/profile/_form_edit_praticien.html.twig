@@ -20,16 +20,41 @@
 <div class="modal-body" style="width:100%; padding: 2rem">
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Centre Health{% endtrans %}</label>
-        {{ form_widget(form.center_health, {'attr': {'class': 'form-control'}}) }}
+        {{ form_widget(form.center_health, {'attr': {'class': 'form-control form-textarea'}}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}Function{% endtrans %}</label>
+        {{ form_widget(form.fonction, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="md-form " >
+        <label class="active" for="form1">{% trans %}Country of Fonction{% endtrans %}</label>
+        {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}City of Fonction{% endtrans %}</label>
+        <select class="form-control chosen-select" id="city" name="city" >
+            <option value="" selected>{{ city }}</option>
+        </select>
     </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
         {{ form_widget(form.address, {'attr': {'class': 'form-control form-textarea'}}) }}
     </div>
-    <div class="md-form " >
-        <label for="">{% trans %}Number Professional{% endtrans %}</label>
-        {{ form_widget(form.numero, {'attr': {'class': 'form-control'}}) }}
-
+    <div class="md-form" >
+        <label class="active" for="form1">{% trans %}Number Professional{% endtrans %}</label>
+        <input type="text" name="numero" id="numero" value="{{ numero }}" class="form-control" >
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}Place of Birth{% endtrans %}</label>
+        <input type="text" class="form-control" value="{{lieu}}" name="lieu" id="lieu">
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}Phone{% endtrans %}</label>
+        <input type="text" class="form-control" value="{{ phone }}" name="phone">
+    </div>
+    <div class="md-form ">
+        <label class="active" for="form1">E-mail</label>
+        {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
     </div>
 </div>
     <div class="md-form " style="display: none">
@@ -40,7 +65,6 @@
     <div class="md-form " style="display: none">
         <label for="">{% trans %}First name{% endtrans %}</label>
         {{ form_widget(form.firstname, {'attr': {'class': 'form-control form-show'}}) }}
-
     </div>
 
 <div class="md-form " style="display: none">
@@ -56,18 +80,8 @@
     <label for="">{% trans %}Gender{% endtrans %}</label>
     {{ form_widget(form.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe'}}) }}
 </div>
-<div class="md-form " style="display: none">
-    <label for="">{% trans %}Function{% endtrans %}</label>
-    {{ form_widget(form.fonction, {'attr': {'class': 'form-control form-show', 'placeholder': 'votre fonction'}}) }}
-</div>
-<div class="md-form " style="display: none">
-    <label for="">E-mail</label>
-    {{ form_widget(form.email, {'attr': {'class': 'form-control form-show'}}) }}
-</div>
-<div class="md-form " style="display: none">
-    <label for="">{% trans %}Country{% endtrans %}</label>
-    {{ form_widget(form.country, {'attr': {'class': 'form-control form-show', 'placeholder': 'Country'}}) }}
-</div>
+
+
 <div class="md-form " style="display: none">
     <label for="">Username</label>
     {{ form_widget(form.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant'}}) }}
@@ -76,6 +90,7 @@
 <div class="md-form " style="display: none">
     <label for="">{% trans %}Password{% endtrans %}</label>
     {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe'}}) }}
+
 </div>
 
 
@@ -85,3 +100,28 @@
 </div>
 
 {{ form_end(form) }}
+{% block javascripts %}
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+
+        $('#registration_praticien_form_country').on('change', function () {
+            var idcountry = $('#registration_praticien_form_country option:selected').val();
+            $.ajax({
+                method: "POST",
+                url: "{{ path('country') }}",
+                data: {id: idcountry},
+                success: function (response) {
+                    $('#city').empty();
+                    $.each(response, function (index, element) {
+                        $('#city').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
+                    });
+                }
+            });
+        });
+
+
+
+
+    </script>
+{% endblock %}

@@ -30,9 +30,7 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, [
-                'required'   => false
-            ])
+            ->add('email', EmailType::class)
             ->add('username',null, [
                 'required'   => false
             ])
@@ -45,9 +43,7 @@ class RegistrationFormType extends AbstractType
             ->add('date_naissance',null, [
                 'required'   => false
             ])
-            ->add('phone',null, [
-                'required'   => false
-            ])
+            ->add('phone')
             ->add('address', TextareaType::class, [
                 'attr' => [
                     'rows' => '3'
@@ -62,7 +58,6 @@ class RegistrationFormType extends AbstractType
                 'choice_label' => function (?TypePatient $typePatient) {
                     return $typePatient ? strtoupper($typePatient->getTypePatientName()) : '';
                 },
-                'attr' => array('class' => 'form-control chosen-select'),
                 'placeholder' => 'Type de patient',
             ])
             ->add('namedaddy', null, [
@@ -71,6 +66,8 @@ class RegistrationFormType extends AbstractType
             ->add('namemonther', null, [
                 'required'   => false
             ])
+
+
             ->add('sexe', ChoiceType::class, array(
                 'choices' => array(
                     'Feminin' => 'Feminin',
@@ -106,19 +103,18 @@ class RegistrationFormType extends AbstractType
                 'choice_label' => function (?State $state) {
                     return $state ? strtoupper($state->getNameState()) : '';
                 },
-
-                'placeholder' => 'Choisir Votre Pays de Residence',
+                'placeholder' => 'Choisir Votre Pays de domicile',
             ])
 
-            ->add('enceinte', ChoiceType::class, [
-            'choices'  => [
-                'Oui' => 'true',
-                'Non' => 'false'
-            ],
-            'expanded' => true,
-            'multiple' => false,
-            'placeholder' => 'Choisire une option',
-        ]);
+        ->add('enceinte', ChoiceType::class, [
+        'choices'  => [
+            'Oui' => 'true',
+            'Non' => 'false'
+        ],
+        'expanded' => true,
+        'multiple' => false,
+        'placeholder' => 'Choisire une option',
+    ]);
 
     }
 

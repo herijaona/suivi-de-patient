@@ -384,23 +384,16 @@ class PraticienController extends AbstractController
             } else {
                 $action = $request->request->get('id');
                 $rdv['id'] = $request->request->get('id');
-                $rdv['typeRdv']=$request->request->get('type');
                 $propos = $this->propositionRdvRepository->find($rdv['id']);
-                if($rdv['typeRdv']=="consultation"){
-                    $rdv['description'] = $propos->getDescriptionProposition();
-                    $rdv['dateRdv'] = $propos->getDateProposition();
-                }elseif($rdv['typeRdv']=="vaccination"){
-                    $rdv['dateRdv'] = $propos->getDateProposition();
-                    $rdv['vaccin']= $propos->getVaccin();
-                }
-                $rdv['patient']= $propos->getPatient()->getId();
+                $rdv['description'] = $propos->getDescriptionProposition();
+                $rdv['dateRdv'] = $propos->getDateProposition();
                 if ($rdv['dateRdv'] != '') {
                     $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
                     $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
                     $rdv['heureRdv'] = explode(' ', $date)[1];
                 }
-                $form = $this->createForm(PropositionRdvType::class, $rdv, ['patient' => $patient, 'typeRdvArrays' => $typeRdvArrays]);
-                $response = $this->renderView('praticien/_form_edit.html.twig', [
+                $form = $this->createForm(PropositionRdvType::class, $rdv, ['patient' => $patient]);
+                $response = $this->renderView('praticien/_form_proposition.html.twig', [
                     'new' => false,
                     'form' => $form->createView(),
                     'eventData' => $rdv,

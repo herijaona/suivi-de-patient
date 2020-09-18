@@ -40,7 +40,7 @@
                             {% if pro.statusProposition == 0  %}
                                 <span class="badge badge-success badge-style modif-etat" data-id ="{{ pro.id }}">{% trans %}Accept{% endtrans %}</span>
                             {% elseif pro.statusProposition == 1 %}
-                                <p class="badge badge-info textf">{% trans %}Accepted{% endtrans %}</p>
+                                <span class="badge badge-info badge-style ">{% trans %}Accepted{% endtrans %}</span>
                             {% endif %}
                         </td>
 
@@ -64,7 +64,7 @@
                             {% if vacc.statusProposition == 0  %}
                                 <span class="badge badge-success badge-style modif-etat" data-id ="{{ vacc.id }}" >{% trans %}Accept{% endtrans %}</span>
                             {% elseif vacc.statusProposition == 1 %}
-                                <p class="badge badge-info textf ">{% trans %}Accepted{% endtrans %}</p>
+                                <span class="badge badge-info badge-style ">{% trans %}Accepted{% endtrans %}</span>
                             {% endif %}
                         </td>
 

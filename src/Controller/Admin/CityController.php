@@ -105,6 +105,7 @@ class CityController extends AbstractController
         }else{
             $CityExist = $this->cityRepository->findOneBy(['nameCity' => $nameCity, 'region' => $Region]);
             if($CityExist){
+
                 $message = $translator->trans('The city name has already been registered!');
                 $this->addFlash('warning', $message);
             }else{
@@ -166,11 +167,8 @@ class CityController extends AbstractController
             {
                 if ($i != 0){
                     $cityOrCommune = $Row['A'];
-                    $departement = $Row['B'];
-                    $region = $Row['C'];
-                    $pays = $Row['D'];
-                    $phone = $Row['E'];
-                    $arrondissement = $Row['F'];
+                    $region = $Row['B'];
+                    $pays = $Row['C'];
                     $state = null;
                     $regions = null;
                     $city = null;
@@ -179,7 +177,6 @@ class CityController extends AbstractController
                         if ($state == null){
                             $state = new State();
                             $state->setNameState($pays);
-                            $state->setPhoneindic($phone);
                             $this->entityManager->persist($state);
                         }
                     }
@@ -198,9 +195,7 @@ class CityController extends AbstractController
                         if ($city == null){
                             $city = new City();
                             $city->setNameCity($cityOrCommune);
-                            $city->setArrondissement($arrondissement);
                             $city->setRegion($regions);
-                            $city->setDepartement($departement);
                             $this->entityManager->persist($city);
                             $this->entityManager->flush();
                         }

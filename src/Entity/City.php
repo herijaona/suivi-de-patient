@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource(
  *    normalizationContext={"groups"={"read:city"}},
  *    collectionOperations={"get"},
- *    itemOperations={"get"} 
+ *    itemOperations={"get"}
  * )
  */
 class City
@@ -84,7 +84,7 @@ class City
      */
     private $Arrondissement;
 
- 
+
 
 
     public function __construct()
@@ -372,8 +372,5 @@ class City
 
         return $this;
     }
-
-
-    
 
 }

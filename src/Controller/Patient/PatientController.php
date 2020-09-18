@@ -13,7 +13,6 @@ use App\Entity\PatientIntervationConsultation;
 use App\Entity\PatientOrdoConsultation;
 use App\Entity\PatientOrdoVaccination;
 use App\Entity\Praticien;
-use App\Form\GenerationType;
 use App\Form\RdvType;
 use App\Form\RegistrationFormType;
 use App\Form\RegistrationPraticienFormType;
@@ -199,20 +198,13 @@ class PatientController extends AbstractController
      */
     public function create_rdv(Request $request)
     {
-        $user = $this->getUser();
-        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        $carnet = $this->carnetVaccinationRepository->find($patient);
-        if($carnet == null){
-            $typeRdvArrays = [
-                "consultation" => "CONSULTATION",
-                "vaccination" => "GENERATION CALENDRIER"
+        $typeRdvArrays = [
+             "consultation" => "CONSULTATION",
+             "vaccination" => "VACCINATION",
+             "intervention" =>"INTERVENTION"
             ];
-        }elseif ($carnet != null){
-            $typeRdvArrays = [
-                "consultation" => "CONSULTATION",
-            ];
-        }
         $rdv = [];
+
         $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
         return $this->render('patient/_form_rdv.html.twig', [
             'new' => true,
@@ -283,22 +275,6 @@ class PatientController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/generation", name="generation")
-
-    public function generation(Request $request){
-        $generation = [];
-        $form = $this->createForm(GenerationType::class, $generation);
-        return $this->render('patient/_form_generation.html.twig', [
-            'new' => true,
-            'form' => $form->createView(),
-            'eventData' => $generation,
-        ]);
-
-
-    }
-     */
-
 
 
     /**
@@ -310,10 +286,9 @@ class PatientController extends AbstractController
         $rdvRequest = $request->request->get("rdv");
         $type = $rdvRequest["typeRdv"];
         $doctor = $rdvRequest["praticiens"];
-        $vaccine = $request->request->get('vaccin');
+        $vaccine = $rdvRequest["vaccin"];
         $vaccine = $this->vaccinRepository->find($vaccine);
         $date = $rdvRequest["dateRdv"];
-        $da= new \DateTime();
         $description = $rdvRequest["description"];
         $heure = $rdvRequest["heureRdv"];
         $Id = $rdvRequest["id"];
@@ -361,7 +336,7 @@ class PatientController extends AbstractController
                 }else{
                     $ordovaccination = new OrdoVaccination();
                 }
-                $ordovaccination->setDatePrise($da);
+                $ordovaccination->setDatePrise($Date_Rdv);
                 $ordovaccination->setOrdonnance($ordo);
                 $ordovaccination->setReferencePraticienExecutant($praticien);
                 $ordovaccination->setPatient($patient);
@@ -554,8 +529,8 @@ class PatientController extends AbstractController
         $rdv = [];
         $typeRdvArrays = [
             "consultation" => "CONSULTATION",
-            "vaccination" => "GENERATION CALENDRIER",
-
+            "vaccination" => "VACCINATION",
+            "intervention" =>"INTERVENTION"
         ];
 
 
@@ -574,24 +549,19 @@ class PatientController extends AbstractController
                 $ordoCon = $this->ordoConsultationRepository->find($rdv['id']);
                 $rdv['description'] = $ordoCon->getObjetConsultation();
                 $rdv['dateRdv'] = $ordoCon->getDateRdv();
-                $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien();
-                if ($rdv['dateRdv'] != ''){
-                    $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
-                    $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
-                    $rdv['heureRdv'] = explode(' ', $date)[1];
-                }
             }
             elseif ($rdv['typeRdv'] == 'vaccination'){
                 $ordoCon = $this->ordoVaccinationRepository->find($rdv['id']);
                 $rdv['vaccin'] = $ordoCon->getVaccin();
                 $rdv['dateRdv'] = $ordoCon->getDatePrise();
-                $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien();
-                if ($rdv['dateRdv'] != ''){
-                    $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
-                    $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
-                    $rdv['heureRdv'] = explode(' ', $date)[1];
-                }
             }
+            if ($ordoCon->getOrdonnance() != null && $ordoCon->getOrdonnance()->getPraticien() != null) $rdv['praticiens'] = $ordoCon->getOrdonnance()->getPraticien();
+            if ($rdv['dateRdv'] != ''){
+                $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
+                $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
+                $rdv['heureRdv'] = explode(' ', $date)[1];
+            }
+
             $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
             $response = $this->renderView('patient/_form_edit.html.twig', [
                 'new' => false,
@@ -655,21 +625,12 @@ class PatientController extends AbstractController
     {
         $user = $this->getUser();
         $data = 'KO';
-        $patient =$this->patientRepository->findOneBy(['user'=>$user]);
         if ($praticien){
-            $associate = $this->associerRepository->findOneBy(['patient' => $patient, 'praticien' => $praticien]);
+            $associate = $this->associerRepository->findOneBy(['patient' => $this->patientRepository->find($user->getId()), 'praticien' => $praticien]);
+
             if ($associate != null) $data = 'OK';
         }
         return new JsonResponse(['status' => $data]);
-    }
-    /**
-     * @Route("/vaccina", name="vaccinca")
-     */
-    public function vaccin(Request $request){
-        $user= $this->getUser();
-        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        $vaccin= $this->carnetVaccinationRepository->searchvaccinCar($patient);
-        return new JsonResponse($vaccin);
     }
 
 

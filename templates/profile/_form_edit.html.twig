@@ -18,14 +18,25 @@
 {{ form_start(form , {'attr': {'action': path('editP') }}) }}
 <!--Body-->
 <div class="modal-body" style="width:100%; padding: 2rem">
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Patient Type{% endtrans %}</label>
+    <div class="md-form" style="display: none">
+        <label class="active" for="form1" >{% trans %}Patient Type{% endtrans %}</label>
         {{ form_widget(form.type_patient, {'attr': {'class': 'form-control'}}) }}
     </div>
+    <div class="md-form " >
+        <label class="active" for="form1">{% trans %}Country{% endtrans %}</label>
+        {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}
+    </div>
+        <div class="md-form">
+            <label class="active" for="form1">{% trans %}City of Residence{% endtrans %}</label>
+            <select class="form-control chosen-select" id="city" name="city" >
+                <option value="" selected>{{ city }}</option>
+            </select>
+        </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
         {{ form_widget(form.address, {'attr': {'class': 'form-control form-textarea'}}) }}
     </div>
+
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Phone{% endtrans %}</label>
         <input type="text" class="form-control" value="{{ phone }}" name="phone">
@@ -33,7 +44,7 @@
     </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Place of Birth{% endtrans %}</label>
-        <input type="text" class="form-control" value="{{ lieu }}" name="lieu">
+        <input type="text" class="form-control " value="{{ lieu }}" name="lieu">
     </div>
     <div class="md-form" >
         <label class="active" for="form1">E-mail</label>
@@ -53,6 +64,15 @@
             <label for="true">Non</label>
         {% endif %}
     </div>
+    <div class="md-form enfant">
+        <label class="active" for="form1">{% trans %}Name of the Father{% endtrans %}</label>
+        {{ form_widget(form.namedaddy, {'attr': {'class': 'form-control'}}) }}
+    </div>
+    <div class="md-form enfant">
+        <label class="active" for="form1">{% trans %}Mother's Name{% endtrans %}</label>
+        {{ form_widget(form.namemonther, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
 
     <div class="md-form " style="display: none">
         <label for="">{% trans %}Last name{% endtrans %}</label>
@@ -77,22 +97,10 @@
         <label for="">{% trans %}Gender{% endtrans %}</label>
         {{ form_widget(form.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe'}}) }}
     </div>
-    <div class="md-form " style="display: none">
-        <label for="">{% trans %}Country{% endtrans %}</label>
-        {{ form_widget(form.country, {'attr': {'class': 'form-control form-show', 'placeholder': 'Country'}}) }}
-    </div>
+
     <div class="md-form " style="display: none">
         <label for="">Username</label>
         {{ form_widget(form.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant'}}) }}
-    </div>
-    <div class="md-form " style="display: none">
-        <label for="">{% trans %}Name of the Father{% endtrans %}</label>
-        {{ form_widget(form.namedaddy, {'attr': {'class': 'form-control mb-3 form-show'}}) }}
-    </div>
-    <div class="md-form " style="display: none">
-        <label for="">{% trans %}Mother's Name{% endtrans %}</label>
-        {{ form_widget(form.namemonther, {'attr': {'class': 'form-control mb-3  form-show'}}) }}
-
     </div>
 
     <div class="md-form " style="display: none">
@@ -112,11 +120,29 @@
 <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
 <script>
     $('.enceinte').css('display', 'none');
+    $('.enfant').css('display', 'none');
     if ($('.type').val()=="ADULTE" && $('.sexe').val()=="Feminin" ){
         $('.enceinte').css('display', 'block');
     }
+    if ($('.type').val()=="ENFANT" ){
+        $('.enfant').css('display', 'block');
+    }
     $("#registration_form_enceinte_1").attr("checked", true);
 
+    $('#registration_form_country').on('change', function () {
+        var idcountry = $('#registration_form_country option:selected').val();
+        $.ajax({
+            method: "POST",
+            url: "{{ path('country') }}",
+            data: {id: idcountry},
+            success: function (response) {
+                $('#city').empty();
+                $.each(response, function (index, element) {
+                    $('#city').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
+                });
+            }
+        });
+    });
 
 
 

@@ -94,6 +94,10 @@ class Patient
     private $phone;
 
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isEnceinte;
 
     /**
      * @ORM\OneToMany(targetEntity=GroupFamily::class, mappedBy="patient")
@@ -210,17 +214,6 @@ class Patient
      * @ORM\OneToMany(targetEntity=Associer::class, mappedBy="patient")
      */
     private $associers;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $dateEnceinte;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $isenceinte;
-
 
 
 
@@ -418,7 +411,17 @@ class Patient
         return $this;
     }
 
-   
+    public function getIsEnceinte(): ?bool
+    {
+        return $this->isEnceinte;
+    }
+
+    public function setIsEnceinte(?bool $is_enceinte): self
+    {
+        $this->isEnceinte = $is_enceinte;
+
+        return $this;
+    }
 
     /**
      * @return Collection|GroupFamily[]
@@ -984,28 +987,7 @@ class Patient
         return $this;
     }
 
-    public function getDateEnceinte(): ?\DateTimeInterface
-    {
-        return $this->dateEnceinte;
-    }
 
-    public function setDateEnceinte(?\DateTimeInterface $dateEnceinte): self
-    {
-        $this->dateEnceinte = $dateEnceinte;
 
-        return $this;
-    }
-
-    public function getIsenceinte(): ?bool
-    {
-        return $this->isenceinte;
-    }
-
-    public function setIsenceinte(?bool $isenceinte): self
-    {
-        $this->isenceinte = $isenceinte;
-
-        return $this;
-    }
 
 }

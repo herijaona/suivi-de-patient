@@ -157,7 +157,7 @@ class RegistrationController extends AbstractController
             $mailer->send($email);
 
             return $this->redirectToRoute('app_register_activate',['id'=>$user->getId()]);
-        } 
+        }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
@@ -195,7 +195,6 @@ class RegistrationController extends AbstractController
             $email = $form->get('email')->getData();
             $city = $request->request->get('city');
             $city =$this->cityRepository->find($city);
-            $centre = $form->get('center_health')->getData();
             $date = $form->get('date_naissance')->getData();
             $date= DateTime::CreateFromFormat("d/m/Y", $date);
             $user = new User();
@@ -223,7 +222,6 @@ class RegistrationController extends AbstractController
             $praticien->setCreatedAt(new \DateTime('now'));
             $praticien->setDateBorn($date);
             $praticien->setAddress($form->get('address')->getData());
-
             $praticien->setState($form->get('country')->getData());
             $praticien->setFonction($form->get('fonction')->getData());
             $praticien->setPhone($form->get('phone')->getData());
@@ -235,7 +233,6 @@ class RegistrationController extends AbstractController
             $ordonance->setPraticien($praticien);
             $ordonance->setDatePrescription(new \DateTime('now'));
             $ordonance->setMedecinTraitant($praticien);
-            $ordonance->setCentreSante($centre);
             $entityManager->persist($ordonance);
             $entityManager->flush();
 
@@ -400,7 +397,7 @@ class RegistrationController extends AbstractController
         $country = $this->stateRepository->find($id);
         $city = $this->cityRepository->searchCity($country);
         return new JsonResponse($city);
-        }
+    }
 
     /**
      * @Route("/num", name="num")
@@ -411,5 +408,6 @@ class RegistrationController extends AbstractController
         $num = $this->stateRepository->searchnum($country);
         return new JsonResponse($num);
     }
+
 
 }

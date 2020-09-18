@@ -251,7 +251,7 @@ class Praticien
         return $this;
     }
 
-   
+
 
     public function getFonction(): ?string
     {

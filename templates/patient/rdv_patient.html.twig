@@ -45,7 +45,7 @@
                     </td>
                     <td>
                         {% if rdv.statusConsultation == 0 %}
-                            <p class="badge badge-warning textf">{% trans %}waiting{% endtrans %}</p>
+                            <span class="badge badge-warning badge-style modif-status">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
                     <td>
@@ -71,7 +71,7 @@
                     </td>
                     <td>
                         {% if proposition.statusProposition == 1 %}
-                            <p class="badge badge-warning textf ">{% trans %}waiting{% endtrans %}</p>
+                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
                     <td>
@@ -99,7 +99,7 @@
                         </td>
                         <td>
                             {% if proposition.statusProposition == 1 %}
-                                <p class="badge badge-warning textf ">{% trans %}waiting{% endtrans %}</p>
+                                <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
                             {% endif %}
                         </td>
                         <td>
@@ -119,9 +119,9 @@
                         {#{ user.createdAt|localizeddate('none', 'none', app.request.locale, null, 'EEEE d MMMM Y') }}#}
                     </td>
                     <td>
-                        <p>Generation Calendrier</p>
+                        <p>Vaccination</p>
                     </td>
-                    <td></td>
+                    <td>Generation Calendrier</td>
                     <td></td>
                     <td>
                         {{ vac.firstName }} {{ vac.lastName }}
@@ -129,7 +129,7 @@
 
                     <td>
                         {% if vac.statusVaccin == 0 %}
-                            <p class="badge badge-warning textf ">{% trans %}waiting{% endtrans %}</p>
+                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
                     <td>
@@ -155,7 +155,7 @@
 
                     <td >
                         {% if intervention.statusVaccin == 0 %}
-                            <p class="badge badge-warning textf ">{% trans %}waiting{% endtrans %}</p>
+                            <span class="badge badge-warning badge-style ">{% trans %}waiting{% endtrans %}</span>
                         {% endif %}
                     </td>
                     <td>

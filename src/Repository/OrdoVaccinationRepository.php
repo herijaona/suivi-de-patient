@@ -27,10 +27,11 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
         INNER JOIN App\Entity\Patient p with p.id= o.patient
         LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
         LEFT JOIN App\Entity\Praticien pr with pr.id=d.praticien
-         WHERE p.id= :patient AND o.statusVaccin= :status
+         WHERE p.id= :patient AND o.statusVaccin= :status AND o.datePrise >= :now
             ORDER BY o.datePrise ASC')
             ->setParameter('status', $status)
-            ->setParameter('patient', $patient);
+            ->setParameter('patient', $patient)
+            ->setParameter('now', new \DateTime());
 
         return $query->getResult();
     }

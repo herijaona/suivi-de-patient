@@ -2,7 +2,6 @@
 
 namespace App\Form;
 
-use App\Entity\CarnetVaccination;
 use App\Entity\OrdoConsultation;
 use App\Entity\Praticien;
 use App\Entity\Vaccin;
@@ -39,19 +38,25 @@ class RdvType extends AbstractType
                          $fonc = $category->getFonction();
                          $adresse = $category->getAddress();
 
+
                          $praticien = $last .'   '. $first.'   '. $fonc.'  '. $adresse;
                          return $praticien;
                     },
                     'attr' => array('class' => 'form-control chosen-select'),
                     'placeholder' => 'Choose a Praticien'
                 ))
-            ->add('dateRdv', null, [
-                'required' => false,
-            ])
-
-            ->add('heureRdv', null, [
-                'required' => false,
-            ])
+            ->add('dateRdv')
+            ->add('vaccin', EntityType::class,
+                ['required' => false,
+                    'query_builder' => function (EntityRepository $er) {
+                        return $er->createQueryBuilder('v')
+                            ->orderBy('v.vaccinName');
+                    },
+                    'class' => Vaccin::class,
+                    'attr' => ['class' => 'form-control chosen-select'],
+                    'placeholder' => 'Choisir vaccin'
+                ])
+            ->add('heureRdv')
             ->add('description', null, [
                 'required' => false,
             ])

@@ -899,7 +899,7 @@
       </trans-unit>
       <trans-unit id="WT3AGT7" resname="Business number">
         <source>Business number</source>
-        <target>Numéro d'entreprise</target>
+        <target>Numéro Professionnel</target>
       </trans-unit>
       <trans-unit id="059BS0t" resname="Patient Type">
         <source>Patient Type</source>
@@ -928,6 +928,26 @@
       <trans-unit id="PZU5.RF" resname="Borough">
         <source>Borough</source>
         <target>Arrondissement</target>
+      </trans-unit>
+      <trans-unit id="qxIcGkp" resname="Address of Residence">
+        <source>Address of Residence</source>
+        <target>Addresse de Résidence</target>
+      </trans-unit>
+      <trans-unit id="b93npnx" resname="Creation Date">
+        <source>Creation Date</source>
+        <target>Date de Création</target>
+      </trans-unit>
+      <trans-unit id="Ymp8f96" resname="Last Modification Date">
+        <source>Last Modification Date</source>
+        <target>Date de Dernière Modification</target>
+      </trans-unit>
+      <trans-unit id=".tgeVFq" resname="Country of Fonction">
+        <source>Country of Fonction</source>
+        <target>Pays de Fonction</target>
+      </trans-unit>
+      <trans-unit id="dkNF8ya" resname="City of Fonction">
+        <source>City of Fonction</source>
+        <target>Ville de Fonction</target>
       </trans-unit>
     </body>
   </file>

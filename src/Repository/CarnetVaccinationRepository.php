@@ -61,17 +61,6 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
         return $query->getResult();
 
     }
-    public function searchvaccinCar($patient = null){
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT distinct v.vaccinName
-            FROM App\Entity\CarnetVaccination c
-            INNER JOIN App\Entity\Patient p with p.id = c.patient
-            LEFT JOIN App\Entity\Vaccin v with v.id = c.vaccin
-            WHERE p.id = :patient')
-            ->setParameter('patient', $patient);
-
-        return $query->getResult();
-    }
 
 
 

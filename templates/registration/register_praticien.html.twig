@@ -5,7 +5,7 @@
 {% block body %}
 
     {{ form_start(registrationForm) }}
-        
+
     <div class="background-img"></div>
     <div class="body-page register" style="margin: 8rem">
         <div class="container text-center body-content">
@@ -14,19 +14,19 @@
             <form role="form" class="form-horizontal" id="register-form">
                 <div class="row form-group">
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Nom', "required":"true", "minlength":"3"  }}) }}
+                        {{ form_widget(registrationForm.lastname, {'attr': {'class': 'form-control', 'placeholder': 'Nom', "required":"true", "minlength":"3"  }}) }}
                     </div>
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Prénom(s)', "required":"true", "minlength":"3" }}) }}
+                        {{ form_widget(registrationForm.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Prénom', "required":"true", "minlength":"3" }}) }}
                     </div>
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                    {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control', "required":"true" }}) }}
-
+                        {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date de naissance', "required":"true" }}) }}
                     </div>
                     <div class="col-lg-6">
-                        {{ form_widget(registrationForm.date_naissance, {'attr': {'class': 'form-control', 'placeholder': 'Date de naissance', "required":"true" }}) }}
+                        {{ form_widget(registrationForm.sexe, {'attr': {'class': 'form-control', "required":"true" }}) }}
+
                     </div>
                 </div>
                 <div class="row form-group">
@@ -35,7 +35,7 @@
                     </div>
                     <div class="col-lg-6">
                         <select class="form-control" id="city" name="city" >
-                            <option value="" selected>Choisir ville de résidence</option>
+                            <option value="" selected>Choisir ville de Fonction</option>
                         </select>
                     </div>
 
@@ -64,38 +64,35 @@
                         </div>
                     </div>
                 </div>
-                 <div class="row form-group" >
-                    <div class="col-lg-6">
+                <div class="row form-group" >
+                    <div class="col-lg-6" style="display: none">
                         {{ form_widget(registrationForm.center_health, {'attr': {'class': 'form-control', 'placeholder': 'Votre centre de santé'}}) }}
                     </div>
-                     <div class="col-lg-6">
-                         {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'votre mot de passe ', "minlength":"12", "matchPassword": "true"}}) }}
-                     </div>
-                     <div class="col-lg-6" style="display: none">
-                         {{ form_widget(registrationForm.numero, {'attr': {'class': 'form-control'}}) }}
-                     </div>
+
+                    <div class="col-lg-6">
+                        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control', 'placeholder': 'votre mot de passe ', "minlength":"12", "matchPassword": "true"}}) }}
+                    </div>
+
                 </div>
                 <button type="submit" class="btn btn-info button-login mb-3" id="submit_register">
                     {% trans %}Register{% endtrans %}
                 </button>
                 <p class="mb-1">ou</p>
                 <p><a href="{{ path('app_login') }}">Se connecter</a></p>
-            
-        {{ form_end(registrationForm) }}
+
+                {{ form_end(registrationForm) }}
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     <script>
-
         $('#submit_register').click(function(e) {
             if (!$('#register-form').valid()) {
                 e.preventDefault();
                 return false;
             }
         });
-
         function getRndInteger(min = 10, max= 100) {
             return Math.floor(Math.random() * (max - min + 1) ) + min;
         }
@@ -112,9 +109,7 @@
             }
             var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
             var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
-
             var username = fname + lname + anne + mois + jour + getRndInteger() ;
-
             $.ajax({
                 url: "{{ path('check_username') }}",
                 type: 'POST',
@@ -134,11 +129,7 @@
                 }
             }).done(() => {
             });
-
         });
-
-
-
         $.validator.addMethod(
             "matchPassword",
             function(value) {
@@ -151,7 +142,6 @@
             },
             " Le mot de passe doit comporter des majuscules, des minuscules, au moins 1 chiffre et au moins un caractère."
         );
-
         jQuery.extend(jQuery.validator.messages, {
             required: "Ce champ est obligatoire, veuillez le  remplir.",
             remote: "votre message",
@@ -171,9 +161,7 @@
             max: jQuery.validator.format("votre message  inférieur ou égal à {0}."),
             min: jQuery.validator.format("votre message  supérieur ou égal à {0}.")
         });
-
         jQuery('label.error').append('<div class="arrow-error"></div>');
-
         $(document).ready(function () {
             $('#form-parent').css("display", "none");
             $('#registration_praticien_form_username').attr("readonly", "true");
@@ -206,10 +194,8 @@
                 }
             });
         });
-
         $('#registration_praticien_form_country').on('change',function () {
             var idcountry =$('#registration_praticien_form_country option:selected').val();
-
             $.ajax({
                 method: "POST",
                 url: "{{ path('num') }}",
@@ -221,7 +207,6 @@
                     });
                 }
             });
-
         });
     </script>
 {% endblock %}

@@ -36,7 +36,7 @@
                     {{ membre.lastName }}
                 </td>{% if statsService.typePatient.typePatientName == "ADULTE" %}
                 <td >
-                    <span class="btn btn-danger data-remove" data-id-group="{{ group.id }}" data-id-mmb="{{ membre.id }}"><i class="fa fa-trash"></i></span>
+                    <span class="delete_membres_group" data-id-group="{{ group.id }}" data-id-mmb="{{ membre.id }}"><i class="fa fa-trash"></i></span>
                 </td>{% endif %}
             </tr>
             {% endfor %}
@@ -66,7 +66,7 @@
                         <select class="mdb-select md-form chosen-select" name="patient" editable="true" searchable="{% trans %}Search for patient name ...{% endtrans %}" required>
                                 <option value="" disabled selected>{% trans %}Choose new member{% endtrans %}</option>
                                 {% for patient in patients %}
-                                    <option value="{{ patient.id }}">{{patient.user.username}}</option>
+                                    <option value="{{ patient.id }}">{{patient.firstName}} {{patient.lastName}}</option>
                                 {% endfor %}
                         </select>
                     </div>
@@ -91,7 +91,7 @@
         $('#example1').DataTable();
         $('.chosen-select').chosen({width: "100%"});
     });
-    $('.data-remove').on('click', function(e) {
+    $('.delete_membres_group').on('click', function(e) {
         e.preventDefault();
         var id_group = $(this).data('id-group');
         var id_membre = $(this).data('id-mmb');

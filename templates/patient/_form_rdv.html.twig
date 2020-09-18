@@ -41,19 +41,18 @@
             {{ form_widget(form.typeRdv, {'attr': { 'class': 'form-control chosen-select' }}) }}
         </div>
         <div class="md-form vaccin_hidden">
-            <select class="form-control" id="vaccin" name="vaccin" >
-                <option value="" selected>Choisir vaccin</option>
-            </select>
+            <label class="active" for="form1">Vaccin </label>
+            {{ form_widget(form.vaccin, {'attr': { 'class': 'form-control chosen-select' }}) }}
         </div>
         <div class="md-form description">
             <label class="active" for="form1">Description</label>
             {{ form_widget(form.description, {'attr': { 'class': 'form-control' }}) }}
         </div>
-        <div class="md-form date">
+        <div class="md-form ">
             <label class="active" for="form1">{% trans %}Appointment date{%  endtrans %}</label>
             {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control' }}) }}
         </div>
-        <div class="md-form heure ">
+        <div class="md-form ">
             <label class="active" for="form1">{% trans %}appointment Time {% endtrans %} </label>
             {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
         </div>
@@ -104,7 +103,6 @@
                     type: 'post',
                     dataType: "json",
                     success: (data) => {
-                        console.log(data);
                         if(data.status == "OK"){
                             $('.association-form').css('display', 'none');
                         }else{
@@ -121,31 +119,13 @@
                 if($(this).val() == 'consultation'){
                     $('.vaccin_hidden').css("display", "none");
                     $('.description').css("display", "block");
-                    $('.date').css("display", "block");
-                    $('.heure').css("display", "block");
 
                 }else if($(this).val() == 'intervention'){
                     $('.vaccin_hidden').css("display", "block");
-                    $('.date').css("display", "block");
-                    $('.heure').css("display", "block");
                     $('.description').css("display", "none");
-                    $.ajax({
-                        method: "POST",
-                        url: "{{ path('vaccinca') }}",
-                        datatype:"json",
-                        success: function (response) {
-                            $('#vaccin').empty();
-                            $.each(response, function (index, element) {
-                                $('#vaccin').append('<option value="' + element.id + '" selected="selected">' + element.vaccinName + ' </option>');
-                            });
-                        }
-                    });
                 }else if($(this).val() == 'vaccination'){
                     $('.vaccin_hidden').css("display", "none");
                     $('.description').css("display", "none");
-                    $('.date').css("display", "none");
-                    $('.heure').css("display", "none");
-
                 }
             });
 

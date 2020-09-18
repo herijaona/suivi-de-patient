@@ -27,9 +27,7 @@ class RegistrationPraticienFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class,[
-                'required'   => false,
-            ])
+            ->add('email', EmailType::class)
             ->add('username', null,[
                 'required'   => false,
             ])
@@ -59,9 +57,7 @@ class RegistrationPraticienFormType extends AbstractType
             ->add('phone', null,[
                 'required'   => false,
             ])
-            ->add('numero' , null,[
-                'required'   => false,
-            ])
+
             ->add('address', TextareaType::class, [
                 'attr' => [
                     'rows' => '3'
@@ -79,9 +75,7 @@ class RegistrationPraticienFormType extends AbstractType
                 },
                 'placeholder' => 'Choisir Votre Pays de domicile',
             ])
-            ->add('fonction', null,[
-                'required'   => false,
-            ])
+            ->add('fonction')
             ->add('sexe', ChoiceType::class, array(
                 'required'=>false,
                 'choices' => array(

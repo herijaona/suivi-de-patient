@@ -38,18 +38,23 @@ class VaccinGenerate
         $enceinte= $patient->getIsEnceinte();
         $state = $patient->getState()->getNameState();
         $birthday = $patient->getDateOnBorn();
-        $date=$patient->getDateEnceinte();
         $listVaccin = [];
         $day_preg =  $dateNow;
         if($state != null) {
+            switch ($type_patient) {
+                case 'ENFANT':
+                    $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
+
+                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
+                    break;
+                case 'ADULTE':
+                    $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE',$state);
+                   
+                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
+                    break;
+            }
             if ($type_patient == "ADULTE" && $enceinte == 1) {
                 $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE',$state);
-                $listVaccin = $this->generate($patient, $date, $alls,null);
-            }elseif ($type_patient == "ADULTE" && $enceinte == 0){
-                $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE',$state);
-                $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
-            }elseif($type_patient == "ENFANT"){
-                $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
                 $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
             }
         }
@@ -219,82 +224,6 @@ class VaccinGenerate
             return $days->addDays(2);
         }else{
             return $days;
-        }
-    }
-
-    /**
-     * @param $patient
-     * @param $date
-     * @param $vaccinAll
-     * @param $IntervationVaccination
-     * @throws Exception
-     */
-    public function generate($patient, $date, $vaccinAll, $intervention)
-    {
-        foreach ( $vaccinAll as $vacc){
-            if($vacc != null){
-                $datePriseInitiale = $vacc->getDatePriseInitiale();
-
-                // Get Vaccin Methods that return datePriseInitiale and rappels
-                $vaccMethods = get_class_methods($vacc);
-                $getDateMethods = array();
-                foreach ($vaccMethods as $meth) {
-                    if(strpos($meth, "getRappel") === 0 || $meth === "getDatePriseInitiale"){
-                        array_push($getDateMethods, $meth);
-                    }
-                }
-
-                // Calculate the exact date for each string formatted date
-                foreach($getDateMethods as $getDate){
-
-
-                    $crnV = new CarnetVaccination();
-
-
-                    $crnV->setPatient($patient)
-                        ->setVaccin($vacc)
-                        ->setEtat(false)
-                        ->setIntervationVaccination($intervention);
-
-                    $getVAcc = $vacc->$getDate();
-
-
-
-                    if($getVAcc !== "" && $getVAcc !== null){
-
-                        $interval = date_interval_create_from_date_string($getVAcc);
-                        $rappelOrDateInit = new \Datetime($date->format('Y-m-d H:i:s'));
-                        date_add($rappelOrDateInit, $interval);
-
-                        // Reporter la date si elle tombe en week-end
-                        $weekday = date('N', $rappelOrDateInit->getTimestamp());
-
-                        if($weekday === "7"){
-                            date_add($rappelOrDateInit, date_interval_create_from_date_string("1 day"));
-                        }
-                        elseif($weekday === "6"){
-                            date_add($rappelOrDateInit, date_interval_create_from_date_string("2 days"));
-                        }
-                        elseif($weekday === "5"){
-                            date_add($rappelOrDateInit, date_interval_create_from_date_string("3 days"));
-                        }
-
-                        if($getDate === "getDatePriseInitiale"){
-                            $crnV->setDatePriseInitiale($rappelOrDateInit);
-                        }
-                        else{
-                            $crnV->setRappelVaccin($rappelOrDateInit);
-                        }
-                        $this->entityManager->persist($crnV);
-                        $this->entityManager->flush();
-                        $PatientCarnet = new PatientCarnetVaccination();
-                        $PatientCarnet->setPatient($patient)
-                            ->setCarnetVaccination($crnV);
-                        $this->entityManager->persist($PatientCarnet);
-                        $this->entityManager->flush();
-                    }
-                }
-            }
         }
     }
 }

@@ -1,0 +1,45 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    Intervention
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">Intervention </h4>
+        </div>
+
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th>{% trans %}Intervention date{% endtrans %}</th>
+                <th>Type</th>
+                <th>{% trans %}Vaccine{% endtrans %}</th>
+                <th>Patient</th>
+                <th>{% trans %}State Intervention{% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+
+        $(document).ready(function() {
+            $('#example1').DataTable();
+        });
+
+    </script>
+{% endblock %}
