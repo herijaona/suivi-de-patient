@@ -205,7 +205,10 @@ class ProfileController extends AbstractController
         $isuser = $this->praticienRepository->findByPraticien(['user'=>$user]);
         $coprs = $this->praticienRepository->findByPraticienUser($currentUser->getId());
         $ordonance= $this->ordonnaceRepository->findOneBy(['praticien'=>$coprs]);
-        $centre = $ordonance->getCentreSante()->getCentreName();
+        $centre = $ordonance->getCentreSante();
+        if($centre != null){
+            $centre=$ordonance->getCentreSante()->getCentreName();
+        }
         $values="";
         foreach ( $coprs as $key => $val) {
             $values = $val;
