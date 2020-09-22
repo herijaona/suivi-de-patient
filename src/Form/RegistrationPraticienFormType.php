@@ -73,7 +73,7 @@ class RegistrationPraticienFormType extends AbstractType
                 'choice_label' => function (?State $state) {
                     return $state ? strtoupper($state->getNameState()) : '';
                 },
-                'placeholder' => 'Choisir Votre Pays de Fonction',
+                'placeholder' => 'Choisir Votre Pays de Résidence',
             ])
             ->add('fonction')
             ->add('sexe', ChoiceType::class, array(
