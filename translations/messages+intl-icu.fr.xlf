@@ -949,6 +949,31 @@
         <source>City of Fonction</source>
         <target>Ville de Fonction</target>
       </trans-unit>
+      <trans-unit id="V4fNUrm" resname="Vaccine Calendar">
+        <source>Vaccine Calendar</source>
+        <target>Calendrier Vaccinal</target>
+      </trans-unit>
+      <trans-unit id="SeSbtEA" resname="Generate">
+        <source>Generate</source>
+        <target>Générer</target>
+      </trans-unit>
+      <trans-unit id="xLzQ.4K" resname="registration successful">
+        <source>registration successful</source>
+        <target>Succès de l'enregistrement</target>
+      </trans-unit>
+      <trans-unit id="3Mg5pAF" resname="View">
+        <source>View</source>
+        <target>Voir</target>
+      </trans-unit>
+
+      <trans-unit id="s3TecNB" resname="New generation">
+        <source>New generation</source>
+        <target>Nouveau Génération</target>
+      </trans-unit>
+      <trans-unit id="gn7I2fm" resname="Generated">
+        <source>Generated</source>
+        <target>Génerée</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

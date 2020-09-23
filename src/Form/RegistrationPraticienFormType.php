@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\CentreHealth;
 use App\Entity\City;
+use App\Entity\Fonction;
 use App\Entity\State;
 use App\Entity\User;
 use Doctrine\ORM\EntityManager;
@@ -75,7 +76,18 @@ class RegistrationPraticienFormType extends AbstractType
                 },
                 'placeholder' => 'Choisir Votre Pays de Résidence',
             ])
-            ->add('fonction')
+            ->add('fonction',EntityType::class,[
+                'class'=> Fonction::class,
+                'query_builder'=> function(EntityRepository $entityRepository){
+                return $entityRepository->createQueryBuilder('f');
+                },
+                'required'=>false,
+                'choice_value'=>'id',
+                'choice_label'=> function(?Fonction $fonction){
+                return $fonction ? strtoupper($fonction->getFonction()): '';
+                },
+                'placeholder'=> 'Choisir Votre Fonction',
+            ])
             ->add('sexe', ChoiceType::class, array(
                 'required'=>false,
                 'choices' => array(

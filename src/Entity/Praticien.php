@@ -48,12 +48,6 @@ class Praticien
 
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Groups({"read:praticien"})
-     */
-    private $fonction;
-
-    /**
      * @ORM\Column(type="date")
      * @Groups({"read:praticien"})
      */
@@ -92,16 +86,6 @@ class Praticien
      * @ORM\OneToMany(targetEntity=IntervationMedicale::class, mappedBy="praticien")
      */
     private $intervationMedicales;
-
-    /**
-     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="praticienPrescripteur")
-     */
-    private $interventionVaccinations;
-
-    /**
-     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="praticienExecutant")
-     */
-    private $interventionExecutant;
 
     /**
      * @ORM\OneToMany(targetEntity=OrdoVaccination::class, mappedBy="referencePraticienExecutant")
@@ -189,6 +173,16 @@ class Praticien
      */
     private $NumeroProfessionnel;
 
+    /**
+     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="Praticien")
+     */
+    private $interventionVaccinations;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Fonction::class, inversedBy="praticiens")
+     */
+    private $fonction;
+
 
 
     public function __construct()
@@ -198,8 +192,6 @@ class Praticien
         $this->ordonnaces = new ArrayCollection();
         $this->ordonnacesMedecin = new ArrayCollection();
         $this->intervationMedicales = new ArrayCollection();
-        $this->interventionVaccinations = new ArrayCollection();
-        $this->interventionExecutant = new ArrayCollection();
         $this->ordoVaccinationPraticienExecutant = new ArrayCollection();
         $this->intervationConsultationsPraticienPrescripteur = new ArrayCollection();
         $this->intervationConsultationsPraticienConsultant = new ArrayCollection();
@@ -209,6 +201,7 @@ class Praticien
         $this->propositionRdvs = new ArrayCollection();
         $this->patients = new ArrayCollection();
         $this->associers = new ArrayCollection();
+        $this->interventionVaccinations = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -250,20 +243,7 @@ class Praticien
 
         return $this;
     }
-
-
-
-    public function getFonction(): ?string
-    {
-        return $this->fonction;
-    }
-
-    public function setFonction(string $fonction): self
-    {
-        $this->fonction = $fonction;
-
-        return $this;
-    }
+    
 
     public function getDateBorn(): ?\DateTimeInterface
     {
@@ -401,68 +381,6 @@ class Praticien
             // set the owning side to null (unless already changed)
             if ($intervationMedicale->getPraticien() === $this) {
                 $intervationMedicale->setPraticien(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|InterventionVaccination[]
-     */
-    public function getInterventionVaccinations(): Collection
-    {
-        return $this->interventionVaccinations;
-    }
-
-    public function addInterventionVaccination(InterventionVaccination $interventionVaccination): self
-    {
-        if (!$this->interventionVaccinations->contains($interventionVaccination)) {
-            $this->interventionVaccinations[] = $interventionVaccination;
-            $interventionVaccination->setPraticienPrescripteur($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInterventionVaccination(InterventionVaccination $interventionVaccination): self
-    {
-        if ($this->interventionVaccinations->contains($interventionVaccination)) {
-            $this->interventionVaccinations->removeElement($interventionVaccination);
-            // set the owning side to null (unless already changed)
-            if ($interventionVaccination->getPraticienPrescripteur() === $this) {
-                $interventionVaccination->setPraticienPrescripteur(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|InterventionVaccination[]
-     */
-    public function getInterventionExecutant(): Collection
-    {
-        return $this->interventionExecutant;
-    }
-
-    public function addInterventionExecutant(InterventionVaccination $interventionExecutant): self
-    {
-        if (!$this->interventionExecutant->contains($interventionExecutant)) {
-            $this->interventionExecutant[] = $interventionExecutant;
-            $interventionExecutant->setPraticienExecutant($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInterventionExecutant(InterventionVaccination $interventionExecutant): self
-    {
-        if ($this->interventionExecutant->contains($interventionExecutant)) {
-            $this->interventionExecutant->removeElement($interventionExecutant);
-            // set the owning side to null (unless already changed)
-            if ($interventionExecutant->getPraticienExecutant() === $this) {
-                $interventionExecutant->setPraticienExecutant(null);
             }
         }
 
@@ -797,6 +715,49 @@ class Praticien
     public function setNumeroProfessionnel(string $NumeroProfessionnel): self
     {
         $this->NumeroProfessionnel = $NumeroProfessionnel;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InterventionVaccination[]
+     */
+    public function getInterventionVaccinations(): Collection
+    {
+        return $this->interventionVaccinations;
+    }
+
+    public function addInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if (!$this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations[] = $interventionVaccination;
+            $interventionVaccination->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if ($this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations->removeElement($interventionVaccination);
+            // set the owning side to null (unless already changed)
+            if ($interventionVaccination->getPraticien() === $this) {
+                $interventionVaccination->setPraticien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFonction(): ?Fonction
+    {
+        return $this->fonction;
+    }
+
+    public function setFonction(?Fonction $fonction): self
+    {
+        $this->fonction = $fonction;
 
         return $this;
     }

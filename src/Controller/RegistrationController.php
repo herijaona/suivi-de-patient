@@ -11,6 +11,7 @@ use App\Form\ActivatorFormType;
 use App\Form\RegistrationFormType;
 use App\Form\RegistrationPraticienFormType;
 use App\Repository\CityRepository;
+use App\Repository\FonctionRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
 use App\Repository\StateRepository;
@@ -48,16 +49,18 @@ class RegistrationController extends AbstractController
     protected $stateRepository;
     protected $vaccinGenerate;
     protected $vaccinRepository;
+    protected $fonctionRepository;
 
     const ROLE_PATIENT = 'ROLE_PATIENT';
     const ROLE_PRATICIEN = 'ROLE_PRATICIEN';
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
 
-    function __construct(UserRepository $userRepository, VaccinGenerate $vaccinGenerate, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository,VaccinRepository $vaccinRepository)
+    function __construct(UserRepository $userRepository,FonctionRepository $fonctionRepository,VaccinGenerate $vaccinGenerate, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository,VaccinRepository $vaccinRepository)
     {
         $this->vaccinGenerate = $vaccinGenerate;
         $this->userRepository = $userRepository;
+        $this->fonctionRepository= $fonctionRepository;
         $this->typePatientRepository = $typePatientRepository;
         $this->cityRepository= $cityRepository;
         $this->stateRepository=$stateRepository;
@@ -188,7 +191,8 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // CREATE ACCOUNT PRATICIEN
             $code = $this->generate_code();
-
+            $fonction= $form->get('fonction')->getData();
+            $fonction = $this->fonctionRepository->find($fonction);
             $username = $form->get('username')->getData();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
@@ -223,7 +227,7 @@ class RegistrationController extends AbstractController
             $praticien->setDateBorn($date);
             $praticien->setAddress($form->get('address')->getData());
             $praticien->setState($form->get('country')->getData());
-            $praticien->setFonction($form->get('fonction')->getData());
+            $praticien->setFonction($fonction);
             $praticien->setPhone($form->get('phone')->getData());
             $praticien->setEtat(false);
             $praticien->setUser($user);
