@@ -1046,6 +1046,14 @@
         <target>Annulée</target>
       </trans-unit>
 
+      <trans-unit id="KcwvynX" resname="Organize">
+        <source>Organize</source>
+        <target>Planifier</target>
+      </trans-unit>
+      <trans-unit id="DFI2jI4" resname="Accept Appointment">
+        <source>Accept Appointment</source>
+        <target>Accepter le rendez-vous</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
