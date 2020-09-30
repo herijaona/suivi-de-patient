@@ -74,20 +74,11 @@ class RegistrationPraticienFormType extends AbstractType
                 'choice_label' => function (?State $state) {
                     return $state ? strtoupper($state->getNameState()) : '';
                 },
-                'placeholder' => 'Choisir Votre Pays de Résidence',
+                'placeholder' => 'Pays de Fonction',
             ])
-            ->add('fonction',EntityType::class,[
-                'class'=> Fonction::class,
-                'query_builder'=> function(EntityRepository $entityRepository){
-                return $entityRepository->createQueryBuilder('f');
-                },
-                'required'=>false,
-                'choice_value'=>'id',
-                'choice_label'=> function(?Fonction $fonction){
-                return $fonction ? strtoupper($fonction->getFonction()): '';
-                },
-                'placeholder'=> 'Choisir Votre Fonction',
-            ])
+           ->add('fonction', null,[
+               'required'   => false,
+           ])
             ->add('sexe', ChoiceType::class, array(
                 'required'=>false,
                 'choices' => array(

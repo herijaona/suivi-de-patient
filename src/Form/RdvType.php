@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Fonction;
 use App\Entity\OrdoConsultation;
 use App\Entity\Praticien;
 use App\Entity\Vaccin;
@@ -23,43 +24,22 @@ class RdvType extends AbstractType
         $typeRdvArrays = $options['typeRdvArrays'];
         $builder
             ->add('id', HiddenType::class)
-            ->add('praticiens',EntityType::class,
+            ->add('fonction',EntityType::class,
                 array('required' => true,
                     'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('p')
-                            ->orderBy('p.firstName')
-                            ->orderBy('p.lastName');
-                    },
+                        return $er->createQueryBuilder('f');
+                        },
 
-                    'class' => Praticien::class,
-                    'choice_label' => function ($category) {
-                         $last = $category->getLastName();
-                         $first = $category->getFirstName();
-                         $fonc = $category->getFonction();
-                         $adresse = $category->getAddress();
-
-
-                         $praticien = $last .'   '. $first.'   '. $fonc.'  '. $adresse;
-                         return $praticien;
+                    'class' => Fonction::class,
+                    'choice_label' => function (?Fonction $fonction) {
+                        return $fonction ? strtoupper($fonction->getFonction()) : '';
                     },
                     'attr' => array('class' => 'form-control chosen-select'),
-                    'placeholder' => 'Choose a Praticien'
+                    'placeholder' => 'Fonction'
                 ))
             ->add('dateRdv')
-            ->add('vaccin', EntityType::class,
-                ['required' => false,
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('v')
-                            ->orderBy('v.vaccinName');
-                    },
-                    'class' => Vaccin::class,
-                    'attr' => ['class' => 'form-control chosen-select'],
-                    'placeholder' => 'Choisir vaccin'
-                ])
             ->add('heureRdv')
-            ->add('description', null, [
-                'required' => false,
-            ])
+            ->add('objet')
             ->add('typeRdv', ChoiceType::class, [
                 'choices' => array_flip($typeRdvArrays),
                 'required' => true,

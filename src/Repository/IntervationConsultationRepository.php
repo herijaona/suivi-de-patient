@@ -19,21 +19,40 @@ class IntervationConsultationRepository extends ServiceEntityRepository
         parent::__construct($registry, IntervationConsultation::class);
     }
 
-    public function searchIntervationPraticien($praticien = null){
+
+    public function searchStatusInter($patient = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT i.id, i.dateConsultation,i.etat,p.firstName as patient_name, p.lastName as patient_lastname, pr.firstName,pr.lastName,o.objetConsultation, pro.descriptionProposition, pro.id as proposition, o.id as consultation
-            FROM App\Entity\IntervationConsultation i 
-            INNER JOIN App\Entity\Patient p with p.id = i.patient
-            LEFT JOIN App\Entity\OrdoConsultation o with o.id = i.ordoConsulataion
-            LEFT JOIN App\Entity\PropositionRdv pro with pro.id = i.proposition
-            LEFT JOIN App\Entity\Praticien pr with pr.id = i.praticienPrescripteur
-            WHERE pr.id = :praticien AND i.dateConsultation >= :now
-            ORDER BY i.dateConsultation ASC')
-            ->setParameter('praticien', $praticien)
-            ->setParameter('now', new \DateTime());
+        $query = $entityManager->createQuery('SELECT o.id, o.dateConsultation, o.objetConsultation,o.etat, o.status,pr.firstName, pr.lastName,c.centreName
+            FROM App\Entity\IntervationConsultation o 
+            INNER JOIN App\Entity\Patient p with p.id = o.patient
+            LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnace
+            LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
+            LEFT JOIN App\Entity\CentreHealth c with c.id = d.CentreSante
+            WHERE p.id = :patient  
+            ORDER BY o.dateConsultation ASC')
+            ->setParameter('patient', $patient)
+           ;
 
         return $query->getResult();
     }
+
+    public function searchIn($praticien = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT o.id, o.dateConsultation, o.objetConsultation,o.etat, o.status,p.firstName, p.lastName
+                FROM App\Entity\IntervationConsultation o 
+                INNER JOIN App\Entity\Patient p with p.id = o.patient
+                LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnace
+                LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
+                LEFT JOIN App\Entity\CentreHealth c with c.id = d.CentreSante
+                WHERE pr.id = :praticien  
+                ORDER BY o.dateConsultation ASC')
+            ->setParameter('praticien', $praticien)
+        ;
+
+        return $query->getResult();
+    }
+
+
     public function searchPatient($praticien = null){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT count(p.id)

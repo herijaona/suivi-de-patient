@@ -43,7 +43,7 @@ class OrdoConsultation
     private $ordonnance;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable= true)
      * @Groups({"read:OrdoConsultation"})
      */
     private $dateRdv;
@@ -66,23 +66,6 @@ class OrdoConsultation
      */
     private $statusConsultation;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:OrdoConsultation"})
-     */
-    private $referencePraticientExecutant;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:OrdoConsultation"})
-     */
-    private $typePraticien;
-
-    /**
-     * @ORM\OneToMany(targetEntity=IntervationConsultation::class, mappedBy="ordoConsulataion")
-     * @Groups({"read:OrdoConsultation"})
-     */
-    private $intervationConsultations;
 
     /**
      * @ORM\OneToMany(targetEntity=PatientOrdoConsultation::class, mappedBy="ordoConsultation")
@@ -97,14 +80,9 @@ class OrdoConsultation
     private $etat;
 
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $statusNotif;
 
     public function __construct()
     {
-        $this->intervationConsultations = new ArrayCollection();
         $this->patientOrdoConsultations = new ArrayCollection();
     }
 
@@ -173,60 +151,7 @@ class OrdoConsultation
         return $this;
     }
 
-    public function getReferencePraticientExecutant(): ?string
-    {
-        return $this->referencePraticientExecutant;
-    }
 
-    public function setReferencePraticientExecutant(string $referencePraticientExecutant): self
-    {
-        $this->referencePraticientExecutant = $referencePraticientExecutant;
-
-        return $this;
-    }
-
-    public function getTypePraticien(): ?string
-    {
-        return $this->typePraticien;
-    }
-
-    public function setTypePraticien(string $typePraticien): self
-    {
-        $this->typePraticien = $typePraticien;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|IntervationConsultation[]
-     */
-    public function getIntervationConsultations(): Collection
-    {
-        return $this->intervationConsultations;
-    }
-
-    public function addIntervationConsultation(IntervationConsultation $intervationConsultation): self
-    {
-        if (!$this->intervationConsultations->contains($intervationConsultation)) {
-            $this->intervationConsultations[] = $intervationConsultation;
-            $intervationConsultation->setOrdoConsulataion($this);
-        }
-
-        return $this;
-    }
-
-    public function removeIntervationConsultation(IntervationConsultation $intervationConsultation): self
-    {
-        if ($this->intervationConsultations->contains($intervationConsultation)) {
-            $this->intervationConsultations->removeElement($intervationConsultation);
-            // set the owning side to null (unless already changed)
-            if ($intervationConsultation->getOrdoConsulataion() === $this) {
-                $intervationConsultation->setOrdoConsulataion(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|PatientOrdoConsultation[]

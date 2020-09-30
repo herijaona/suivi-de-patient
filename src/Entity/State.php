@@ -59,12 +59,18 @@ class State
      */
     private $vaccins;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Fonction::class, mappedBy="state")
+     */
+    private $fonctions;
+
     public function __construct()
     {
         $this->regions = new ArrayCollection();
         $this->patients = new ArrayCollection();
         $this->praticiens = new ArrayCollection();
         $this->vaccins = new ArrayCollection();
+        $this->fonctions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,6 +225,37 @@ class State
             // set the owning side to null (unless already changed)
             if ($vaccin->getState() === $this) {
                 $vaccin->setState(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Fonction[]
+     */
+    public function getFonctions(): Collection
+    {
+        return $this->fonctions;
+    }
+
+    public function addFonction(Fonction $fonction): self
+    {
+        if (!$this->fonctions->contains($fonction)) {
+            $this->fonctions[] = $fonction;
+            $fonction->setState($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFonction(Fonction $fonction): self
+    {
+        if ($this->fonctions->contains($fonction)) {
+            $this->fonctions->removeElement($fonction);
+            // set the owning side to null (unless already changed)
+            if ($fonction->getState() === $this) {
+                $fonction->setState(null);
             }
         }
 

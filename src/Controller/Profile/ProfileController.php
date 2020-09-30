@@ -2,33 +2,19 @@
 
 namespace App\Controller\Profile;
 
-use App\Entity\Ordonnace;
-use App\Entity\Praticien;
-use App\Entity\User;
-
-use App\Entity\Patient;
-use App\Form\edit;
 use App\Form\RegistrationPraticienFormType;
 use App\Repository\CityRepository;
+
+use App\Repository\FonctionRepository;
 use App\Repository\OrdonnaceRepository;
 use App\Repository\PatientRepository;
 
 use App\Repository\StateRepository;
 use App\Repository\TypePatientRepository;
 use Symfony\Component\Routing\Annotation\Route;
-
 use App\Form\RegistrationFormType;
-use App\Entity\Family;
-use App\Entity\GroupFamily;
-use App\Entity\RendezVous;
-use App\Repository\FamilyRepository;
-use App\Repository\GroupFamilyRepository;
 use App\Repository\PraticienRepository;
-use App\Repository\RendezVousRepository;
-use App\Service\VaccinGenerate;
-use Carbon\Carbon;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,9 +24,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Contracts\Translation\TranslatorInterface;
-
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use App\Security\LoginFormAuthenticator;
 use App\Repository\UserRepository;
 
@@ -54,6 +37,8 @@ class ProfileController extends AbstractController
     protected $typePatientRepository;
     protected $stateRepository;
     protected $cityRepository;
+    protected $fonctionRepository;
+
     private $userCurrent;
 
     const ROLE_PATIENT = 'ROLE_PATIENT';
@@ -64,9 +49,9 @@ class ProfileController extends AbstractController
         PatientRepository $patientRepository,
         OrdonnaceRepository $ordonnaceRepository,
         PraticienRepository $praticienRepository,
+        FonctionRepository $fonctionRepository,
         StateRepository $stateRepository,
         CityRepository $cityRepository,
-
         TokenStorageInterface $tokenStorage,
         TypePatientRepository $typePatientRepository,
         UserRepository $userRepository,
@@ -76,6 +61,7 @@ class ProfileController extends AbstractController
     {
         $this->user = $userRepository;
         $this->stateRepository=$stateRepository;
+        $this->fonctionRepository=$fonctionRepository;
         $this->cityRepository=$cityRepository;
         $this->typePatientRepository=$typePatientRepository;
         $this->ordonnaceRepository= $ordonnaceRepository;
@@ -95,21 +81,26 @@ class ProfileController extends AbstractController
         $praticien = $this->praticienRepository->find($pra['id']);
         $numero = $praticien->getNumeroProfessionnel();
         $pra['address']=$praticien->getAddress();
-        $pra['fonction']=$praticien->getFonction();
-        $pra['country']=$praticien->getState();
+
         $pra['email']=$praticien->getUser()->getEmail();
         $phone = $praticien->getPhone();
-        $city = $praticien->getCity();
+
         $lieu = $praticien->getAdressOnBorn();
         $ordonance= $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
         $pra['center_health']= $ordonance->getCentreSante();
+        $fonction = $this->fonctionRepository->findOneBy(['Praticien'=>$praticien]);
+        $fonc = $fonction->getFonction();
+        $city = $fonction->getCity();
+        $state = $fonction->getState();
 
         $form = $this->createForm(RegistrationPraticienFormType::class, $pra);
         $response = $this->renderView('profile/_form_edit_praticien.html.twig', [
             'form' => $form->createView(),
             'lieu'=>$lieu,
             'phone'=>$phone,
+            'fonction'=>$fonc,
             'city'=>$city,
+            'state'=>$state,
             'numero'=>$numero,
             'eventData' => $pra,
         ]);
@@ -138,7 +129,7 @@ class ProfileController extends AbstractController
         $city = $patient->getCity();
         $phone= $patient->getPhone();
         $enceinte= $patient->getIsEnceinte();
-        $lieu = $patient->getAddressOnBorn();
+        $lieu = $patient->getPlaceBirth();
         $form = $this->createForm(RegistrationFormType::class, $pro);
         $response = $this->renderView('profile/_form_edit.html.twig', [
             'form' => $form->createView(),
@@ -206,6 +197,10 @@ class ProfileController extends AbstractController
         $coprs = $this->praticienRepository->findByPraticienUser($currentUser->getId());
         $ordonance= $this->ordonnaceRepository->findOneBy(['praticien'=>$coprs]);
         $centre = $ordonance->getCentreSante();
+        $fonction = $this->fonctionRepository->findOneBy(['Praticien'=>$coprs]);
+        $fonc = $fonction->getFonction();
+        $city = $fonction->getCity();
+        $state = $fonction->getState();
         if($centre != null){
             $centre=$ordonance->getCentreSante()->getCentreName();
         }
@@ -217,6 +212,9 @@ class ProfileController extends AbstractController
         return $this->render('profile/editPraticien.html.twig', [
             'values' => $values,
             'isuser' => $isuser,
+            'fonction'=>$fonc,
+            'city'=>$city,
+            'state'=>$state,
             'centre'=>$centre,
             'registrationForm' => $form->createView(),
             'currentUser' => $currentUser
@@ -238,16 +236,10 @@ class ProfileController extends AbstractController
         $lieu = $request->request->get('lieu');
         $address =$form->get('address')->getData();
         $mail= $form->get('email')->getData();
-        $state= $form->get('country')->getData();
-        $state= $this->stateRepository->find($state);
-        $city= $request->request->get('city');
-        $city= $this->cityRepository->find($city);
         $numero =  $request->request->get('numero');
         $user = $this->getUser();
         $praticien =  $this->praticienRepository->findOneBy(['user' => $user]);
         $praticien->setNumeroProfessionnel($numero);
-        $praticien->setCity($city);
-        $praticien->setState($state);
         $praticien->setAdressOnBorn($lieu);
         $praticien->setFonction($fonction);
         $praticien->setAddress($address);
@@ -299,7 +291,7 @@ class ProfileController extends AbstractController
         $patient->setState($state);
         $patient->setCity($city);
         $patient->setPhone($phone);
-        $patient->setAddressOnBorn($lieu);
+        $patient->setPlaceBirth($lieu);
         $this->entityManager->persist($patient);
         $this->entityManager->flush();
         $user = $this->user->find($user);

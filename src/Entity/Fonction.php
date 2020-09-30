@@ -4,8 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\FonctionRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -22,19 +20,24 @@ class Fonction
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $fonction;
 
     /**
-     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="fonction")
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="fonctions")
      */
-    private $praticiens;
+    private $state;
 
-    public function __construct()
-    {
-        $this->praticiens = new ArrayCollection();
-    }
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="fonctions")
+     */
+    private $city;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="fonctions")
+     */
+    private $Praticien;
 
     public function getId(): ?int
     {
@@ -46,40 +49,45 @@ class Fonction
         return $this->fonction;
     }
 
-    public function setFonction(?string $fonction): self
+    public function setFonction(string $fonction): self
     {
         $this->fonction = $fonction;
 
         return $this;
     }
 
-    /**
-     * @return Collection|Praticien[]
-     */
-    public function getPraticiens(): Collection
+    public function getState(): ?State
     {
-        return $this->praticiens;
+        return $this->state;
     }
 
-    public function addPraticien(Praticien $praticien): self
+    public function setState(?State $state): self
     {
-        if (!$this->praticiens->contains($praticien)) {
-            $this->praticiens[] = $praticien;
-            $praticien->setFonction($this);
-        }
+        $this->state = $state;
 
         return $this;
     }
 
-    public function removePraticien(Praticien $praticien): self
+    public function getCity(): ?City
     {
-        if ($this->praticiens->contains($praticien)) {
-            $this->praticiens->removeElement($praticien);
-            // set the owning side to null (unless already changed)
-            if ($praticien->getFonction() === $this) {
-                $praticien->setFonction(null);
-            }
-        }
+        return $this->city;
+    }
+
+    public function setCity(?City $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getPraticien(): ?Praticien
+    {
+        return $this->Praticien;
+    }
+
+    public function setPraticien(?Praticien $Praticien): self
+    {
+        $this->Praticien = $Praticien;
 
         return $this;
     }

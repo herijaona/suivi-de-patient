@@ -40,17 +40,6 @@ class OrdoVaccination
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Vaccin::class, inversedBy="ordoVaccinations")
-     * @Groups({"ordovaccination:read"})
-     */
-    private $vaccin;
-
-    /**
-     * @ORM\Column(type="datetime")
-     * @Groups({"ordovaccination:read"})
-     */
-    private $datePrise;
 
     /**
      * @ORM\ManyToOne(targetEntity=Ordonnace::class, inversedBy="ordoVaccinations")
@@ -64,17 +53,7 @@ class OrdoVaccination
      */
     private $patient;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="ordoVaccinationPraticienExecutant")
-     * @Groups({"ordovaccination:read"})
-     */
-    private $referencePraticienExecutant;
 
-    /**
-     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="ordoVaccination")
-     * @Groups({"ordovaccination:read"})
-     */
-    private $interventionVaccinations;
 
     /**
      * @ORM\OneToMany(targetEntity=PatientOrdoVaccination::class, mappedBy="ordoVaccination")
@@ -94,14 +73,10 @@ class OrdoVaccination
      */
     private $etat;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $statusNotif;
 
     public function __construct()
     {
-        $this->interventionVaccinations = new ArrayCollection();
+
         $this->patientOrdoVaccinations = new ArrayCollection();
     }
 
@@ -110,29 +85,7 @@ class OrdoVaccination
         return $this->id;
     }
 
-    public function getVaccin(): ?Vaccin
-    {
-        return $this->vaccin;
-    }
 
-    public function setVaccin(?Vaccin $vaccin): self
-    {
-        $this->vaccin = $vaccin;
-
-        return $this;
-    }
-
-    public function getDatePrise(): ?\DateTimeInterface
-    {
-        return $this->datePrise;
-    }
-
-    public function setDatePrise(\DateTimeInterface $datePrise): self
-    {
-        $this->datePrise = $datePrise;
-
-        return $this;
-    }
 
     public function getOrdonnance(): ?Ordonnace
     {
@@ -158,48 +111,7 @@ class OrdoVaccination
         return $this;
     }
 
-    public function getReferencePraticienExecutant(): ?Praticien
-    {
-        return $this->referencePraticienExecutant;
-    }
 
-    public function setReferencePraticienExecutant(?Praticien $referencePraticienExecutant): self
-    {
-        $this->referencePraticienExecutant = $referencePraticienExecutant;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|InterventionVaccination[]
-     */
-    public function getInterventionVaccinations(): Collection
-    {
-        return $this->interventionVaccinations;
-    }
-
-    public function addInterventionVaccination(InterventionVaccination $interventionVaccination): self
-    {
-        if (!$this->interventionVaccinations->contains($interventionVaccination)) {
-            $this->interventionVaccinations[] = $interventionVaccination;
-            $interventionVaccination->setOrdoVaccination($this);
-        }
-
-        return $this;
-    }
-
-    public function removeInterventionVaccination(InterventionVaccination $interventionVaccination): self
-    {
-        if ($this->interventionVaccinations->contains($interventionVaccination)) {
-            $this->interventionVaccinations->removeElement($interventionVaccination);
-            // set the owning side to null (unless already changed)
-            if ($interventionVaccination->getOrdoVaccination() === $this) {
-                $interventionVaccination->setOrdoVaccination(null);
-            }
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection|PatientOrdoVaccination[]

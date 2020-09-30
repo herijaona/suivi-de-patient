@@ -23,12 +23,12 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
 
     public function searchCarnet($patient = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT c.id,c.datePriseInitiale,c.rappelVaccin, c.etat, p.firstName, p.lastName,v.vaccinName
+        $query = $entityManager->createQuery('SELECT c.id,c.date_prise, c.etat, p.firstName, p.lastName,v.vaccinName
             FROM App\Entity\CarnetVaccination c 
             INNER JOIN App\Entity\Patient p with p.id = c.patient
             LEFT JOIN App\Entity\Vaccin v with v.id = c.vaccin
             WHERE (p.id = :patient OR p.id IS NULL) 
-            ORDER BY c.datePriseInitiale DESC')
+            ORDER BY c.date_prise DESC')
             ->setParameter('patient', $patient);
 
         return $query->getResult();
@@ -39,7 +39,7 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
         $result = [];
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('
-            SELECT c.id, p.firstName as firstname, p.lastName as lastname, v.vaccinName as vaccin, c.etat as vaccinState, c.datePriseInitiale as datePriseInitiale, c.rappelVaccin as rappel
+            SELECT c.id, p.firstName as firstname, p.lastName as lastname, v.vaccinName as vaccin, c.etat as vaccinState, c.date_prise as datePriseInitiale
             FROM App\Entity\CarnetVaccination c
              INNER JOIN App\Entity\Patient p with p.id = c.patient
             INNER JOIN App\Entity\Vaccin v with v.id=c.vaccin

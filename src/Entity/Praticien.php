@@ -178,10 +178,18 @@ class Praticien
      */
     private $interventionVaccinations;
 
+
     /**
-     * @ORM\ManyToOne(targetEntity=Fonction::class, inversedBy="praticiens")
+     * @ORM\OneToMany(targetEntity=CarnetVaccination::class, mappedBy="Praticien")
      */
-    private $fonction;
+    private $carnetVaccinations;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Fonction::class, mappedBy="Praticien")
+     */
+    private $fonctions;
+
+
 
 
 
@@ -202,6 +210,8 @@ class Praticien
         $this->patients = new ArrayCollection();
         $this->associers = new ArrayCollection();
         $this->interventionVaccinations = new ArrayCollection();
+        $this->carnetVaccinations = new ArrayCollection();
+        $this->fonctions = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -750,15 +760,79 @@ class Praticien
         return $this;
     }
 
-    public function getFonction(): ?Fonction
+    public function getFonction(): ?string
     {
         return $this->fonction;
     }
 
-    public function setFonction(?Fonction $fonction): self
+    public function setFonction(?string $fonction): self
     {
         $this->fonction = $fonction;
 
         return $this;
     }
+
+    /**
+     * @return Collection|CarnetVaccination[]
+     */
+    public function getCarnetVaccinations(): Collection
+    {
+        return $this->carnetVaccinations;
+    }
+
+    public function addCarnetVaccination(CarnetVaccination $carnetVaccination): self
+    {
+        if (!$this->carnetVaccinations->contains($carnetVaccination)) {
+            $this->carnetVaccinations[] = $carnetVaccination;
+            $carnetVaccination->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCarnetVaccination(CarnetVaccination $carnetVaccination): self
+    {
+        if ($this->carnetVaccinations->contains($carnetVaccination)) {
+            $this->carnetVaccinations->removeElement($carnetVaccination);
+            // set the owning side to null (unless already changed)
+            if ($carnetVaccination->getPraticien() === $this) {
+                $carnetVaccination->setPraticien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Fonction[]
+     */
+    public function getFonctions(): Collection
+    {
+        return $this->fonctions;
+    }
+
+    public function addFonction(Fonction $fonction): self
+    {
+        if (!$this->fonctions->contains($fonction)) {
+            $this->fonctions[] = $fonction;
+            $fonction->setPraticien($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFonction(Fonction $fonction): self
+    {
+        if ($this->fonctions->contains($fonction)) {
+            $this->fonctions->removeElement($fonction);
+            // set the owning side to null (unless already changed)
+            if ($fonction->getPraticien() === $this) {
+                $fonction->setPraticien(null);
+            }
+        }
+
+        return $this;
+    }
+
+    
 }

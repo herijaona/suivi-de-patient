@@ -55,7 +55,7 @@
                     <div class="col-lg-6">
                         <div class=" pt-2 pb-2">
                             <select class="form-control chosen-select" id="city" name="city" >
-                                <option value="" selected>Choisir ville de Résidence</option>
+                                <option value="" selected>Ville de Résidence</option>
                             </select>
                         </div>
                         <div class="pt-2 pb-2">
@@ -78,7 +78,7 @@
                         {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'Adresse e-mail', "minlength":"3"}})}}
                     </div>
                     <div class="col-lg-6">
-                        <input type="button" id="tel" value="+33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
+                        <input type="button" id="tel" value="33" style="position: absolute; width:45px; height: 38px; left: 15px; border: 1px solid #ced4da;border-radius: .25rem;">
                         {{ form_widget(registrationForm.phone, {'attr': {'class': 'form-control', 'placeholder': 'Numéro téléphone', "minlength":"9"}}) }}
                     </div>
                 </div>
@@ -225,20 +225,7 @@
                     $('#registration_form_date_naissance').datepicker("setEndDate", new Date()).datepicker("update", new Date());
                 }
             }
-            $('#registration_form_country').on('change', function () {
-                var idcountry = $('#registration_form_country option:selected').val();
-                $.ajax({
-                    method: "POST",
-                    url: "{{ path('country') }}",
-                    data: {id: idcountry},
-                    success: function (response) {
-                        $('#city').empty();
-                        $.each(response, function (index, element) {
-                            $('#city').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
-                        });
-                    }
-                });
-            });
+
             $('#registration_form_country').on('change', function () {
                 var idcountry = $('#registration_form_country option:selected').val();
                 $.ajax({

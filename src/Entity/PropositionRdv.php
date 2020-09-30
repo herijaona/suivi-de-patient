@@ -72,17 +72,7 @@ class PropositionRdv
      */
     private $patient;
 
-    /**
-     * @ORM\OneToOne(targetEntity=IntervationConsultation::class, mappedBy="proposition", cascade={"persist", "remove"})
-     * @Groups({"read:PropositionRdv"})
-     */
-    private $intervationConsultation;
 
-    /**
-     * @ORM\Column(type="integer")
-     * @Groups({"read:PropositionRdv"})
-     */
-    private $statusNotif;
 
     /**
      * @ORM\ManyToOne(targetEntity=Vaccin::class, inversedBy="propositionRdvs")
@@ -208,35 +198,7 @@ class PropositionRdv
         return $this;
     }
 
-    public function getIntervationConsultation(): ?IntervationConsultation
-    {
-        return $this->intervationConsultation;
-    }
 
-    public function setIntervationConsultation(?IntervationConsultation $intervationConsultation): self
-    {
-        $this->intervationConsultation = $intervationConsultation;
-
-        // set (or unset) the owning side of the relation if necessary
-        $newProposition = null === $intervationConsultation ? null : $this;
-        if ($intervationConsultation->getProposition() !== $newProposition) {
-            $intervationConsultation->setProposition($newProposition);
-        }
-
-        return $this;
-    }
-
-    public function getStatusNotif(): ?int
-    {
-        return $this->statusNotif;
-    }
-
-    public function setStatusNotif(int $statusNotif): self
-    {
-        $this->statusNotif = $statusNotif;
-
-        return $this;
-    }
 
     public function getVaccin(): ?Vaccin
     {

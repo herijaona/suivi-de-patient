@@ -34,11 +34,7 @@ class CarnetVaccination
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=InterventionVaccination::class, inversedBy="carnetVaccinations")
-     * @Groups({"read:carnetvaccination"})
-     */
-    private $intervationVaccination;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="carnetVaccinations")
@@ -58,22 +54,37 @@ class CarnetVaccination
      */
     private $etat;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"read:carnetvaccination"})
-     */
-    private $datePriseInitiale;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     * @Groups({"read:carnetvaccination"})
-     */
-    private $rappelVaccin;
 
     /**
      * @ORM\OneToMany(targetEntity=PatientCarnetVaccination::class, mappedBy="carnetVaccination")
      */
     private $patientCarnetVaccinations;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $date_prise;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $identification;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="carnetVaccinations")
+     */
+    private $Praticien;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $identifiant_vaccin;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Lot;
 
     public function __construct()
     {
@@ -85,17 +96,7 @@ class CarnetVaccination
         return $this->id;
     }
 
-    public function getIntervationVaccination(): ?InterventionVaccination
-    {
-        return $this->intervationVaccination;
-    }
 
-    public function setIntervationVaccination(?InterventionVaccination $intervationVaccination): self
-    {
-        $this->intervationVaccination = $intervationVaccination;
-
-        return $this;
-    }
 
     public function getPatient(): ?Patient
     {
@@ -133,29 +134,7 @@ class CarnetVaccination
         return $this;
     }
 
-    public function getDatePriseInitiale(): ?\DateTimeInterface
-    {
-        return $this->datePriseInitiale;
-    }
 
-    public function setDatePriseInitiale(?\DateTimeInterface $datePriseInitiale): self
-    {
-        $this->datePriseInitiale = $datePriseInitiale;
-
-        return $this;
-    }
-
-    public function getRappelVaccin(): ?\DateTimeInterface
-    {
-        return $this->rappelVaccin;
-    }
-
-    public function setRappelVaccin(?\DateTimeInterface $rappelVaccin): self
-    {
-        $this->rappelVaccin = $rappelVaccin;
-
-        return $this;
-    }
 
     /**
      * @return Collection|PatientCarnetVaccination[]
@@ -184,6 +163,66 @@ class CarnetVaccination
                 $patientCarnetVaccination->setCarnetVaccination(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDatePrise(): ?\DateTimeInterface
+    {
+        return $this->date_prise;
+    }
+
+    public function setDatePrise(?\DateTimeInterface $date_prise): self
+    {
+        $this->date_prise = $date_prise;
+
+        return $this;
+    }
+
+    public function getIdentification(): ?string
+    {
+        return $this->identification;
+    }
+
+    public function setIdentification(?string $identification): self
+    {
+        $this->identification = $identification;
+
+        return $this;
+    }
+
+    public function getPraticien(): ?Praticien
+    {
+        return $this->Praticien;
+    }
+
+    public function setPraticien(?Praticien $Praticien): self
+    {
+        $this->Praticien = $Praticien;
+
+        return $this;
+    }
+
+    public function getIdentifiantVaccin(): ?string
+    {
+        return $this->identifiant_vaccin;
+    }
+
+    public function setIdentifiantVaccin(string $identifiant_vaccin): self
+    {
+        $this->identifiant_vaccin = $identifiant_vaccin;
+
+        return $this;
+    }
+
+    public function getLot(): ?string
+    {
+        return $this->Lot;
+    }
+
+    public function setLot(?string $Lot): self
+    {
+        $this->Lot = $Lot;
 
         return $this;
     }

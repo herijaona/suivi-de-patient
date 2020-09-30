@@ -19,25 +19,25 @@ class OrdoConsultationRepository extends ServiceEntityRepository
         parent::__construct($registry, OrdoConsultation::class);
     }
 
-    public function searchStatus($patient = null, $status = 0 ){
+    public function searchStatus($patient = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv,o.statusNotif, o.objetConsultation,o.etat, o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,pr.firstName, pr.lastName
+        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation,o.etat, o.statusConsultation,pr.firstName, pr.lastName,c.centreName
             FROM App\Entity\OrdoConsultation o 
             INNER JOIN App\Entity\Patient p with p.id = o.patient
             LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
             LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
-            WHERE p.id = :patient AND o.statusConsultation = :status AND o.dateRdv >= :now 
+            LEFT JOIN App\Entity\CentreHealth c with c.id = d.CentreSante
+            WHERE p.id = :patient
             ORDER BY o.dateRdv ASC')
-                ->setParameter('status', $status)
-                ->setParameter('patient', $patient)
-                ->setParameter('now', new \DateTime());
+            ->setParameter('patient', $patient)
+        ;
 
         return $query->getResult();
     }
 
     public function searchStatusPraticien($praticien = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation,o.etat,o.statusConsultation,o.referencePraticientExecutant,o.typePraticien,p.firstName, p.lastName,p.id as patient, pr.id as praticien
+        $query = $entityManager->createQuery('SELECT o.id, o.dateRdv, o.objetConsultation,o.etat,o.statusConsultation,p.firstName, p.lastName,p.id as patient, pr.id as praticien
             FROM App\Entity\OrdoConsultation o 
             INNER JOIN App\Entity\Patient p with p.id = o.patient
             LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
@@ -64,38 +64,6 @@ class OrdoConsultationRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
-    public function searchStatusPraticienNotif($praticien = null, $status = 0,$statusNotif = 0){
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT count(o.id)
-            FROM App\Entity\OrdoConsultation o 
-            INNER JOIN App\Entity\Patient p with p.id = o.patient
-            LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
-            LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
-            WHERE (pr.id = :praticien OR pr.id IS NULL) AND o.statusConsultation = :status AND o.dateRdv >= :now AND o.statusNotif =:etat
-            ORDER BY o.dateRdv ASC')
-            ->setParameter('status', $status)
-            ->setParameter('etat', $statusNotif)
-            ->setParameter('praticien', $praticien)
-            ->setParameter('now', new \DateTime());
-
-        return $query->getResult();
-    }
-
-    public function searchStatusPraticienAll($praticien = null, $statusNotif = 0){
-        $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT o.id,p.firstName, p.lastName,p.id as patient, pr.id as praticien
-            FROM App\Entity\OrdoConsultation o 
-            INNER JOIN App\Entity\Patient p with p.id = o.patient
-            LEFT JOIN App\Entity\Ordonnace d with d.id = o.ordonnance
-            LEFT JOIN App\Entity\Praticien pr with pr.id = d.praticien
-            WHERE (pr.id = :praticien OR pr.id IS NULL) AND o.statusNotif =:etat
-            ORDER BY o.dateRdv ASC')
-            ->setParameter('praticien', $praticien)
-            ->setParameter('etat', $statusNotif);
-
-        return $query->getResult();
-    }
-
     public function  searchConsultation($praticien){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT count(o.id)

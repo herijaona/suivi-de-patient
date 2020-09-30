@@ -83,7 +83,7 @@ class Patient
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=TypePatient::class, inversedBy="typePatient")
+     * @ORM\ManyToOne(targetEntity=TypePatient::class, inversedBy="patients")
      */
     private $typePatient;
 
@@ -199,12 +199,6 @@ class Patient
 
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups({"read:patient"})
-     */
-    private $addressOnBorn;
-
-    /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"read:patient"})
      */
@@ -215,6 +209,15 @@ class Patient
      */
     private $associers;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $DateEnceinte;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $PlaceBirth;
 
 
 
@@ -809,17 +812,6 @@ class Patient
         return $this;
     }
 
-    public function getAddressOnBorn(): ?string
-    {
-        return $this->addressOnBorn;
-    }
-
-    public function setAddressOnBorn(string $addressOnBorn): self
-    {
-        $this->addressOnBorn = $addressOnBorn;
-
-        return $this;
-    }
 
     public function __toString()
     {
@@ -987,7 +979,28 @@ class Patient
         return $this;
     }
 
+    public function getDateEnceinte(): ?\DateTimeInterface
+    {
+        return $this->DateEnceinte;
+    }
 
+    public function setDateEnceinte(?\DateTimeInterface $DateEnceinte): self
+    {
+        $this->DateEnceinte = $DateEnceinte;
 
+        return $this;
+    }
+
+    public function getPlaceBirth(): ?string
+    {
+        return $this->PlaceBirth;
+    }
+
+    public function setPlaceBirth(?string $PlaceBirth): self
+    {
+        $this->PlaceBirth = $PlaceBirth;
+
+        return $this;
+    }
 
 }

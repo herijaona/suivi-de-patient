@@ -487,7 +487,7 @@
       </trans-unit>
       <trans-unit id="kg5BPH1" resname="Status">
         <source>Status</source>
-        <target>Status</target>
+        <target>Statut</target>
       </trans-unit>
       <trans-unit id="G.n1GyK" resname="State Intervention">
         <source>State Intervention</source>
@@ -965,7 +965,6 @@
         <source>View</source>
         <target>Voir</target>
       </trans-unit>
-
       <trans-unit id="s3TecNB" resname="New generation">
         <source>New generation</source>
         <target>Nouveau Génération</target>
@@ -974,6 +973,79 @@
         <source>Generated</source>
         <target>Génerée</target>
       </trans-unit>
+      <trans-unit id="avsmoP." resname="City of Function">
+        <source>City of Function</source>
+        <target>Ville de Fonction</target>
+      </trans-unit>
+      <trans-unit id="0rLdXLo" resname="Country of function">
+        <source>Country of function</source>
+        <target>Pays de Fonction</target>
+      </trans-unit>
+      <trans-unit id="5fv_tp2" resname="DEMAND VACCINATION SCHEDULE">
+        <source>DEMAND VACCINATION SCHEDULE</source>
+        <target>DEMANDE CALENDRIER DE VACCINATION</target>
+      </trans-unit>
+      <trans-unit id="0cT8RT7" resname="vaccination request">
+        <source>vaccination request</source>
+        <target>Demande de vaccination</target>
+      </trans-unit>
+      <trans-unit id="FO1GDoH" resname="Date Taken">
+        <source>Date Taken</source>
+        <target>Date de Prise</target>
+      </trans-unit>
+      <trans-unit id="cIeX6wf" resname="Vaccinateur Name">
+        <source>Vaccinateur Name</source>
+        <target>Nom du vaccinateur</target>
+      </trans-unit>
+      <trans-unit id="rqSgSoB" resname="Rejected">
+        <source>Rejected</source>
+        <target>Rejeté</target>
+      </trans-unit>
+      <trans-unit id="YdpqK7O" resname="Professional Number">
+        <source>Professional Number</source>
+        <target>Numéro Professionnel</target>
+      </trans-unit>
+      <trans-unit id="fKeJAg9" resname="ID Vaccine">
+        <source>ID Vaccine</source>
+        <target>ID Vaccin</target>
+      </trans-unit>
+      <trans-unit id="PX5qfw8" resname="Generate a Vaccine">
+        <source>Generate a Vaccine</source>
+        <target>Générer un vaccin</target>
+      </trans-unit>
+      <trans-unit id="OBIHBYD" resname="GENERATION OF A SPECIFIC VACCINE">
+        <source>GENERATION OF A SPECIFIC VACCINE</source>
+        <target>GÉNÉRATION D'UN VACCIN SPÉCIFIQUE</target>
+      </trans-unit>
+      <trans-unit id="Sp.bdbD" resname="VALIDATE">
+        <source>VALIDATE</source>
+        <target>VALIDER</target>
+      </trans-unit>
+      <trans-unit id="EOZKE9w" resname="My Appointments">
+        <source>My Appointments</source>
+        <target>Mes Rendez-vous</target>
+      </trans-unit>
+      <trans-unit id="R1lJisK" resname="Create">
+        <source>Create</source>
+        <target>Créer</target>
+      </trans-unit>
+      <trans-unit id="YqbahzX" resname="Object">
+        <source>Object</source>
+        <target>Objet</target>
+      </trans-unit>
+      <trans-unit id="ouwM7xS" resname="MAKE AN APPOINTMENT WITH MY PRATICIEN">
+        <source>MAKE AN APPOINTMENT WITH MY PRATICIEN</source>
+        <target>PRENDRE RENDEZ-VOUS AVEC MON PRATICIEN</target>
+      </trans-unit>
+      <trans-unit id="RyTzRMH" resname="Scheduled">
+        <source>Scheduled</source>
+        <target>Planifiée</target>
+      </trans-unit>
+      <trans-unit id="E8ou4km" resname="Canceled">
+        <source>Canceled</source>
+        <target>Annulée</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

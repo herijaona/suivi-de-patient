@@ -18,8 +18,19 @@ class CentreHealthRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CentreHealth::class);
     }
+    public function searchCentre($city = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT c.id, c.centreName
+            FROM App\Entity\CentreHealth c
+            LEFT JOIN App\Entity\City s with s.id = c.city
+            WHERE s.id = :city')
+            ->setParameter('city', $city);
 
-    // /**
+        return $query->getResult();
+    }
+
+
+        // /**
     //  * @return CentreHealth[] Returns an array of CentreHealth objects
     //  */
     /*

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Fonction;
 use App\Entity\Ordonnace;
 use App\Entity\Patient;
 use App\Entity\Praticien;
@@ -49,18 +50,17 @@ class RegistrationController extends AbstractController
     protected $stateRepository;
     protected $vaccinGenerate;
     protected $vaccinRepository;
-    protected $fonctionRepository;
+
 
     const ROLE_PATIENT = 'ROLE_PATIENT';
     const ROLE_PRATICIEN = 'ROLE_PRATICIEN';
     const ROLE_ADMIN = 'ROLE_ADMIN';
 
 
-    function __construct(UserRepository $userRepository,FonctionRepository $fonctionRepository,VaccinGenerate $vaccinGenerate, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository,VaccinRepository $vaccinRepository)
+    function __construct(UserRepository $userRepository,VaccinGenerate $vaccinGenerate, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository,VaccinRepository $vaccinRepository)
     {
         $this->vaccinGenerate = $vaccinGenerate;
         $this->userRepository = $userRepository;
-        $this->fonctionRepository= $fonctionRepository;
         $this->typePatientRepository = $typePatientRepository;
         $this->cityRepository= $cityRepository;
         $this->stateRepository=$stateRepository;
@@ -125,7 +125,6 @@ class RegistrationController extends AbstractController
             if($patientRequest == "true"){
                 $etat = true;
                 $dateenceinte = new DateTime();
-
                 $patient->setDateEnceinte($dateenceinte);
             }else{
                 $etat = false;
@@ -191,8 +190,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // CREATE ACCOUNT PRATICIEN
             $code = $this->generate_code();
-            $fonction= $form->get('fonction')->getData();
-            $fonction = $this->fonctionRepository->find($fonction);
+            $fonc= $form->get('fonction')->getData();
             $username = $form->get('username')->getData();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
@@ -221,13 +219,10 @@ class RegistrationController extends AbstractController
             $praticien = new Praticien();
             $praticien->setFirstName($first_name);
             $praticien->setLastName($last_name);
-            $praticien->setCity($city);
             $praticien->setSexe($form->get('sexe')->getData());
             $praticien->setCreatedAt(new \DateTime('now'));
             $praticien->setDateBorn($date);
             $praticien->setAddress($form->get('address')->getData());
-            $praticien->setState($form->get('country')->getData());
-            $praticien->setFonction($fonction);
             $praticien->setPhone($form->get('phone')->getData());
             $praticien->setEtat(false);
             $praticien->setUser($user);
@@ -238,6 +233,13 @@ class RegistrationController extends AbstractController
             $ordonance->setDatePrescription(new \DateTime('now'));
             $ordonance->setMedecinTraitant($praticien);
             $entityManager->persist($ordonance);
+            $entityManager->flush();
+            $fonction = new Fonction();
+            $fonction->setPraticien($praticien);
+            $fonction->setFonction($fonc);
+            $fonction->setState($form->get('country')->getData());
+            $fonction->setCity($city);
+            $entityManager->persist($fonction);
             $entityManager->flush();
 
             // CREATE ACCOUNT PATIENT

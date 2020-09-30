@@ -84,6 +84,11 @@ class City
      */
     private $Arrondissement;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Fonction::class, mappedBy="city")
+     */
+    private $fonctions;
+
 
 
 
@@ -96,6 +101,7 @@ class City
         $this->praticien = new ArrayCollection();
         $this->citypatient = new ArrayCollection();
         $this->citypraticien = new ArrayCollection();
+        $this->fonctions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -369,6 +375,37 @@ class City
     public function setArrondissement(?string $Arrondissement): self
     {
         $this->Arrondissement = $Arrondissement;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Fonction[]
+     */
+    public function getFonctions(): Collection
+    {
+        return $this->fonctions;
+    }
+
+    public function addFonction(Fonction $fonction): self
+    {
+        if (!$this->fonctions->contains($fonction)) {
+            $this->fonctions[] = $fonction;
+            $fonction->setCity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFonction(Fonction $fonction): self
+    {
+        if ($this->fonctions->contains($fonction)) {
+            $this->fonctions->removeElement($fonction);
+            // set the owning side to null (unless already changed)
+            if ($fonction->getCity() === $this) {
+                $fonction->setCity(null);
+            }
+        }
 
         return $this;
     }

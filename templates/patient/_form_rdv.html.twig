@@ -1,5 +1,4 @@
-
-    {% extends 'include/base.html.twig' %}
+{% extends 'include/base.html.twig' %}
 
 {%  block title %}
     {% trans %}Appointment {% endtrans %}
@@ -21,7 +20,7 @@
 
     <div class="modal-header text-center">
         {% if new == true %}
-            <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}New appointment{% endtrans %}</h4>
+            <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}MAKE AN APPOINTMENT WITH MY PRATICIEN{% endtrans %}</h4>
         {% else %}
             <h4 class="modal-title white-text w-100 font-weight-bold py-2">
                 {% trans %}Appointment modification{% endtrans %}
@@ -33,29 +32,36 @@
     <!--Body-->
     <div class="modal-body" style="width:69%; margin-left: 17%">
         <div class="md-form">
-            <label class="active" for="form1">Praticien </label>
-            {{ form_widget(form.praticiens, {'attr': { 'class': 'form-control chosen-select' }}) }}
+            <label class="active" for="form1">Fonction </label>
+            {{ form_widget(form.fonction, {'attr': { 'class': 'form-control chosen-select' }}) }}
         </div>
         <div class="md-form">
-            <label class="active" for="form1">{% trans %}Type of appointment{% endtrans %} </label>
+            <label class="active" for="form1">{% trans %}Country{% endtrans %} </label>
+            <select class="form-control " id="state" name="state" required >
+                <option value="" selected>{% trans %}Country{% endtrans %}</option>
+            </select>
+        </div>
+        <div class="md-form">
+            <label class="active" for="form1">{% trans %}City{% endtrans %} </label>
+            <select class="form-control " id="city" name="city" required >
+                <option value="" selected>{% trans %}City{% endtrans %}</option>
+            </select>
+        </div>
+        <div class="md-form">
+            <label class="active" for="form1">Praticien</label>
+            <select class="form-control" id="praticien" name="praticien" required >
+                <option value="" selected>Praticien</option>
+            </select>
+        </div>
+        <div class="md-form">
+            <label class="active" for="form1">Type</label>
             {{ form_widget(form.typeRdv, {'attr': { 'class': 'form-control chosen-select' }}) }}
         </div>
-        <div class="md-form vaccin_hidden">
-            <label class="active" for="form1">Vaccin </label>
-            {{ form_widget(form.vaccin, {'attr': { 'class': 'form-control chosen-select' }}) }}
-        </div>
         <div class="md-form description">
-            <label class="active" for="form1">Description</label>
-            {{ form_widget(form.description, {'attr': { 'class': 'form-control' }}) }}
+            <label class="active" for="form1">{% trans %}Object{% endtrans %}</label>
+            {{ form_widget(form.objet, {'attr': { 'class': 'form-control' }}) }}
         </div>
-        <div class="md-form ">
-            <label class="active" for="form1">{% trans %}Appointment date{%  endtrans %}</label>
-            {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control' }}) }}
-        </div>
-        <div class="md-form ">
-            <label class="active" for="form1">{% trans %}appointment Time {% endtrans %} </label>
-            {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
-        </div>
+
 
         <div class="md-form association-form ">
             <label class="active" for="form1"  style="position: absolute">{% trans %}Associate{% endtrans %} </label>
@@ -74,26 +80,61 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('.vaccin_hidden').css("display", "none");
+            $('#rdv_fonction').on('change', function () {
+                var idfonction = $('#rdv_fonction option:selected').val();
+                $.ajax({
+                    method: "POST",
+                    url: "{{ path('fonction_country') }}",
+                    data: {id: idfonction},
+                    success: function (response) {
+                        $('#state').empty();
+                        $.each(response, function (index, element) {
+                            $('#state').append('<option value="' + element.id + '" selected="selected">' + element.nameState + ' </option>');
+                        });
+                    }
+                });
+            });
+            $('#state').on('click', function () {
+                var idfonction = $('#rdv_fonction option:selected').val();
+                var idstate = $('#state option:selected').val();
+                $.ajax({
+                    method: "POST",
+                    url: "{{ path('fonction_city') }}",
+                    data: {id: idfonction, state:idstate},
+                    success: function (response) {
+                        $('#city').empty();
+                        $.each(response, function (index, element) {
+                            $('#city').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
+                        });
+                    }
+                });
+            });
+            $('#city').on('click', function () {
+                var idfonction = $('#rdv_fonction option:selected').val();
+                var idstate = $('#state option:selected').val();
+                var idcity = $('#city option:selected').val();
+                $.ajax({
+                    method: "POST",
+                    url: "{{ path('fonction_praticien') }}",
+                    data: {id: idfonction, state:idstate, city:idcity},
+                    success: function (response) {
+                        $('#praticien').empty();
+                        $.each(response, function (index, element) {
+                            $('#praticien').append('<option value="' + element.id + '" selected="selected">' + element.lastName +'  '+ element.firstName +' </option>');
+                        });
+                    }
+                });
+            });
+
             $('.association-form').css("display", "none");
             $('.chosen-select').chosen({width: "100%"});
 
-            $('#rdv_dateRdv').datepicker({
-                format: 'dd/mm/yyyy',
-                autoclose: true,
-                todayHighlight:'TRUE',
-                startDate: '-0d',
-            });
-            $('#rdv_heureRdv').clockpicker({
-                donetext: "valider",
-                autoclose: true,
-            });
             $('#rdv_heureRdv').on('change', function () {
                 let receivedVal = $(this).val();
                 $(this).val(receivedVal );
             });
 
-            $('#rdv_praticiens').on('change', function (e) {
+            $('#praticien').on('click', function (e) {
 
                 var particien = $(this).val();
                 var url = "{{ path('check_association', { "praticien": "id"}) }}";
@@ -103,6 +144,7 @@
                     type: 'post',
                     dataType: "json",
                     success: (data) => {
+
                         if(data.status == "OK"){
                             $('.association-form').css('display', 'none');
                         }else{
@@ -114,21 +156,6 @@
                 }).done(() => {
                 });
             });
-
-            $('#rdv_typeRdv').on('change', function (e) {
-                if($(this).val() == 'consultation'){
-                    $('.vaccin_hidden').css("display", "none");
-                    $('.description').css("display", "block");
-
-                }else if($(this).val() == 'intervention'){
-                    $('.vaccin_hidden').css("display", "block");
-                    $('.description').css("display", "none");
-                }else if($(this).val() == 'vaccination'){
-                    $('.vaccin_hidden').css("display", "none");
-                    $('.description').css("display", "none");
-                }
-            });
-
             $('.chosen-select').trigger('chosen:updated');
         });
     </script>

@@ -18,6 +18,47 @@ class FonctionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Fonction::class);
     }
+    public function searchcountry($fonction = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT s.id, s.nameState
+            FROM App\Entity\Fonction f
+            INNER JOIN App\Entity\State s with s.id = f.state
+            WHERE f.id = :fonction')
+            ->setParameter('fonction', $fonction);
+
+        return $query->getResult();
+    }
+    public function searchcity($fonction = null, $state= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT c.id, c.nameCity
+            FROM App\Entity\Fonction f
+            INNER JOIN App\Entity\City c with c.id = f.city
+            LEFT JOIN App\Entity\Region r with r.id = c.region
+            LEFT JOIN App\Entity\State s with s.id = r.state
+            WHERE f.id = :fonction AND s.id =:state')
+            ->setParameter('fonction', $fonction)
+            ->setParameter('state', $state)
+        ;
+
+        return $query->getResult();
+    }
+    public function searchpraticien($fonction = null, $state= null, $city= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id, p.lastName, p.firstName
+            FROM App\Entity\Fonction f
+            INNER JOIN App\Entity\Praticien p with p.id = f.Praticien
+            INNER JOIN App\Entity\City c with c.id = f.city
+            LEFT JOIN App\Entity\Region r with r.id = c.region
+            LEFT JOIN App\Entity\State s with s.id = r.state
+            WHERE f.id = :fonction AND s.id =:state AND c.id =:city')
+            ->setParameter('fonction', $fonction)
+            ->setParameter('state', $state)
+            ->setParameter('city', $city)
+        ;
+
+        return $query->getResult();
+    }
+
 
     // /**
     //  * @return Fonction[] Returns an array of Fonction objects

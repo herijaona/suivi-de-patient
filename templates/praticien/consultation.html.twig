@@ -17,12 +17,12 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>{% trans %}Consultation date{% endtrans %}</th>
-                <th>Type</th>
+                <th>Date</th>
+
                 <th>{% trans %}Object of consultation{% endtrans %}</th>
                 <th>Patient</th>
-                <th>Status</th>
-
+                <th>{% trans %}Status{% endtrans %}</th>
+                <th>Action</th>
             </tr>
             </thead>
             <tbody>
@@ -31,7 +31,6 @@
                     <td>
                         {{ rdv.dateRdv |format_datetime('full', 'short', locale=app.request.locale) }}
                     </td>
-                    <td>Consultation</td>
 
                     <td style="width: 300px;">
                         {{ rdv.objetConsultation }}
@@ -41,41 +40,27 @@
                     </td>
 
                     <td>
-                        {% if rdv.statusConsultation == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Accepted{% endtrans %}</span>
-                        {% elseif rdv.statusConsultation == 0 %}
-                            <span  class="badge badge-success badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="active" data-status="{{rdv.statusConsultation}}">{% trans %}Accept{% endtrans %}</span>
-                            <span class="badge badge-danger badge-style modif-status" data-praticien="{{ rdv.praticien }}" data-patient="{{ rdv.patient }}" data-date="{{ rdv.dateRdv |date}}" data-id="{{ rdv.id }}" data-type="consultation" data-action="reject" data-status="{{rdv.statusConsultation}}">{% trans %}Reject{% endtrans %}</span>
+                        {% if rdv.statusConsultation == 0  %}
+                            <p class="badge badge-info  textf">{% trans %}waiting{% endtrans %}</p>
                         {% elseif rdv.statusConsultation == 2 %}
-                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
+                            <p class="badge badge-danger  textf">{% trans %}Canceled{% endtrans %}</p>
+                        {% elseif rdv.statusConsultation == 1 and rdv.etat == 0 %}
+                            <p class="badge badge-primary  textf">{% trans %}Scheduled{% endtrans %}</p>
+                        {% elseif rdv.statusConsultation == 1 and rdv.etat == 1 %}
+                            <p class="badge badge-success textf">{% trans %}Realized{% endtrans %}</p>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if rdv.statusConsultation == 0 and rdv.etat == 0  %}
+                        <span  class="badge badge-success badge-style modif-status" data-id="{{ rdv.id }}"   data-type="consultation" data-action="active">{% trans %}Organize{% endtrans %}</span>
+                        <span class="badge badge-danger badge-style modif-status" data-id="{{ rdv.id }}" data-type="consultation" data-action="reject" >{% trans %}Reject{% endtrans %}</span>
+                        {% elseif rdv.statusConsultation == 1 and rdv.etat == 0 %}
+                            <span  class="badge badge-success badge-style modif-status" data-id="{{ rdv.id }}"   data-type="test" data-action="active">{{ 'Realize'|trans }}</span>
                         {% endif %}
                     </td>
                 </tr>
             {% endfor %}
-            {% for rdv in proposition  %}
-                <tr>
-                    <td>
-                        {{ rdv.dateProposition |format_datetime('full', 'short', locale=app.request.locale) }}
-                    </td>
-                    <td>{% trans %}Consultation Proposal{% endtrans %}</td>
-                    <td style="width: 300px;">
-                        {{ rdv.descriptionProposition }}
-                    </td>
-                    <td>
-                        {{ rdv.firstName }} {{ rdv.lastName }}
-                    </td>
-                    <td >
-                        {% if rdv.etat == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
-                        {% elseif rdv.etat == 0 %}
-                            <span  class="badge badge-success badge-style modif-status" data-id="{{ rdv.id }}" data-type="proposition" data-action="active" data-etat="{{rdv.etat}}">{% trans %}Accept{% endtrans %}</span>
-                            <span  class="badge badge-danger badge-style modif-status" data-id="{{ rdv.id }}" data-type="proposition" data-action="reject" data-etat="{{ rdv.etat }}">{% trans %}Reject{% endtrans %}</span>
-                        {% elseif rdv.etat == 2 %}
-                            <span class="badge badge-danger badge-style">{% trans %}Reject{% endtrans %}</span>
-                        {% endif %}
-                    </td>
-                </tr>
-            {% endfor %}
+
             </tbody>
         </table>
     </div>
@@ -95,12 +80,7 @@
             e.preventDefault();
             var id = $(this).data('id');
             var type = $(this).data('type');
-            var status = $(this).data('status');
             var action = $(this).data('action');
-            var date = $(this).data('date');
-            var praticien = $(this).data('praticien');
-            var patient = $(this).data('patient');
-            var etat = $(this).data('etat');
 
             $.ajax({
                 url: "{{ path('change_status') }}",
@@ -108,11 +88,6 @@
                 data: {
                     id: id,
                     type: type,
-                    status: status,
-                    date: date,
-                    praticien: praticien,
-                    patient: patient,
-                    etat: etat,
                     action: action
                 },
                 dataType: "json",

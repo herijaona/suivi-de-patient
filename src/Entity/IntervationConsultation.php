@@ -34,17 +34,6 @@ class IntervationConsultation
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=OrdoConsultation::class, inversedBy="intervationConsultations")
-     *
-     */
-    private $ordoConsulataion;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=IntervationMedicale::class, inversedBy="intervationConsultations")
-     * @Groups({"read:IntervationConsultation"})
-     */
-    private $intervationMedicale;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -58,16 +47,6 @@ class IntervationConsultation
      */
     private $patient;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="intervationConsultationsPraticienPrescripteur")
-     * @Groups({"read:IntervationConsultation"})
-     */
-    private $praticienPrescripteur;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="intervationConsultationsPraticienConsultant")
-     */
-    private $praticienConsultant;
 
     /**
      * @ORM\OneToMany(targetEntity=PatientIntervationConsultation::class, mappedBy="interventionConsultation")
@@ -81,9 +60,20 @@ class IntervationConsultation
     private $etat;
 
     /**
-     * @ORM\OneToOne(targetEntity=PropositionRdv::class, inversedBy="intervationConsultation", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Ordonnace::class, inversedBy="intervationConsultations")
      */
-    private $proposition;
+    private $ordonnace;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $status;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $objetConsultation;
+
 
     public function __construct()
     {
@@ -98,29 +88,7 @@ class IntervationConsultation
     /**
      * @return OrdoConsultation|null
      */
-    public function getOrdoConsulataion(): ?OrdoConsultation
-    {
-        return $this->ordoConsulataion;
-    }
 
-    public function setOrdoConsulataion(?OrdoConsultation $ordoConsulataion): self
-    {
-        $this->ordoConsulataion = $ordoConsulataion;
-
-        return $this;
-    }
-
-    public function getIntervationMedicale(): ?IntervationMedicale
-    {
-        return $this->intervationMedicale;
-    }
-
-    public function setIntervationMedicale(?IntervationMedicale $intervationMedicale): self
-    {
-        $this->intervationMedicale = $intervationMedicale;
-
-        return $this;
-    }
 
     public function getDateConsultation(): ?\DateTime
     {
@@ -146,29 +114,6 @@ class IntervationConsultation
         return $this;
     }
 
-    public function getPraticienPrescripteur(): ?Praticien
-    {
-        return $this->praticienPrescripteur;
-    }
-
-    public function setPraticienPrescripteur(?Praticien $praticienPrescripteur): self
-    {
-        $this->praticienPrescripteur = $praticienPrescripteur;
-
-        return $this;
-    }
-
-    public function getPraticienConsultant(): ?Praticien
-    {
-        return $this->praticienConsultant;
-    }
-
-    public function setPraticienConsultant(?Praticien $praticienConsultant): self
-    {
-        $this->praticienConsultant = $praticienConsultant;
-
-        return $this;
-    }
 
     /**
      * @return Collection|PatientIntervationConsultation[]
@@ -213,14 +158,41 @@ class IntervationConsultation
         return $this;
     }
 
-    public function getProposition(): ?PropositionRdv
+
+    public function getOrdonnace(): ?Ordonnace
     {
-        return $this->proposition;
+        return $this->ordonnace;
     }
 
-    public function setProposition(?PropositionRdv $proposition): self
+    public function setOrdonnace(?Ordonnace $ordonnace): self
     {
-        $this->proposition = $proposition;
+        $this->ordonnace = $ordonnace;
+
+        return $this;
+    }
+
+
+
+    public function getStatus(): ?int
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?int $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getObjetConsultation(): ?string
+    {
+        return $this->objetConsultation;
+    }
+
+    public function setObjetConsultation(?string $objetConsultation): self
+    {
+        $this->objetConsultation = $objetConsultation;
 
         return $this;
     }

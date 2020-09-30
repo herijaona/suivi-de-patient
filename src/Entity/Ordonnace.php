@@ -68,11 +68,17 @@ class Ordonnace
      */
     private $CentreSante;
 
+    /**
+     * @ORM\OneToMany(targetEntity=IntervationConsultation::class, mappedBy="ordonnace")
+     */
+    private $intervationConsultations;
+
     public function __construct()
     {
         $this->ordoVaccinations = new ArrayCollection();
         $this->ordoConsultations = new ArrayCollection();
         $this->ordoMedicaments = new ArrayCollection();
+        $this->intervationConsultations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -217,6 +223,37 @@ class Ordonnace
     public function setCentreSante(?CentreHealth $CentreSante): self
     {
         $this->CentreSante = $CentreSante;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|IntervationConsultation[]
+     */
+    public function getIntervationConsultations(): Collection
+    {
+        return $this->intervationConsultations;
+    }
+
+    public function addIntervationConsultation(IntervationConsultation $intervationConsultation): self
+    {
+        if (!$this->intervationConsultations->contains($intervationConsultation)) {
+            $this->intervationConsultations[] = $intervationConsultation;
+            $intervationConsultation->setOrdonnace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIntervationConsultation(IntervationConsultation $intervationConsultation): self
+    {
+        if ($this->intervationConsultations->contains($intervationConsultation)) {
+            $this->intervationConsultations->removeElement($intervationConsultation);
+            // set the owning side to null (unless already changed)
+            if ($intervationConsultation->getOrdonnace() === $this) {
+                $intervationConsultation->setOrdonnace(null);
+            }
+        }
 
         return $this;
     }

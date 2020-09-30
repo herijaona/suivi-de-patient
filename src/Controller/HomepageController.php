@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\CentreHealthRepository;
+use App\Repository\OrdonnaceRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploadService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,11 +17,15 @@ class HomepageController extends AbstractController
 
     protected $userRepository;
     protected $entityManager;
+    protected $centreHealthRepository;
+    protected $ordonnaceRepository;
 
-    function __construct(UserRepository $userRepository, EntityManagerInterface $entityManager)
+    function __construct(UserRepository $userRepository,CentreHealthRepository $centreHealthRepository, OrdonnaceRepository $ordonnaceRepository, EntityManagerInterface $entityManager)
     {
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
+        $this->centreHealthRepository= $centreHealthRepository;
+        $this->ordonnaceRepository= $ordonnaceRepository;
     }
 
     /**
@@ -71,4 +77,5 @@ class HomepageController extends AbstractController
         }
         return new JsonResponse(array("data" => "OK"));
     }
+
 }

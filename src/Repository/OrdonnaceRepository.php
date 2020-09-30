@@ -18,6 +18,17 @@ class OrdonnaceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Ordonnace::class);
     }
+    public function searchPcent($centre = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id, p.firstName, p.lastName, p.fonction
+            FROM App\Entity\Ordonnace o
+            INNER  JOIN  App\Entity\Praticien p with p.id = o.praticien
+            INNER  JOIN App\Entity\CentreHealth c with c.id = o.CentreSante
+            WHERE c.id = :centre')
+            ->setParameter('centre', $centre);
+
+        return $query->getResult();
+    }
 
     // /**
     //  * @return Ordonnace[] Returns an array of Ordonnace objects

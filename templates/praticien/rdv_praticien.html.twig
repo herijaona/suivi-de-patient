@@ -16,10 +16,9 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
+                <th>Patient</th>
                 <th>Type</th>
                 <th>{% trans %}Object{% endtrans %} </th>
-                <th>Praticien</th>
-                <th>{% trans %}Center Health{% endtrans %}</th>
                 <th>Date</th>
                 <th>{% trans %}Status{% endtrans %}</th>
                 <th>Action</th>
@@ -28,18 +27,13 @@
             <tbody>
             {% for rdv in consultation  %}
                 <tr>
-                    <td>Consultation</td>
-                    <td>{{ rdv.objetConsultation }}</td>
-                    <td>
-                        {{ rdv.firstName }}
-                        {{ rdv.lastName }}
-                    </td>
-                    <td>{{ rdv.centreName }}</td>
+                    <td>{{ rdv.lastName }} {{ rdv.firstName }}</td>
+                    <td> Consultation</td>
+                    <td>{{ rdv.objetConsultation }} </td>
                     <td>
                         {% if rdv.dateRdv != null %}
-                        {{ rdv.dateRdv|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                            {{ rdv.dateRdv|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
                         {% endif %}
-
                     </td>
                     <td>
                         {% if rdv.statusConsultation == 0  %}
@@ -53,26 +47,27 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if rdv.statusConsultation == 0 or rdv.statusConsultation == 1 %}
-                       <span class="badge badge-danger badge-style modif" data-type="consultation" data-id="{{ rdv.id }}" >{{ 'Cancel'|trans }}</span>
-                       {% elseif rdv.statusConsultation == 2 %}
-                           <p class="badge badge-danger  textf" >{{ 'Cancel'|trans }}</p>
+                        {% if rdv.statusConsultation == 0 and rdv.etat == 0  %}
+                            <span  class="badge badge-success badge-style modi" data-id="{{ rdv.id }}"   data-type="consultation">{% trans %}Organize{% endtrans %}</span>
+                            <span class="badge badge-danger badge-style modif-status" data-id="{{ rdv.id }}" data-type="consultation" data-action="reject" >{% trans %}Reject{% endtrans %}</span>
+                        {% elseif rdv.statusConsultation == 1 and rdv.etat == 0 %}
+                            <span  class="badge badge-success badge-style modif-status" data-id="{{ rdv.id }}"   data-type="test" data-action="active">{{ 'Realize'|trans }}</span>
                         {% endif %}
                     </td>
+
                 </tr>
             {% endfor %}
             {% for rdv in intervention  %}
                 <tr>
-                    <td>Intervention</td>
-                    <td>{{ rdv.objetConsultation }}</td>
                     <td>
                         {{ rdv.firstName }}
                         {{ rdv.lastName }}
                     </td>
-                    <td>{{ rdv.centreName }}</td>
+                    <td>Intervention</td>
+                    <td>{{ rdv.objetConsultation }}</td>
                     <td>
                         {% if rdv.dateConsultation != null %}
-                        {{ rdv.dateConsultation|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
+                            {{ rdv.dateConsultation|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
                         {% endif %}
                     </td>
                     <td>
@@ -87,10 +82,11 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if rdv.status == 0 or rdv.status == 1 %}
-                            <span class="badge badge-danger badge-style modif" data-type="intervention" data-id="{{ rdv.id }}" >{{ 'Cancel'|trans }}</span>
-                        {% elseif rdv.status == 2 %}
-                            <p class="badge badge-danger  textf" >{{ 'Cancel'|trans }}</p>
+                        {% if rdv.status == 0 and rdv.etat == 0  %}
+                            <span  class="badge badge-success badge-style modi" data-id="{{ rdv.id }}" data-type="intervention" data-action="active">{% trans %}Organize{% endtrans %}</span>
+                            <span class="badge badge-danger badge-style modif-status" data-id="{{ rdv.id }}" data-type="consultation" data-action="reject" >{% trans %}Reject{% endtrans %}</span>
+                        {% elseif rdv.status == 1 and rdv.etat == 0 %}
+                            <span  class="badge badge-success badge-style modif-status" data-id="{{ rdv.id }}"   data-type="test" data-action="active">{{ 'Realize'|trans }}</span>
                         {% endif %}
                     </td>
                 </tr>
@@ -114,23 +110,32 @@
                 autoclose: true,
             });
         });
-        $('.modif').on('click', function (e) {
+        $(".modi").on('click' , function(e) {
             $(".loadBody").css("display", "block");
             e.preventDefault();
             var id = $(this).data('id');
             var type = $(this).data('type');
-
             $.ajax({
-                url: "{{ path('change') }}",
+                url: "{{ path('add_rdv_praticien') }}",
                 type: 'post',
                 data: {
                     id: id,
-                    type: type
+                    type: type,
                 },
-                dataType: "json",
-                success: (data) =>{
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('#rdv_heureRdv').clockpicker({
+                        donetext: "valider",
+                        autoclose: true,
+                    });
+                    $('#rdv_heureRdv').on('change', function () {
+                        let receivedVal = $(this).val();
+                        $(this).val(receivedVal );
+                    });
+
                     $(".loadBody").css("display", "none");
-                    location.reload();
                 },
                 error: (e) => {
                     $(".loadBody").css("display", "none");
@@ -139,8 +144,9 @@
             }).done(() => {
                 $(".loadBody").css("display", "none");
             });
-
         });
+
+
 
     </script>
 {% endblock %}

@@ -27,6 +27,8 @@ class PraticienRepository extends ServiceEntityRepository
     }
 
 
+
+
     // /**
     //  * @return Praticien[] Returns an array of Praticien objects
     //  */
