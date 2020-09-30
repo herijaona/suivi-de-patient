@@ -12,6 +12,7 @@ use App\Repository\RegionRepository;
 use App\Repository\StateRepository;
 use App\Service\FileUploadService;
 use Doctrine\ORM\EntityManagerInterface;
+use PhpOffice\PhpSpreadsheet\Exception;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -93,11 +94,15 @@ class CityController extends AbstractController
         $nameCity = $cityRequest['nameCity'];
         $idRegion = $cityRequest['region'];
         $idCity = $cityRequest['id'];
+        $departement = $cityRequest['departement'];
+        $arrondissement= $cityRequest['arrondissement'];
         $Region = $this->regionRepository->find($idRegion);
         if($idCity != '' && $idCity != null){
             $City = $this->cityRepository->find($idCity);
             $City->setNameCity($nameCity);
             $City->setRegion($Region);
+            $City->setArrondissement($arrondissement);
+            $City->setDepartement($departement);
             $this->entityManager->persist($City);
             $this->entityManager->flush();
             $message = $translator->trans('modification successfully!');
@@ -112,6 +117,8 @@ class CityController extends AbstractController
                 $cityNew = new City();
                 $cityNew->setNameCity($nameCity);
                 $cityNew->setRegion($Region);
+                $cityNew->setDepartement($departement);
+                $cityNew->setArrondissement($arrondissement);
                 $this->entityManager->persist($cityNew);
                 $this->entityManager->flush();
                 $message = $translator->trans('The city name has been registered successfully!');
@@ -151,6 +158,7 @@ class CityController extends AbstractController
 
     /**
      * @Route("/upload-excel-city", name="xlsx_import")
+     * @throws Exception
      */
     public function xlsx_state(Request $request, FileUploadService $fileUploadService)
     {
@@ -167,8 +175,11 @@ class CityController extends AbstractController
             {
                 if ($i != 0){
                     $cityOrCommune = $Row['A'];
-                    $region = $Row['B'];
-                    $pays = $Row['C'];
+                    $depatement = $Row['B'];
+                    $region = $Row['C'];
+                    $pays = $Row['D'];
+                    $phone = $Row['E'];
+                    $arrondissement = $Row['F'];
                     $state = null;
                     $regions = null;
                     $city = null;
@@ -177,7 +188,9 @@ class CityController extends AbstractController
                         if ($state == null){
                             $state = new State();
                             $state->setNameState($pays);
+                            $state->setPhoneindic($phone);
                             $this->entityManager->persist($state);
+                            $this->entityManager->flush();
                         }
                     }
                     if($region != null) {
@@ -187,6 +200,7 @@ class CityController extends AbstractController
                             $regions->setNameRegion($region);
                             $regions->setState($state);
                             $this->entityManager->persist($regions);
+                            $this->entityManager->flush();
                         }
                     }
 
@@ -196,6 +210,8 @@ class CityController extends AbstractController
                             $city = new City();
                             $city->setNameCity($cityOrCommune);
                             $city->setRegion($regions);
+                            $city->setDepartement($depatement);
+                            $city->setArrondissement($arrondissement);
                             $this->entityManager->persist($city);
                             $this->entityManager->flush();
                         }

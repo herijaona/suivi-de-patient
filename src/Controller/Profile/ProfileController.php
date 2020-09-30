@@ -11,6 +11,7 @@ use App\Repository\PatientRepository;
 
 use App\Repository\StateRepository;
 use App\Repository\TypePatientRepository;
+use Exception;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\RegistrationFormType;
 use App\Repository\PraticienRepository;
@@ -257,9 +258,11 @@ class ProfileController extends AbstractController
         return $this->redirectToRoute('editPraticien');
 
     }
+
     /**
      * @Route("/patient/pro", name="editP")
      * @return Response
+     * @throws Exception
      */
     public function editP(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, TranslatorInterface $translator) : Response{
         $pro= [];

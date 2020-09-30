@@ -22,7 +22,14 @@
         <label class="active" for="form1">Région </label>
         {{ form_widget(form.region, {'attr': { 'class': 'form-control chosen-select', 'required': 'required' }}) }}
     </div>
-
+    <div class="md-form">
+        <label class="active" for="form1">Departement </label>
+        {{ form_widget(form.departement, {'attr': { 'class': 'form-control', 'required': 'required' }}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">Arrondissement </label>
+        {{ form_widget(form.arrondissement, {'attr': { 'class': 'form-control', 'required': 'required' }}) }}
+    </div>
 </div>
 <div class="modal-footer justify-content-center">
     <button type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" aria-label="Close"><i class="fas fa-remove ml-1"></i> {% trans %}Cancel{% endtrans %}  </button>

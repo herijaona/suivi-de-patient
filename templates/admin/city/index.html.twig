@@ -35,6 +35,8 @@
                 <th>{% trans %}city{% endtrans %}</th>
                 <th>{% trans %}Region{% endtrans %}</th>
                 <th>{% trans %}Country{% endtrans %}</th>
+                <th>{% trans %}Department{% endtrans %}</th>
+                <th>{% trans %}District{% endtrans %}</th>
                 <th></th>
             </tr>
             </thead>
@@ -50,6 +52,8 @@
                     <td>
                         {{ city.region.state.nameState }}
                     </td>
+                    <td>{{ city.departement }}</td>
+                    <td>{{ city.arrondissement}}</td>
                     <td style="text-align: center">
                         <span class="btn btn-primary data-edit" data-id="{{ city.id }}"><i class="fa fa-pencil"></i></span>
                         <span class="btn btn-danger data-remove" data-id="{{ city.id }}"><i class="fa fa-trash-o"></i></span>

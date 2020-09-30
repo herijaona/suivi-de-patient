@@ -17,6 +17,8 @@ class CityType extends AbstractType
             ->add('nameCity')
             ->add('region')
             ->add('departement')
+            ->add('arrondissement')
+
         ;
     }
 
