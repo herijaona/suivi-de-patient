@@ -45,17 +45,17 @@ class VaccinGenerate
                 case 'ENFANT':
                     $alls = $this->vaccinRepository->findVaccinByTYpe('ENFANT', $state);
 
-                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
+                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
                     break;
                 case 'ADULTE':
                     $alls = $this->vaccinRepository->findVaccinByTYpe('ADULTE',$state);
                    
-                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
+                    $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
                     break;
             }
             if ($type_patient == "ADULTE" && $enceinte == 1) {
                 $alls = $this->vaccinRepository->findVaccinByTYpe('FEMME ENCEINTE',$state);
-                $listVaccin = $this->generate_vaccin($patient, $birthday, $alls,null);
+                $listVaccin = $this->generate_vaccin($patient, $birthday, $alls);
             }
         }
         return $listVaccin;
@@ -68,7 +68,7 @@ class VaccinGenerate
      * @param $IntervationVaccination
      * @throws Exception
      */
-    public function generate_vaccin($patient, $birthday, $vaccinAll, $intervention)
+    public function generate_vaccin($patient, $birthday, $vaccinAll)
     {
         foreach ( $vaccinAll as $vacc){
             if($vacc != null){
@@ -86,14 +86,11 @@ class VaccinGenerate
                 // Calculate the exact date for each string formatted date
                 foreach($getDateMethods as $getDate){
 
-
                     $crnV = new CarnetVaccination();
-
-
                     $crnV->setPatient($patient)
                          ->setVaccin($vacc)
                          ->setEtat(false)
-                         ->setIntervationVaccination($intervention);
+                        ;
 
                     $getVAcc = $vacc->$getDate();
 
@@ -119,10 +116,20 @@ class VaccinGenerate
                         }
 
                         if($getDate === "getDatePriseInitiale"){
-                            $crnV->setDatePriseInitiale($rappelOrDateInit);
+                            $crnV->setDatePrise($rappelOrDateInit);
+                            $crnV->setIdentification("Prise initiale");
+                            $id = $vacc.'0';
+                            $crnV->setIdentifiantVaccin("$id");
                         }
                         else{
-                            $crnV->setRappelVaccin($rappelOrDateInit);
+                            for ($i=0; $i<10; $i++) {
+                                if($getDate === "getRappel{$i}"){
+                                    $crnV->setDatePrise($rappelOrDateInit);
+                                    $crnV->setIdentification("Rappel {$i}");
+                                    $id = "$vacc {$i}"  ;
+                                    $crnV->setIdentifiantVaccin("$id");
+                                }
+                            }
                         }
                         $this->entityManager->persist($crnV);
                         $this->entityManager->flush();

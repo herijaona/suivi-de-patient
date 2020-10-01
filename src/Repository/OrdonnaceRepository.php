@@ -20,7 +20,7 @@ class OrdonnaceRepository extends ServiceEntityRepository
     }
     public function searchPcent($centre = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id, p.firstName, p.lastName, p.fonction
+        $query = $entityManager->createQuery('SELECT p.id, p.firstName, p.lastName
             FROM App\Entity\Ordonnace o
             INNER  JOIN  App\Entity\Praticien p with p.id = o.praticien
             INNER  JOIN App\Entity\CentreHealth c with c.id = o.CentreSante

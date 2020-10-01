@@ -122,6 +122,7 @@ class PatientController extends AbstractController
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
         $rvc = $this->carnetVaccinationRepository->searchCarnet($patient);
+
         return $this->render('patient/vaccination.html.twig', [
             'vaccination'=>$rvc,
             'Doctors'=>$doctor,

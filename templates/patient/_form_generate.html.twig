@@ -98,7 +98,7 @@
                 success: function (response) {
                     $('#praticien').empty();
                     $.each(response, function (index, element) {
-                        $('#praticien').append('<option value="' + element.id + '" selected="selected">'+ element.lastName +"  "+ element.firstName  +"  "+ element.fonction+' </option>');
+                        $('#praticien').append('<option value="' + element.id + '" selected="selected">'+ element.lastName +"  "+ element.firstName  +"  "+ ' </option>');
                     });
                 }
             });

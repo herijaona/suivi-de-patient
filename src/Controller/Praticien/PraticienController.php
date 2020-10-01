@@ -256,6 +256,21 @@ class PraticienController extends AbstractController
                                 }
                              break;
                         }
+                        switch ($type){
+                            case "vaccination":
+                                $pat = $request->request->get('patient');
+                                $patient =  $this->patientRepository->find($pat);
+                                $Date_Rdv= new DateTime('now');
+                                $ordoVacc = $this->ordoVaccinationRepository->find($id);
+                                if($ordoVacc != null){
+                                    $this->vaccinGenerate->generateCalendar($patient, $Date_Rdv);
+                                    $ordoVacc->setStatusVaccin(1);
+                                    $this->entityManager->persist($ordoVacc);
+                                    $this->entityManager->flush();
+
+                                }
+                                break;
+                        }
                     }
                     $message=$translator->trans('Successful change');
                     $this->addFlash('success', $message);

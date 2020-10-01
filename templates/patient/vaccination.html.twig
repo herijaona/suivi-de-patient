@@ -31,29 +31,30 @@
             <tbody>
             {% for vac in vaccination  %}
                 <tr>
+                    <td>{{ vac.vaccinName }}</td>
+                    <td>{{ vac.identifiant_vaccin }}</td>
+                    <td>{{ vac.date_prise|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy')}}</td>
+                    <td>{{ vac.Lot }}</td>
+                    <td>{{ vac.vaccinateur_nom }} {{ vac.vaccinateur_prenom }}</td>
+                    <td>{{ vac.NumeroProfessionnel }}</td>
+                    <td>{{ vac.identification }}</td>
                     <td>
-                        {{ vac.vaccinName }}
-                    </td>
-                    <td>
-                        {% if vac.datePriseInitiale != null %}
-                            {{ vac.datePriseInitiale |localizeddate('full', 'short') }}
-                        {% elseif vac.datePriseInitiale == null %}
-                        {% endif %}</td>
-                    <td>
-                        {% if vac.rappelVaccin != null %}
-                        {{ vac.rappelVaccin | localizeddate('full', 'short') }}
-                        {% elseif vac.rappelVaccin == null %}
+                        {% if vac.status == 0 %}
+                        <p class="badge badge-info  textf">{{ 'Waiting'|trans }}</p>
+                        {% elseif vac.status == 1 and vac.etat == 0 %}
+                            <p class="badge badge-primary  textf">{% trans %}Scheduled{% endtrans %}</p>
+                        {% elseif vac.status == 1 and vac.etat == 1 %}
+                            <p class="badge badge-success textf">{% trans %}Realized{% endtrans %}</p>
                         {% endif %}
                     </td>
-                    <td>
-                        {% if vac.etat == 1 %}
-                            <span class="badge badge-info badge-style">{% trans %}Realized{% endtrans %}</span>
-                        {% elseif vac.etat == 0 %}
-                            <span class="badge badge-warning badge-style">{% trans %}waiting{% endtrans %}</span>
-                        {% endif %}
-                    </td>
+                       <td>
+                           <span class="badge badge-danger badge-style " data-type="consultation" data-id="{{ vac.id }}" >Intervention</span>
+
+                       </td>
+
 
                 </tr>
+                
             {% endfor %}
             </tbody>
         </table>
