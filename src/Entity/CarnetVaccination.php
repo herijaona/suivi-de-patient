@@ -77,7 +77,7 @@ class CarnetVaccination
     private $Praticien;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      */
     private $identifiant_vaccin;
 

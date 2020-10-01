@@ -52,6 +52,35 @@
 
                 </tr>
             {% endfor %}
+                {% for vac in intervention  %}
+                    <tr>
+                        <td>{{vac.firstName }} {{ vac.lastName }}</td>
+                        <td>Intervention Vaccination</td>
+                        <td>
+                            {% if vac.statusVaccin == 0 %}
+                                <p class="badge badge-info  textf">{{ 'Waiting'|trans }}</p>
+                            {% elseif vac.statusVaccin == 1 and vac.etat == 0 %}
+                                <p class="badge badge-primary  textf">{% trans %}Scheduled{% endtrans %}</p>
+                            {% elseif vac.statusVaccin == 1 and vac.etat == 1 %}
+                                <p class="badge badge-success textf">{% trans %}Realized{% endtrans %}</p>
+                            {% endif %}
+                        </td>
+
+                        <td >
+                            {% if vac.statusVaccin == 1 %}
+                                <span class="badge badge-success badge-style modif-status"  data-type="test"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-carnet = {{ vac.carnet }} data-patient="{{ vac.patient }}" data-numero ={{ vac.numero }} >{{ 'Realize'|trans }}</span>
+
+                            {% elseif vac.statusVaccin == 0 %}
+                                <span class="badge badge-success badge-style modif-status"  data-type="vaccination"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{{ 'Organize'|trans }}</span>
+                                <span  class="badge badge-danger badge-style modif-status" data-type="vaccination"  data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Reject{% endtrans %}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ path('see_intervention', {'patient_id' : vac.carnet}) }}" class="badge badge-success badge-style">{% trans %}See{% endtrans %}</a>
+                        </td>
+
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
@@ -70,6 +99,9 @@
             var date = $(this).data('date');
             var praticien = $(this).data('praticien');
             var patient = $(this).data('patient');
+            var carnet = $(this).data('carnet');
+            var numero = $(this).data('numero');
+
             $.ajax({
                 url: "{{ path('change_status') }}",
                 type: 'post',
@@ -80,6 +112,8 @@
                     date: date,
                     praticien: praticien,
                     patient: patient,
+                    carnet: carnet,
+                    numero: numero,
                     action: action
                 },
                 dataType: "json",

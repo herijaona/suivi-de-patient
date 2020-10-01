@@ -137,8 +137,10 @@ class PraticienController extends AbstractController
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $rvc = $this->ordoVaccinationRepository->searchStatusPraticien($praticien->getId());
+        $intervention = $this->interventionVaccinationRepository->searchIntCarnet($praticien);
         return $this->render('praticien/vaccination.html.twig', [
             'vaccination' => $rvc,
+            'intervention'=> $intervention,
         ]);
     }
     /**
@@ -232,6 +234,19 @@ class PraticienController extends AbstractController
     }
 
     /**
+     * @Route("/see_intervention/{patient_id}", name="see_intervention")
+     */
+    public function see_intervention(Request $request, $patient_id){
+        $patient =$this->carnetVaccinationRepository->find($patient_id);
+        $list = $this->interventionVaccinationRepository->searchInt($patient);
+
+        return $this->render("praticien/inter.html.twig",[
+            'intervention' => $list,
+        ]);
+    }
+
+
+    /**
      * @Route("/update/edit", name="change_status")
      * @throws Exception
      */
@@ -240,6 +255,12 @@ class PraticienController extends AbstractController
             $id= $request->request->get('id');
             $action = $request->request->get('action');
             $type = $request->request->get('type');
+            $praticien = $request->request->get('praticien');
+            $praticien= $this->praticienRepository->find($praticien);
+            $carnet = $request->request->get('carnet');
+            $numero = $request->request->get('numero');
+
+
             switch ($action){
                 case 'active':
                     if($type == "consultation"){
@@ -252,12 +273,21 @@ class PraticienController extends AbstractController
                     }else{
                         switch ($type){
                             case "test":
-                                $ordoVacc = $this->ordoConsultationRepository->find($id);
+                                $ordoVacc = $this->interventionVaccinationRepository->find($id);
                                 if($ordoVacc != null){
                                    $ordoVacc->setEtat(1);
                                     $this->entityManager->persist($ordoVacc);
                                     $this->entityManager->flush();
+                                    $carnetvaccination = $this->carnetVaccinationRepository->find($carnet);
+                                    $carnetvaccination->setEtat("1");
+                                    $carnetvaccination->setPraticien($praticien);
+                                    $carnetvaccination->setLot("lot");
+                                    $this->entityManager->persist($carnetvaccination);
+                                    $this->entityManager->flush();
+
                                 }
+
+
                              break;
                         }
                         switch ($type){
@@ -785,17 +815,6 @@ class PraticienController extends AbstractController
         $carnet->setDatePrise($date);
         $carnet->setVaccin($vaccin);
         $carnet->setIdentification($identification);
-        if($identification == "Prise initiale"){
-            $id = $vaccin.'-0';
-            $carnet->setIdentifiantVaccin($id);
-        }else{
-            for ($i = 1; $i <= 10; $i++){
-                $id = "$vaccin {$i}";
-                $carnet->setIdentifiantVaccin($id);
-            }
-
-
-        }
         $carnet->setPatient($patient);
         $this->entityManager->persist($carnet);
         $this->entityManager->flush();
@@ -808,17 +827,7 @@ class PraticienController extends AbstractController
         $intervention->setVaccin($vaccin);
         $intervention->setDatePriseVaccin($date);
         $intervention->setEtat("0");
-        if($identification == "Prise initiale"){
-            $id = $vaccin.'-0';
-            $intervention->setIdentificationVaccin($id);
-        }else{
-            for ($i = 1; $i <= 10; $i++){
-                $id = "$vaccin {$i}";
-                $intervention->setIdentificationVaccin($id);
-            }
-
-
-        }
+        $intervention->setIdentificationVaccin($identification);
         $this->entityManager->persist($intervention);
         $this->entityManager->flush();
         $message=$translator->trans('registration successful');

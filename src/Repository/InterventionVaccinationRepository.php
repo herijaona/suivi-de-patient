@@ -103,6 +103,38 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
 
     }
 
+    public function  searchIntCarnet($praticien= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT i.id,i.statusVaccin,p.lastName,p.firstName,i.etat,pr.id as praticien, p.id as patient,c.id as carnet,pr.NumeroProfessionnel as numero
+            FROM App\Entity\InterventionVaccination i 
+            INNER JOIN App\Entity\Patient p with p.id = i.patient
+            INNER JOIN App\Entity\CarnetVaccination c with c.id = i.carnet
+            INNER JOIN App\Entity\Ordonnace o with o.id = i.ordonnace
+            LEFT JOIN App\Entity\Praticien pr with pr.id= o.praticien
+            WHERE pr.id = :praticien  
+            ORDER BY i.datePriseVaccin ASC')
+            ->setParameter('praticien', $praticien);
+
+        return $query->getResult();
+
+    }
+    public function  searchInt($patient= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT i.id,c.identification,i.datePriseVaccin,v.vaccinName,i.statusVaccin,i.etat,p.lastName,p.firstName
+            FROM App\Entity\InterventionVaccination i 
+            INNER JOIN App\Entity\Patient p with p.id = i.patient
+            INNER JOIN App\Entity\Vaccin v with v.id = i.vaccin
+            INNER JOIN App\Entity\CarnetVaccination c with c.id = i.carnet
+            INNER JOIN App\Entity\Ordonnace o with o.id = i.ordonnace
+            LEFT JOIN App\Entity\Praticien pr with pr.id= o.praticien
+            WHERE c.id = :patient  
+            ORDER BY i.datePriseVaccin ASC')
+            ->setParameter('patient', $patient);
+
+        return $query->getResult();
+
+    }
+
 
 
     // /**
