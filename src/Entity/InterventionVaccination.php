@@ -74,10 +74,6 @@ class InterventionVaccination
      */
     private $carnet;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $identification_vaccin;
 
     public function __construct()
     {
@@ -187,18 +183,5 @@ class InterventionVaccination
 
         return $this;
     }
-
-    public function getIdentificationVaccin(): ?string
-    {
-        return $this->identification_vaccin;
-    }
-
-    public function setIdentificationVaccin(?string $identification_vaccin): self
-    {
-        $this->identification_vaccin = $identification_vaccin;
-
-        return $this;
-    }
-
 
 }
