@@ -810,7 +810,7 @@ class PraticienController extends AbstractController
         $intervention->setEtat("0");
         if($identification == "Prise initiale"){
             $id = $vaccin.'-0';
-            $intervention->setIdentificationVaccin($id)
+            $intervention->setIdentificationVaccin($id);
         }else{
             for ($i = 1; $i <= 10; $i++){
                 $id = "$vaccin {$i}";
