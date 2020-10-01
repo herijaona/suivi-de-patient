@@ -54,7 +54,8 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery('
             SELECT COUNT(i.id)
             FROM App\Entity\InterventionVaccination i
-            INNER JOIN App\Entity\Praticien p with i.praticienPrescripteur = p.id
+            INNER JOIN App\Entity\Ordonnace o with o.id = i.ordonnace
+            INNER JOIN App\Entity\Praticien p with p.id = o.praticien
             WHERE i.etat = :etat AND p.id = :praticien
         ')->setParameter('etat', 0)
           ->setParameter('praticien', $praticien);
@@ -66,7 +67,8 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery('
             SELECT COUNT(i.id)
             FROM App\Entity\InterventionVaccination i
-            INNER JOIN App\Entity\Praticien p with i.praticienPrescripteur = p.id
+            INNER JOIN App\Entity\Ordonnace o with o.id = i.ordonnace
+            INNER JOIN App\Entity\Praticien p with p.id = o.praticien
             WHERE i.etat = :etat AND p.id = :praticien
         ')->setParameter('etat', 1)
           ->setParameter('praticien', $praticien);

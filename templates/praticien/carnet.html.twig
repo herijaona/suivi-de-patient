@@ -17,41 +17,23 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
+                <th>{% trans %}Vaccine Name{% endtrans %}</th>
+                <th>{% trans %}ID Vaccine{% endtrans %}</th>
+                <th>{% trans %}Date Taken{% endtrans %}</th>
                 <th>Patient</th>
-                <th>{% trans %}Vaccine{% endtrans %}</th>
-                <th>{% trans %}Initial Take Date {% endtrans %}</th>
-                <th>{% trans %}Date Reminder{% endtrans %}</th>
-                <th>Status</th>
+                <th>Identification</th>
             </tr>
             </thead>
             <tbody>
             {# {{dump(vaccination)}} #}
             {% for carnet in listVaccins %}
                 <tr>
-                    <td>{{carnet.firstname}} {{carnet.lastname}}</td>
-                    <td>{{carnet.vaccin}}</td>
-                    <td>
-                        {% if carnet.datePriseInitiale %}
-                            {{ carnet.datePriseInitiale |localizeddate('long', 'short') }}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if carnet.rappel %}
-                            {{ carnet.rappel |localizeddate('long', 'short') }}
-                        {% else %}
-                            -
-                        {% endif %}
-                    </td>
-                    <td style="text-align: center">
-                        {% if carnet.vaccinState == 0 %}
-                            <span class="badge badge-success badge-style modif-carnet" data-etat="{{ carnet.vaccinState }}" data-id = {{ carnet.id }} >{% trans %}Realize{% endtrans %}</span>
-                        {% else %}
-                            <span class="badge badge-info badge-style ">{% trans %}Realized{% endtrans %}</span>
-                        {% endif %}
-                        <span class="badge badge-primary badge-style edit-date-carnet" data-id = {{ carnet.id }} >{% trans %}Edit{% endtrans %}</span>
-                    </td>
+                    <td>{{ carnet.vaccinName }}</td>
+                    <td>{{ carnet.identifiant_vaccin }}</td>
+                    <td>{{ carnet.date_prise|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}</td>
+                    <td>{{carnet.lastName}} {{carnet.firstName}} </td>
+                    <td>{{carnet.identification}}</td>
+
                 </tr>
             {% endfor %}
             </tbody>

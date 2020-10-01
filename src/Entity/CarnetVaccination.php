@@ -91,9 +91,15 @@ class CarnetVaccination
      */
     private $status;
 
+    /**
+     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="carnet")
+     */
+    private $interventionVaccinations;
+
     public function __construct()
     {
         $this->patientCarnetVaccinations = new ArrayCollection();
+        $this->interventionVaccinations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -240,6 +246,37 @@ class CarnetVaccination
     public function setStatus(?int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InterventionVaccination[]
+     */
+    public function getInterventionVaccinations(): Collection
+    {
+        return $this->interventionVaccinations;
+    }
+
+    public function addInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if (!$this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations[] = $interventionVaccination;
+            $interventionVaccination->setCarnet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if ($this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations->removeElement($interventionVaccination);
+            // set the owning side to null (unless already changed)
+            if ($interventionVaccination->getCarnet() === $this) {
+                $interventionVaccination->setCarnet(null);
+            }
+        }
 
         return $this;
     }

@@ -45,33 +45,12 @@ class InterventionVaccination
      */
     private $datePriseVaccin;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="interventionVaccinations")
-     * @Groups({"read:InterventionVaccination", "read:carnetvaccination"})
-     */
-    private $praticienPrescripteur;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Praticien::class, inversedBy="interventionExecutant")
-     * @Groups({"read:InterventionVaccination", "read:carnetvaccination"})
-     */
-    private $praticienExecutant;
 
     /**
      * @ORM\ManyToOne(targetEntity=IntervationMedicale::class, inversedBy="interventionVaccinations")
      */
     private $intervationMedicale;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=OrdoVaccination::class, inversedBy="interventionVaccinations")
-     */
-    private $ordoVaccination;
-
-    /**
-     * @ORM\OneToMany(targetEntity=CarnetVaccination::class, mappedBy="intervationVaccination")
-     */
-    private $carnetVaccinations;
-
+    
     /**
 
      * @ORM\ManyToOne(targetEntity=Patient::class, inversedBy="patientIntervationConsultations")
@@ -84,6 +63,21 @@ class InterventionVaccination
      * @Groups({"read:InterventionVaccination"})
      */
     private $etat;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Ordonnace::class, inversedBy="interventionVaccinations")
+     */
+    private $ordonnace;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=CarnetVaccination::class, inversedBy="interventionVaccinations")
+     */
+    private $carnet;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $identification_vaccin;
 
     public function __construct()
     {
@@ -131,29 +125,6 @@ class InterventionVaccination
         return $this;
     }
 
-    public function getPraticienPrescripteur(): ?Praticien
-    {
-        return $this->praticienPrescripteur;
-    }
-
-    public function setPraticienPrescripteur(?Praticien $praticienPrescripteur): self
-    {
-        $this->praticienPrescripteur = $praticienPrescripteur;
-
-        return $this;
-    }
-
-    public function getPraticienExecutant(): ?Praticien
-    {
-        return $this->praticienExecutant;
-    }
-
-    public function setPraticienExecutant(?Praticien $praticienExecutant): self
-    {
-        $this->praticienExecutant = $praticienExecutant;
-
-        return $this;
-    }
 
     public function getIntervationMedicale(): ?IntervationMedicale
     {
@@ -167,48 +138,7 @@ class InterventionVaccination
         return $this;
     }
 
-    public function getOrdoVaccination(): ?OrdoVaccination
-    {
-        return $this->ordoVaccination;
-    }
 
-    public function setOrdoVaccination(?OrdoVaccination $ordoVaccination): self
-    {
-        $this->ordoVaccination = $ordoVaccination;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|CarnetVaccination[]
-     */
-    public function getCarnetVaccinations(): Collection
-    {
-        return $this->carnetVaccinations;
-    }
-
-    public function addCarnetVaccination(CarnetVaccination $carnetVaccination): self
-    {
-        if (!$this->carnetVaccinations->contains($carnetVaccination)) {
-            $this->carnetVaccinations[] = $carnetVaccination;
-            $carnetVaccination->setIntervationVaccination($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCarnetVaccination(CarnetVaccination $carnetVaccination): self
-    {
-        if ($this->carnetVaccinations->contains($carnetVaccination)) {
-            $this->carnetVaccinations->removeElement($carnetVaccination);
-            // set the owning side to null (unless already changed)
-            if ($carnetVaccination->getIntervationVaccination() === $this) {
-                $carnetVaccination->setIntervationVaccination(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getPatient(): ?Patient
     {
@@ -230,6 +160,42 @@ class InterventionVaccination
     public function setEtat(?int $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getOrdonnace(): ?Ordonnace
+    {
+        return $this->ordonnace;
+    }
+
+    public function setOrdonnace(?Ordonnace $ordonnace): self
+    {
+        $this->ordonnace = $ordonnace;
+
+        return $this;
+    }
+
+    public function getCarnet(): ?CarnetVaccination
+    {
+        return $this->carnet;
+    }
+
+    public function setCarnet(?CarnetVaccination $carnet): self
+    {
+        $this->carnet = $carnet;
+
+        return $this;
+    }
+
+    public function getIdentificationVaccin(): ?string
+    {
+        return $this->identification_vaccin;
+    }
+
+    public function setIdentificationVaccin(?string $identification_vaccin): self
+    {
+        $this->identification_vaccin = $identification_vaccin;
 
         return $this;
     }

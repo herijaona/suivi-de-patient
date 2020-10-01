@@ -48,7 +48,9 @@
                         {% endif %}
                     </td>
                        <td>
+                           {% if vac.status == 0 or vac.status == 1  %}
                            <span class="badge badge-danger badge-style " data-type="consultation" data-id="{{ vac.id }}" >Intervention</span>
+                           {% endif %}
 
                        </td>
 

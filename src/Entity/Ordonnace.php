@@ -73,12 +73,18 @@ class Ordonnace
      */
     private $intervationConsultations;
 
+    /**
+     * @ORM\OneToMany(targetEntity=InterventionVaccination::class, mappedBy="ordonnace")
+     */
+    private $interventionVaccinations;
+
     public function __construct()
     {
         $this->ordoVaccinations = new ArrayCollection();
         $this->ordoConsultations = new ArrayCollection();
         $this->ordoMedicaments = new ArrayCollection();
         $this->intervationConsultations = new ArrayCollection();
+        $this->interventionVaccinations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -252,6 +258,37 @@ class Ordonnace
             // set the owning side to null (unless already changed)
             if ($intervationConsultation->getOrdonnace() === $this) {
                 $intervationConsultation->setOrdonnace(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InterventionVaccination[]
+     */
+    public function getInterventionVaccinations(): Collection
+    {
+        return $this->interventionVaccinations;
+    }
+
+    public function addInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if (!$this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations[] = $interventionVaccination;
+            $interventionVaccination->setOrdonnace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterventionVaccination(InterventionVaccination $interventionVaccination): self
+    {
+        if ($this->interventionVaccinations->contains($interventionVaccination)) {
+            $this->interventionVaccinations->removeElement($interventionVaccination);
+            // set the owning side to null (unless already changed)
+            if ($interventionVaccination->getOrdonnace() === $this) {
+                $interventionVaccination->setOrdonnace(null);
             }
         }
 

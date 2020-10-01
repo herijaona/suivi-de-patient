@@ -39,8 +39,7 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
     public function findListVaccinsInCarnet(Patient $patient){
         $result = [];
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('
-            SELECT c.id, p.firstName as firstname, p.lastName as lastname, v.vaccinName as vaccin, c.etat as vaccinState, c.date_prise as datePriseInitiale
+        $query = $entityManager->createQuery(' SELECT c.id, p.firstName , p.lastName , v.vaccinName, c.date_prise, c.identifiant_vaccin,c.identification
             FROM App\Entity\CarnetVaccination c
              INNER JOIN App\Entity\Patient p with p.id = c.patient
             INNER JOIN App\Entity\Vaccin v with v.id=c.vaccin

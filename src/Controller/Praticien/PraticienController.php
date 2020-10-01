@@ -4,6 +4,7 @@ namespace App\Controller\Praticien;
 
 use App\Entity\CarnetVaccination;
 
+use App\Entity\InterventionVaccination;
 use App\Entity\PropositionRdv;
 use App\Form\AcceptType;
 use App\Form\CarnetType;
@@ -16,6 +17,7 @@ use App\Repository\CarnetVaccinationRepository;
 use App\Repository\IntervationConsultationRepository;
 use App\Repository\InterventionVaccinationRepository;
 use App\Repository\OrdoConsultationRepository;
+use App\Repository\OrdonnaceRepository;
 use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
@@ -51,6 +53,7 @@ class PraticienController extends AbstractController
     protected $propositionRdvRepository;
     protected $carnetVaccinationRepository;
     protected $associerRepository;
+    protected $ordonnaceRepository;
 
 
 
@@ -62,6 +65,7 @@ class PraticienController extends AbstractController
         PraticienRepository $praticienRepository,
         FamilyRepository $familyRepository,
         AssocierRepository $associerRepository,
+        OrdonnaceRepository $ordonnaceRepository,
         OrdoConsultationRepository $ordoConsultationRepository,
         OrdoVaccinationRepository $ordoVaccinationRepository,
         IntervationConsultationRepository $intervationConsultationRepository,
@@ -70,6 +74,7 @@ class PraticienController extends AbstractController
         VaccinRepository $vaccinRepository
     )
     {
+        $this->ordonnaceRepository=$ordonnaceRepository;
         $this->vaccinGenerate = $vaccinGenerate;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
@@ -217,13 +222,12 @@ class PraticienController extends AbstractController
         $patient = $patientRepo->find($patient_id);
 
         $typePatient = $patient->getTypePatient();
-        $carnetRepo = $this->getDoctrine()->getRepository(CarnetVaccination::class);
+        $carnetRepo = $this->carnetVaccinationRepository;
         // $listVaccins = $carnetRepo->findBy(['patient' => $patient]);
         $listVaccins = $carnetRepo->findListVaccinsInCarnet($patient);
 
         return $this->render("praticien/carnet.html.twig",[
-          'patient' => $patient,
-          'listVaccins' => $listVaccins
+          'listVaccins' => $listVaccins,
         ]);
     }
 
@@ -767,7 +771,7 @@ class PraticienController extends AbstractController
      */
     public function  vaccin_generate(Request $request, TranslatorInterface $translator){
         $user = $this->getUser();
-        $praticien = $this->praticienRepository->findOneBy(['praticien'=>$user]);
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $request = $request->request->get('generation_vaccin');
         $patient = $request['patient'];
         $patient= $this->patientRepository->find($patient);
@@ -777,15 +781,49 @@ class PraticienController extends AbstractController
         $date = $request['date_prise'];
         $date= DateTime::CreateFromFormat("d/m/Y", $date);
         $carnet = new CarnetVaccination();
-        $carnet->setEtat(1);
+        $carnet->setStatus("1");
         $carnet->setDatePrise($date);
         $carnet->setVaccin($vaccin);
         $carnet->setIdentification($identification);
+        if($identification == "Prise initiale"){
+            $id = $vaccin.'-0';
+            $carnet->setIdentifiantVaccin($id);
+        }else{
+            for ($i = 1; $i <= 10; $i++){
+                $id = "$vaccin {$i}";
+                $carnet->setIdentifiantVaccin($id);
+            }
+
+
+        }
         $carnet->setPatient($patient);
-        $carnet->setPraticien($praticien);
+        $this->entityManager->persist($carnet);
+        $this->entityManager->flush();
+        $intervention = new InterventionVaccination();
+        $intervention->setCarnet($carnet);
+        $intervention->setStatusVaccin("1");
+        $ordonance = $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+        $intervention->setOrdonnace($ordonance);
+        $intervention->setPatient($patient);
+        $intervention->setVaccin($vaccin);
+        $intervention->setDatePriseVaccin($date);
+        $intervention->setEtat("0");
+        if($identification == "Prise initiale"){
+            $id = $vaccin.'-0';
+            $intervention->setIdentificationVaccin($id)
+        }else{
+            for ($i = 1; $i <= 10; $i++){
+                $id = "$vaccin {$i}";
+                $intervention->setIdentificationVaccin($id);
+            }
+
+
+        }
+        $this->entityManager->persist($intervention);
+        $this->entityManager->flush();
         $message=$translator->trans('registration successful');
         $this->addFlash('success', $message);
-        return $this->redirectToRoute('vaccin_generate');
+        return $this->redirectToRoute('vaccination_praticien');
 
     }
 }
