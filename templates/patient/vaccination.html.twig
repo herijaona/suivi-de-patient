@@ -48,8 +48,8 @@
                         {% endif %}
                     </td>
                        <td>
-                           {% if vac.status == 0 or vac.status == 1  %}
-                           <span class="badge badge-danger badge-style " data-type="consultation" data-id="{{ vac.id }}" >Intervention</span>
+                           {% if vac.status == 0 or vac.status == 1 and vac.etat == 0  %}
+                           <span class="badge badge-danger badge-style inter " data-type="vaccination"  data-id="{{ vac.id }}" >Intervention</span>
                            {% endif %}
 
                        </td>
@@ -72,6 +72,41 @@
             $(document).ready(function() {
                 $('#example1').DataTable();
             } );
+        });
+        $(".inter").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            var id = $(this).data('id');
+            var type = $(this).data('type');
+            $.ajax({
+                url: "{{ path('add_rdv_carnet') }}",
+                type: 'post',
+                data: {
+                    id: id,
+                    type: type,
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('#rdv_heureRdv').clockpicker({
+                        donetext: "valider",
+                        autoclose: true,
+                    });
+                    $('#rdv_heureRdv').on('change', function () {
+                        let receivedVal = $(this).val();
+                        $(this).val(receivedVal );
+                    });
+
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
         });
     </script>
 {% endblock %}

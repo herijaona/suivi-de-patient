@@ -96,14 +96,16 @@
                 <li {% if (currentPath == path('rdv_praticien')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdvp"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdvp" class="collapse" aria-labelledby="rdvp" data-parent="#side-bar-menu">
                         <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" ><img src="{{ asset('assets/images/icon/iconerdv.png') }}" class="img-left-menu rounded-circle">{% trans %}My Appointments{% endtrans %}</a></li>
-                        {#<li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}Create{% endtrans %}</a></li>#}
+                        {#<li class="{{ (currentPath == path('add_form_proposition_rdv')) ? 'active' :''  }}"> <a href="{{ path('add_form_proposition_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}Create{% endtrans %}</a></li>#}
                     </ul>
                 </li>
             {% endif %}
             {% if is_granted('ROLE_PATIENT') %}
                 {#<li {% if (currentPath == path('patient')) ? 'active' :''  %} class="active" {% endif %}><a href="{{ path('patient') }}"><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Vaccination Schedule{% endtrans %}</a></li>#}
                 <li {% if (currentPath == path('generate')) ? 'active' :''  %} class="active" {% endif %}><a href="#" data-toggle="collapse"  data-target="#vacc" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Vaccination Schedule{% endtrans %}</a>
+                   
                     <ul id="vacc" class="collapse" aria-labelledby="vacc" data-parent="#side-bar-menu">
+
                         <li class="{{ (currentPath == path('generate')) ? 'active' :''  }}"> <a href="{{ path('generate') }}" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Generate{% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('patient')) ? 'active' :''  }}"> <a href="{{ path('patient') }}" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}View{% endtrans %}</a></li>
                     </ul>

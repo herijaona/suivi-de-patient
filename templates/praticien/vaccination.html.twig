@@ -63,16 +63,20 @@
                                 <p class="badge badge-primary  textf">{% trans %}Scheduled{% endtrans %}</p>
                             {% elseif vac.statusVaccin == 1 and vac.etat == 1 %}
                                 <p class="badge badge-success textf">{% trans %}Realized{% endtrans %}</p>
+                            {% elseif vac.statusVaccin == 2 %}
+                                <p class="badge badge-danger textf">{% trans %}Rejected{% endtrans %}</p>
                             {% endif %}
                         </td>
 
                         <td >
-                            {% if vac.statusVaccin == 1 %}
+                            {% if vac.statusVaccin == 1 and vac.etat == 0 %}
                                 <span class="badge badge-success badge-style modif-status"  data-type="test"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-carnet = {{ vac.carnet }} data-patient="{{ vac.patient }}" data-numero ={{ vac.numero }} >{{ 'Realize'|trans }}</span>
+                            {% elseif vac.statusVaccin == 1 and vac.etat == 1  %}
+                                <p class="badge badge-success textf">{% trans %}Realized{% endtrans %}</p>
 
                             {% elseif vac.statusVaccin == 0 %}
-                                <span class="badge badge-success badge-style modif-status"  data-type="vaccination"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{{ 'Organize'|trans }}</span>
-                                <span  class="badge badge-danger badge-style modif-status" data-type="vaccination"  data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Reject{% endtrans %}</span>
+                                <span class="badge badge-success badge-style modif-status"  data-type="intervention"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" data-carnet=" {{ vac.carnet }}" >{{ 'Organize'|trans }}</span>
+                                <span  class="badge badge-danger badge-style modif-status" data-type="intervention"  data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Reject{% endtrans %}</span>
                             {% endif %}
                         </td>
                         <td>

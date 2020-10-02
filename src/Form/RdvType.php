@@ -25,7 +25,7 @@ class RdvType extends AbstractType
         $builder
             ->add('id', HiddenType::class)
             ->add('fonction',EntityType::class,
-                array('required' => true,
+                array('required' => false,
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('f');
                         },
@@ -37,8 +37,12 @@ class RdvType extends AbstractType
                     'attr' => array('class' => 'form-control chosen-select'),
                     'placeholder' => 'Fonction'
                 ))
-            ->add('dateRdv')
-            ->add('heureRdv')
+            ->add('dateRdv',null,[
+                'required'=> false
+                ])
+            ->add('heureRdv',null,[
+                'required'=> false
+            ])
             ->add('objet')
             ->add('typeRdv', ChoiceType::class, [
                 'choices' => array_flip($typeRdvArrays),

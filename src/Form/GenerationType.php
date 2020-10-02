@@ -35,6 +35,7 @@ class GenerationType extends AbstractType
                 },
                 'placeholder' => 'Pays',
             ])
+
         ;
     }
 

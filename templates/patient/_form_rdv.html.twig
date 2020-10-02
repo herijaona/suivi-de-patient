@@ -67,6 +67,12 @@
             <label class="active" for="form1"  style="position: absolute">{% trans %}Associate{% endtrans %} </label>
             {{ form_widget(form.Associer, {'attr': { 'class': 'form-control' }}) }}
         </div>
+        <div class="md-form" style="display: none">
+            {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control' }}) }}
+            {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
+
+
+        </div>
 
     </div>
     <div class="modal-footer justify-content-center">

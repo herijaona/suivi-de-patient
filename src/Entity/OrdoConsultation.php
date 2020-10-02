@@ -108,7 +108,7 @@ class OrdoConsultation
         return $this->dateRdv;
     }
 
-    public function setDatePriseInitiale(\DateTimeInterface $dateRdv): self
+    public function setDateRdv(\DateTimeInterface $dateRdv): self
     {
         $this->dateRdv = $dateRdv;
 
@@ -196,34 +196,7 @@ class OrdoConsultation
         return $this;
     }
 
-    public function getProposition(): ?PropositionRdv
-    {
-        return $this->proposition;
-    }
 
-    public function setProposition(?PropositionRdv $proposition): self
-    {
-        $this->proposition = $proposition;
 
-        return $this;
-    }
 
-    public function getStatusNotif(): ?int
-    {
-        return $this->statusNotif;
-    }
-
-    public function setStatusNotif(int $statusNotif): self
-    {
-        $this->statusNotif = $statusNotif;
-
-        return $this;
-    }
-
-    public function setDateRdv(\DateTimeInterface $dateRdv): self
-    {
-        $this->dateRdv = $dateRdv;
-
-        return $this;
-    }
 }

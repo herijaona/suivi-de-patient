@@ -11,6 +11,7 @@ use App\Form\CarnetType;
 use App\Form\ConsultationPraticienType;
 use App\Form\GenerationVaccinType;
 use App\Form\PropositionRdvType;
+use App\Form\RdvType;
 use App\Repository\AssocierRepository;
 use App\Repository\FamilyRepository;
 use App\Repository\CarnetVaccinationRepository;
@@ -287,10 +288,8 @@ class PraticienController extends AbstractController
 
                                 }
 
-
                              break;
-                        }
-                        switch ($type){
+
                             case "vaccination":
                                 $pat = $request->request->get('patient');
                                 $patient =  $this->patientRepository->find($pat);
@@ -303,6 +302,20 @@ class PraticienController extends AbstractController
                                     $this->entityManager->flush();
 
                                 }
+                                break;
+                            case "intervention":
+                                $ordoVacc = $this->interventionVaccinationRepository->find($id);
+                                if($ordoVacc != null){
+                                    $ordoVacc->setStatusVaccin(1);
+                                    $this->entityManager->persist($ordoVacc);
+                                    $this->entityManager->flush();
+                                    $carnetvaccination = $this->carnetVaccinationRepository->find($carnet);
+                                    $carnetvaccination->setStatus(1);
+                                    $this->entityManager->persist($carnetvaccination);
+                                    $this->entityManager->flush();
+
+                                }
+
                                 break;
                         }
                     }
@@ -359,6 +372,7 @@ class PraticienController extends AbstractController
       }
 
 
+
     /**
      * @Route("/form-add", name="add_form_rdv")
      */
@@ -394,35 +408,130 @@ class PraticienController extends AbstractController
      */
     public function add_rdv_praticien(Request $request)
     {
-        $id = $request->request->get('id');
-        $type = $request->request->get("type");
+        $rdv = [];
+        $typeRdvArrays = [
+            "consultation" => "CONSULTATION",
+            "intervention" =>"INTERVENTION"
+        ];
+        $rdv['id'] = $request->request->get('id');
 
-        if($type == "consultation"){
-            $ordo = $this->ordoConsultationRepository->find($id);
-            $date = $ordo->getDateRdv();
-
-
-        }elseif ($type == "intevention"){
-            $inter = $this->intervationConsultationRepository->find($id);
-
+        $rdv['typeRdv'] = $request->request->get('type');
+        if ($rdv['typeRdv'] == 'consultation'){
+            $ordoCon = $this->ordoConsultationRepository->find($rdv['id']);
+            $rdv['objet'] = $ordoCon->getObjetConsultation();
+            $rdv['dateRdv'] = $ordoCon->getDateRdv();
+        }elseif ($rdv['typeRdv'] == 'intervention'){
+            $inter = $this->intervationConsultationRepository->find($rdv['id']);
+            $rdv['objet']=$inter->getObjetConsultation();
+            $rdv['dateRdv']=$inter->getDateConsultation();
         }
-        $form = $this->createForm(AcceptType::class);
+        if ($rdv['dateRdv'] != ''){
+            $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
+            $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
+            $rdv['heureRdv'] = explode(' ', $date)[1];
+        }
+
+        $form = $this->createForm(RdvType::class, $rdv, ['typeRdvArrays' => $typeRdvArrays]);
         $response = $this->renderView('praticien/_form_accept.html.twig', [
             'new' => false,
             'form' => $form->createView(),
+            'eventData' => $rdv,
         ]);
         $form->handleRequest($request);
         return new JsonResponse(['form_html' => $response]);
 
     }
+    /**
+     * @Route("/realize/rdv", name = "realize_rdv")
+     */
+    public function  realize_rdv(Request $request, TranslatorInterface $translator)
+    {
+        $Id = $request->request->get('id');
+        $type= $request->request->get('type');
+        switch ($type){
+            case 'RealizeCons':
+                if ($Id != ''){
+                    $ordoconsultation = $this->ordoConsultationRepository->find($Id);
+                    $ordoconsultation->setEtat("1");
+                    $this->entityManager->persist($ordoconsultation);
+                    $this->entityManager->flush();
+                }
+                break;
+
+            case 'RealizeInt':
+                if ($Id != ''){
+                    $inter = $this->intervationConsultationRepository->find($Id);
+                    $inter->setEtat("1");
+                    $this->entityManager->persist($inter);
+                    $this->entityManager->flush();
+                }
+                break;
+            case 'AnnulCons':
+                if ($Id != ''){
+                    $ordoconsultation = $this->ordoConsultationRepository->find($Id);
+                    $ordoconsultation->setStatusConsultation("2");
+                    $this->entityManager->persist($ordoconsultation);
+                    $this->entityManager->flush();
+                }
+                break;
+
+            case 'AnnulInt':
+                if ($Id != ''){
+                    $inter = $this->intervationConsultationRepository->find($Id);
+                    $inter->setStatus("2");
+                    $this->entityManager->persist($inter);
+                    $this->entityManager->flush();
+                }
+                break;
+
+        }
+        $message=$translator->trans('Successful change');
+        $this->addFlash('success', $message);
+        return new JsonResponse(['status' => 'OK']);
+    }
 
     /**
      * @Route("/accept_rdv" ,name="accept_rdv")
+     * @throws Exception
      */
-    public function accept_rdv(Request $request)
+    public function accept_rdv(Request $request, TranslatorInterface $translator)
     {
+        $rdvRequest = $request->request->get("rdv");
+        $Id= $rdvRequest['id'];
+        $date = $rdvRequest['dateRdv'];
+        $heure = $rdvRequest["heureRdv"];
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $type = $rdvRequest['typeRdv'];
+        switch ($type){
+            case 'consultation':
+                if ($Id != ''){
+                    $ordoconsultation = $this->ordoConsultationRepository->find($Id);
+                    $ordoconsultation->setStatusConsultation("1");
+                    $ordoconsultation->setDateRdv($Date_Rdv);
+                    $this->entityManager->persist($ordoconsultation);
+                    $this->entityManager->flush();
+                }
+                break;
 
+            case 'intervention':
+                if ($Id != ''){
+                    $inter = $this->intervationConsultationRepository->find($Id);
+                    $inter->setStatus("1");
+                    $inter->setDateConsultation($Date_Rdv);
+                    $this->entityManager->persist($inter);
+                    $this->entityManager->flush();
+                }
+                break;
+
+
+        }
+        $message=$translator->trans('Appointment registration successful');
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('rdv_praticien');
     }
+
+
 
 
 
@@ -448,8 +557,8 @@ class PraticienController extends AbstractController
                 ];
 
             $typeRdvArrays = [
-                "consultation" => "Proposition Consultation",
-                "vaccination" => "Proposition Vaccin"
+                "consultation" => "Consultation",
+                "vaccination" => "Vaccin"
             ];
             $action = $request->request->get('action');
             $rdv = [];
@@ -827,12 +936,10 @@ class PraticienController extends AbstractController
         $intervention->setVaccin($vaccin);
         $intervention->setDatePriseVaccin($date);
         $intervention->setEtat("0");
-        $intervention->setIdentificationVaccin($identification);
         $this->entityManager->persist($intervention);
         $this->entityManager->flush();
         $message=$translator->trans('registration successful');
         $this->addFlash('success', $message);
         return $this->redirectToRoute('vaccination_praticien');
-
     }
 }

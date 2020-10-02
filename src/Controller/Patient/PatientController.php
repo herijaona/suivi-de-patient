@@ -10,6 +10,7 @@ use App\Entity\InterventionVaccination;
 use App\Entity\OrdoConsultation;
 use App\Entity\OrdoVaccination;
 use App\Entity\Praticien;
+use App\Form\CarnetType;
 use App\Form\RdvType;
 use App\Form\GenerationType;
 use App\Repository\AssocierRepository;
@@ -32,6 +33,7 @@ use App\Repository\UserRepository;
 use App\Repository\VaccinRepository;
 use App\Service\VaccinGenerate;
 use Carbon\Carbon;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Psr\Container\ContainerInterface;
@@ -129,6 +131,71 @@ class PatientController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/intervention/form",name="add_rdv_carnet")
+     */
+    public function add_rdv_carnet(Request $request, TranslatorInterface $translator)
+    {
+        $carnet = [];
+        $carnet['id'] = $request->request->get('id');
+        $carnetvaccina = $this->carnetVaccinationRepository->find($carnet['id'] );
+        $carnet['patient']= $carnetvaccina->getPatient()->getId();
+        $carnet['vaccin']= $carnetvaccina->getVaccin()->getId();
+        $carnet['Praticien']= $carnetvaccina->getPraticien();
+        $carnet['date']= $carnetvaccina->getDatePrise();
+        $date = $carnet['date']->format('d-m-Y H:i:s');
+        $carnet['date'] = str_replace("-", "/", explode(' ', $date)[0]);
+        $carnet['heure'] = explode(' ', $date)[1];
+
+
+        $form = $this->createForm(CarnetType::class, $carnet);
+        $response = $this->renderView('patient/_form_intervention.html.twig', [
+            'new' => false,
+            'form' => $form->createView(),
+            'eventData' => $carnet,
+        ]);
+        $form->handleRequest($request);
+        return new JsonResponse(['form_html' => $response]);
+    }
+
+    /**
+     * @Route("/intervention/accept" , name="accept_intervention")
+     * @throws Exception
+     */
+    public function accept_intervention(Request $request, TranslatorInterface $translator)
+    {
+        $carnetRequest = $request->request->get('carnet');
+        $date = $carnetRequest['date'];
+        $heure = $carnetRequest['heure'];
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+
+
+        $praticien = $carnetRequest['Praticien'];
+        $vaccin = $carnetRequest['vaccin'];
+        $vaccin= $this->vaccinRepository->find($vaccin);
+        $praticien = $this->praticienRepository->find($praticien);
+        $ordonace = $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+        $patient = $carnetRequest['patient'];
+        $patient= $this->patientRepository->find($patient);
+        $Id = $carnetRequest['id'];
+        $car = $this->carnetVaccinationRepository->find($Id);
+        $intervention = new InterventionVaccination();
+        $intervention->setEtat("0");
+        $intervention->setDatePriseVaccin($Date_Rdv);
+        $intervention->setVaccin($vaccin);
+        $intervention->setPatient($patient);
+        $intervention->setOrdonnace($ordonace);
+        $intervention->setStatusVaccin("0");
+        $intervention->setCarnet($car);
+        $this->entityManager->persist($intervention);
+        $this->entityManager->flush();
+         $message=$translator->trans('successful');
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('patient');
+
+
+    }
 
 
 

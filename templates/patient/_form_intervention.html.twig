@@ -16,27 +16,24 @@
 
     <div class="modal-header text-center">
 
-            <h4 class="modal-title white-text w-100 font-weight-bold py-2">
-                {% trans %}Accept Appointment{% endtrans %}
-            </h4>
+        <h4 class="modal-title white-text w-100 font-weight-bold py-2">
+            Intervention
+        </h4>
     </div>
     <!--Content-->
-    {{ form_start(form, {'attr': {'action': path('accept_rdv') }}) }}
+    {{ form_start(form, {'attr': {'action': path('accept_intervention') }}) }}
     <!--Body-->
     <div class="modal-body" style="width:69%; margin-left: 17%">
         <div class="md-form ">
-            <label class="active" for="form1">{% trans %}Appointment date{%  endtrans %}</label>
-            {{ form_widget(form.dateRdv, {'attr': { 'class': 'form-control' }}) }}
+            <label class="active" for="form1">Praticien</label>
+            {{ form_widget(form.Praticien, {'attr': { 'class': 'form-control' }}) }}
         </div>
-        <div class="md-form ">
-            <label class="active" for="form1">{% trans %}appointment Time {% endtrans %} </label>
-            {{ form_widget(form.heureRdv, {'attr': { 'class': 'form-control' }}) }}
-        </div>
+
         <div class="md-form" style="display: none">
-            {{ form_widget(form.fonction, {'attr': { 'class': 'form-control chosen-select' }}) }}
-            {{ form_widget(form.typeRdv, {'attr': { 'class': 'form-control chosen-select' }}) }}
-            {{ form_widget(form.objet, {'attr': { 'class': 'form-control' }}) }}
-            {{ form_widget(form.Associer, {'attr': { 'class': 'form-control' }}) }}
+            {{ form_widget(form.patient, {'attr': { 'class': 'form-control chosen-select' }}) }}
+            {{ form_widget(form.vaccin, {'attr': { 'class': 'form-control chosen-select' }}) }}
+            {{ form_widget(form.date, {'attr': { 'class': 'form-control chosen-select' }}) }}
+            {{ form_widget(form.heure, {'attr': { 'class': 'form-control chosen-select' }}) }}
 
 
         </div>

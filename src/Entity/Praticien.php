@@ -760,17 +760,6 @@ class Praticien
         return $this;
     }
 
-    public function getFonction(): ?string
-    {
-        return $this->fonction;
-    }
-
-    public function setFonction(?string $fonction): self
-    {
-        $this->fonction = $fonction;
-
-        return $this;
-    }
 
     /**
      * @return Collection|CarnetVaccination[]
