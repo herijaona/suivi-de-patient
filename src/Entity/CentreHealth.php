@@ -34,7 +34,7 @@ class CentreHealth
     private $centreName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,nullable=true)
      * @Groups({"read:centerSante"})
      */
     private $centrePhone;

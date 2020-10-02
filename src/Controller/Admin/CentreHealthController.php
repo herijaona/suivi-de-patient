@@ -277,14 +277,13 @@ class CentreHealthController extends AbstractController
                     $IdCentre = $Row['A'];
                     $NomCentre = $Row['B'];
                     $VilleCentre = $Row['C'];
-                    $RégionCentre = $Row['D'];
-                    $PaysCentre = $Row['E'];
-                    $TypeCentre = $Row['F'];
-                    $TelephoneCentre = $Row['G'];
-                    $ReferentCentre = $Row['H'];
-                    $Responsable = $Row['I'];
-                    $NumRueCentre = $Row['J'];
-                    $QuartierCentre = $Row['K'];
+                    $PaysCentre = $Row['D'];
+                    $TypeCentre = $Row['E'];
+                    $TelephoneCentre = $Row['F'];
+                    $ReferentCentre = $Row['G'];
+                    $Responsable = $Row['H'];
+                    $NumRueCentre = $Row['I'];
+                    $QuartierCentre = $Row['J'];
 
                     $state = null;
                     $regions = null;
@@ -302,22 +301,13 @@ class CentreHealthController extends AbstractController
                             $this->entityManager->persist($state);
                         }
                     }
-                    if($RégionCentre != null) {
-                        $regions = $this->regionRepository->findOneBy([ 'nameRegion' => $RégionCentre ]);
-                        if ($regions == null){
-                            $regions = new Region();
-                            $regions->setNameRegion($RégionCentre);
-                            $regions->setState($state);
-                            $this->entityManager->persist($regions);
-                        }
-                    }
+
 
                     if($VilleCentre != null) {
                         $city = $this->cityRepository->findOneBy([ 'nameCity' => $VilleCentre ]);
                         if ($city == null){
                             $city = new City();
                             $city->setNameCity($VilleCentre);
-                            $city->setRegion($regions);
                             $this->entityManager->persist($city);
                         }
                     }
@@ -336,11 +326,6 @@ class CentreHealthController extends AbstractController
                         if ($CenterHealth == null){
                             $CenterHealth = new CentreHealth();
                             $CenterHealth->setCentreName($NomCentre);
-                            $CenterHealth->setCentrePhone($TelephoneCentre);
-                            $CenterHealth->setResponsableCentre($Responsable);
-                            $CenterHealth->setCentreReferent($ReferentCentre);
-                            $CenterHealth->setNumRue($NumRueCentre);
-                            $CenterHealth->setQuartier($QuartierCentre);
                             $CenterHealth->setCentreType($typeCenter);
                             $CenterHealth->setCity($city);
                             $this->entityManager->persist($CenterHealth);
