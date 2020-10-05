@@ -82,9 +82,19 @@ class ProfileController extends AbstractController
         $praticien = $this->praticienRepository->find($pra['id']);
         $numero = $praticien->getNumeroProfessionnel();
         $pra['address']=$praticien->getAddress();
+        $pra['lastname']= $praticien->getLastName();
+        $pra['firstname']= $praticien->getFirstName();
+        $pra['date_naissance']= $praticien->getDateBorn()->format('Y-m-d H:i:s');
+        $pra['phone']= $praticien->getPhone();
+        $pra['sexe']= $praticien->getSexe();
+        $pra['username']= $praticien->getUser()->getUsername();
 
+        $pra['country']= $praticien->getState();
         $pra['email']=$praticien->getUser()->getEmail();
+        $pra['plainPassword']= $praticien->getUser()->getPassword();
+
         $phone = $praticien->getPhone();
+
 
         $lieu = $praticien->getAdressOnBorn();
         $ordonance= $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
@@ -123,6 +133,12 @@ class ProfileController extends AbstractController
         $pro['address']= $patient->getAddress();
         $pro['sexe']=$patient->getSexe();
         $pro['namedaddy']=$patient->getFatherName();
+        $pro['date_naissance']= $patient->getDateOnBorn()->format('Y-m-d H:i:s');
+        $pro['phone']= $patient->getPhone();
+        $pro['username']= $patient->getUser()->getUsername();
+        $pro['plainPassword']= $patient->getUser()->getPassword();
+        $pro['firstname']= $patient->getFirstName();
+        $pro['lastname']= $patient->getLastName();
         $pro['namemonther']=$patient->getMotherName();
         $pro['type_patient']=$patient->getTypePatient();
         $pro['email']=$patient->getUser()->getEmail();
@@ -242,7 +258,6 @@ class ProfileController extends AbstractController
         $praticien =  $this->praticienRepository->findOneBy(['user' => $user]);
         $praticien->setNumeroProfessionnel($numero);
         $praticien->setAdressOnBorn($lieu);
-        $praticien->setFonction($fonction);
         $praticien->setAddress($address);
         $this->entityManager->persist($praticien);
         $this->entityManager->flush();

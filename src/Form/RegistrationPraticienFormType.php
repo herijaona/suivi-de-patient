@@ -29,15 +29,9 @@ class RegistrationPraticienFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('username', null,[
-                'required'   => false,
-            ])
-            ->add('lastname', null,[
-                'required'   => false,
-            ])
-            ->add('firstname', null,[
-                'required'   => false,
-            ])
+            ->add('username')
+            ->add('lastname')
+            ->add('firstname')
             ->add('center_health', EntityType::class, [
                 'class' => CentreHealth::class,
 
@@ -52,12 +46,8 @@ class RegistrationPraticienFormType extends AbstractType
                 },
                 'placeholder' => 'Votre centre de santé',
             ])
-            ->add('date_naissance', null,[
-                'required'   => false,
-            ])
-            ->add('phone', null,[
-                'required'   => false,
-            ])
+            ->add('date_naissance')
+            ->add('phone')
 
             ->add('address', TextareaType::class, [
                 'attr' => [
@@ -69,18 +59,18 @@ class RegistrationPraticienFormType extends AbstractType
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('s');
                 },
-                'required'=>false,
+                'required'=>true,
                 'choice_value' => 'id',
                 'choice_label' => function (?State $state) {
                     return $state ? strtoupper($state->getNameState()) : '';
                 },
                 'placeholder' => 'Pays de Fonction',
             ])
-           ->add('fonction', null,[
-               'required'   => false,
-           ])
+            ->add('fonction',null,[
+                'required'=>false
+            ])
             ->add('sexe', ChoiceType::class, array(
-                'required'=>false,
+                'required'=>true,
                 'choices' => array(
                     'Feminin' => 'Feminin',
                     'Masculin' => 'Masculin'

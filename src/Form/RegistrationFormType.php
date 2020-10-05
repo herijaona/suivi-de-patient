@@ -31,18 +31,10 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class)
-            ->add('username',null, [
-                'required'   => false
-            ])
-            ->add('lastname',null, [
-                'required'   => false
-            ])
-            ->add('firstname',null, [
-                'required'   => false
-            ])
-            ->add('date_naissance',null, [
-                'required'   => false
-            ])
+            ->add('username')
+            ->add('lastname')
+            ->add('firstname')
+            ->add('date_naissance')
             ->add('phone')
             ->add('address', TextareaType::class, [
                 'attr' => [
@@ -80,7 +72,7 @@ class RegistrationFormType extends AbstractType
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
-                'required'=>false,
+                'required'=>true,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un mot de passe',
