@@ -1045,7 +1045,6 @@
         <source>Canceled</source>
         <target>Annulée</target>
       </trans-unit>
-
       <trans-unit id="KcwvynX" resname="Organize">
         <source>Organize</source>
         <target>Planifier</target>
@@ -1054,6 +1053,15 @@
         <source>Accept Appointment</source>
         <target>Accepter le rendez-vous</target>
       </trans-unit>
+      <trans-unit id="JDDgnsL" resname="successful">
+        <source>successful</source>
+        <target>Réussi</target>
+      </trans-unit>
+      <trans-unit id="GeUJuAl" resname="My Calendar Vaccinal">
+        <source>My Calendar Vaccinal</source>
+        <target>Mon Calendrier Vaccinal</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>
