@@ -24,7 +24,11 @@ class CityRepository extends ServiceEntityRepository
             FROM App\Entity\City c
             INNER JOIN App\Entity\Region r with r.id = c.region
             LEFT JOIN App\Entity\State s with s.id = r.state
-            WHERE s.id = :state')
+            WHERE s.id = :state
+            ORDER BY c.nameCity ASC
+            '
+
+        )
             ->setParameter('state', $state);
 
         return $query->getResult();
