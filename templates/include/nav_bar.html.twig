@@ -107,13 +107,13 @@
                     <ul id="vacc" class="collapse" aria-labelledby="vacc" data-parent="#side-bar-menu">
 
                         <li class="{{ (currentPath == path('generate')) ? 'active' :''  }}"> <a href="{{ path('generate') }}" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Generate{% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('patient')) ? 'active' :''  }}"> <a href="{{ path('patient') }}" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}View{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('patient')) ? 'active' :''  }}"> <a href="{{ path('patient') }}" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}My Calendar Vaccinal{% endtrans %}</a></li>
                     </ul>
                 </li>
                 <li {% if (currentPath == path('rdv_patient')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
                         <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" ><img src="{{ asset('assets/images/icon/iconerdv.png') }}" class="img-left-menu rounded-circle">{% trans %}My Appointments{% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}My Calendar Vaccinal{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}Create{% endtrans %}</a></li>
                     </ul>
                 </li>
                 {#<li class="{{ (currentPath == path('intervention_patient') ) ? 'active' :'' }}"><a href="{{ path('intervention_patient')}}">Intervention</a></li>#}
