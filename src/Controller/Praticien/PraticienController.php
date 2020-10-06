@@ -894,7 +894,18 @@ class PraticienController extends AbstractController
      */
     public function generate_vaccin(){
         $generationvacc= [];
-        $form = $this->createForm(GenerationVaccinType::class,$generationvacc);
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $associer = $this->associerRepository->searchAssocier($praticien);
+        foreach ($associer as $value) {
+            $lastname = $value["lastName"];
+            $firstname = $value["firstName"];
+            $pat = $value["patient"];
+        }
+        $patient = [
+            $pat => $lastname . '  ' . $firstname
+        ];
+        $form = $this->createForm(GenerationVaccinType::class,$generationvacc, ['patient' => $patient]);
         return $this->render('praticien/_form_generate_vaccin.html.twig',[
             'new'=> true,
             'form'=>$form->createView(),

@@ -29,12 +29,13 @@
     </div>
     <div class="md-form " >
         <label class="active" for="form1">{% trans %}Country of Fonction{% endtrans %}</label>
-        <input type="text" name="state" id="state" value="{{ state }}" class="form-control" >
-
+        {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}
     </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}City of Fonction{% endtrans %}</label>
-        <input type="text" name="city" id="city" value="{{ city }}" class="form-control" >
+        <select class="form-control chosen-select" id="city" name="city" >
+            <option value="{{ city.id }}" selected>{{ city }}</option>
+        </select>
     </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
@@ -89,7 +90,7 @@
 <div class="md-form " style="display: none">
     <label for="">{% trans %}Password{% endtrans %}</label>
     {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe'}}) }}
-    {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}
+
     {{ form_widget(form.fonction, {'attr': {'class': 'form-control '}}) }}
 
 </div>

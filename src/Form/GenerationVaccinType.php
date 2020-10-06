@@ -29,21 +29,14 @@ class GenerationVaccinType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $patient = $options['patient'];
         $builder
 
-            ->add('patient', EntityType::class, [
-                'class' => Patient::class,
 
-                'query_builder'=> function (EntityRepository $entityRepository) {
-                    return $entityRepository->createQueryBuilder('p');
-                },
-                'choice_value'=> 'id',
-                'required'=> true,
-
-                'choice_label' => function (?Patient $patient) {
-                    return $patient ? strtoupper($patient->getLastName().' '.$patient->getFirstName()) : '';
-                },
-                'placeholder' => 'Patient',
+            ->add('patient', ChoiceType::class, [
+                'choices' => array_flip($patient),
+                'required' => true,
+                'placeholder' => 'Choisir Patient'
             ])
              ->add('vaccin', EntityType::class, [
                 'class' => Vaccin::class,
@@ -65,6 +58,7 @@ class GenerationVaccinType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults([]);
+        $resolver->setRequired(['patient']);
+
     }
 }

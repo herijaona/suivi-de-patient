@@ -89,7 +89,7 @@ class ProfileController extends AbstractController
         $pra['sexe']= $praticien->getSexe();
         $pra['username']= $praticien->getUser()->getUsername();
 
-        $pra['country']= $praticien->getState();
+
         $pra['email']=$praticien->getUser()->getEmail();
         $pra['plainPassword']= $praticien->getUser()->getPassword();
 
@@ -98,8 +98,10 @@ class ProfileController extends AbstractController
 
         $lieu = $praticien->getAdressOnBorn();
         $ordonance= $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+
         $pra['center_health']= $ordonance->getCentreSante();
         $fonction = $this->fonctionRepository->findOneBy(['Praticien'=>$praticien]);
+        $pra['country']= $fonction->getState();
         $fonc = $fonction->getFonction();
         $city = $fonction->getCity();
         $state = $fonction->getState();
@@ -267,6 +269,10 @@ class ProfileController extends AbstractController
         $this->entityManager->flush();
         $fonction = $this->fonctionRepository->findOneBy(['Praticien'=>$praticien]);
         $fonction->setFonction($fonc);
+        $fonction->setCity($request->request->get('city'));
+        $country = $form->get('country')->getData();
+        $country = $this->stateRepository->find($country);
+        $fonction->setState($country);
         $this->entityManager->persist($fonction);
         $this->entityManager->flush();
         $user= $this->user->find($user);
