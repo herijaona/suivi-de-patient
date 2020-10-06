@@ -942,4 +942,40 @@ class PraticienController extends AbstractController
         $this->addFlash('success', $message);
         return $this->redirectToRoute('vaccination_praticien');
     }
+
+    /**
+     * @Route("/create-rdv/praticien", name="create_rdv_praticien")
+     * @param Request $request
+     * @return Response
+     */
+    public function create_rdv_praticien(Request $request)
+    {
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $associer = $this->associerRepository->searchAssocier($praticien);
+
+        foreach ($associer as $value) {
+            $lastname = $value["lastName"];
+            $firstname = $value["firstName"];
+            $pat = $value["patient"];
+        }
+
+        $patient = [
+            $pat => $lastname . '  ' . $firstname
+        ];
+
+        $typeRdvArrays = [
+            "consultation" => "Consultation",
+            "vaccination" => "Vaccin"
+        ];
+        $action = $request->request->get('action');
+        $rdv = [];
+
+        $form = $this->createForm(PropositionRdvType::class, $rdv, ['patient' => $patient, 'typeRdvArrays' => $typeRdvArrays]);
+        return $this->render('praticien/_form_proposition.html.twig', [
+            'new' => true,
+            'form' => $form->createView(),
+            'eventData' => $rdv,
+        ]);
+    }
 }

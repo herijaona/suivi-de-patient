@@ -29,7 +29,7 @@
         <div class="md-form">
             <label class="active" for="form1">{% trans %}City of Residence{% endtrans %}</label>
             <select class="form-control chosen-select" id="city" name="city" >
-                <option value="" selected>{{ city }}</option>
+                <option value="{{ city.id }}" selected>{{ city }}</option>
             </select>
         </div>
     <div class="md-form">

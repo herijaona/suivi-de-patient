@@ -1,10 +1,17 @@
-<!--Header-->
+{% extends 'include/base.html.twig'%}
+
+{%  block title %}
+{% endblock %}
+
+{% block stylesheets %}
 <style>
     .md-form.row-check {
         flex-direction: row;
         display: flex;
     }
 </style>
+{% endblock %}
+{% block body %}
 <div class="modal-header text-center">
     {% if new == true %}
         <h4 class="modal-title white-text w-100 font-weight-bold py-2">{% trans %}New Appointment Proposal{% endtrans %}</h4>
@@ -84,5 +91,6 @@
 
 
 {{ form_end(form) }}
+{% endblock %}
 
 
