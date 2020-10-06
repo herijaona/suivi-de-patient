@@ -249,7 +249,7 @@ class ProfileController extends AbstractController
         $form = $this->createForm(RegistrationPraticienFormType::class, $user);
         $form->handleRequest($request);
         $centre = $form->get('center_health')->getData();
-        $fonction = $form->get('fonction')->getData();
+        $fonc = $request->request->get('fonction');
         $lieu = $request->request->get('lieu');
         $address =$form->get('address')->getData();
         $mail= $form->get('email')->getData();
@@ -264,6 +264,10 @@ class ProfileController extends AbstractController
         $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
         $ordo->setCentreSante($centre);
         $this->entityManager->persist($ordo);
+        $this->entityManager->flush();
+        $fonction = $this->fonctionRepository->findOneBy(['Praticien'=>$praticien]);
+        $fonction->setFonction($fonc);
+        $this->entityManager->persist($fonction);
         $this->entityManager->flush();
         $user= $this->user->find($user);
         $user->setEmail($mail);
