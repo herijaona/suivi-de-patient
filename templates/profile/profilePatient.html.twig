@@ -56,7 +56,7 @@
                 <div class="row form-group">
                     <div class="col-lg-6">
                         <label for="">{% trans %}Country{% endtrans %}</label> {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control form-show', 'placeholder': 'Country', 'value': values.state}}) }}
-                        <input type="text" class="form-control form-edit" placeholder="{{ values.state }} {{ values.city }}">
+                        <input type="text" class="form-control form-edit" placeholder="{{ values.state }}">
                     </div>
                     <div class="col-lg-6">
                         <label for="">E-mail</label> {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control form-show', 'value': values.user.email}}) }}
