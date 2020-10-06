@@ -96,7 +96,7 @@
                 <li {% if (currentPath == path('rdv_praticien')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdvp"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdvp" class="collapse" aria-labelledby="rdvp" data-parent="#side-bar-menu">
                         <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" ><img src="{{ asset('assets/images/icon/iconerdv.png') }}" class="img-left-menu rounded-circle">{% trans %}My Appointments{% endtrans %}</a></li>
-                        {#<li class="{{ (currentPath == path('add_form_proposition_rdv')) ? 'active' :''  }}"> <a href="{{ path('add_form_proposition_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}Create{% endtrans %}</a></li>#}
+                       {#<li class="{{ (currentPath == path('create_rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('create_rdv_praticien') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}Create{% endtrans %}</a></li>#}
                     </ul>
                 </li>
             {% endif %}
@@ -113,7 +113,7 @@
                 <li {% if (currentPath == path('rdv_patient')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdv"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdv" class="collapse" aria-labelledby="rdv" data-parent="#side-bar-menu">
                         <li class="{{ (currentPath == path('rdv_patient')) ? 'active' :''  }}"> <a href="{{ path('rdv_patient') }}" ><img src="{{ asset('assets/images/icon/iconerdv.png') }}" class="img-left-menu rounded-circle">{% trans %}My Appointments{% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}Create{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}My Calendar Vaccinal{% endtrans %}</a></li>
                     </ul>
                 </li>
                 {#<li class="{{ (currentPath == path('intervention_patient') ) ? 'active' :'' }}"><a href="{{ path('intervention_patient')}}">Intervention</a></li>#}
