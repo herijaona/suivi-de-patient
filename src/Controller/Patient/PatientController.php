@@ -141,17 +141,18 @@ class PatientController extends AbstractController
         $carnetvaccina = $this->carnetVaccinationRepository->find($carnet['id'] );
         $carnet['patient']= $carnetvaccina->getPatient()->getId();
         $carnet['vaccin']= $carnetvaccina->getVaccin()->getId();
-        $carnet['Praticien']= $carnetvaccina->getPraticien();
         $carnet['date']= $carnetvaccina->getDatePrise();
+        $id = $carnetvaccina->getIdentifiantVaccin();
+        $vaccin = $carnetvaccina->getVaccin();
         $date = $carnet['date']->format('d-m-Y H:i:s');
         $carnet['date'] = str_replace("-", "/", explode(' ', $date)[0]);
         $carnet['heure'] = explode(' ', $date)[1];
-
-
         $form = $this->createForm(CarnetType::class, $carnet);
         $response = $this->renderView('patient/_form_intervention.html.twig', [
             'new' => false,
             'form' => $form->createView(),
+            'identification'=>$id,
+            'vaccin'=>$vaccin,
             'eventData' => $carnet,
         ]);
         $form->handleRequest($request);
@@ -171,7 +172,8 @@ class PatientController extends AbstractController
         $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
 
 
-        $praticien = $carnetRequest['Praticien'];
+        $praticien = $carnetRequest['praticien'];
+
         $vaccin = $carnetRequest['vaccin'];
         $vaccin= $this->vaccinRepository->find($vaccin);
         $praticien = $this->praticienRepository->find($praticien);

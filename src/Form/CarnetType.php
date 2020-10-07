@@ -3,7 +3,9 @@
 namespace App\Form;
 
 use App\Entity\CarnetVaccination;
+use App\Entity\Fonction;
 use App\Entity\Praticien;
+use App\Repository\FonctionRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,15 +23,15 @@ class CarnetType extends AbstractType
             ->add('vaccin')
             ->add('date')
             ->add('heure')
-            ->add('Praticien', EntityType::class, [
+            ->add('praticien', EntityType::class, [
                 'required'=>true,
-                'class' => Praticien::class,
+                'class' => Fonction::class,
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('p');
                 },
-                'choice_value' => 'id',
-                'choice_label' => function (?Praticien $praticien) {
-                    return $praticien ? strtoupper($praticien->getLastName().'  '.$praticien->getFirstName()) : '';
+                'choice_value' => 'Praticien.id',
+                'choice_label' => function (?Fonction $fonction) {
+                    return $fonction ? strtoupper($fonction->getPraticien()->getLastName().'  '.$fonction->getPraticien()->getFirstName().' '.$fonction->getFonction()) : '';
                 },
                 'placeholder' => 'Praticien',
             ])

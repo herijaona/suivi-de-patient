@@ -21,8 +21,13 @@ class PraticienRepository extends ServiceEntityRepository
     }
     public function searchPraticien(){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT p.id,p.lastName, p.firstName, p.fonction
-            FROM App\Entity\Praticien p');
+        $query = $entityManager->createQuery('SELECT p.lastName, p.firstName, f.fonction
+            FROM App\Entity\Praticien p
+            INNER JOIN App\Entity\Fonction f with f.id = p.fonctions
+        
+          
+            ')
+         ;
         return $query->getResult();
     }
 

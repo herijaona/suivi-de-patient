@@ -58,6 +58,16 @@ class FonctionRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    public function searchp(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id, p.lastName, p.firstName,f.fonction,p.id as praticien
+            FROM App\Entity\Fonction f
+            INNER JOIN App\Entity\Praticien p with p.id = f.Praticien
+          ');
+
+        return $query->getResult();
+    }
+
 
 
     // /**

@@ -25,13 +25,23 @@
     <!--Body-->
     <div class="modal-body" style="width:69%; margin-left: 17%">
         <div class="md-form ">
-            <label class="active" for="form1">Praticien</label>
-            {{ form_widget(form.Praticien, {'attr': { 'class': 'form-control' }}) }}
+            <label class="active" for="form1" style="margin-left: -50px;">Praticien</label>
+            {{ form_widget(form.praticien, {'attr': { 'class': 'form-control conte' }}) }}
         </div>
+        <div class="md-form ">
+            <label class="active" for="form1" style="margin-left: -50px;">{% trans %}Vaccine{% endtrans %}</label>
+
+             <input type="text" value="{{ vaccin }}" class="form-control " id="ident">
+        </div>
+        <div class="md-form ">
+            <label class="active" for="form1" style="margin-left: -50px;">{% trans %}ID Vaccine{% endtrans %}</label>
+            <input type="text" value="{{ identification }}" class="form-control " id="ident">
+        </div>
+
 
         <div class="md-form" style="display: none">
             {{ form_widget(form.patient, {'attr': { 'class': 'form-control chosen-select' }}) }}
-            {{ form_widget(form.vaccin, {'attr': { 'class': 'form-control chosen-select' }}) }}
+            {{ form_widget(form.vaccin, {'attr': { 'class': 'form-control chosen-select conter' }}) }}
             {{ form_widget(form.date, {'attr': { 'class': 'form-control chosen-select' }}) }}
             {{ form_widget(form.heure, {'attr': { 'class': 'form-control chosen-select' }}) }}
 

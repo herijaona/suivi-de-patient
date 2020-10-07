@@ -675,4 +675,16 @@ select.mdb-select.initialized {
 .parentactive{
   display: block !important;
 }
+.conte{
+  width: 382px;
+  margin-left: -51px;
+}
+#carnet_vaccin{
+ width: 382px;
+  margin-left: -51px;
+}
+#ident{
+  width: 382px;
+  margin-left: -51px;
+}
 
