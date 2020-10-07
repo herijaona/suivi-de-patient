@@ -42,6 +42,15 @@
             <label class="active" for="form1">{% trans %}Date Taken{% endtrans %}</label>
             {{ form_widget(form.date_prise, {'attr': { 'class': 'form-control' }}) }}
         </div>
+        <div class="md-form">
+            <label class="active" for="form1">{% trans %}Time Taken{% endtrans %}</label>
+            {{ form_widget(form.heureprise, {'attr': { 'class': 'form-control' }}) }}
+        </div>
+        <div class="md-form">
+            <label class="active" for="form1">N° Lot</label>
+            {{ form_widget(form.Lot, {'attr': { 'class': 'form-control' }}) }}
+        </div>
+
 
 
     </div>
@@ -57,11 +66,7 @@
 
     <script type="text/javascript">
 
-        $(document).ready(function () {
-            $('.chosen-select').chosen({width: "100%"});
-
-            $('.chosen-select').trigger('chosen:updated');
-        });
+        $('.chosen-select').chosen({width: "100%"});
         $('#generation_vaccin_date_prise').datepicker({
             format: 'dd/mm/yyyy',
             autoclose: true,
@@ -69,6 +74,15 @@
             startDate: '-0d',
 
         });
+        $('#generation_vaccin_heureprise').clockpicker({
+            donetext: "valider",
+            autoclose: true,
+        });
+        $('#generation_vaccin_heureprise').on('change', function () {
+            let receivedVal = $(this).val();
+            $(this).val(receivedVal);
+        });
+        $('.chosen-select').trigger('chosen:updated');
 
 
 

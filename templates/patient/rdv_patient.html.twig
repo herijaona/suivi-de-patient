@@ -87,10 +87,10 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if rdv.status == 0 or rdv.status == 1 %}
+                        {% if rdv.status == 0 or rdv.status == 1 and rdv.etat == 0 %}
                             <span class="badge badge-danger badge-style modif" data-type="intervention" data-id="{{ rdv.id }}" >{{ 'Cancel'|trans }}</span>
                         {% elseif rdv.status == 2 %}
-                            <p class="badge badge-danger  textf" >{{ 'Cancel'|trans }}</p>
+                            <p class="badge badge-danger  textf" >{{ 'Canceled'|trans }}</p>
                         {% endif %}
                     </td>
                 </tr>

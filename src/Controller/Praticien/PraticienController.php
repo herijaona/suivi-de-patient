@@ -918,21 +918,26 @@ class PraticienController extends AbstractController
      * @param Request $request
      * @param $translator
      * @return Response
+     * @throws Exception
      */
     public function  vaccin_generate(Request $request, TranslatorInterface $translator){
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $request = $request->request->get('generation_vaccin');
         $patient = $request['patient'];
+        $lot = $request['Lot'];
         $patient= $this->patientRepository->find($patient);
         $vaccin = $request['vaccin'];
         $vaccin = $this->vaccinRepository->find($vaccin);
         $identification = $request['identification'];
         $date = $request['date_prise'];
-        $date= DateTime::CreateFromFormat("d/m/Y", $date);
+        $heure = $request['heureprise'];
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
         $carnet = new CarnetVaccination();
         $carnet->setStatus("1");
-        $carnet->setDatePrise($date);
+        $carnet->setDatePrise($Date_Rdv);
+        $carnet->setLot($lot);
         $carnet->setVaccin($vaccin);
         $carnet->setIdentification($identification);
         $carnet->setPatient($patient);
@@ -945,7 +950,7 @@ class PraticienController extends AbstractController
         $intervention->setOrdonnace($ordonance);
         $intervention->setPatient($patient);
         $intervention->setVaccin($vaccin);
-        $intervention->setDatePriseVaccin($date);
+        $intervention->setDatePriseVaccin($Date_Rdv);
         $intervention->setEtat("0");
         $this->entityManager->persist($intervention);
         $this->entityManager->flush();
