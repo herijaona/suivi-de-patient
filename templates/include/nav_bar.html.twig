@@ -84,10 +84,10 @@
             {% if is_granted('ROLE_PRATICIEN') %}
                 {# <li class="{{ (currentPath == path('praticien')) ? 'active' :'' }}"><a href="{{ path('praticien') }}">Agenda</a></li> #}
                 <li class="{{ (currentPath == path('dashboard')) ? 'active' :'' }}"><a href="{{ path('dashboard') }}"><img src="{{ asset('assets/images/icon/dashboard.png') }}" class="img-left-menu rounded-circle">{% trans %} Dashboard {% endtrans %}</a></li>
-                <li {% if (currentPath == path('vaccination_praticien')) ? 'active' :''  %} class="active" {% endif %}><a href="#" data-toggle="collapse"  data-target="#vacc" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">Vaccination</a>
+                <li {% if (currentPath == path('vaccination_praticien')) ? 'active' :''  %} class="active" {% endif %}><a href="#" data-toggle="collapse"  data-target="#vacc" id="va" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">Vaccination</a>
                     <ul id="vacc" class="collapse" aria-labelledby="vacc" data-parent="#side-bar-menu">
                         <li class="{{ (currentPath == path('vaccination_praticien')) ? 'active' :''  }}"> <a href="{{ path('vaccination_praticien') }}" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}vaccination request{% endtrans %}</a></li>
-                        <li class="{{ (currentPath == path('vaccin_generate')) ? 'active' :''  }}"> <a href="{{ path('vaccin_generate') }}" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Generate a Vaccine{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('vaccin_generate')) ? 'active' :''  }}"> <a href="{{ path('vaccin_generate') }}" class="vaccine" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle " >{% trans %}Generate a Vaccine{% endtrans %}</a></li>
                     </ul>
                 </li>
                 {#<li class="{{  (currentPath == path('consultaion_praticien')) ? 'active' :'' }}"  ><a href="{{ path('consultaion_praticien') }}"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">Consultation</a></li>#}
@@ -131,6 +131,7 @@
     <script src="{{ asset('assets/js/croppie.js') }}" type="text/javascript"></script>
 <script>
     $('.active').parent().addClass('parentactive');
+    $(".vaccine").css("display", "none");
     $('.bar-container').click(function(){
         $('.menu-container').toggle('show');
     })
@@ -183,6 +184,29 @@
                 //$('#uploadimageModal').modal('hide');
                 location.reload();
             }
+        });
+    });
+    $('#va').on('click', function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "{{ path('vaccin') }}",
+            type: 'post',
+            dataType: "json",
+            cache: false,
+            success: (data) =>{
+                    if(data != 0){
+                        $(".vaccine").css("display", "block");
+                    }else{
+                        $(".vaccine").css("display", "none");
+                    }
+
+            },
+            error: (e) => {
+                $(".vaccine").css("display", "none");
+            }
+        }).done(() => {
+            $(".loadBody").css("display", "none");
         });
     });
 

@@ -650,7 +650,7 @@ class PraticienController extends AbstractController
                 $proposition->setPatient($patient);
                 $proposition->setStatusProposition(0);
                 $proposition->setEtat(0);
-                $proposition->setStatusNotif(0);
+
                 $proposition->setType("consultation");
                 $this->entityManager->persist($proposition);
                 $this->entityManager->flush();
@@ -669,7 +669,7 @@ class PraticienController extends AbstractController
                 $proposition->setPatient($patient);
                 $proposition->setStatusProposition(0);
                 $proposition->setEtat(0);
-                $proposition->setStatusNotif(0);
+
                 $proposition->setType("vaccination");
                 $this->entityManager->persist($proposition);
                 $this->entityManager->flush();
@@ -993,5 +993,19 @@ class PraticienController extends AbstractController
             'form' => $form->createView(),
             'eventData' => $rdv,
         ]);
+    }
+
+    /**
+     * @Route("/vaccin", name="vaccin")
+     */
+    public function vaccin(){
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $associer = $this->associerRepository->searchAssocier($praticien);
+        $data = 0;
+        if ($associer != null)$data = 1;
+
+
+        return new JsonResponse($data);
     }
 }
