@@ -254,16 +254,20 @@ class ProfileController extends AbstractController
         $countryborn = $form->get('CountryOnBorn')->getData();
         $countryborn = $this->stateRepository->find($countryborn);
         $fonc = $request->request->get('fonction');
-        $lieu = $request->request->get('lieu');
+
         $address =$form->get('address')->getData();
         $mail= $form->get('email')->getData();
+        $cityborn= $request->request->get('cityborn');
+        $cityborn= $this->cityRepository->find($cityborn);
         $city= $request->request->get('city');
         $city= $this->cityRepository->find($city);
         $numero =  $request->request->get('numero');
         $user = $this->getUser();
         $praticien =  $this->praticienRepository->findOneBy(['user' => $user]);
         $praticien->setNumeroProfessionnel($numero);
-        $praticien->setAdressOnBorn($lieu);
+        $praticien->setCityOnBorn($cityborn);
+        $praticien->setCountryOnBorn($countryborn);
+
         $praticien->setAddress($address);
         $this->entityManager->persist($praticien);
         $this->entityManager->flush();

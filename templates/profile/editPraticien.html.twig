@@ -42,6 +42,17 @@
                                 <input type="text" class="form-control form-edit" placeholder="{{ values.phone }}">
                             </div>
                         </div>
+                        <div class="row form-group">
+                            <div class="col-lg-6">
+                                <label for="">{% trans %}City of Birth{% endtrans %}</label>
+                                <input type="text" class="form-control form-edit" placeholder="{{ values.CityOnBorn}}">
+
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="">{% trans %}Country  of Birth{% endtrans %}</label>{{ form_widget(registrationForm.CountryOnBorn, {'attr': {'class': 'form-control form-show', 'placeholder': 'Adresse','value':  values.CountryOnborn}}) }}
+                                <input type="text" class="form-control form-edit " value="{{ values.CountryOnborn}}">
+                            </div>
+                        </div>
 
                         <div class="row form-group">
                             <div class="col-lg-6">
@@ -61,9 +72,10 @@
                                 <input type="text" class="form-control form-edit" placeholder="{{ values.user.email }}">
                             </div>
                             <div class="col-lg-6">
-                                    <label for="">{% trans %}Center Health{% endtrans %}</label>
-                                    <input type="text" class="form-control form-edit" value="{{centre}}">
+                                <label for="">{% trans %}Country of function{% endtrans %}</label>
+                                <input type="text" class="form-control form-edit" placeholder="{{state }}">
                             </div>
+
                         </div>
                         <div class="row form-group">
 
@@ -72,19 +84,16 @@
                                 <input type="text" class="form-control form-edit" placeholder="{{ values.user.password }}">
                             </div>
                             <div class="col-lg-6">
-                                <label for="">{% trans %}Country of function{% endtrans %}</label>
-                                <input type="text" class="form-control form-edit" placeholder="{{state }}">
+                                <label for="">{% trans %}Center Health{% endtrans %}</label>
+                                <input type="text" class="form-control form-edit" value="{{centre}}">
                             </div>
+
                             <div class="col-lg-6">
                                 <label for="">{% trans %}Business number{% endtrans %}</label>
                                 <input type="text" class="form-control form-edit" placeholder="{{ values.NumeroProfessionnel}}">
                             </div>
                         </div>
                         <div class="row form-group">
-                            <div class="col-md-6">
-                                <label for="">{% trans %}Place of Birth{% endtrans %}</label>
-                                <input type="text" class="form-control form-edit" value="{{ values.adressOnBorn}}">
-                            </div>
                             <div class="col-lg-6">
                                 <label for="">{% trans %}Function{% endtrans %}</label>
                                 <input type="text" class="form-control form-edit" placeholder="{{fonction }}">

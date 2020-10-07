@@ -54,6 +54,18 @@ class RegistrationPraticienFormType extends AbstractType
                     'rows' => '3'
                 ]
             ])
+            ->add('CountryOnBorn', EntityType::class, [
+                'class' => State::class,
+                'query_builder' => function (EntityRepository $entityRepository) {
+                    return $entityRepository->createQueryBuilder('s');
+                },
+                'required'=>false,
+                'choice_value' => 'id',
+                'choice_label' => function (?State $state) {
+                    return $state ? strtoupper($state->getNameState()) : '';
+                },
+                'placeholder' => 'Pays de Naissance',
+            ])
             ->add('country', EntityType::class, [
                 'class' => State::class,
                 'query_builder' => function (EntityRepository $entityRepository) {

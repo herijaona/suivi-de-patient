@@ -20,7 +20,7 @@
 <div class="modal-body" style="width:100%; padding: 2rem">
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Centre Health{% endtrans %}</label>
-        {{ form_widget(form.center_health, {'attr': {'class': 'form-control form-textarea'}}) }}
+        {{ form_widget(form.center_health, {'attr': {'class': 'form-control chosen-select'}}) }}
     </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Function{% endtrans %}</label>
@@ -29,17 +29,27 @@
     </div>
     <div class="md-form " >
         <label class="active" for="form1">{% trans %}Country of Fonction{% endtrans %}</label>
-        {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}
+        {{ form_widget(form.country, {'attr': {'class': 'form-control chosen-select'}}) }}
     </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}City of Fonction{% endtrans %}</label>
-        <select class="form-control chosen-select" id="city" name="city" >
+        <select class="form-control" id="city" name="city" >
             <option value="{{ city.id }}" selected>{{ city }}</option>
         </select>
     </div>
     <div class="md-form " >
         <label class="active" for="form1">{% trans %}Country of Birth{% endtrans %}</label>
-        {{ form_widget(form.CountryOnBorn, {'attr': {'class': 'form-control'}}) }}
+        {{ form_widget(form.CountryOnBorn, {'attr': {'class': 'form-control chosen-select'}}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}City of Birth{% endtrans %}</label>
+        <select class="form-control" id="cityborn" name="cityborn" >
+            {% if cityBorn != null  %}
+                <option value="{{ cityBorn.id }}" selected>{{ cityBorn }}</option>
+            {% else %}
+                <option value="" selected> Ville de naissance</option>
+            {% endif %}
+        </select>
     </div>
 
     <div class="md-form">
@@ -108,7 +118,7 @@
     <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
-
+        $('.chosen-select').chosen({width: "100%"});
         $('#registration_praticien_form_country').on('change', function () {
             var idcountry = $('#registration_praticien_form_country option:selected').val();
             $.ajax({
@@ -123,6 +133,21 @@
                 }
             });
         });
+        $('#registration_praticien_form_CountryOnBorn').on('change', function () {
+            var idcountry = $('#registration_praticien_form_CountryOnBorn option:selected').val();
+            $.ajax({
+                method: "POST",
+                url: "{{ path('country') }}",
+                data: {id: idcountry},
+                success: function (response) {
+                    $('#cityborn').empty();
+                    $.each(response, function (index, element) {
+                        $('#cityborn').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
+                    });
+                }
+            });
+        });
+        $('.chosen-select').trigger('chosen:updated');
 
 
 

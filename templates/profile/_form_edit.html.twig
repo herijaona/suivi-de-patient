@@ -23,7 +23,7 @@
         {{ form_widget(form.type_patient, {'attr': {'class': 'form-control'}}) }}
     </div>
     <div class="md-form " >
-        <label class="active" for="form1">{% trans %}Country{% endtrans %}</label>
+        <label class="active" for="form1">{% trans %}Country of Birth{% endtrans %}</label>
         {{ form_widget(form.CountryOnBorn, {'attr': {'class': 'form-control chosen-select '}}) }}
     </div>
     <div class="md-form">
@@ -32,7 +32,7 @@
             {% if cityBorn != null  %}
                 <option value="{{ cityBorn.id }}" selected>{{ cityBorn }}</option>
             {% else %}
-                <option value="" selected> {% trans %}City of Birth{% endtrans %}</option>
+                <option value="" selected> Ville de naissance</option>
             {% endif %}
         </select>
     </div>
@@ -46,7 +46,7 @@
             {% if city != null  %}
             <option value="{{ city.id }}" selected>{{ city }}</option>
             {% else %}
-                <option value="" selected>{% trans %}City of Residence{% endtrans %}</option>
+                <option value="" selected>Ville de Résidence</option>
             {% endif %}
         </select>
     </div>
