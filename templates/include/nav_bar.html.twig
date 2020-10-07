@@ -187,29 +187,24 @@
             }
         });
     });
-    $('#va').on('click', function (e) {
-        e.preventDefault();
-
-        $.ajax({
-            url: "{{ path('vaccin') }}",
-            type: 'post',
-            dataType: "json",
-            cache: false,
-            success: (data) =>{
-                    if(data != 0){
-                        $(".vaccine").css("display", "block");
-                    }else{
-                        $(".vaccine").css("display", "none");
-                    }
-
-            },
-            error: (e) => {
+    {% if is_granted('ROLE_PRATICIEN') %}
+    $.ajax({
+        url: "{{ path('vaccin') }}",
+        type: 'post',
+        dataType: "json",
+        cache: false,
+        success:function(data)
+        {
+            if(data != 0){
+                $(".vaccine").css("display", "block");
+            }else{
                 $(".vaccine").css("display", "none");
             }
-        }).done(() => {
-            $(".loadBody").css("display", "none");
-        });
+        }
     });
+    {% endif %}
+
+
 
     $('.crop_image').click(function(event){
         var url = "";
