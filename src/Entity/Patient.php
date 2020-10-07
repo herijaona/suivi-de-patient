@@ -215,9 +215,15 @@ class Patient
     private $DateEnceinte;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="patient")
      */
-    private $PlaceBirth;
+    private $CountryOnborn;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="patientBorn")
+     */
+    private $CityOnBorn;
+
 
 
 
@@ -991,16 +997,27 @@ class Patient
         return $this;
     }
 
-    public function getPlaceBirth(): ?string
+    public function getCountryOnborn(): ?State
     {
-        return $this->PlaceBirth;
+        return $this->CountryOnborn;
     }
 
-    public function setPlaceBirth(?string $PlaceBirth): self
+    public function setCountryOnborn(?State $CountryOnborn): self
     {
-        $this->PlaceBirth = $PlaceBirth;
+        $this->CountryOnborn = $CountryOnborn;
 
         return $this;
     }
 
+    public function getCityOnBorn(): ?City
+    {
+        return $this->CityOnBorn;
+    }
+
+    public function setCityOnBorn(?City $CityOnBorn): self
+    {
+        $this->CityOnBorn = $CityOnBorn;
+
+        return $this;
+    }
 }

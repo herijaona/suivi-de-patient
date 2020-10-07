@@ -85,6 +85,18 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
+            ->add('CountryOnBorn', EntityType::class, [
+                'required'=>false,
+                'class' => State::class,
+                'query_builder' => function (EntityRepository $entityRepository) {
+                    return $entityRepository->createQueryBuilder('s');
+                },
+                'choice_value' => 'id',
+                'choice_label' => function (?State $state) {
+                    return $state ? strtoupper($state->getNameState()) : '';
+                },
+                'placeholder' => 'Pays de Naissance',
+            ])
             ->add('country', EntityType::class, [
                 'required'=>false,
                 'class' => State::class,

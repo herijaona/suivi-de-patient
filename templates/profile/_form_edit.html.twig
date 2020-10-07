@@ -24,14 +24,32 @@
     </div>
     <div class="md-form " >
         <label class="active" for="form1">{% trans %}Country{% endtrans %}</label>
-        {{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}
+        {{ form_widget(form.CountryOnBorn, {'attr': {'class': 'form-control chosen-select '}}) }}
     </div>
-        <div class="md-form">
-            <label class="active" for="form1">{% trans %}City of Residence{% endtrans %}</label>
-            <select class="form-control chosen-select" id="city" name="city" >
-                <option value="{{ city.id }}" selected>{{ city }}</option>
-            </select>
-        </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}City of Birth{% endtrans %}</label>
+        <select class="form-control" id="cityborn" name="cityborn" >
+            {% if cityBorn != null  %}
+                <option value="{{ cityBorn.id }}" selected>{{ cityBorn }}</option>
+            {% else %}
+                <option value="" selected> {% trans %}City of Birth{% endtrans %}</option>
+            {% endif %}
+        </select>
+    </div>
+    <div class="md-form " >
+        <label class="active" for="form1">{% trans %}Country{% endtrans %}</label>
+        {{ form_widget(form.country, {'attr': {'class': 'form-control chosen-select'}}) }}
+    </div>
+    <div class="md-form">
+        <label class="active" for="form1">{% trans %}City of Residence{% endtrans %}</label>
+        <select class="form-control" id="city" name="city" >
+            {% if city != null  %}
+            <option value="{{ city.id }}" selected>{{ city }}</option>
+            {% else %}
+                <option value="" selected>{% trans %}City of Residence{% endtrans %}</option>
+            {% endif %}
+        </select>
+    </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
         {{ form_widget(form.address, {'attr': {'class': 'form-control form-textarea'}}) }}
@@ -40,11 +58,6 @@
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Phone{% endtrans %}</label>
         <input type="text" class="form-control" value="{{ phone }}" name="phone">
-
-    </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Place of Birth{% endtrans %}</label>
-        <input type="text" class="form-control " value="{{ lieu }}" name="lieu">
     </div>
     <div class="md-form" >
         <label class="active" for="form1">E-mail</label>
@@ -123,6 +136,7 @@
 <script>
     $('.enceinte').css('display', 'none');
     $('.enfant').css('display', 'none');
+    $('.chosen-select').chosen({width: "100%"});
     if ($('.type').val()=="ADULTE" && $('.sexe').val()=="Feminin" ){
         $('.enceinte').css('display', 'block');
     }
@@ -145,6 +159,21 @@
             }
         });
     });
+    $('#registration_form_CountryOnBorn').on('change', function () {
+        var idcountry = $('#registration_form_CountryOnBorn option:selected').val();
+        $.ajax({
+            method: "POST",
+            url: "{{ path('country') }}",
+            data: {id: idcountry},
+            success: function (response) {
+                $('#cityborn').empty();
+                $.each(response, function (index, element) {
+                    $('#cityborn').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
+                });
+            }
+        });
+    });
+    $('.chosen-select').trigger('chosen:updated');
 
 
 

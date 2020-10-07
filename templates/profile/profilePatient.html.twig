@@ -43,6 +43,17 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
+                        <label for="">{% trans %}City of Birth{% endtrans %}</label>
+                        <input type="text" class="form-control form-edit" placeholder="{{ values.CityOnBorn}}">
+
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="">{% trans %}Country  of Birth{% endtrans %}</label>{{ form_widget(registrationForm.CountryOnBorn, {'attr': {'class': 'form-control form-show', 'placeholder': 'Adresse','value':  values.CountryOnborn}}) }}
+                        <input type="text" class="form-control form-edit " value="{{ values.CountryOnborn}}">
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-lg-6">
                         <label for="">{% trans %}Address of Residence{% endtrans %}</label> {{ form_widget(registrationForm.address, {'attr': {'class': 'form-control form-show', 'placeholder': 'Adresse','value': values.address}}) }}
                         <input type="text" class="form-control form-edit" placeholder="{{ values.address}}">
 
@@ -51,11 +62,10 @@
                         <label for="">{% trans %}City of Residence{% endtrans %}</label>
                         <input type="text" class="form-control form-edit " value="{{ values.city}}">
                     </div>
-
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                        <label for="">{% trans %}Country{% endtrans %}</label> {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control form-show', 'placeholder': 'Country', 'value': values.state}}) }}
+                        <label for="">{% trans %}Country of Residence{% endtrans %}</label> {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control form-show', 'placeholder': 'Country', 'value': values.state}}) }}
                         <input type="text" class="form-control form-edit" placeholder="{{ values.state }}">
                     </div>
                     <div class="col-lg-6">
@@ -69,10 +79,7 @@
                         <input type="text" class="form-control form-edit" placeholder="{{ values.phone }}">
                     </div>
 
-                    <div class="col-md-6">
-                        <label for="">{% trans %}Place of Birth{% endtrans %}</label>
-                        <input type="text" class="form-control form-edit" value="{{ values.PlaceBirth}}">
-                    </div>
+
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">

@@ -37,6 +37,11 @@
             <option value="{{ city.id }}" selected>{{ city }}</option>
         </select>
     </div>
+    <div class="md-form " >
+        <label class="active" for="form1">{% trans %}Country of Birth{% endtrans %}</label>
+        {{ form_widget(form.CountryOnBorn, {'attr': {'class': 'form-control'}}) }}
+    </div>
+
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Address{% endtrans %}</label>
         {{ form_widget(form.address, {'attr': {'class': 'form-control form-textarea'}}) }}
@@ -45,10 +50,7 @@
         <label class="active" for="form1">{% trans %}Number Professional{% endtrans %}</label>
         <input type="text" name="numero" id="numero" value="{{ numero }}" class="form-control" >
     </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Place of Birth{% endtrans %}</label>
-        <input type="text" class="form-control" value="{{lieu}}" name="lieu" id="lieu">
-    </div>
+
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Phone{% endtrans %}</label>
         <input type="text" class="form-control" value="{{ phone }}" name="phone">

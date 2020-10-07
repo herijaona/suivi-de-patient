@@ -148,10 +148,6 @@ class Praticien
      */
     private $address;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $adressOnBorn;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -189,8 +185,15 @@ class Praticien
      */
     private $fonctions;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="praticienonborn")
+     */
+    private $CountryOnBorn;
 
-
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="praticiencityborn")
+     */
+    private $CityOnBorn;
 
 
     public function __construct()
@@ -650,17 +653,7 @@ class Praticien
         return $this;
     }
 
-    public function getAdressOnBorn(): ?string
-    {
-        return $this->adressOnBorn;
-    }
 
-    public function setAdressOnBorn(?string $adressOnBorn): self
-    {
-        $this->adressOnBorn = $adressOnBorn;
-
-        return $this;
-    }
 
     public function getSexe(): ?string
     {
@@ -819,6 +812,30 @@ class Praticien
                 $fonction->setPraticien(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCountryOnBorn(): ?State
+    {
+        return $this->CountryOnBorn;
+    }
+
+    public function setCountryOnBorn(?State $CountryOnBorn): self
+    {
+        $this->CountryOnBorn = $CountryOnBorn;
+
+        return $this;
+    }
+
+    public function getCityOnBorn(): ?City
+    {
+        return $this->CityOnBorn;
+    }
+
+    public function setCityOnBorn(?City $CityOnBorn): self
+    {
+        $this->CityOnBorn = $CityOnBorn;
 
         return $this;
     }

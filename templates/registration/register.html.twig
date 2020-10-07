@@ -93,6 +93,9 @@
                     <div class="row form-group ">
                         {{ form_widget(registrationForm.enceinte)   }}
                     </div>
+                    <div class="col-lg-6" style="display: none">
+                        {{ form_widget(registrationForm.CountryOnBorn , {'attr': {'class': 'form-control chosen-select', 'placeholder': 'Pays', "minlength":"3"}}) }}
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-info button-login mb-3" id="submit_register">
                     S'inscrire

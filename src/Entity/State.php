@@ -64,6 +64,16 @@ class State
      */
     private $fonctions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Patient::class, mappedBy="CountryOnborn")
+     */
+    private $patient;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="CountryOnBorn")
+     */
+    private $praticienonborn;
+
     public function __construct()
     {
         $this->regions = new ArrayCollection();
@@ -71,6 +81,8 @@ class State
         $this->praticiens = new ArrayCollection();
         $this->vaccins = new ArrayCollection();
         $this->fonctions = new ArrayCollection();
+        $this->patient = new ArrayCollection();
+        $this->praticienonborn = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -256,6 +268,45 @@ class State
             // set the owning side to null (unless already changed)
             if ($fonction->getState() === $this) {
                 $fonction->setState(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Patient[]
+     */
+    public function getPatient(): Collection
+    {
+        return $this->patient;
+    }
+
+    /**
+     * @return Collection|Praticien[]
+     */
+    public function getPraticienonborn(): Collection
+    {
+        return $this->praticienonborn;
+    }
+
+    public function addPraticienonborn(Praticien $praticienonborn): self
+    {
+        if (!$this->praticienonborn->contains($praticienonborn)) {
+            $this->praticienonborn[] = $praticienonborn;
+            $praticienonborn->setCountryOnBorn($this);
+        }
+
+        return $this;
+    }
+
+    public function removePraticienonborn(Praticien $praticienonborn): self
+    {
+        if ($this->praticienonborn->contains($praticienonborn)) {
+            $this->praticienonborn->removeElement($praticienonborn);
+            // set the owning side to null (unless already changed)
+            if ($praticienonborn->getCountryOnBorn() === $this) {
+                $praticienonborn->setCountryOnBorn(null);
             }
         }
 

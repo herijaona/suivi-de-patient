@@ -87,16 +87,13 @@ class ProfileController extends AbstractController
         $pra['date_naissance']= $praticien->getDateBorn()->format('Y-m-d H:i:s');
         $pra['phone']= $praticien->getPhone();
         $pra['sexe']= $praticien->getSexe();
+        $pra['CountryOnBorn']= $praticien->getCountryOnBorn();
         $pra['username']= $praticien->getUser()->getUsername();
-
 
         $pra['email']=$praticien->getUser()->getEmail();
         $pra['plainPassword']= $praticien->getUser()->getPassword();
-
         $phone = $praticien->getPhone();
 
-
-        $lieu = $praticien->getAdressOnBorn();
         $ordonance= $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
 
         $pra['center_health']= $ordonance->getCentreSante();
@@ -104,14 +101,15 @@ class ProfileController extends AbstractController
         $pra['country']= $fonction->getState();
         $fonc = $fonction->getFonction();
         $city = $fonction->getCity();
+        $cityborn = $praticien->getCityOnBorn();
         $state = $fonction->getState();
 
         $form = $this->createForm(RegistrationPraticienFormType::class, $pra);
         $response = $this->renderView('profile/_form_edit_praticien.html.twig', [
             'form' => $form->createView(),
-            'lieu'=>$lieu,
             'phone'=>$phone,
             'fonction'=>$fonc,
+            'cityBorn'=>$cityborn,
             'city'=>$city,
             'state'=>$state,
             'numero'=>$numero,
@@ -145,15 +143,17 @@ class ProfileController extends AbstractController
         $pro['type_patient']=$patient->getTypePatient();
         $pro['email']=$patient->getUser()->getEmail();
         $pro['country']=$patient->getState();
+        $pro['CountryOnBorn']=$patient->getCountryOnborn();
         $city = $patient->getCity();
+        $cityborn = $patient->getCityOnBorn();
         $phone= $patient->getPhone();
         $enceinte= $patient->getIsEnceinte();
-        $lieu = $patient->getPlaceBirth();
+
         $form = $this->createForm(RegistrationFormType::class, $pro);
         $response = $this->renderView('profile/_form_edit.html.twig', [
             'form' => $form->createView(),
             'enceinte'=>$enceinte,
-            'lieu'=>$lieu,
+            'cityBorn'=>$cityborn,
             'phone'=>$phone,
             'city'=>$city,
             'eventData' => $pro,
@@ -251,6 +251,8 @@ class ProfileController extends AbstractController
         $form = $this->createForm(RegistrationPraticienFormType::class, $user);
         $form->handleRequest($request);
         $centre = $form->get('center_health')->getData();
+        $countryborn = $form->get('CountryOnBorn')->getData();
+        $countryborn = $this->stateRepository->find($countryborn);
         $fonc = $request->request->get('fonction');
         $lieu = $request->request->get('lieu');
         $address =$form->get('address')->getData();
@@ -299,10 +301,13 @@ class ProfileController extends AbstractController
         $mail= $form->get('email')->getData();
         $state= $form->get('country')->getData();
         $state = $this->stateRepository->find($state);
+        $countryborn = $form->get('CountryOnBorn')->getData();
+        $countryborn = $this->stateRepository->find($countryborn);
         $city= $request->request->get('city');
         $city= $this->cityRepository->find($city);
+        $cityborn= $request->request->get('cityborn');
+        $cityborn= $this->cityRepository->find($cityborn);
         $enceinte = $request->request->get('liste');
-        $lieu = $request->request->get('lieu');
         $phone = $request->request->get('phone');
         $date = new \DateTime();
         $type = $form->get('type_patient')->getData();
@@ -318,10 +323,11 @@ class ProfileController extends AbstractController
         }
         $patient->setTypePatient($type);
         $patient->setAddress($address);
+        $patient->setCountryOnborn($countryborn);
+        $patient->setCityOnBorn($cityborn);
         $patient->setState($state);
         $patient->setCity($city);
         $patient->setPhone($phone);
-        $patient->setPlaceBirth($lieu);
         $this->entityManager->persist($patient);
         $this->entityManager->flush();
         $user = $this->user->find($user);

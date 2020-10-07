@@ -1061,7 +1061,18 @@
         <source>My Calendar Vaccinal</source>
         <target>Mon Calendrier Vaccinal</target>
       </trans-unit>
-
+      <trans-unit id="P3KTY.d" resname="City of Birth">
+        <source>City of Birth</source>
+        <target>Ville de naissance</target>
+      </trans-unit>
+      <trans-unit id="CJGKtBK" resname="Country  of Birth">
+        <source>Country  of Birth</source>
+        <target>Pays de naissance</target>
+      </trans-unit>
+      <trans-unit id="z_ixrp5" resname="Country of Residence">
+        <source>Country of Residence</source>
+        <target>Pays de Résidence</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
