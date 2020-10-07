@@ -106,7 +106,7 @@
                    
                     <ul id="vacc" class="collapse" aria-labelledby="vacc" data-parent="#side-bar-menu">
 
-                        <li class="{{ (currentPath == path('generate')) ? 'active' :''  }}"> <a href="{{ path('generate') }}" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Generate{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('generate')) ? 'active' :''  }}"> <a href="{{ path('generate') }}" id="generate" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}Generate{% endtrans %}</a></li>
                         <li class="{{ (currentPath == path('patient')) ? 'active' :''  }}"> <a href="{{ path('patient') }}" ><img src="{{ asset('assets/images/icon/rdv.png') }}" class="img-left-menu rounded-circle">{% trans %}My Calendar Vaccinal{% endtrans %}</a></li>
                     </ul>
                 </li>
@@ -132,6 +132,7 @@
 <script>
     $('.active').parent().addClass('parentactive');
     $(".vaccine").css("display", "none");
+    $("#generate").css("display", "none");
     $('.bar-container').click(function(){
         $('.menu-container').toggle('show');
     })
@@ -238,6 +239,25 @@
                 }
             })
     });
+
+
+    {% if is_granted('ROLE_PATIENT') %}
+    $.ajax({
+        url: "{{ path('generation_vaccin') }}",
+        type: 'post',
+        dataType: "json",
+        cache: false,
+        success:function(data)
+        {
+            if(data != 0){
+                $("#generate").css("display", "none");
+            }
+            else {
+                $("#generate").css("display", "block");
+            }
+        }
+    });
+    {% endif %}
 
 
 </script>

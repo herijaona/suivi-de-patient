@@ -756,6 +756,17 @@ class PatientController extends AbstractController
         return new JsonResponse($country);
 
     }
+    /**
+     * @Route("/generation/vaccin", name="generation_vaccin")
+     */
+    public function generer(){
+        $user = $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $carnet = $this->carnetVaccinationRepository->searchCarnet($patient);
+        $data = 0;
+        if($carnet != null) $data = 1;
+        return new JsonResponse($data);
+    }
 
 
 
