@@ -23,8 +23,9 @@ class CarnetType extends AbstractType
             ->add('vaccin')
             ->add('date')
             ->add('heure')
+            ->add('carnet')
             ->add('praticien', EntityType::class, [
-                'required'=>true,
+                'required'=>false,
                 'class' => Fonction::class,
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('p');

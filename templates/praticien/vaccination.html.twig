@@ -70,12 +70,13 @@
 
                         <td >
                             {% if vac.statusVaccin == 1 and vac.etat == 0 %}
-                                <span class="badge badge-success badge-style modif-status"  data-type="test"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-carnet = {{ vac.carnet }} data-patient="{{ vac.patient }}" data-numero ={{ vac.numero }} >{{ 'Realize'|trans }}</span>
+
+                                <span class="badge badge-success badge-style modif-status" data-id="{{ vac.id }}" data-praticien="{{ vac.praticien }}"  >{{ 'Realize'|trans }}</span>
                             {% elseif vac.statusVaccin == 1 and vac.etat == 1  %}
                                 <p class="badge badge-success textf">{% trans %}Realized{% endtrans %}</p>
 
                             {% elseif vac.statusVaccin == 0 %}
-                                <span class="badge badge-success badge-style modif-status"  data-type="intervention"  data-action="active" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" data-carnet=" {{ vac.carnet }}" >{{ 'Organize'|trans }}</span>
+                                <span  class="badge badge-success badge-style modi" data-id="{{ vac.id }}"  data-carne="{{ vac.carnet }}">{{ 'Organize'|trans }}</span>
                                 <span  class="badge badge-danger badge-style modif-status" data-type="intervention"  data-action="reject" data-id="{{ vac.id }}" data-status="{{vac.statusVaccin}}"   data-praticien="{{ vac.praticien }}" data-patient="{{ vac.patient }}" >{% trans %}Reject{% endtrans %}</span>
                             {% endif %}
                         </td>
@@ -93,37 +94,34 @@
 {% block javascripts %}
     <!-- DataTables -->
     <script>
-        $('.modif-status').on('click', function (e) {
+        $(".modi").on('click' , function(e) {
             $(".loadBody").css("display", "block");
             e.preventDefault();
             var id = $(this).data('id');
-            var type = $(this).data('type');
-            var status = $(this).data('status');
-            var action = $(this).data('action');
-            var date = $(this).data('date');
-            var praticien = $(this).data('praticien');
-            var patient = $(this).data('patient');
-            var carnet = $(this).data('carnet');
-            var numero = $(this).data('numero');
+            var carne = $(this).data('carne');
 
             $.ajax({
-                url: "{{ path('change_status') }}",
+                url: "{{ path('add_vaccination_praticien') }}",
                 type: 'post',
                 data: {
                     id: id,
-                    type: type,
-                    status: status,
-                    date: date,
-                    praticien: praticien,
-                    patient: patient,
-                    carnet: carnet,
-                    numero: numero,
-                    action: action
+                    carne:carne,
+
                 },
-                dataType: "json",
-                success: (data) =>{
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $('#carnet_date').clockpicker({
+                        donetext: "valider",
+                        autoclose: true,
+                    });
+                    $('#carnet_heure').on('change', function () {
+                        let receivedVal = $(this).val();
+                        $(this).val(receivedVal );
+                    });
+
                     $(".loadBody").css("display", "none");
-                    location.reload();
                 },
                 error: (e) => {
                     $(".loadBody").css("display", "none");
@@ -132,7 +130,34 @@
             }).done(() => {
                 $(".loadBody").css("display", "none");
             });
+        });
 
+        $(".modif-status").on('click' , function(e) {
+            $(".loadBody").css("display", "block");
+            e.preventDefault();
+            var id = $(this).data('id');
+            var praticien = $(this).data('praticien');
+
+            $.ajax({
+                url: "{{ path('organize_vaccination') }}",
+                type: 'post',
+                data: {
+                    id:id,
+                    praticien: praticien,
+                },
+                dataType: 'json',
+                success: (data) => {
+                    $('.create_body').html(data.form_html);
+                    $("#modal_create_body").modal('show');
+                    $(".loadBody").css("display", "none");
+                },
+                error: (e) => {
+                    $(".loadBody").css("display", "none");
+                    $(".chargementError").css("display", "block");
+                }
+            }).done(() => {
+                $(".loadBody").css("display", "none");
+            });
         });
         $(document).ready(function() {
             $('#example1').DataTable();

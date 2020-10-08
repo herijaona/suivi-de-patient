@@ -402,6 +402,121 @@ class PraticienController extends AbstractController
         return new JsonResponse(['form_consultation_html' => $response]);
     }
 
+    /**
+     * @Route("/organize_vaccination", name="organize_vaccination")
+     */
+    public function organize_vaccination(Request $request)
+        {
+            $inter = [];
+            $inter['id'] = $request->request->get('id');
+            $intervention = $this->interventionVaccinationRepository->find($inter['id']);
+
+            $carnet['id']= $intervention->getId();
+            $carnet['patient']= $intervention->getPatient()->getId();
+            $carnet['vaccin']= $intervention->getVaccin()->getId();
+            $carnet['carnet']= $intervention->getCarnet()->getId();
+            $carnet['date']= $intervention->getDatePriseVaccin();
+            $praticien= $request->request->get('praticien');
+            $date = $carnet['date']->format('d-m-Y H:i:s');
+            $carnet['date'] = str_replace("-", "/", explode(' ', $date)[0]);
+            $carnet['heure'] = explode(' ', $date)[1];
+            $form = $this->createForm(CarnetType::class, $carnet);
+            $response = $this->renderView('praticien/_form_interven.html.twig', [
+                'new' => false,
+                'form' => $form->createView(),
+                'praticien'=>$praticien,
+                'eventData' => $carnet,
+            ]);
+            $form->handleRequest($request);
+            return new JsonResponse(['form_html' => $response]);
+        }
+
+    /**
+     * @Route("/add_vaccination_praticien",name="add_vaccination_praticien")
+     */
+    public function add_vaccination_praticien(Request $request)
+    {
+        $intervention = [];
+        $intervention['id'] = $request->request->get('id');
+
+        $carnetvaccina = $this->interventionVaccinationRepository->find($intervention['id'] );
+        $carnet['id']= $carnetvaccina->getId();
+        $carnet['patient']= $carnetvaccina->getPatient()->getId();
+        $carnet['vaccin']= $carnetvaccina->getVaccin()->getId();
+        $carnet['carnet']= $carnetvaccina->getCarnet()->getId();
+        $carnet['date']= $carnetvaccina->getDatePriseVaccin();
+        $date = $carnet['date']->format('d-m-Y H:i:s');
+        $carnet['date'] = str_replace("-", "/", explode(' ', $date)[0]);
+        $carnet['heure'] = explode(' ', $date)[1];
+        $form = $this->createForm(CarnetType::class, $carnet);
+        $response = $this->renderView('praticien/_form_intervention.html.twig', [
+            'new' => false,
+            'form' => $form->createView(),
+            'eventData' => $carnet,
+        ]);
+        $form->handleRequest($request);
+        return new JsonResponse(['form_html' => $response]);
+
+    }
+    /**
+     * @Route("/organize/calendrier", name = "organize_carnet")
+     * @throws Exception
+     */
+    public function  organize_carnet(Request $request, TranslatorInterface $translator)
+    {
+
+        $intervention= $request->request->get('carnet');
+        $praticien = $request->request->get('praticien');
+        $praticien = $this->praticienRepository->find($praticien);
+        $lot = $request->request->get('lot');
+        $Id = $intervention['id'];
+        $carnet = $intervention['carnet'];
+        $inter = $this->interventionVaccinationRepository->find($Id);
+        $inter->setEtat("1");
+        $this->entityManager->persist($inter);
+        $this->entityManager->flush();
+        $carnetvaccination = $this->carnetVaccinationRepository->find($carnet);
+        $carnetvaccination->setEtat("1");
+        $carnetvaccination->setPraticien($praticien);
+        $carnetvaccination->setLot($lot);
+        $this->entityManager->persist($carnetvaccination);
+        $this->entityManager->flush();
+        
+        $message=$translator->trans('realized');
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('vaccination_praticien');
+    }
+
+    /**
+     * @Route("/realize/vaccination", name = "realize_vaccination")
+     * @throws Exception
+     */
+    public function  realize_vaccination(Request $request, TranslatorInterface $translator)
+    {
+
+        $intervention= $request->request->get('carnet');
+        $id=$intervention['id'];
+        $date=$intervention['date'];
+        $heure=$intervention['heure'];
+        $carnet = $intervention['carnet'];
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $interve = $this->interventionVaccinationRepository->find($id);
+        $interve->setDatePriseVaccin($Date_Rdv);
+        $interve->setStatusVaccin("1");
+        $this->entityManager->persist($interve);
+        $this->entityManager->flush();
+        $carnetvaccination = $this->carnetVaccinationRepository->find($carnet);
+        $carnetvaccination->setStatus(1);
+        $carnetvaccination->setDatePrise($Date_Rdv);
+        $this->entityManager->persist($carnetvaccination);
+        $this->entityManager->flush();
+        $message=$translator->trans('Successful change');
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('vaccination_praticien');
+    }
+
+
 
     /**
      * @Route("/add_rdv_praticien", name="add_rdv_praticien")

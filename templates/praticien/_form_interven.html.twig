@@ -21,33 +21,25 @@
         </h4>
     </div>
     <!--Content-->
-    {{ form_start(form, {'attr': {'action': path('accept_intervention') }}) }}
+    {{ form_start(form, {'attr': {'action': path('organize_carnet') }}) }}
     <!--Body-->
     <div class="modal-body" style="width:69%; margin-left: 17%">
-
-        <div class="md-form ">
-            <label class="active" for="form1" style="margin-left: -50px;">{% trans %}Vaccine{% endtrans %}</label>
-
-             <input type="text" value="{{ vaccin }}" class="form-control " id="ident">
+        <div class="md-form">
+            <label class="active" for="form1">{% trans %}Vaccine Lot{% endtrans %}</label><br>
+            <input type="text" name="lot" id="lot" placeholder="{% trans %}Vaccine Lot{% endtrans %}"  style="width: 300px;" required>
         </div>
-        <div class="md-form ">
-            <label class="active" for="form1" style="margin-left: -50px;">{% trans %}ID Vaccine{% endtrans %}</label>
-            <input type="text" value="{{ identification }}" class="form-control " id="ident">
-        </div>
+        <div class="md-form " style="display: none">
 
+            <input type="text" value="{{ praticien }}" id="praticien" name="praticien">
 
-        <div class="md-form" style="display: none">
-            {{ form_widget(form.patient, {'attr': { 'class': 'form-control chosen-select' }}) }}
-            {{ form_widget(form.vaccin, {'attr': { 'class': 'form-control chosen-select conter' }}) }}
-            {{ form_widget(form.date, {'attr': { 'class': 'form-control chosen-select' }}) }}
-            {{ form_widget(form.heure, {'attr': { 'class': 'form-control chosen-select' }}) }}
+            <label class="active" for="form1" style="margin-left: -50px;">Praticien</label>
+            {{ form_widget(form.praticien, {'attr': { 'class': 'form-control ' }}) }}
+            {{ form_widget(form.patient, {'attr': { 'class': 'form-control' }}) }}
+            {{ form_widget(form.vaccin, {'attr': { 'class': 'form-control ' }}) }}
             {{ form_widget(form.carnet, {'attr': { 'class': 'form-control ' }}) }}
-
-
-
+            {{ form_widget(form.heure, {'attr': { 'class': 'form-control' }}) }}
+            {{ form_widget(form.date, {'attr': { 'class': 'form-control' }}) }}
         </div>
-
-
     </div>
     <div class="modal-footer justify-content-center">
         <button type="button" class="btn btn-outline-danger waves-effect" data-dismiss="modal" aria-label="Close"><i class="fas fa-remove ml-1"></i> {% trans %}Cancel{% endtrans %} </button>
@@ -61,17 +53,17 @@
     <script>
         $(document).ready(function () {
 
-            $('#rdv_dateRdv').datepicker({
+            $('#carnet_date').datepicker({
                 format: 'dd/mm/yyyy',
                 autoclose: true,
                 todayHighlight:'TRUE',
                 startDate: '-0d',
             });
-            $('#rdv_heureRdv').clockpicker({
+            $('#carnet_heure').clockpicker({
                 donetext: "valider",
                 autoclose: true,
             });
-            $('#rdv_heureRdv').on('change', function () {
+            $('#carnet_heure').on('change', function () {
                 let receivedVal = $(this).val();
                 $(this).val(receivedVal );
             });
