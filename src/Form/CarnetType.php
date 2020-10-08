@@ -23,7 +23,9 @@ class CarnetType extends AbstractType
             ->add('vaccin')
             ->add('date')
             ->add('heure')
-            ->add('carnet')
+            ->add('carnet',null,[
+                'required'=>false
+            ])
             ->add('praticien', EntityType::class, [
                 'required'=>false,
                 'class' => Fonction::class,
