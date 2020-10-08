@@ -54,8 +54,8 @@ class GenerationVaccinType extends AbstractType
             ])
             ->add('identification')
             ->add('date_prise')
-            ->add('heureprise')
-            ->add('Lot');
+            ->add('heureprise');
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

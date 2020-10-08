@@ -481,7 +481,7 @@ class PraticienController extends AbstractController
         $carnetvaccination->setLot($lot);
         $this->entityManager->persist($carnetvaccination);
         $this->entityManager->flush();
-        
+
         $message=$translator->trans('realized');
         $this->addFlash('success', $message);
         return $this->redirectToRoute('vaccination_praticien');
@@ -1040,7 +1040,6 @@ class PraticienController extends AbstractController
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $request = $request->request->get('generation_vaccin');
         $patient = $request['patient'];
-        $lot = $request['Lot'];
         $patient= $this->patientRepository->find($patient);
         $vaccin = $request['vaccin'];
         $vaccin = $this->vaccinRepository->find($vaccin);
@@ -1052,7 +1051,6 @@ class PraticienController extends AbstractController
         $carnet = new CarnetVaccination();
         $carnet->setStatus("1");
         $carnet->setDatePrise($Date_Rdv);
-        $carnet->setLot($lot);
         $carnet->setVaccin($vaccin);
         $carnet->setIdentification($identification);
         $carnet->setPatient($patient);
