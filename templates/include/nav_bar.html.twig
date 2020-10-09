@@ -96,7 +96,7 @@
                 <li {% if (currentPath == path('rdv_praticien')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#rdvp"><img src="{{ asset('assets/images/icon/vaccination.png') }}" class="img-left-menu rounded-circle">{% trans %} Appointment {% endtrans %}</a>
                     <ul id="rdvp" class="collapse" aria-labelledby="rdvp" data-parent="#side-bar-menu">
                         <li class="{{ (currentPath == path('rdv_praticien')) ? 'active' :''  }}"> <a href="{{ path('rdv_praticien') }}" ><img src="{{ asset('assets/images/icon/iconerdv.png') }}" class="img-left-menu rounded-circle">{% trans %}My Appointments{% endtrans %}</a></li>
-                       <li class="{{ (currentPath == path('rdv_associer')) ? 'active' :''  }}"> <a href="{{ path('rdv_associer') }}" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}Create{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('rdv_associer')) ? 'active' :''  }}" > <a href="{{ path('rdv_associer') }}"  class="vaccine" ><img src="{{ asset('assets/images/icon/new.png') }}" class="img-left-menu rounded-circle">{% trans %}Create{% endtrans %}</a></li>
                     </ul>
                 </li>
             {% endif %}
