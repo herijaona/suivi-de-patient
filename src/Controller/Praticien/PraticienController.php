@@ -2,15 +2,19 @@
 
 namespace App\Controller\Praticien;
 
+use App\Entity\Associer;
 use App\Entity\CarnetVaccination;
 
+use App\Entity\IntervationConsultation;
 use App\Entity\InterventionVaccination;
+use App\Entity\OrdoConsultation;
 use App\Entity\PropositionRdv;
 use App\Form\AcceptType;
 use App\Form\CarnetType;
 use App\Form\ConsultationPraticienType;
 use App\Form\GenerationVaccinType;
 use App\Form\PropositionRdvType;
+use App\Form\RdvAssocieType;
 use App\Form\RdvType;
 use App\Repository\AssocierRepository;
 use App\Repository\FamilyRepository;
@@ -646,12 +650,41 @@ class PraticienController extends AbstractController
         return $this->redirectToRoute('rdv_praticien');
     }
 
+    /**
+     *  @Route("/rdv/praticien/associer", name="rdv_associer")
+     *
+     */
+    public function rdv_associer(){
+        $assoce= [];
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $associer = $this->associerRepository->searchAssocier($praticien);
+        foreach ($associer as $value) {
+            $lastname = $value["lastName"];
+            $firstname = $value["firstName"];
+            $pat = $value["patient"];
+        }
+        $patient = [
+            $pat => $lastname . '  ' . $firstname
+        ];
+        $typeRdvArrays = [
+            "consultation" => "CONSULTATION",
+            "intervention" =>"INTERVENTION"
+        ];
+        $form = $this->createForm(RdvAssocieType::class,$assoce, ['patient' => $patient, 'typeRdvArrays' => $typeRdvArrays]);
+        return $this->render('praticien/_form_rdv_associer.html.twig',[
+            'new'=> true,
+            'form'=>$form->createView(),
+            'eventData'=> $assoce,
+        ]);
+    }
+
 
 
 
 
     /**
-     * @Route("/form-add-proposition", name="add_form_proposition_rdv", methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     * @Route("/form-add-proposition", name="add_form_proposition_rdv")
      * @param Request $request
      * @return JsonResponse
      */
@@ -681,23 +714,6 @@ class PraticienController extends AbstractController
                 $form = $this->createForm(PropositionRdvType::class, $rdv, ['patient' => $patient, 'typeRdvArrays' => $typeRdvArrays]);
                 $response = $this->renderView('praticien/_form_proposition.html.twig', [
                     'new' => true,
-                    'form' => $form->createView(),
-                    'eventData' => $rdv,
-                ]);
-            } else {
-                $action = $request->request->get('id');
-                $rdv['id'] = $request->request->get('id');
-                $propos = $this->propositionRdvRepository->find($rdv['id']);
-                $rdv['description'] = $propos->getDescriptionProposition();
-                $rdv['dateRdv'] = $propos->getDateProposition();
-                if ($rdv['dateRdv'] != '') {
-                    $date = $rdv['dateRdv']->format('d-m-Y H:i:s');
-                    $rdv['dateRdv'] = str_replace("-", "/", explode(' ', $date)[0]);
-                    $rdv['heureRdv'] = explode(' ', $date)[1];
-                }
-                $form = $this->createForm(PropositionRdvType::class, $rdv, ['patient' => $patient]);
-                $response = $this->renderView('praticien/_form_proposition.html.twig', [
-                    'new' => false,
                     'form' => $form->createView(),
                     'eventData' => $rdv,
                 ]);
@@ -1071,6 +1087,62 @@ class PraticienController extends AbstractController
         $this->addFlash('success', $message);
         return $this->redirectToRoute('vaccination_praticien');
     }
+    /**
+    * @Route("/register_rdv_associer", name="register_rdv_associer")
+    */
+    public function register_rdv_associer(Request $request,TranslatorInterface $translator){
+        $associer = $request->request->get('rdv_associe');
+        $user= $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
+        $patient = $associer['patient'];
+        $patient = $this->patientRepository->find($patient);
+        $type = $associer['typeRdv'];
+        $Id = $associer['id'];
+        $objet = $associer['objet'];
+        $date = $associer['dateRdv'];
+        $heure = $associer['heureRdv'];
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        switch ($type){
+            case 'consultation':
+                if ($Id != ''){
+                    $ordoconsultation = $this->ordoConsultationRepository->find($Id);
+                }else{
+                    $ordoconsultation = new OrdoConsultation();
+                }
+
+                $ordoconsultation->setObjetConsultation($objet);
+                $ordoconsultation->setStatusConsultation(1);
+                $ordoconsultation->setEtat(0);
+                $ordoconsultation->setPatient($patient);
+                $ordoconsultation->setDateRdv($Date_Rdv);
+                $ordoconsultation->setOrdonnance($ordo);
+                $this->entityManager->persist($ordoconsultation);
+                $this->entityManager->flush();
+                break;
+
+            case 'intervention':
+                if ($Id != ''){
+                    $inter = $this->intervationConsultationRepository->find($Id);
+                }else{
+                    $inter = new IntervationConsultation();
+                }
+                $inter->setPatient($patient);
+                $inter->setStatus(1);
+                $inter->setEtat(0);
+                $inter->setObjetConsultation($objet);
+                $inter->setDateConsultation($Date_Rdv);
+                $inter->setOrdonnace($ordo);
+                $this->entityManager->persist($inter);
+                $this->entityManager->flush();
+        }
+        $message=$translator->trans('Appointment registration successful');
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('rdv_praticien');
+
+    }
+
 
     /**
      * @Route("/create-rdv/praticien", name="create_rdv_praticien")
@@ -1121,4 +1193,6 @@ class PraticienController extends AbstractController
 
         return new JsonResponse($data);
     }
+
+
 }
