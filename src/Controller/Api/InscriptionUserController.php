@@ -4,11 +4,14 @@ namespace App\Controller\Api;
 
 use App\Entity\Address;
 use App\Entity\City;
+use App\Entity\Fonction;
 use App\Entity\Patient;
 use App\Entity\Praticien;
+use App\Entity\State;
 use App\Entity\TypePatient;
 use App\Entity\User;
 use App\Repository\CityRepository;
+use App\Repository\StateRepository;
 use App\Repository\TypePatientRepository;
 use DateTime;
 use DateTimeInterface;
@@ -42,7 +45,7 @@ class InscriptionUserController extends AbstractController
         $this->encoder = $userPasswordEncoderInterface;
     }
      
-    public function __invoke(User $data, Request $request, EntityManagerInterface $entityManager, TypePatientRepository $typePatientRepository, CityRepository $cityRepository)
+    public function __invoke(User $data, Request $request, EntityManagerInterface $entityManager, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository)
     {
         $user = json_decode($request->getContent(), true);
 
@@ -52,10 +55,10 @@ class InscriptionUserController extends AbstractController
         $last_name = $user["last_name"];
         $roles = $user["roles"];
         $password = $user["password"];
-        $date_on_born = $user["date_on_born"];
-        $num_rue = $user["num_rue"];
-        $quartier = $user["quartier"];
-
+        if(strcmp($roles, "ROLE_PATIENT") == 0) {
+            $date_on_born = $user["date_on_born"];
+            $type_patient = $typePatientRepository->find(intval($user["type_patient"]));
+        }
         $data->setPassword($this->encoder->encodePassword($data,$password));
         $data->setEmail($email);
         $data->setEtat(1);
@@ -64,20 +67,25 @@ class InscriptionUserController extends AbstractController
         $data->setUsername($username);
         $data->setRoles([$roles]);
         $sexe = $user["sexe"];
-        $type_patient = $typePatientRepository->find(intval($user["type_patient"]));
-        $addresse = $cityRepository->find(intval($user["id_address"]));
 
-        if(strcmp($roles, "ROLE_PRATICIENT") == 0){
-             $this->add_praticient($entityManager, $data, $user["telephone"],new DateTime($date_on_born), $addresse, $user["fonction"], $num_rue, $quartier);
-            $this->add_patient_praticient($entityManager, $data, $type_patient, $addresse, $sexe, new DateTime($date_on_born), $num_rue, $quartier, $password);
+        $addresse = $user["address"];
+        $phone = $user["phone"];
+        $city = $user["city"];
+        $city = $cityRepository->find($city);
+        $state = $user["state"];
+        $state = $stateRepository->find($state);
+        if(strcmp($roles, "ROLE_PRATICIEN") == 0){
+             $this->add_praticient($entityManager, $data, $phone,new DateTime($user["date_born"]),$city,$state,$sexe, $user["fonction"],$addresse);
+             $this->add_patient_praticient($entityManager, $data,$addresse, $sexe, new DateTime($user["date_born"]), $password,$phone);
         }
         if(strcmp($roles, "ROLE_PATIENT") == 0){
-            $this->add_patient($entityManager, $data, $type_patient, $addresse, $sexe, new DateTime($date_on_born), $num_rue, $quartier);
+            $this->add_patient($entityManager, $data, $type_patient,$city,$state, $addresse, $sexe, new DateTime($date_on_born),$phone);
+
         }
         return $data;
     }
 
-    public function add_patient_praticient(EntityManager $entityManager, User $user, TypePatient $typePatient, City $address, string $sexe, DateTime $naissance, $num_rue, $quartier, $password){
+    public function add_patient_praticient(EntityManager $entityManager, User $user, string $address, string $sexe, DateTime $naissance, $password,string $phone){
         $userPatient = new User();
         $userPatient->setPassword($this->encoder->encodePassword($userPatient,$password));
         $userPatient->setEmail($user->getEmail());
@@ -89,50 +97,54 @@ class InscriptionUserController extends AbstractController
         $entityManager->persist($userPatient);
         $patient = new Patient();
         $patient->setUser($userPatient);
-        $patient->setTypePatient($typePatient);
         $patient->setLastName($user->getLastName());
         $patient->setFirstName($user->getFirstName());
         $patient->setLastName($user->getLastName());
+        $patient->setPhone($phone);
         $patient->setDateOnBorn($naissance);
-        $patient->setCity($address);
-        $patient->setNumRue($num_rue);
-        $patient->setQuartier($quartier);
+        $patient->setAddress($address);
         $patient->setSexe($sexe);
         $entityManager->persist($patient);
         $entityManager->flush();
     }
 
-    public function add_patient(EntityManager $entityManager, User $user, TypePatient $typePatient, City $address, string $sexe, DateTime $naissance, $num_rue, $quartier){
+    public function add_patient(EntityManager $entityManager, User $user, TypePatient $typePatient,City $city, State $state, string $address, string $sexe, DateTime $naissance,string $phone){
         $patient = new Patient();
         $patient->setUser($user);
         $patient->setTypePatient($typePatient);
         $patient->setLastName($user->getLastName());
         $patient->setFirstName($user->getFirstName());
         $patient->setLastName($user->getLastName());
+        $patient->setPhone($phone);
+        $patient->setCity($city);
+        $patient->setState($state);
         $patient->setDateOnBorn($naissance);
-        $patient->setCity($address);
-        $patient->setNumRue($num_rue);
-        $patient->setQuartier($quartier);
+        $patient->setAddress($address);
         $patient->setSexe($sexe);
         $entityManager->persist($patient);
         $entityManager->flush();
     }
 
-    public function add_praticient(EntityManager $entityManager,User $user, string $numeroPhone, DateTime $naissance, City $address, string $fonction, $num_rue, $quartier){
-        $praticient = new Praticien();
-        $praticient->setUser($user);
-        $praticient->setCity($address);
-        $praticient->setNumRue($num_rue);
-        $praticient->setQuartier($quartier);
-        $praticient->setLastName($user->getLastName());
-        $praticient->setFirstName($user->getFirstName());
-        $praticient->setLastName($user->getLastName());
-        $praticient->setPhone($numeroPhone);
-        $praticient->setPhoneProfessional($numeroPhone);
-        $praticient->setFonction($fonction);
-        $praticient->setDateBorn($naissance);
-        $entityManager->persist($praticient);
+    public function add_praticient(EntityManager $entityManager,User $user, string $phone, DateTime $naissance, City $city, State $state, string $sexe, string $fonction,string $address){
+        $praticien = new Praticien();
+        $praticien->setUser($user);
+        $praticien->setLastName($user->getLastName());
+        $praticien->setFirstName($user->getFirstName());
+        $praticien->setLastName($user->getLastName());
+        $praticien->setPhone($phone);
+        $praticien->setSexe($sexe);
+        $praticien->setAddress($address);
+        $praticien->setDateBorn($naissance);
+        $entityManager->persist($praticien);
         $entityManager->flush();
+        $fonc = new Fonction();
+        $fonc->setState($state);
+        $fonc->setCity($city);
+        $fonc->setFonction($fonction);
+        $fonc->setPraticien($praticien);
+        $entityManager->persist($fonc);
+        $entityManager->flush();
+
     }
 }
 

@@ -19,7 +19,7 @@
         "first_name":"dev_paticien",
         "last_name":"devpaticien",
         "username":"devpraticien",
-        "roles":"ROLE_PRATICIENT",
+        "roles":"ROLE_PRATICIEN",
         "email":"devpaticienenjana@gmail.com",
         "password":"devenjana",
         "telephone":"0341417474",
