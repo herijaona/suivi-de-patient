@@ -18,6 +18,19 @@ class FonctionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Fonction::class);
     }
+    public function searchFon($praticien=null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT  f.fonction,s.nameState as CountryFonction, c.nameCity as CityFonction
+            FROM App\Entity\Fonction f
+            INNER JOIN App\Entity\Praticien p with p.id = f.Praticien
+            INNER JOIN App\Entity\State s with s.id = f.state
+            INNER JOIN App\Entity\City c with c.id = f.city
+          
+            WHERE p.id = :praticien')
+            ->setParameter('praticien', $praticien);
+
+        return $query->getResult();
+     }
     public function searchcountry($fonction = null){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT s.id, s.nameState

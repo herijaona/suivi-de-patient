@@ -146,5 +146,7 @@ class InscriptionUserController extends AbstractController
         $entityManager->flush();
 
     }
+
+
 }
 

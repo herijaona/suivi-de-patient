@@ -26,6 +26,14 @@ class StateRepository extends ServiceEntityRepository
             ->setParameter('state', $state);
         return $query->getResult();
     }
+    public function searchstate(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT s.id, s.nameState
+            FROM App\Entity\State s
+          ');
+
+        return $query->getResult();
+    }
 
     // /**
     //  * @return State[] Returns an array of State objects

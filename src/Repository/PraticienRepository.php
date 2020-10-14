@@ -31,6 +31,22 @@ class PraticienRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function searchPr($user = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id,p.firstName,p.lastName,p.dateBorn,p.NumeroProfessionnel,p.phone,p.address,p.sexe,p.updatedAt,p.createdAt,u.email,u.username,s.nameState as countryBorn, c.nameCity as cityBorn
+            FROM App\Entity\Praticien p
+            INNER JOIN App\Entity\User u with u.id = p.user
+            INNER JOIN App\Entity\State s with s.id =p.CountryOnBorn
+            INNER JOIN App\Entity\City c with c.id = p.CityOnBorn
+            where u.id =:user
+            ')
+            ->setParameter('user', $user);
+        return $query->getResult();
+    }
+
+
+
+
 
 
 

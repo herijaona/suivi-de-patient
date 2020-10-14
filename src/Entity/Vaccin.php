@@ -74,72 +74,6 @@ class Vaccin
     private $carnetVaccinations;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $datePriseInitiale;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel1;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel2;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel3;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel4;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel5;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel6;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel7;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel8;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel9;
-
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     * @Groups("read:vaccin")
-     */
-    private $rappel10;
-
-    /**
      * @ORM\OneToMany(targetEntity=PatientVaccin::class, mappedBy="vaccin")
      */
     private $patientVaccins;
@@ -158,6 +92,21 @@ class Vaccin
      * @ORM\OneToMany(targetEntity=PropositionRdv::class, mappedBy="vaccin")
      */
     private $propositionRdvs;
+
+    /**
+     * @ORM\Column(type="string", length=15)
+     */
+    private $IdVaccin;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $DatePrise;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    private $Statut;
 
     function __construct()
     {
@@ -586,6 +535,42 @@ class Vaccin
                 $propositionRdv->setVaccin(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getIdVaccin(): ?string
+    {
+        return $this->IdVaccin;
+    }
+
+    public function setIdVaccin(string $IdVaccin): self
+    {
+        $this->IdVaccin = $IdVaccin;
+
+        return $this;
+    }
+
+    public function getDatePrise(): ?string
+    {
+        return $this->DatePrise;
+    }
+
+    public function setDatePrise(string $DatePrise): self
+    {
+        $this->DatePrise = $DatePrise;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->Statut;
+    }
+
+    public function setStatut(string $Statut): self
+    {
+        $this->Statut = $Statut;
 
         return $this;
     }

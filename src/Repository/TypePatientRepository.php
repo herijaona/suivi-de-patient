@@ -19,10 +19,12 @@ class TypePatientRepository extends ServiceEntityRepository
         parent::__construct($registry, TypePatient::class);
     }
 
+
     // /**
     //  * @return TypePatient[] Returns an array of TypePatient objects
     //  */
     /*
+     *
     public function findByExampleField($value)
     {
         return $this->createQueryBuilder('t')

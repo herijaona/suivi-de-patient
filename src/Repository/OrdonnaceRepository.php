@@ -29,6 +29,18 @@ class OrdonnaceRepository extends ServiceEntityRepository
 
         return $query->getResult();
     }
+    public function searchc($praticien = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT c.centreName
+            FROM App\Entity\Ordonnace o
+            INNER JOIN App\Entity\Praticien pr with pr.id = o.praticien
+            INNER JOIN App\Entity\CentreHealth c with c.id = o.CentreSante
+            WHERE pr.id = :praticiens')
+            ->setParameter('praticiens', $praticien);
+
+        return $query->getResult();
+
+    }
 
     // /**
     //  * @return Ordonnace[] Returns an array of Ordonnace objects

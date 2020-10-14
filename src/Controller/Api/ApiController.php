@@ -5,13 +5,19 @@ namespace App\Controller\Api;
 use App\Entity\Praticien;
 use App\Entity\PropositionRdv;
 use App\Repository\AssocierRepository;
+use App\Repository\CentreHealthRepository;
+use App\Repository\CityRepository;
+use App\Repository\FonctionRepository;
 use App\Repository\IntervationConsultationRepository;
 use App\Repository\InterventionVaccinationRepository;
 use App\Repository\OrdoConsultationRepository;
+use App\Repository\OrdonnaceRepository;
 use App\Repository\OrdoVaccinationRepository;
 use App\Repository\PatientRepository;
 use App\Repository\PraticienRepository;
 use App\Repository\PropositionRdvRepository;
+use App\Repository\StateRepository;
+use App\Repository\TypePatientRepository;
 use App\Repository\UserRepository;
 use App\Service\TokenService;
 use App\Service\VaccinGenerate;
@@ -48,7 +54,7 @@ class ApiController extends AbstractController
 
     /**
      * @param PraticienRepository $praticienRepository
-     * @return JsonResponse
+     * @return Response
      * @Route("/apip/posts", name="posts", methods={"GET"})
      */
   public function getPosts(PraticienRepository $praticienRepository){
@@ -90,6 +96,42 @@ class ApiController extends AbstractController
     }
 
     /**
+     * @Route("/apip/patient/profile", name="api_profile_patient", methods={"GET"})
+     * @param TokenService $tokenService
+     * @param UserRepository $userRepository
+     * @return JsonResponse
+     */
+    public function api_profile_patient(TokenService $tokenService, UserRepository $userRepository)
+    {
+        $CurrentUser = $tokenService->getCurrentUser();
+        $user = $userRepository->find($CurrentUser);
+        $patient = $this->patientRepository->searchPatient($user);
+        return new JsonResponse($patient);
+
+
+    }
+
+    /**
+     * @Route("/apip/praticien/profile", name="api_profile_praticien" , methods={"GET"})
+     * @param TokenService $tokenService
+     * @param UserRepository $userRepository
+     * @param FonctionRepository $fonctionRepository
+     * @param OrdonnaceRepository $ordonnaceRepository
+     * @return JsonResponse
+     */
+    public function api_profile_praticien(TokenService $tokenService, UserRepository $userRepository, FonctionRepository $fonctionRepository,OrdonnaceRepository $ordonnaceRepository)
+    {
+        $CurrentUser = $tokenService->getCurrentUser();
+        $pr = $this->praticienRepository->findOneBy(['user'=>$CurrentUser]);
+        $user = $userRepository->find($CurrentUser);
+        $praticien = $this->praticienRepository->searchPr($user);
+        $fonction = $fonctionRepository->searchFon($pr);
+        $centre = $ordonnaceRepository->searchc($pr);
+        $data = array_merge($praticien,$fonction,$centre);
+        return new JsonResponse(['profile' => $data]);
+    }
+
+    /**
      * @Route("/apip/patients/rdv/rejected", name="api_patients_rdv_rejected", methods={"GET"})
      * @param TokenService $tokenService
      * @param OrdoConsultationRepository $ordoConsultationRepository
@@ -112,6 +154,11 @@ class ApiController extends AbstractController
 
         return new JsonResponse(['results' => $data]);
     }
+
+
+
+
+
 
     /**
      * @Route("/apip/patients/rdv/accepted", name="api_patients_rdv_accepted", methods={"GET"})
@@ -151,6 +198,30 @@ class ApiController extends AbstractController
         }
         return new JsonResponse(['status' => 'OK']);
     }
+    /**
+     * @Route("/api/city", name="api_city" , methods={"GET"})
+     */
+    public function api_city(Request $request,StateRepository $stateRepository, CityRepository $cityRepository){
+        $id = $request->get('id');
+        $country = $stateRepository->find($id);
+        $city = $cityRepository->searchCity($country);
+        return new JsonResponse($city);
+    }
+
+
+
+    /**
+     * @Route("/api/country", name="api_type_patient", methods={"GET"})
+     * @param TypePatientRepository $typePatientRepository
+     * @return JsonResponse
+     */
+    public function api_type_patient( StateRepository $stateRepository)
+    {
+        $state = $stateRepository->searchstate();
+        return new JsonResponse($state);
+    }
+
+
 
     /**
      * @Route("/apip/patients/proposition-rdv", name="api_patients_proposition_rdv", methods={"GET"})

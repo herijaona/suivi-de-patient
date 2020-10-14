@@ -127,7 +127,6 @@ class ProfileController extends AbstractController
     public function form_edit(Request $request){
         $pro= [];
         $pro['id'] = $request->request->get('id');
-
         $patient = $this->patientRepository->find($pro['id']);
         $pro['type_patient'] = $patient->getTypePatient();
         $pro['address']= $patient->getAddress();
@@ -354,14 +353,9 @@ class ProfileController extends AbstractController
         $user = [];
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
         $currentUser = $this->getUser();
         $user = $this->user->find($currentUser->getId());
-
-
-
         $isuser = $this->patientRepository->findByPatient(['user'=>$user]);
-
         $coprs = $this->patientRepository->findByPatientUser($currentUser->getId());
 
         $values = "";

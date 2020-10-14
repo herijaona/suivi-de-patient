@@ -160,6 +160,7 @@ class VaccinGenerate
 
 
         if($vacc){
+            
             if ($week <= $_weeks){
 
                 $rdv = new OrdoVaccination();
