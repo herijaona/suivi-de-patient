@@ -28,13 +28,13 @@ class CarnetType extends AbstractType
             ])
             ->add('praticien', EntityType::class, [
                 'required'=>false,
-                'class' => Fonction::class,
+                'class' => Praticien::class,
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('p');
                 },
-                'choice_value' => 'Praticien.id',
-                'choice_label' => function (?Fonction $fonction) {
-                    return $fonction ? strtoupper($fonction->getPraticien()->getLastName().'  '.$fonction->getPraticien()->getFirstName().' '.$fonction->getFonction()) : '';
+                'choice_value' => 'id',
+                'choice_label' => function (?Praticien $praticien) {
+                    return $praticien ? strtoupper($praticien->getLastName(). '  '.$praticien->getFirstName().' '.$praticien->getFonction()->getNomFonction().''.$praticien->getCityOnBorn()->getNameCity()) : '';
                 },
                 'placeholder' => 'Praticien',
             ])

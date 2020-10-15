@@ -23,15 +23,15 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class RegistrationPraticienFormType extends AbstractType
+class ProfilePraticienType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class)
-            ->add('username')
-            ->add('lastname')
-            ->add('firstname')
+            ->add('email', EmailType::class,[
+                'required'=>false
+            ])
+
             ->add('center_health', EntityType::class, [
                 'class' => CentreHealth::class,
 
@@ -46,13 +46,13 @@ class RegistrationPraticienFormType extends AbstractType
                 },
                 'placeholder' => 'Votre centre de santé',
             ])
-            ->add('date_naissance')
-            ->add('phone')
 
             ->add('address', TextareaType::class, [
                 'attr' => [
                     'rows' => '3'
-                ]
+                ],
+                'required'=> false
+
             ])
             ->add('CountryOnBorn', EntityType::class, [
                 'class' => State::class,
@@ -83,38 +83,15 @@ class RegistrationPraticienFormType extends AbstractType
                 'query_builder' => function (EntityRepository $entityRepository) {
                     return $entityRepository->createQueryBuilder('s');
                 },
-                'required'=>true,
+                'required'=>false,
                 'choice_value' => 'id',
                 'choice_label' => function (?Fonction $fonction) {
                     return $fonction ? strtoupper($fonction->getNomFonction()) : '';
                 },
-                'placeholder' => 'votre Fonction',
+                'placeholder' => 'Votre Fonction',
             ])
-            ->add('sexe', ChoiceType::class, array(
-                'required'=>true,
-                'choices' => array(
-                    'Feminin' => 'Feminin',
-                    'Masculin' => 'Masculin'
-                ),
-                'placeholder' => 'Sexe',
-            ))
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'required'=>false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => 'Veuillez entrer un mot de passe',
-                    ]),
-                    new Length([
-                        'min' => 8,
-                        'minMessage' => 'Votre mot de passe doit être au moins {{ limit }} caractère',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
-                ],
-            ]);
+
+          ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

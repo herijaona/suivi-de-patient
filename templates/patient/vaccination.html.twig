@@ -48,13 +48,10 @@
                         {% endif %}
                     </td>
                        <td>
-                           {% if vac.status == 0 or vac.status == 1 and vac.etat == 0  %}
+                           {% if vac.status == 0 %}
                            <span class="badge badge-danger badge-style inter " data-type="vaccination"  data-id="{{ vac.id }}" >Intervention</span>
                            {% endif %}
-
                        </td>
-
-
                 </tr>
                 
             {% endfor %}

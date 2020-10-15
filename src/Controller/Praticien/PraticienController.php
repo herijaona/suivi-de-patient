@@ -656,22 +656,11 @@ class PraticienController extends AbstractController
      */
     public function rdv_associer(){
         $assoce= [];
-        $user = $this->getUser();
-        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $associer = $this->associerRepository->searchAssocier($praticien);
-        foreach ($associer as $value) {
-            $lastname = $value["lastName"];
-            $firstname = $value["firstName"];
-            $pat = $value["patient"];
-        }
-        $patient = [
-            $pat => $lastname . '  ' . $firstname
-        ];
         $typeRdvArrays = [
             "consultation" => "CONSULTATION",
             "intervention" =>"INTERVENTION"
         ];
-        $form = $this->createForm(RdvAssocieType::class,$assoce, ['patient' => $patient, 'typeRdvArrays' => $typeRdvArrays]);
+        $form = $this->createForm(RdvAssocieType::class,$assoce, ['typeRdvArrays' => $typeRdvArrays]);
         return $this->render('praticien/_form_rdv_associer.html.twig',[
             'new'=> true,
             'form'=>$form->createView(),
@@ -1019,24 +1008,15 @@ class PraticienController extends AbstractController
 
     }
 
+
+
     /**
      *  @Route("/generate/vaccin", name="vaccin_generate")
      *
      */
     public function generate_vaccin(){
         $generationvacc= [];
-        $user = $this->getUser();
-        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
-        $associer = $this->associerRepository->searchAssocier($praticien);
-        foreach ($associer as $value) {
-            $lastname = $value["lastName"];
-            $firstname = $value["firstName"];
-            $pat = $value["patient"];
-        }
-        $patient = [
-            $pat => $lastname . '  ' . $firstname
-        ];
-        $form = $this->createForm(GenerationVaccinType::class,$generationvacc, ['patient' => $patient]);
+        $form = $this->createForm(GenerationVaccinType::class,$generationvacc);
         return $this->render('praticien/_form_generate_vaccin.html.twig',[
             'new'=> true,
             'form'=>$form->createView(),
@@ -1054,9 +1034,9 @@ class PraticienController extends AbstractController
     public function  vaccin_generate(Request $request, TranslatorInterface $translator){
         $user = $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $patient = $request->request->get('patient');
+        $patient = $this->patientRepository->find($patient);
         $request = $request->request->get('generation_vaccin');
-        $patient = $request['patient'];
-        $patient= $this->patientRepository->find($patient);
         $vaccin = $request['vaccin'];
         $vaccin = $this->vaccinRepository->find($vaccin);
         $identification = $request['identification'];
@@ -1095,7 +1075,7 @@ class PraticienController extends AbstractController
         $user= $this->getUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
-        $patient = $associer['patient'];
+        $patient = $request->request->get('patient');
         $patient = $this->patientRepository->find($patient);
         $type = $associer['typeRdv'];
         $Id = $associer['id'];
@@ -1192,6 +1172,17 @@ class PraticienController extends AbstractController
 
 
         return new JsonResponse($data);
+    }
+    /**
+     * @Route("/associer/patient", name="assoc")
+     *
+     */
+    public function praticien_associer()
+    {
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $asocier = $this->associerRepository->searchAssocier($praticien);
+        return new JsonResponse($asocier);
     }
 
 

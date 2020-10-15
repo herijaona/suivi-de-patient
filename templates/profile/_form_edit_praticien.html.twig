@@ -24,8 +24,7 @@
     </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}Function{% endtrans %}</label>
-        <input type="text" name="fonction" id="fonction" value="{{ fonction }}" class="form-control" >
-
+        {{ form_widget(form.fonction, {'attr': {'class': 'form-control chosen-select'}}) }}
     </div>
     <div class="md-form " >
         <label class="active" for="form1">{% trans %}Country of Fonction{% endtrans %}</label>
@@ -33,11 +32,15 @@
     </div>
     <div class="md-form">
         <label class="active" for="form1">{% trans %}City of Fonction{% endtrans %}</label>
-        <select class="form-control" id="city" name="city" >
-            <option value="{{ city.id }}" selected>{{ city }}</option>
+        <select class="form-control" id="city" name="city">
+            {% if city != null  %}
+                <option value="{{ city.id }}" selected>{{ city }}</option>
+            {% else %}
+                <option value="" selected> Ville de naissance</option>
+            {% endif %}
         </select>
     </div>
-    <div class="md-form " >
+    <div class="md-form">
         <label class="active" for="form1">{% trans %}Country of Birth{% endtrans %}</label>
         {{ form_widget(form.CountryOnBorn, {'attr': {'class': 'form-control chosen-select'}}) }}
     </div>
@@ -70,42 +73,7 @@
         {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
     </div>
 </div>
-    <div class="md-form " style="display: none">
-        <label for="">{% trans %}Last name{% endtrans %}</label>
-        {{ form_widget(form.lastname, {'attr': {'class': 'form-control form-show'}}) }}
 
-    </div>
-    <div class="md-form " style="display: none">
-        <label for="">{% trans %}First name{% endtrans %}</label>
-        {{ form_widget(form.firstname, {'attr': {'class': 'form-control form-show'}}) }}
-    </div>
-
-<div class="md-form " style="display: none">
-    <label for="">{% trans %}Date of Birth{% endtrans %}</label>
-    {{ form_widget(form.date_naissance, {'attr': {'class': 'form-control form-show'}}) }}
-</div>
-<div class="md-form " style="display: none">
-    <label for="">{% trans %}Phone{% endtrans %}</label>
-    {{ form_widget(form.phone, {'attr': {'class': 'form-control form-show'}}) }}
-</div>
-<div class="md-form " style="display: none">
-    <label for="">{% trans %}Gender{% endtrans %}</label>
-    {{ form_widget(form.sexe, {'attr': {'class': 'form-control form-show', 'placeholder': 'Sexe'}}) }}
-</div>
-
-
-<div class="md-form " style="display: none">
-    <label for="">Username</label>
-    {{ form_widget(form.username, {'attr': {'class': 'form-control form-show', 'placeholder': 'Votre identifiant'}}) }}
-</div>
-
-<div class="md-form " style="display: none">
-    <label for="">{% trans %}Password{% endtrans %}</label>
-    {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control form-show', 'placeholder': 'Mot de passe'}}) }}
-
-    {{ form_widget(form.fonction, {'attr': {'class': 'form-control '}}) }}
-
-</div>
 
 
 <div class="modal-footer justify-content-center">
@@ -119,8 +87,8 @@
     <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
     <script>
         $('.chosen-select').chosen({width: "100%"});
-        $('#registration_praticien_form_country').on('change', function () {
-            var idcountry = $('#registration_praticien_form_country option:selected').val();
+        $('#profile_praticien_country').on('change', function () {
+            var idcountry = $('#profile_praticien_country option:selected').val();
             $.ajax({
                 method: "POST",
                 url: "{{ path('country') }}",
@@ -133,8 +101,8 @@
                 }
             });
         });
-        $('#registration_praticien_form_CountryOnBorn').on('change', function () {
-            var idcountry = $('#registration_praticien_form_CountryOnBorn option:selected').val();
+        $('#profile_praticien_CountryOnBorn').on('change', function () {
+            var idcountry = $('#profile_praticien_CountryOnBorn option:selected').val();
             $.ajax({
                 method: "POST",
                 url: "{{ path('country') }}",

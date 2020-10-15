@@ -26,7 +26,9 @@
     <div class="modal-body" style="width:69%; margin-left: 17%">
         <div class="md-form">
             <label class="active" for="form1">{% trans %}Patient{% endtrans %} </label>
-            {{ form_widget(form.patient, {'attr': { 'class': 'form-control chosen-select' }}) }}
+            <select class="form-control " id="patient" name="patient" required >
+                <option value="" selected>Patient</option>
+            </select>
         </div>
         <div class="md-form">
             <label class="active" for="form1">{% trans %}Vaccine{% endtrans %}</label>
@@ -59,6 +61,17 @@
 {% block javascripts %}
 
     <script type="text/javascript">
+        $.ajax({
+            method: "POST",
+            url: "{{ path('assoc') }}",
+            success: function (response) {
+                $('#patient').empty();
+                $.each(response, function (index, element) {
+                    $('#patient').append('<option value="' + element.id + '" selected="selected">' + element.lastName +' '+ element.firstName+' </option>');
+                });
+            }
+        });
+
 
         $('.chosen-select').chosen({width: "100%"});
         $('#generation_vaccin_date_prise').datepicker({

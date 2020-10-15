@@ -29,15 +29,11 @@ class GenerationVaccinType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $patient = $options['patient'];
+
         $builder
 
 
-            ->add('patient', ChoiceType::class, [
-                'choices' => array_flip($patient),
-                'required' => true,
-                'placeholder' => 'Choisir Patient'
-            ])
+
              ->add('vaccin', EntityType::class, [
                 'class' => Vaccin::class,
 
@@ -60,7 +56,7 @@ class GenerationVaccinType extends AbstractType
 
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setRequired(['patient']);
+
 
     }
 }

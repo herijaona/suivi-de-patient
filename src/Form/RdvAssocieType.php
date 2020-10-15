@@ -12,16 +12,9 @@ class RdvAssocieType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $patient = $options['patient'];
         $typeRdvArrays = $options['typeRdvArrays'];
         $builder
             ->add('id', HiddenType::class)
-
-            ->add('patient', ChoiceType::class, [
-                'choices' => array_flip($patient),
-                'required' => true,
-                'placeholder' => 'Choisir Patient'
-            ])
             ->add('typeRdv', ChoiceType::class, [
                 'choices' => array_flip($typeRdvArrays),
                 'required' => true,
@@ -29,14 +22,9 @@ class RdvAssocieType extends AbstractType
             ->add('dateRdv')
             ->add('heureRdv')
             ->add('objet');
-
-
     }
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['typeRdvArrays']);
-        $resolver->setRequired(['patient']);
-
-
     }
 }

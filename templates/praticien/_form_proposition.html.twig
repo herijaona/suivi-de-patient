@@ -28,7 +28,9 @@
 <div class="modal-body">
     <div class="md-form">
         <label class="active" for="form1">Patient </label>
-        {{ form_widget(form.patient, {'attr': { 'class': 'form-control chosen-select' }}) }}
+        <select class="form-control " id="patient" name="patient" required >
+            <option value="" selected>Patient</option>
+        </select>
     </div>
     <div class="md-form">
         <label class="active" for="form1">Type </label>
@@ -58,6 +60,7 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
+
             $('.vaccin_hidden').css("display", "none");
             $('.chosen-select').chosen({width: "100%"});
             $('.date_rdv').datepicker({

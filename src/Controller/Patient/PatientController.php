@@ -676,7 +676,9 @@ class PatientController extends AbstractController
     public function  generation(Request $request,TranslatorInterface $translator){
         $Request = $request->request->get("generation");
         $praticien = $request->request->get('praticien');
+
         $praticien = $this->praticienRepository->find($praticien);
+        $nom = $praticien->getLastName().' '. $praticien->getFirstName();
         $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
         $user = $this->getUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
@@ -691,9 +693,8 @@ class PatientController extends AbstractController
         $ordovaccination->setStatusVaccin(0);
         $ordovaccination->setEtat(0);
         $this->entityManager->persist($ordovaccination);
+        $message=$translator->trans('Your Vaccine Calendar request is waiting at the Praticien'.' '.$nom);
         $this->entityManager->flush();
-
-        $message=$translator->trans('registration successful');
         $this->addFlash('success', $message);
         return $this->redirectToRoute('generate');
 

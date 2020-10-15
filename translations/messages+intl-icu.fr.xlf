@@ -1073,6 +1073,27 @@
         <source>Country of Residence</source>
         <target>Pays de Résidence</target>
       </trans-unit>
+      <trans-unit id="XgFz_nV" resname="Your Vaccine Calendar request is waiting at the Praticien">
+        <source>Your Vaccine Calendar request is waiting at the Praticien</source>
+        <target>Votre demande de calendrier des vaccins est en attente au Praticien</target>
+      </trans-unit>
+      <trans-unit id="MKMdOl8" resname="Time Taken">
+        <source>Time Taken</source>
+        <target>Heure Prise</target>
+      </trans-unit>
+      <trans-unit id="BS3ihyJ" resname="Vaccine Lot">
+        <source>Vaccine Lot</source>
+        <target>Lot du Vaccin</target>
+      </trans-unit>
+      <trans-unit id="iv1HY1w" resname="MAKE AN APPOINTMENT">
+        <source>MAKE AN APPOINTMENT</source>
+        <target>PRENDRE RENDEZ-VOUS</target>
+      </trans-unit>
+      <trans-unit id="GQxK.ia" resname="Country of Birth">
+        <source>Country of Birth</source>
+        <target>Pays de Naissance</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>
