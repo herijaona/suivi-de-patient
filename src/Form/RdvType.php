@@ -29,13 +29,12 @@ class RdvType extends AbstractType
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('f');
                         },
-
                     'class' => Fonction::class,
                     'choice_label' => function (?Fonction $fonction) {
-                        return $fonction ? strtoupper($fonction->getFonction()) : '';
+                        return $fonction ? strtoupper($fonction->getNomFonction()) : '';
                     },
                     'attr' => array('class' => 'form-control chosen-select'),
-                    'placeholder' => 'Fonction'
+                    'placeholder' => 'Votre Fonction'
                 ))
             ->add('dateRdv',null,[
                 'required'=> false

@@ -725,7 +725,7 @@ class PatientController extends AbstractController
     {
         $id = $request->request->get('id');
         $fonction = $this->fonctionRepository->find($id);
-        $country = $this->fonctionRepository->searchcountry($fonction);
+        $country = $this->praticienRepository->searchcount($fonction);
         return new JsonResponse($country);
 
     }
@@ -738,7 +738,7 @@ class PatientController extends AbstractController
         $state = $request->request->get('state');
         $fonction = $this->fonctionRepository->find($id);
         $state= $this->stateRepository->find($state);
-        $country = $this->fonctionRepository->searchcity($fonction,$state);
+        $country = $this->praticienRepository->searchcity($fonction,$state);
         return new JsonResponse($country);
 
     }
@@ -754,7 +754,7 @@ class PatientController extends AbstractController
         $fonction = $this->fonctionRepository->find($id);
         $state= $this->stateRepository->find($state);
         $city = $this->cityRepository->find($city);
-        $country = $this->fonctionRepository->searchpraticien($fonction,$state,$city);
+        $country = $this->praticienRepository->searchpra($fonction,$state,$city);
         return new JsonResponse($country);
 
     }

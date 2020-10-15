@@ -99,6 +99,11 @@ class City
      */
     private $praticiencityborn;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="CityFonction")
+     */
+    private $praticiens;
+
 
 
 
@@ -114,6 +119,7 @@ class City
         $this->fonctions = new ArrayCollection();
         $this->patientBorn = new ArrayCollection();
         $this->praticiencityborn = new ArrayCollection();
+        $this->praticiens = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -482,6 +488,14 @@ class City
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Praticien[]
+     */
+    public function getPraticiens(): Collection
+    {
+        return $this->praticiens;
     }
 
 }

@@ -173,11 +173,11 @@ class RegistrationController extends AbstractController
      * @param GuardAuthenticatorHandler $guardHandler
      * @param LoginFormAuthenticator $authenticator
      * @param MailerInterface $mailer
+     * @param FonctionRepository $fonctionRepository
      * @return RedirectResponse|Response
      * @throws TransportExceptionInterface
-     * @throws Exception
      */
-    public function register_praticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, MailerInterface $mailer)
+    public function register_praticien(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, LoginFormAuthenticator $authenticator, MailerInterface $mailer,FonctionRepository $fonctionRepository)
     {
         if($this->checkConnected()){
             return $this->redirectToRoute($this->checkConnected());
@@ -191,12 +191,15 @@ class RegistrationController extends AbstractController
             // CREATE ACCOUNT PRATICIEN
             $code = $this->generate_code();
             $fonc= $form->get('fonction')->getData();
+            $fonction = $fonctionRepository->find($fonc);
             $username = $form->get('username')->getData();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
             $email = $form->get('email')->getData();
             $city = $request->request->get('city');
             $city =$this->cityRepository->find($city);
+            $country = $form->get('country')->getData();
+            $country = $this->stateRepository->find($country);
             $date = $form->get('date_naissance')->getData();
             $date= DateTime::CreateFromFormat("d/m/Y", $date);
             $user = new User();
@@ -218,6 +221,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $praticien = new Praticien();
             $praticien->setFirstName($first_name);
+            $praticien->setFonction($fonction);
             $praticien->setLastName($last_name);
             $praticien->setSexe($form->get('sexe')->getData());
             $praticien->setCreatedAt(new \DateTime('now'));
@@ -226,6 +230,8 @@ class RegistrationController extends AbstractController
             $praticien->setPhone($form->get('phone')->getData());
             $praticien->setEtat(false);
             $praticien->setUser($user);
+            $praticien->setCountryFonction($country);
+            $praticien->setCityFonction($city);
             $entityManager->persist($praticien);
             $entityManager->flush();
             $ordonance = new Ordonnace();
@@ -234,21 +240,11 @@ class RegistrationController extends AbstractController
             $ordonance->setMedecinTraitant($praticien);
             $entityManager->persist($ordonance);
             $entityManager->flush();
-            $fonction = new Fonction();
-            $fonction->setPraticien($praticien);
-            $fonction->setFonction($fonc);
-            $fonction->setState($form->get('country')->getData());
-            $fonction->setCity($city);
-            $entityManager->persist($fonction);
-            $entityManager->flush();
-
             // CREATE ACCOUNT PATIENT
             $code2 = $this->generate_code();
             $last_name = $form->get('lastname')->getData();
             $first_name = $form->get('firstname')->getData();
-
             $userName2 = $this->random_username($last_name );
-
             $user2 = new User();
             $user2->setLastName($last_name);
             $user2->setFirstName($first_name);
@@ -272,7 +268,6 @@ class RegistrationController extends AbstractController
             $patient->setLastName($last_name);
             $patient->setSexe($form->get('sexe')->getData());
             $patient->setDateOnBorn($date);
-
             $patient->setState($form->get('country')->getData());
             $patient->setPhone($form->get('phone')->getData());
             $patient->setAddress($form->get('address')->getData());

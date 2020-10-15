@@ -31,19 +31,21 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
+                        {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control', 'placeholder': 'Votre fonction', "required":"true", "minlength":"3" }}) }}
+                    </div>
+                    <div class="col-lg-6">
                         {{ form_widget(registrationForm.country, {'attr': {'class': 'form-control', 'placeholder': 'Votre pays', "required":"true" }}) }}
                     </div>
+
+
+                </div>
+                <div class="row form-group">
                     <div class="col-lg-6">
                         <select class="form-control" id="city" name="city" >
                             <option value="" selected>Ville de Fonction</option>
                         </select>
                     </div>
 
-                </div>
-                <div class="row form-group">
-                    <div class="col-lg-6">
-                        {{ form_widget(registrationForm.fonction, {'attr': {'class': 'form-control', 'placeholder': 'Votre fonction', "required":"true", "minlength":"3" }}) }}
-                    </div>
                     <div class="col-lg-6">
                         {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control', 'placeholder': 'adresse e-mail',"required":"true", "email": 'true'}}) }}
                     </div>

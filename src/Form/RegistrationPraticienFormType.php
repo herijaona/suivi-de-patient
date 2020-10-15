@@ -78,8 +78,17 @@ class RegistrationPraticienFormType extends AbstractType
                 },
                 'placeholder' => 'Pays de Fonction',
             ])
-            ->add('fonction',null,[
-                'required'=>false
+            ->add('fonction', EntityType::class, [
+                'class' => Fonction::class,
+                'query_builder' => function (EntityRepository $entityRepository) {
+                    return $entityRepository->createQueryBuilder('s');
+                },
+                'required'=>true,
+                'choice_value' => 'id',
+                'choice_label' => function (?Fonction $fonction) {
+                    return $fonction ? strtoupper($fonction->getNomFonction()) : '';
+                },
+                'placeholder' => 'Votre Fonction',
             ])
             ->add('sexe', ChoiceType::class, array(
                 'required'=>true,

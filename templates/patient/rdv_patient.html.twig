@@ -53,7 +53,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if rdv.statusConsultation == 0 or rdv.statusConsultation == 1 %}
+                        {% if rdv.statusConsultation == 0 or rdv.statusConsultation == 1 and rdv.etat == 0 %}
                        <span class="badge badge-danger badge-style modif" data-type="consultation" data-id="{{ rdv.id }}" >{{ 'Cancel'|trans }}</span>
                        {% elseif rdv.statusConsultation == 2 %}
                            <p class="badge badge-danger  textf" >{{ 'Cancel'|trans }}</p>

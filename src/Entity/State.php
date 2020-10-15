@@ -74,6 +74,11 @@ class State
      */
     private $praticienonborn;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Praticien::class, mappedBy="CountryFonction")
+     */
+    private $praticien;
+
     public function __construct()
     {
         $this->regions = new ArrayCollection();
@@ -83,6 +88,7 @@ class State
         $this->fonctions = new ArrayCollection();
         $this->patient = new ArrayCollection();
         $this->praticienonborn = new ArrayCollection();
+        $this->praticien = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -311,6 +317,14 @@ class State
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Praticien[]
+     */
+    public function getPraticien(): Collection
+    {
+        return $this->praticien;
     }
 
 

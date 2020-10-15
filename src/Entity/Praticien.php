@@ -132,11 +132,6 @@ class Praticien
      */
     private $quartier;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="citypraticien")
-     * @Groups({"read:praticien"})
-     */
-    private $city;
 
     /**
      * @ORM\OneToMany(targetEntity=PropositionRdv::class, mappedBy="praticien")
@@ -154,10 +149,6 @@ class Praticien
      */
     private $sexe;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="praticiens")
-     */
-    private $state;
 
     /**
      * @ORM\OneToMany(targetEntity=Associer::class, mappedBy="praticien")
@@ -180,10 +171,7 @@ class Praticien
      */
     private $carnetVaccinations;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Fonction::class, mappedBy="Praticien")
-     */
-    private $fonctions;
+
 
     /**
      * @ORM\ManyToOne(targetEntity=State::class, inversedBy="praticienonborn")
@@ -194,6 +182,21 @@ class Praticien
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="praticiencityborn")
      */
     private $CityOnBorn;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Fonction::class, inversedBy="praticiens")
+     */
+    private $Fonction;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=City::class, inversedBy="praticiens")
+     */
+    private $CityFonction;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=State::class, inversedBy="praticien")
+     */
+    private $CountryFonction;
 
 
     public function __construct()
@@ -214,7 +217,7 @@ class Praticien
         $this->associers = new ArrayCollection();
         $this->interventionVaccinations = new ArrayCollection();
         $this->carnetVaccinations = new ArrayCollection();
-        $this->fonctions = new ArrayCollection();
+
     }
     public function getId(): ?int
     {
@@ -412,7 +415,7 @@ class Praticien
     {
         if (!$this->ordoVaccinationPraticienExecutant->contains($ordoVaccinationPraticienExecutant)) {
             $this->ordoVaccinationPraticienExecutant[] = $ordoVaccinationPraticienExecutant;
-            $ordoVaccinationPraticienExecutant->setReferencePraticienExecutant($this);
+            $ordoVaccinationPraticienExecutant->getOrdonnance()->setPraticien($this);
         }
 
         return $this;
@@ -423,8 +426,8 @@ class Praticien
         if ($this->ordoVaccinationPraticienExecutant->contains($ordoVaccinationPraticienExecutant)) {
             $this->ordoVaccinationPraticienExecutant->removeElement($ordoVaccinationPraticienExecutant);
             // set the owning side to null (unless already changed)
-            if ($ordoVaccinationPraticienExecutant->getReferencePraticienExecutant() === $this) {
-                $ordoVaccinationPraticienExecutant->setReferencePraticienExecutant(null);
+            if ($ordoVaccinationPraticienExecutant->getOrdonnance()->getPraticien() === $this) {
+                $ordoVaccinationPraticienExecutant->getOrdonnance()->setPraticien(null);
             }
         }
 
@@ -598,17 +601,7 @@ class Praticien
         return $this;
     }
 
-    public function getCity(): ?City
-    {
-        return $this->city;
-    }
 
-    public function setCity(?City $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
 
     /**
      * @return Collection|PropositionRdv[]
@@ -667,17 +660,6 @@ class Praticien
         return $this;
     }
 
-    public function getState(): ?State
-    {
-        return $this->state;
-    }
-
-    public function setState(?State $state): self
-    {
-        $this->state = $state;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Associer[]
@@ -785,37 +767,6 @@ class Praticien
         return $this;
     }
 
-    /**
-     * @return Collection|Fonction[]
-     */
-    public function getFonctions(): Collection
-    {
-        return $this->fonctions;
-    }
-
-    public function addFonction(Fonction $fonction): self
-    {
-        if (!$this->fonctions->contains($fonction)) {
-            $this->fonctions[] = $fonction;
-            $fonction->setPraticien($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFonction(Fonction $fonction): self
-    {
-        if ($this->fonctions->contains($fonction)) {
-            $this->fonctions->removeElement($fonction);
-            // set the owning side to null (unless already changed)
-            if ($fonction->getPraticien() === $this) {
-                $fonction->setPraticien(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getCountryOnBorn(): ?State
     {
         return $this->CountryOnBorn;
@@ -836,6 +787,42 @@ class Praticien
     public function setCityOnBorn(?City $CityOnBorn): self
     {
         $this->CityOnBorn = $CityOnBorn;
+
+        return $this;
+    }
+
+    public function getFonction(): ?Fonction
+    {
+        return $this->Fonction;
+    }
+
+    public function setFonction(?Fonction $Fonction): self
+    {
+        $this->Fonction = $Fonction;
+
+        return $this;
+    }
+
+    public function getCityFonction(): ?City
+    {
+        return $this->CityFonction;
+    }
+
+    public function setCityFonction(?City $CityFonction): self
+    {
+        $this->CityFonction = $CityFonction;
+
+        return $this;
+    }
+
+    public function getCountryFonction(): ?State
+    {
+        return $this->CountryFonction;
+    }
+
+    public function setCountryFonction(?State $CountryFonction): self
+    {
+        $this->CountryFonction = $CountryFonction;
 
         return $this;
     }

@@ -44,6 +44,48 @@ class PraticienRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function searchcount($fonction = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT DISTINCT s.id, s.nameState
+            FROM App\Entity\Praticien p
+            INNER JOIN App\Entity\State s with s.id = p.CountryFonction
+            INNER JOIN App\Entity\Fonction f with f.id = p.Fonction
+            WHERE f.id = :fonction')
+            ->setParameter('fonction', $fonction);
+
+        return $query->getResult();
+    }
+
+    public function searchcity($fonction = null, $state= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT DISTINCT c.id, c.nameCity
+            FROM App\Entity\Praticien p
+            INNER JOIN App\Entity\City c with c.id = p.CityFonction
+            INNER JOIN App\Entity\Fonction f with f.id = p.Fonction
+            LEFT JOIN App\Entity\State s with s.id = p.CountryFonction
+            WHERE f.id = :fonction AND s.id =:state')
+            ->setParameter('fonction', $fonction)
+            ->setParameter('state', $state)
+        ;
+
+        return $query->getResult();
+    }
+    public function searchpra($fonction = null, $state= null, $city= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id, p.lastName, p.firstName
+            FROM App\Entity\Praticien p
+            INNER JOIN App\Entity\City c with c.id = p.CityFonction
+            INNER JOIN App\Entity\Fonction f with f.id = p.Fonction
+            LEFT JOIN App\Entity\State s with s.id = p.CountryFonction
+            WHERE f.id = :fonction AND s.id =:state AND c.id =:city')
+            ->setParameter('fonction', $fonction)
+            ->setParameter('state', $state)
+            ->setParameter('city', $city)
+        ;
+
+        return $query->getResult();
+    }
+
 
 
 
