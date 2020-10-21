@@ -1,0 +1,47 @@
+{% extends 'include/base.html.twig' %}
+{%  block title %}
+    {% trans %}My Patients{% endtrans %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+{% block body %}
+    <div class="row head-table col-md-12">
+        <div class="grid-title-table col-md-9 mt-4">
+            <h4 class="h4-content">{% trans %}My Patient Associate{% endtrans %}</h4>
+        </div>
+    </div>
+    <div class="row-table table-content">
+        <table class="table table-striped" id="example1">
+            <thead>
+            <tr>
+                <th id="nom">Patient</th>
+                <th>{% trans %}Country of Residence{% endtrans %}</th>
+                <th>{% trans %}City of Residence{% endtrans %}</th>
+                <th>{% trans %}Address{% endtrans %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for pra in patient  %}
+                <tr>
+                    <td>
+                        {{ pra.lastName }} {{ pra.firstName }}
+                    </td>
+                    <td>
+                        {{ pra.state }}
+                    </td>
+                    <td>{{ pra.city}}</td>
+                    <td>{{ pra.address }}</td>
+                </tr>
+            {% endfor %}
+
+
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

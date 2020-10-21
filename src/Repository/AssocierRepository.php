@@ -29,6 +29,33 @@ class AssocierRepository extends ServiceEntityRepository
             ->setParameter('praticien', $praticien);
         return $query->getResult();
     }
+    public function searcha($praticien = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT a.id,p.lastName,p.firstName,c.nameCity as city,s.nameState as state,p.address
+            FROM App\Entity\Associer a
+            LEFT JOIN App\Entity\Patient p with p.id=a.patient
+            LEFT JOIN App\Entity\City c with c.id = p.city
+            LEFT JOIN  App\Entity\State s with s.id = p.state
+            LEFT JOIN App\Entity\Praticien pr with pr.id=a.praticien
+             WHERE (pr.id= :praticien OR pr.id IS NULL)')
+
+            ->setParameter('praticien', $praticien);
+        return $query->getResult();
+    }
+    public function searchAssoc($patient = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT a.id,pr.lastName , pr.firstName, f.NomFonction as fonction, c.nameCity as city,s.nameState as state
+            FROM App\Entity\Associer a
+            LEFT JOIN App\Entity\Patient p with p.id=a.patient
+            LEFT JOIN App\Entity\Praticien pr with pr.id=a.praticien
+            LEFT JOIN App\Entity\City c with c.id=pr.CityFonction
+            LEFT  JOIN App\Entity\State s with s.id = pr.CountryFonction
+            LEFT JOIN App\Entity\Fonction f with  f.id = pr.Fonction
+             WHERE (p.id= :patient OR p.id IS NULL)')
+
+            ->setParameter('patient', $patient);
+        return $query->getResult();
+    }
 
 
     public function findByExampleField($patient)

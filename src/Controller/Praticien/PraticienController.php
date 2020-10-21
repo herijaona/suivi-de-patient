@@ -1185,5 +1185,21 @@ class PraticienController extends AbstractController
         return new JsonResponse($asocier);
     }
 
+    /**
+     * @Route("/associer/patient", name="associer_patient")
+     */
+    public function associer_patient(){
+        $user = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $assocer = $this->associerRepository->searcha($praticien);
+        return $this->render('praticien/associer.html.twig', [
+            'patient'=>$assocer,
+        ]);
+
+
+    }
+
+
+
 
 }

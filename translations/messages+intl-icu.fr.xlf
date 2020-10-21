@@ -855,7 +855,7 @@
       </trans-unit>
       <trans-unit id="lEAF1Qc" resname="Proposition Appointment Accepted">
         <source>Proposition Appointment Accepted</source>
-        <target>__Proposition Appointment Accepted</target>
+        <target>Proposition de rendez-vous accepté</target>
       </trans-unit>
       <trans-unit id="tUCb2dO" resname="Import Center Health">
         <source>Import Center Health</source>
@@ -1093,7 +1093,22 @@
         <source>Country of Birth</source>
         <target>Pays de Naissance</target>
       </trans-unit>
-
+      <trans-unit id="3gI3voe" resname="Your Vaccine Calendar request is waiting at the Praticien ">
+        <source>Your Vaccine Calendar request is waiting at the Praticien </source>
+        <target>Votre demande de calendrier des vaccination est en attente au Praticien</target>
+      </trans-unit>
+      <trans-unit id="2Xagws3" resname="My Praticiens">
+        <source>My Praticiens</source>
+        <target>Mes Praticiens</target>
+      </trans-unit>
+      <trans-unit id="UHdBi7T" resname="My Patients">
+        <source>My Patients</source>
+        <target>Mes Patients</target>
+      </trans-unit>
+      <trans-unit id="7nFjkD." resname="My Patient Associate">
+        <source>My Patient Associate</source>
+        <target>Mon Patient Associer</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

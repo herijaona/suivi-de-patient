@@ -397,11 +397,10 @@ class AdminController extends AbstractController
                     $NomVaccin = $Row['B'];
                     $TypeVaccin = $Row['C'];
                     $Pays = $Row['D'];
-                    $Notes = $Row['E'];
+                    $description = $Row['E'];
                     $Actif = $Row['F'];
-                    $DatePriseIn = $Row['G'];
-
-
+                    $DatePrise = $Row['G'];
+                    $statut = $Row['H'];
                     $state = null;
                     $tpVaccin = null;
                     $vaccine = null;
@@ -426,27 +425,17 @@ class AdminController extends AbstractController
 
                     if ($NomVaccin != null) {
                         $vaccine = $this->vaccinRepository->findOneBy(['vaccinName' => $NomVaccin]);
-                        if ($vaccine == null) {
+                        if ($vaccine == null || $vaccine != null ) {
                             $act = $Actif == 1 ? true : false;
-
                             $vaccine = new Vaccin();
+                            $vaccine->setIdVaccin($idVacc);
                             $vaccine->setVaccinName($NomVaccin);
                             $vaccine->setEtat($act);
-                            $vaccine->setVaccinDescription($Notes);
+                            $vaccine->setVaccinDescription($description);
+                            $vaccine->setDatePrise($DatePrise);
+                            $vaccine->setStatut($statut);
                             $vaccine->setTypeVaccin($tpVaccin);
                             $vaccine->setState($state);
-                            $vaccine->setDatePriseInitiale($this->variablesDate($Row['G']));
-
-                            $vaccine->setRappel1($this->variablesDate($Row['H']));
-                            $vaccine->setRappel2($this->variablesDate($Row['I']));
-                            $vaccine->setRappel3($this->variablesDate($Row['J']));
-                            $vaccine->setRappel4($this->variablesDate($Row['K']));
-                            $vaccine->setRappel5($this->variablesDate($Row['L']));
-                            $vaccine->setRappel6($this->variablesDate($Row['M']));
-                            $vaccine->setRappel7($this->variablesDate($Row['N']));
-                            $vaccine->setRappel8($this->variablesDate($Row['O']));
-                            $vaccine->setRappel9($this->variablesDate($Row['P']));
-                            $vaccine->setRappel10($this->variablesDate($Row['Q']));
                             $this->entityManager->persist($vaccine);
                             $this->entityManager->flush();
                         }
