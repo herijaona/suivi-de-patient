@@ -772,7 +772,7 @@ class PatientController extends AbstractController
     }
 
     /**
-     * @Route("/associer/praticien", name="associer_praticien")
+     * @Route("/associer", name="associer_praticien")
      */
     public function associer_praticien(){
         $user = $this->getUser();

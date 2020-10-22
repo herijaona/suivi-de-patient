@@ -8,7 +8,7 @@
 {% block body %}
     <div class="row head-table col-md-12">
         <div class="grid-title-table col-md-9 mt-4">
-            <h4 class="h4-content">My Praticien Associate</h4>
+            <h4 class="h4-content">{% trans %}My Praticien Associate{% endtrans %}{</h4>
         </div>
     </div>
     <div class="row-table table-content">
@@ -43,5 +43,10 @@
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#example1').DataTable();
+        });
+    </script>
 
 {% endblock %}

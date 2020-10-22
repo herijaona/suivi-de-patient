@@ -1109,7 +1109,14 @@
         <source>My Patient Associate</source>
         <target>Mon Patient Associer</target>
       </trans-unit>
-    
+      <trans-unit id="uD60flK" resname="My Praticien Associate">
+        <source>My Praticien Associate</source>
+        <target>Mes Praticiens Associers</target>
+      </trans-unit>
+      <trans-unit id="AEWxiUA" resname="Consultation Proposal&lt;">
+        <source>Consultation Proposal&lt;</source>
+        <target><![CDATA[__Consultation Proposal<]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
