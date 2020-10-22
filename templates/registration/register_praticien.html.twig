@@ -112,7 +112,8 @@
             }
             var fname = $('#registration_praticien_form_firstname').val().substring(0,1).toLowerCase();
             var lname = $('#registration_praticien_form_lastname').val().toLowerCase();
-            var username = fname + lname + anne + mois + jour + getRndInteger() ;
+            var la = lname.replace(/ /, "");
+            var username = fname + la + anne + mois + jour + getRndInteger() ;
             $.ajax({
                 url: "{{ path('check_username') }}",
                 type: 'POST',
