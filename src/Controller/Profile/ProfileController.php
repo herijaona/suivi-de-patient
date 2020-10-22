@@ -239,12 +239,12 @@ class ProfileController extends AbstractController
         $form->handleRequest($request);
         $centre = $form->get('center_health')->getData();
         $countryborn = $form->get('CountryOnBorn')->getData();
-        $countryborn = $this->stateRepository->find($countryborn);
+        if($countryborn != null) $countryborn = $this->stateRepository->find($countryborn);
+
         $fonction = $form->get('fonction')->getData();
         $address =$form->get('address')->getData();
         $mail= $form->get('email')->getData();
-        $cityborn= $request->request->get('cityborn');
-        $cityborn= $this->cityRepository->find($cityborn);
+
         $city= $request->request->get('city');
         $city= $this->cityRepository->find($city);
         $country = $form->get('country')->getData();
@@ -253,7 +253,12 @@ class ProfileController extends AbstractController
         $user = $this->getUser();
         $praticien =  $this->praticienRepository->findOneBy(['user' => $user]);
         $praticien->setNumeroProfessionnel($numero);
-        $praticien->setCityOnBorn($cityborn);
+        $cityborn= $request->request->get('cityborn');
+        if ($cityborn != null){
+            $cityborn= $this->cityRepository->find($cityborn);
+            $praticien->setCityOnBorn($cityborn);
+        }
+
         $praticien->setCountryOnBorn($countryborn);
         $praticien->setCountryFonction($country);
         $praticien->setCityFonction($city);
@@ -291,7 +296,6 @@ class ProfileController extends AbstractController
         if($countryborn != null)  $countryborn = $this->stateRepository->find($countryborn);
         $city= $request->request->get('city');
         if($city != null) $city= $this->cityRepository->find($city);
-
         $enceinte = $request->request->get('liste');
         $phone = $request->request->get('phone');
         $date = new \DateTime();
