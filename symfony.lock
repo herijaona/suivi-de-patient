@@ -216,8 +216,8 @@
         "version": "2.2.3"
     },
     "php": {
-        "version": "7.3"
-   },
+        "version": "7.4"
+    },
     "phpdocumentor/reflection-common": {
         "version": "2.1.0"
     },
@@ -511,7 +511,7 @@
     "symfony/polyfill-intl-idn": {
         "version": "v1.17.0"
     },
-   "symfony/polyfill-intl-messageformatter": {
+    "symfony/polyfill-intl-messageformatter": {
         "version": "v1.18.0"
     },
     "symfony/polyfill-intl-normalizer": {
@@ -713,7 +713,7 @@
     "twig/twig": {
         "version": "v3.0.3"
     },
-   "webimpress/safe-writer": {
+    "webimpress/safe-writer": {
         "version": "2.0.1"
     },
     "webmozart/assert": {

@@ -288,11 +288,10 @@ class ProfileController extends AbstractController
         $state= $form->get('country')->getData();
         $state = $this->stateRepository->find($state);
         $countryborn = $form->get('CountryOnBorn')->getData();
-        $countryborn = $this->stateRepository->find($countryborn);
+        if($countryborn != null)  $countryborn = $this->stateRepository->find($countryborn);
         $city= $request->request->get('city');
-        $city= $this->cityRepository->find($city);
-        $cityborn= $request->request->get('cityborn');
-        $cityborn= $this->cityRepository->find($cityborn);
+        if($city != null) $city= $this->cityRepository->find($city);
+
         $enceinte = $request->request->get('liste');
         $phone = $request->request->get('phone');
         $date = new \DateTime();
@@ -310,7 +309,11 @@ class ProfileController extends AbstractController
         $patient->setTypePatient($type);
         $patient->setAddress($address);
         $patient->setCountryOnborn($countryborn);
-        $patient->setCityOnBorn($cityborn);
+        $cityborn= $request->request->get('cityborn');
+        if($cityborn != null){
+            $cityborn= $this->cityRepository->find($cityborn);
+            $patient->setCityOnBorn($cityborn);
+        }
         $patient->setState($state);
         $patient->setCity($city);
         $patient->setPhone($phone);
