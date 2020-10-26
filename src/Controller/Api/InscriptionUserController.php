@@ -108,6 +108,7 @@ class InscriptionUserController extends AbstractController
         $entityManager->flush();
     }
 
+
     public function add_patient(EntityManager $entityManager, User $user, TypePatient $typePatient,City $city, State $state, string $address, string $sexe, DateTime $naissance,string $phone){
         $patient = new Patient();
         $patient->setUser($user);

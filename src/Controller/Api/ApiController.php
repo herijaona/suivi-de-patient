@@ -105,6 +105,7 @@ class ApiController extends AbstractController
     {
         $CurrentUser = $tokenService->getCurrentUser();
         $user = $userRepository->find($CurrentUser);
+
         $patient = $this->patientRepository->searchPatient($user);
         return new JsonResponse($patient);
 

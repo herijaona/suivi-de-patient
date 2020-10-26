@@ -258,7 +258,6 @@ class ProfileController extends AbstractController
             $cityborn= $this->cityRepository->find($cityborn);
             $praticien->setCityOnBorn($cityborn);
         }
-
         $praticien->setCountryOnBorn($countryborn);
         $praticien->setCountryFonction($country);
         $praticien->setCityFonction($city);
