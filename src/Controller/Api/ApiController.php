@@ -108,8 +108,6 @@ class ApiController extends AbstractController
 
         $patient = $this->patientRepository->searchPatient($user);
         return new JsonResponse($patient);
-
-
     }
 
     /**
