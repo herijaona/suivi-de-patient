@@ -105,7 +105,6 @@ class ApiController extends AbstractController
     {
         $CurrentUser = $tokenService->getCurrentUser();
         $user = $userRepository->find($CurrentUser);
-
         $patient = $this->patientRepository->searchPatient($user);
         return new JsonResponse($patient);
     }
@@ -124,9 +123,8 @@ class ApiController extends AbstractController
         $pr = $this->praticienRepository->findOneBy(['user'=>$CurrentUser]);
         $user = $userRepository->find($CurrentUser);
         $praticien = $this->praticienRepository->searchPr($user);
-        $fonction = $fonctionRepository->searchFon($pr);
         $centre = $ordonnaceRepository->searchc($pr);
-        $data = array_merge($praticien,$fonction,$centre);
+        $data = array_merge($praticien,$centre);
         return new JsonResponse(['profile' => $data]);
     }
 

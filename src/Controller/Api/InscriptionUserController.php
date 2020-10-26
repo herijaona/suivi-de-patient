@@ -127,6 +127,10 @@ class InscriptionUserController extends AbstractController
     }
 
     public function add_praticient(EntityManager $entityManager,User $user, string $phone, DateTime $naissance, City $city, State $state, string $sexe, string $fonction,string $address){
+        $fonc = new Fonction();
+        $fonc->setNomFonction($fonction);
+        $entityManager->persist($fonc);
+        $entityManager->flush();
         $praticien = new Praticien();
         $praticien->setUser($user);
         $praticien->setLastName($user->getLastName());
@@ -135,17 +139,12 @@ class InscriptionUserController extends AbstractController
         $praticien->setPhone($phone);
         $praticien->setSexe($sexe);
         $praticien->setAddress($address);
+        $praticien->setCountryFonction($state);
+        $praticien->setFonction($fonc);
+        $praticien->setCityFonction($city);
         $praticien->setDateBorn($naissance);
         $entityManager->persist($praticien);
         $entityManager->flush();
-        $fonc = new Fonction();
-        $fonc->setState($state);
-        $fonc->setCity($city);
-        $fonc->setFonction($fonction);
-        $fonc->setPraticien($praticien);
-        $entityManager->persist($fonc);
-        $entityManager->flush();
-
     }
 
 
