@@ -82,7 +82,7 @@ class InscriptionUserController extends AbstractController
             $this->add_patient($entityManager, $data, $type_patient,$city,$state, $addresse, $sexe, new DateTime($date_on_born),$phone);
 
         }
-        return $data;
+        $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
     }
 
     public function add_patient_praticient(EntityManager $entityManager, User $user, string $address, string $sexe, DateTime $naissance, $password,string $phone){
@@ -106,6 +106,7 @@ class InscriptionUserController extends AbstractController
         $patient->setSexe($sexe);
         $entityManager->persist($patient);
         $entityManager->flush();
+
     }
 
 
@@ -124,6 +125,7 @@ class InscriptionUserController extends AbstractController
         $patient->setSexe($sexe);
         $entityManager->persist($patient);
         $entityManager->flush();
+
     }
 
     public function add_praticient(EntityManager $entityManager,User $user, string $phone, DateTime $naissance, City $city, State $state, string $sexe, string $fonction,string $address){
@@ -145,6 +147,7 @@ class InscriptionUserController extends AbstractController
         $praticien->setDateBorn($naissance);
         $entityManager->persist($praticien);
         $entityManager->flush();
+
     }
 
 
