@@ -258,6 +258,10 @@
             }
         }
     });
+
+    {% endif %}
+
+    {% if is_granted('ROLE_PATIENT') %}
     $.ajax({
         url: "{{ path('gener_vaccin') }}",
         type: 'post',
