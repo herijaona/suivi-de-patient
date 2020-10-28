@@ -207,13 +207,7 @@
                 } else {
                     $('#form-parent').css("display", "none");
                 }
-                $("#registration_form_sexe").on('change', function (e) {
-                    if ($("#registration_form_type_patient").val() == $('#patient-adulte').val() && $("#registration_form_sexe").val() == "Feminin") {
-                        $('#form').css("display", "flex");
-                    } else {
-                        $('#form').css("display", "none");
-                    }
-                });
+               
             });
             function loadDatePicker(type){
                 if(type == $('#patient-adulte').val()){
