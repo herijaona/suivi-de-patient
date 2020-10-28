@@ -823,7 +823,6 @@ class PraticienController extends AbstractController
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $patientCons = $this->ordoConsultationRepository->searchConsultation($praticien);
         $patient = $this->associerRepository->searchPatient($praticien);
-        $nb= $this->ordoVaccinationRepository->countUnrealizedVacc($praticien);
         $realize = $this->ordoVaccinationRepository->countrealizedVacc($praticien);
 
         $nbUnrealizedVacc = $this->interventionVaccinationRepository->countUnrealizedVacc($praticien);
@@ -834,19 +833,11 @@ class PraticienController extends AbstractController
                  $patient = $pat[1];
              }
          }
-          foreach ($nb as $n){
-              $unreal = $n[1];
-              foreach ($nbUnrealizedVacc as $nb){
-                    $unre = $nb[1];
-                    $nbUnrealizedVacc =$unreal+$unre;
-              }
-          }
+
           foreach ($realize as $real){
               $rea = $real[1];
-              foreach ($nbRealizedVacc as $nbr){
-                $nbRealized = $nbr[1];
-                $nbRealizedVacc = $rea + $nbRealized;
-              }
+              $nbRealizedVacc = $rea;
+
           }
 
         return $this->render('praticien/dashboard.html.twig', [
