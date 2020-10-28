@@ -770,6 +770,24 @@ class PatientController extends AbstractController
         if($carnet != null) $data = 1;
         return new JsonResponse($data);
     }
+    /**
+     * @Route("/gener/vaccin", name="gener_vaccin")
+     */
+    public function generVaccin(){
+        $user = $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $carnet = $this->carnetVaccinationRepository->searchCarr($patient);
+
+        $u = $this->userRepository->find($user);
+        $patie= $this->patientRepository->sr($u);
+        $data = 0;
+
+        if(($patie != null && $carnet != null) || $patie == null) $data = 1;
+
+
+        return new JsonResponse($data);
+    }
+
 
     /**
      * @Route("/associer", name="associer_praticien")

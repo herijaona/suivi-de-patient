@@ -626,7 +626,7 @@ class AdminController extends AbstractController
         }
 
         $form = $this->createForm(ChangePasswordType::class, $eventData);
-        $response = $this->renderView('security/_form_forget_password.html.twig', [
+        $response = $this->renderView('security/ _form_forget_password.html.twig', [
             'form' => $form->createView(),
             'user' => $eventData,
         ]);

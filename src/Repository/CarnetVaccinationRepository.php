@@ -35,6 +35,20 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function searchCarr($patient = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT c.id,c.date_prise, c.etat,v.vaccinName,c.identification,c.identifiant_vaccin,c.Lot,pr.lastName as vaccinateur_nom,pr.firstName as vaccinateur_prenom, pr.NumeroProfessionnel,c.status
+            FROM App\Entity\CarnetVaccination c 
+            INNER JOIN App\Entity\Patient p with p.id = c.patient
+            INNER JOIN App\Entity\Vaccin v with v.id = c.vaccin
+            LEFT JOIN App\Entity\Praticien pr with pr.id = c.Praticien
+            WHERE (p.id = :patient OR p.id IS NULL) AND (c.vaccin= 56 AND c.date_prise = p.DateEnceinte)
+            ORDER BY v.vaccinName ASC ')
+            ->setParameter('patient', $patient);
+
+        return $query->getResult();
+    }
+
 
     public function findListVaccinsInCarnet(Patient $patient){
         $result = [];

@@ -34,7 +34,7 @@ class CarnetType extends AbstractType
                 },
                 'choice_value' => 'id',
                 'choice_label' => function (?Praticien $praticien) {
-                    return $praticien ? strtoupper($praticien->getLastName(). '  '.$praticien->getFirstName().' '.$praticien->getFonction()->getNomFonction().''.$praticien->getCityOnBorn()->getNameCity()) : '';
+                    return $praticien ? strtoupper($praticien->getLastName(). '  '.$praticien->getFirstName().' '.$praticien->getFonction()->getNomFonction().' '.$praticien->getCityFonction()->getNameCity()) : '';
                 },
                 'placeholder' => 'Praticien',
             ])

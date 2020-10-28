@@ -33,6 +33,16 @@ class PatientRepository extends ServiceEntityRepository
             ->setParameter('user', $user);
         return $query->getResult();
     }
+    public function sr($user = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT  p.isEnceinte
+            FROM App\Entity\Patient p 
+            INNER JOIN App\Entity\User u with u.id = p.user
+            WHERE u.id = :user and (p.isEnceinte = true )')
+            ->setParameter('user', $user);
+        return $query->getResult();
+
+    }
    /** public function searchTypePatient($patient = null){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT  p.id,t.typePatientName,p.sexe,p.isEnceinte

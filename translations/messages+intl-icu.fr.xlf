@@ -1113,7 +1113,10 @@
         <source>My Praticien Associate</source>
         <target>Mes Praticiens Associers</target>
       </trans-unit>
-
+      <trans-unit id="rKRCJnB" resname="Generer vaccine pregnant">
+        <source>Generer vaccine pregnant</source>
+        <target>Generer vaccin femme enceinte</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
