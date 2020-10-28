@@ -991,7 +991,7 @@
       </trans-unit>
       <trans-unit id="FO1GDoH" resname="Date Taken">
         <source>Date Taken</source>
-        <target>Date de Prise</target>
+        <target>Date Prise</target>
       </trans-unit>
       <trans-unit id="cIeX6wf" resname="Vaccinateur Name">
         <source>Vaccinateur Name</source>
@@ -1113,8 +1113,8 @@
         <source>My Praticien Associate</source>
         <target>Mes Praticiens Associers</target>
       </trans-unit>
-      <trans-unit id="rKRCJnB" resname="Generer vaccine pregnant">
-        <source>Generer vaccine pregnant</source>
+      <trans-unit id="HUN7fFv" resname="Generate vaccine pregnant">
+        <source>Generate vaccine pregnant</source>
         <target>Generer vaccin femme enceinte</target>
       </trans-unit>
     </body>
