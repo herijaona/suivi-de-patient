@@ -49,11 +49,8 @@
             <thead>
             <tr>
                 <th><input type="checkbox" name="select_all" value="1" id="example-select-all"></th>
-                <th>{% trans %}Center Name{% endtrans %}</th>
+                <th style="width: 177.8px;">{% trans %}Center Name{% endtrans %}</th>
                 <th>{% trans %}Center type{% endtrans %}</th>
-                <th>{% trans %}Phone{% endtrans %}</th>
-                <th>{% trans %}in charge of{% endtrans %}</th>
-                <th>{% trans %}Address{% endtrans %}</th>
                 <th>{% trans %}City{% endtrans %}</th>
                 <th>{% trans %}Region{% endtrans %}</th>
                 <th>{% trans %}Country{% endtrans %}</th>
@@ -71,15 +68,6 @@
                     </td>
                     <td>
                         {{ centre.centreType.typeName }}
-                    </td>
-                    <td>
-                        {{ centre.centrePhone }}
-                    </td>
-                    <td>
-                        {{ centre.responsableCentre }}
-                    </td>
-                    <td>
-                        {{ centre.numRue }} - {{ centre.quartier }}
                     </td>
                     <td>
                         {{ centre.city.nameCity }}

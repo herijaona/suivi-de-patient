@@ -92,7 +92,7 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT i.id, i.datePriseVaccin,i.etat,i.statusVaccin,p.firstName , p.lastName ,v.vaccinName, pr.lastName as praticienlast, pr.firstName as praticienfirst
             FROM App\Entity\InterventionVaccination i 
-            INNER JOIN App\Entity\Praticien pr with pr.id = i.praticienPrescripteur
+            INNER JOIN App\Entity\Praticien pr with pr.id = i.praticien
             INNER JOIN App\Entity\Patient p with p.id = i.patient
             LEFT JOIN App\Entity\Vaccin v with v.id = i.vaccin
             ORDER BY i.datePriseVaccin ASC');

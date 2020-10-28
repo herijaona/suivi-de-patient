@@ -16,8 +16,6 @@
         <table class="table table-striped" id="example1">
             <thead>
             <tr>
-                <th>{% trans %}Vaccination date{% endtrans %}</th>
-
                 <th>{% trans %}Patient{% endtrans %}</th>
                 <th>{% trans %}Praticien{% endtrans %}</th>
                 <th >{% trans %}Validation{% endtrans %}</th>
@@ -29,9 +27,6 @@
             {% for rdv in Vaccinations  %}
                 <tr>
                     <td>
-                        {{ rdv.datePrise|localizeddate('none', 'none', app.request.locale, null, 'dd MMMM yyyy') }}
-                    </td>
-                    <td>
                         {{ rdv.patientlast ~' '~ rdv.patientfirst }} <br>
                     </td>
                     <td>
@@ -39,11 +34,11 @@
                     </td>
                     <td>
                         {% if rdv.statusVaccin == 0 %}
-                            <button class="btn btn-info validation_width" >{% trans %}waiting{% endtrans %}</button>
+                            <p class="badge badge-info validation_width" >{% trans %}waiting{% endtrans %}</p>
                         {% elseif rdv.statusVaccin == 1 %}
-                            <button class="btn btn-primary validation_width" >{% trans %}Validate{% endtrans %}</button>
+                            <p class="badge badge-primary validation_width" >{% trans %}Validate{% endtrans %}</p>
                         {% else %}
-                            <button class="btn btn-danger validation_width" >{% trans %}Reject{% endtrans %}</button>
+                            <p class="badge badge-danger validation_width" >{% trans %}Reject{% endtrans %}</p>
                         {% endif %}
                     </td>
                 </tr>
