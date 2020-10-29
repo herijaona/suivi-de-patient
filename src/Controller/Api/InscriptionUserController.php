@@ -92,15 +92,7 @@ class InscriptionUserController extends AbstractController
 
         }
         $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
-        $email = (new TemplatedEmail())
-            ->from('hello@neitic.com')
-            ->to($email)
-            ->subject('Confirmation code' )
-            ->htmlTemplate('email/email.html.twig')
-            ->context([
-                'code' => $code, 'name'=>$last_name,'first'=>$first_name, 'username'=>$username,'id'=>$user->getId()
-            ]);
-        $mailer->send($email);
+       
 
     }
 
