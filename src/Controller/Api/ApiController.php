@@ -95,11 +95,16 @@ class ApiController extends AbstractController
 
         return new JsonResponse(['results' => $data]);
     }
+
     /**
-     * @Route("/apip/patient/profile/edit", name="api_profile_edit", methods={"PUT"})
-     * @param TokenService $tokenService
-     * @param UserRepository $userRepository
+     * @Route("/apip/patient/profile/edit", name="api_profile_edit", methods={"PUT"}
      * @return JsonResponse
+     * @param EntityManager $entityManager
+     * @param Request $request
+     * @param CityRepository $cityRepository
+     * @param StateRepository $stateRepository
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function api_profile_edit(EntityManager $entityManager,Request $request,CityRepository $cityRepository, StateRepository  $stateRepository)
     {
