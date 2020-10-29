@@ -21,6 +21,7 @@ use App\Repository\TypePatientRepository;
 use App\Repository\UserRepository;
 use App\Service\TokenService;
 use App\Service\VaccinGenerate;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -94,6 +95,47 @@ class ApiController extends AbstractController
 
         return new JsonResponse(['results' => $data]);
     }
+    /**
+     * @Route("/apip/patient/profile/edit", name="api_profile_edit", methods={"PUT"})
+     * @param TokenService $tokenService
+     * @param UserRepository $userRepository
+     * @return JsonResponse
+     */
+    public function api_profile_edit(EntityManager $entityManager,Request $request,CityRepository $cityRepository, StateRepository  $stateRepository)
+    {
+        $patient = json_decode($request->getContent(), true);
+        $id = $patient['id'];
+        $cityBorn = $patient['cityBorn'];
+        if ($cityBorn != null) $cityBorn = $cityRepository->find($cityBorn);
+        $countryBorn = $patient['countryBorn'];
+        if ($countryBorn != null) $countryBorn = $stateRepository->find($countryBorn);
+        $address = $patient['address'];
+        $nameState = $patient['nameState'];
+        if ($nameState != null) $nameState = $stateRepository->find($nameState);
+        $nameCity = $patient['nameCity'];
+        if ($nameCity != null) $nameCity = $cityRepository->find($nameCity);
+        $phone = $patient['phone'];
+        $email = $patient['email'];
+
+        $p = $this->patientRepository->find($id);
+        $p->setAddress($address);
+        $p->getUser()->setEmail($email);
+        $p->setPhone($phone);
+        $p->setCityOnBorn($cityBorn);
+        $p->setCountryOnborn($countryBorn);
+        $p->setCity($nameCity);
+        $p->setState($nameState);
+        $fatherName = $patient['fatherName'];
+        $motherName = $patient['motherName'];
+        if ($fatherName != null && $motherName != null){
+            $p->setFatherName($fatherName);
+            $p->setMotherName($motherName);
+        }
+        $entityManager->persist($patient);
+        $entityManager->flush();
+        return new JsonResponse("ok");
+    }
+
 
     /**
      * @Route("/apip/patient/profile", name="api_profile_patient", methods={"GET"})

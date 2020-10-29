@@ -13,14 +13,11 @@ use App\Entity\User;
 use App\Repository\CityRepository;
 use App\Repository\StateRepository;
 use App\Repository\TypePatientRepository;
-use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\ORM\EntityManager;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\IFTTTHandler;
@@ -41,22 +38,17 @@ class InscriptionUserController extends AbstractController
      * @var UserPasswordEncoderInterface
      */
     protected $encoder;
-    /**
-     * @var UserRepository
-     */
-    protected $userRepository;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $userPasswordEncoderInterface,UserRepository $userRepository)
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $userPasswordEncoderInterface)
     {
         $this->em = $em;
         $this->encoder = $userPasswordEncoderInterface;
-        $this->userRepository=$userRepository;
     }
      
-    public function __invoke(User $data, Request $request, EntityManagerInterface $entityManager, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository, MailerInterface $mailer)
+    public function __invoke(User $data, Request $request, EntityManagerInterface $entityManager, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository)
     {
         $user = json_decode($request->getContent(), true);
-        $code = $this->generate_code();
+
         $email = $user["email"];
         $first_name = $user["first_name"];
         $username = $user["username"];
@@ -69,8 +61,7 @@ class InscriptionUserController extends AbstractController
         }
         $data->setPassword($this->encoder->encodePassword($data,$password));
         $data->setEmail($email);
-        $data->setEtat(0);
-        $data->setActivatorId($code);
+        $data->setEtat(1);
         $data->setFirstName($first_name);
         $data->setLastName($last_name);
         $data->setUsername($username);
@@ -92,8 +83,6 @@ class InscriptionUserController extends AbstractController
 
         }
         $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
-       
-
     }
 
     public function add_patient_praticient(EntityManager $entityManager, User $user, string $address, string $sexe, DateTime $naissance, $password,string $phone){
@@ -159,22 +148,6 @@ class InscriptionUserController extends AbstractController
         $entityManager->persist($praticien);
         $entityManager->flush();
 
-    }
-
-    private function generate_code($length = 6) {
-        $dico[0] = Array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
-        $dico[1] = Array(1,2,3,4,5,6,7,8,9,0);
-        $text = "";
-        for($i = 0; $i<$length; $i++) {
-            $option = mt_rand(0, 1);
-            $case = mt_rand(0,count($dico[$option])-1);
-            $text .= $dico[$option][$case];
-        }
-        $user = $this->userRepository->findBy(['activatorId'=>$text]);
-        if($user) {
-            return $this->generate_code();
-        }
-        return $text;
     }
 
 
