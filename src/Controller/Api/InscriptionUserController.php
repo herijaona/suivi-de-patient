@@ -13,6 +13,7 @@ use App\Entity\User;
 use App\Repository\CityRepository;
 use App\Repository\StateRepository;
 use App\Repository\TypePatientRepository;
+use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\BooleanType;
@@ -40,11 +41,16 @@ class InscriptionUserController extends AbstractController
      * @var UserPasswordEncoderInterface
      */
     protected $encoder;
- 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $userPasswordEncoderInterface)
+    /**
+     * @var UserRepository
+     */
+    protected $userRepository;
+
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $userPasswordEncoderInterface,UserRepository $userRepository)
     {
         $this->em = $em;
         $this->encoder = $userPasswordEncoderInterface;
+        $this->userRepository=$userRepository;
     }
      
     public function __invoke(User $data, Request $request, EntityManagerInterface $entityManager, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository, MailerInterface $mailer)
