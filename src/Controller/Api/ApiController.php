@@ -131,7 +131,7 @@ class ApiController extends AbstractController
             $p->setFatherName($fatherName);
             $p->setMotherName($motherName);
         }
-        $entityManager->persist($patient);
+        $entityManager->persist($p);
         $entityManager->flush();
         return new JsonResponse("ok");
     }
