@@ -109,7 +109,6 @@ class ApiController extends AbstractController
     public function api_profile_edit(EntityManager $entityManager,Request $request,CityRepository $cityRepository, StateRepository  $stateRepository)
     {
         $patient = json_decode($request->getContent(), true);
-        dd($patient);
         $id = $patient['id'];
         $cityBorn = $patient['cityBorn'];
         if ($cityBorn != null) $cityBorn = $cityRepository->find($cityBorn);
