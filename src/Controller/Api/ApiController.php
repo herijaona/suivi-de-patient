@@ -128,6 +128,7 @@ class ApiController extends AbstractController
         return new JsonResponse(['profile' => $data]);
     }
 
+
     /**
      * @Route("/apip/patients/rdv/rejected", name="api_patients_rdv_rejected", methods={"GET"})
      * @param TokenService $tokenService
@@ -217,6 +218,7 @@ class ApiController extends AbstractController
         $state = $stateRepository->searchstate();
         return new JsonResponse($state);
     }
+
 
 
 
