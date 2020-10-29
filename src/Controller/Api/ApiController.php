@@ -219,6 +219,17 @@ class ApiController extends AbstractController
         return new JsonResponse($state);
     }
 
+    /**
+     * @Route("/api/fonction", name="api_fonction", methods={"GET"})
+     *
+     * @return JsonResponse
+     */
+    public function api_fonction( FonctionRepository $fonctionRepository)
+    {
+        $fonction = $fonctionRepository->searchFonctions();
+        return new JsonResponse($fonction);
+    }
+
 
 
 

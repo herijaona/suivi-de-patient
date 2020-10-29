@@ -21,7 +21,13 @@ class FonctionRepository extends ServiceEntityRepository
 
 
 
-
+     public function  searchFonctions(){
+         $entityManager = $this->getEntityManager();
+         $query = $entityManager->createQuery('SELECT f.id,f.NomFonction
+            FROM App\Entity\Fonction f
+          ');
+         return $query->getResult();
+     }
     public function searchp(){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT p.id, p.lastName, p.firstName,f.fonction,p.id as praticien
