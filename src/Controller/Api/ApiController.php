@@ -5,6 +5,7 @@ namespace App\Controller\Api;
 use App\Entity\Praticien;
 use App\Entity\PropositionRdv;
 use App\Repository\AssocierRepository;
+use App\Repository\CarnetVaccinationRepository;
 use App\Repository\CentreHealthRepository;
 use App\Repository\CityRepository;
 use App\Repository\FonctionRepository;
@@ -197,6 +198,22 @@ class ApiController extends AbstractController
         return new JsonResponse(['results' => $data]);
     }
 
+    /**
+     * @Route("/apip/patients/vaccination", name="api_patients_vaccination", methods={"GET"})
+     * @param TokenService $tokenService
+     * @param CarnetVaccinationRepository $carnetVaccinationRepository
+     * @return JsonResponse
+     */
+    public function api_patients_vaccination(TokenService  $tokenService, CarnetVaccinationRepository $carnetVaccinationRepository)
+    {
+        $CurrentUser = $tokenService->getCurrentUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$CurrentUser]);
+        $carnet = $carnetVaccinationRepository->searchCarnet($patient);
+        return new JsonResponse(['results' => $carnet]);
+
+
+    }
+
 
 
 
@@ -224,6 +241,9 @@ class ApiController extends AbstractController
 
         return new JsonResponse(['results' => $data]);
     }
+
+
+
 
     /**
      * @Route("/apip/patients/accept-proposition/{id}", name="api_patients_accept_proposition", methods={"GET"})
