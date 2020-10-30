@@ -211,6 +211,38 @@ class ApiController extends AbstractController
         $carnet = $carnetVaccinationRepository->searchCarnet($patient);
         return new JsonResponse(['results' => $carnet]);
 
+    }
+
+    /**
+     * @Route("/apip/patients/rdv", name="api_patients_rdv", methods={"GET"})
+     * @param TokenService $tokenService
+     * @param IntervationConsultationRepository $intervationConsultationRepository
+     * @param OrdoConsultationRepository $ordoConsultationRepository
+     * @return JsonResponse
+     */
+    public function api_patients_rdv(TokenService  $tokenService,IntervationConsultationRepository $intervationConsultationRepository,OrdoConsultationRepository $ordoConsultationRepository)
+    {
+        $CurrentUser = $tokenService->getCurrentUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$CurrentUser]);
+        $consultation = $ordoConsultationRepository->searchStatus($patient);
+        $intervention = $intervationConsultationRepository->searchStatusInter($patient);
+        $rdv = array_merge($consultation, $intervention);
+        return new JsonResponse(['results' => $rdv]);
+
+    }
+
+    /**
+     * @Route("/apip/patients/praticien", name="api_patients_praticien", methods={"GET"})
+     * @param TokenService $tokenService
+     * @param AssocierRepository $associerRepository
+     * @return JsonResponse
+     */
+    public function api_patients_praticien(TokenService  $tokenService,AssocierRepository $associerRepository)
+    {
+        $CurrentUser = $tokenService->getCurrentUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$CurrentUser]);
+        $associer = $associerRepository->searchAssoc($patient);
+        return new JsonResponse(['results' => $associer]);
 
     }
 
