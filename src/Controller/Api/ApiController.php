@@ -209,7 +209,7 @@ class ApiController extends AbstractController
         $CurrentUser = $tokenService->getCurrentUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$CurrentUser]);
         $carnet = $carnetVaccinationRepository->searchCarnet($patient);
-        return new JsonResponse(['results' => $carnet]);
+        return new JsonResponse($carnet);
 
     }
 
@@ -227,7 +227,7 @@ class ApiController extends AbstractController
         $consultation = $ordoConsultationRepository->searchStatus($patient);
         $intervention = $intervationConsultationRepository->searchStatusInter($patient);
         $rdv = array_merge($consultation, $intervention);
-        return new JsonResponse(['results' => $rdv]);
+        return new JsonResponse($rdv);
 
     }
 
@@ -242,7 +242,7 @@ class ApiController extends AbstractController
         $CurrentUser = $tokenService->getCurrentUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$CurrentUser]);
         $associer = $associerRepository->searchAssoc($patient);
-        return new JsonResponse(['results' => $associer]);
+        return new JsonResponse($associer);
 
     }
 
