@@ -97,7 +97,7 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/apip/patient/profile/edit", name="api_profile_edit", methods={"PUT"})
+     * @Route("/apip/patient/profile/edit", name="api_profile_edit", methods={"POST"})
      * @param EntityManagerInterface $entityManager
      * @param Request $request
      * @param CityRepository $cityRepository
@@ -107,7 +107,6 @@ class ApiController extends AbstractController
     public function api_profile_edit(EntityManagerInterface $entityManager,Request $request,CityRepository $cityRepository, StateRepository  $stateRepository)
     {
         $patient = json_decode($request->getContent(), true);
-
         $id = $patient['id'];
         $cityBorn = $patient['cityBorn'];
         if ($cityBorn != null) $cityBorn = $cityRepository->find($cityBorn);
