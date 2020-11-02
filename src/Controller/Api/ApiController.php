@@ -209,6 +209,7 @@ class ApiController extends AbstractController
         $CurrentUser = $tokenService->getCurrentUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$CurrentUser]);
         $carnet = $carnetVaccinationRepository->searchCarnet($patient);
+
         return new JsonResponse($carnet);
 
     }
