@@ -1153,6 +1153,10 @@
         <source>Patient ID :</source>
         <target>ID Patient :</target>
       </trans-unit>
+      <trans-unit id="FcQCwB1" resname="Pending activity">
+        <source>Pending activity</source>
+        <target>Activité en Attente</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
