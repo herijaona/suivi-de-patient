@@ -35,8 +35,7 @@
                 <th>{% trans %}Last Name {% endtrans %}</th>
                 <th>{% trans %}First Name {% endtrans %}</th>
                 <th>{% trans %}Membre ID {% endtrans %}</th>
-                <th >Action</th>
-
+                <th>Action</th>
 
                 <th>{% trans %}Referent{% endtrans %}</th>
             </tr>
@@ -55,7 +54,7 @@
                     </td>
 
                     <td>
-                        <span class="btn btn-danger delete_membres_group suppr" data-id-group="{{ groupe.id }}" data-id-mmb="{{ family.id }}"></span>
+                        <span class="delete_membres_group suppr" data-id-group="{{ groupe.id }}" data-id-mmb="{{ family.patient }}"><i class="fa fa-trash"></i></span>
                     </td>
 
                     <td>

@@ -38,7 +38,7 @@ class FamilyRepository extends ServiceEntityRepository
 
     public function  searchFamily($groupe= null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT f.id,p.lastName,p.firstName,u.username,f.Referent
+        $query = $entityManager->createQuery('SELECT f.id,p.lastName,p.firstName,u.username,f.Referent, p.id as patient
             FROM App\Entity\Family f
             INNER JOIN App\Entity\GroupFamily g with g.id = f.groupFamily
             INNER JOIN App\Entity\Patient p with p.id= f.patientChild

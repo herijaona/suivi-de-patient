@@ -469,7 +469,6 @@ class PatientController extends AbstractController
     public function family()
     {
         return $this->render('patient/_family.html.twig');
-
     }
 
     /**
@@ -478,9 +477,9 @@ class PatientController extends AbstractController
     public function delete_membres_group(Request $request)
     {
         $user = $this->getUser();
+
         if ($request->request->get('id_group') != "" && $request->request->get('id_membre')){
             $group_family = $this->familyRepository->findOneBy(['patientChild' => $request->request->get('id_membre'), 'groupFamily' => $request->request->get('id_group')]);
-
             if($group_family){
                 $this->entityManager->remove($group_family);
                 $this->entityManager->flush();
