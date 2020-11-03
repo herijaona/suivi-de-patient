@@ -121,7 +121,15 @@
                 </li>
                 {#<li class="{{ (currentPath == path('intervention_patient') ) ? 'active' :'' }}"><a href="{{ path('intervention_patient')}}">Intervention</a></li>#}
                 <li {% if (currentPath == path('associer_praticien') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('associer_praticien') }}"><img src="{{ asset('assets/images/icon/group_family.png') }}" class="img-left-menu rounded-circle">{{ 'My Praticiens'|trans }}</a></li>
-                <li {% if (currentPath == path('group_patient') ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}"><img src="{{ asset('assets/images/icon/group_family.png') }}" class="img-left-menu rounded-circle">{% trans %}Family Group {% endtrans %}</a></li>
+                {# <li {% if (currentPath ==  ) ? 'active' :''   %} class="active" {% endif %}><a href="{{ path('group_patient') }}"><img src="{{ asset('') }}" class="img-left-menu rounded-circle"></a></li> #}
+                <li {% if (currentPath == path('group_patient')) ? 'active' :''  %} class="active" {% endif %}><a href="#"  data-toggle="collapse" data-target="#family"><img src="{{ asset('assets/images/icon/group_family.png') }}" class="img-left-menu rounded-circle">{% trans %}Family Group {% endtrans %}</a>
+                    <ul id="family" class="collapse" aria-labelledby="family" data-parent="#side-bar-menu">
+                        <li class="{{ (currentPath == path('family')) ? 'active' :''  }}"> <a href="{{ path('family') }}" class="familygr" ><img src="{{ asset('assets/images/icon/group_family.png') }}" class="img-left-menu rounded-circle">{% trans %}Create a group{% endtrans %}</a></li>
+                        <li class="{{ (currentPath == path('group_patient')) ? 'active' :''  }}"> <a href="{{ path('group_patient') }}" ><img src="{{ asset('assets/images/icon/group_family.png') }}" class="img-left-menu rounded-circle">{% trans %}My group{% endtrans %}</a></li>
+                        {#  <li class="{{ (currentPath == path('create_rdv')) ? 'active' :''  }}"> <a href="{{ path('create_rdv') }}" ><img src="{{ asset('assets/images/icon/group_family.png') }}" class="img-left-menu rounded-circle">{% trans %}{% endtrans %}</a></li>#}
+                    </ul>
+                </li>
+
             {% endif %}
         </ul>
     </div>
@@ -136,6 +144,8 @@
 <script>
     $('.active').parent().addClass('parentactive');
     $(".vaccine").css("display", "none");
+    $("#gene").css("display", "none");
+    $(".familygr").css("display", "none");
     $("#generate").css("display", "none");
     $('.bar-container').click(function(){
         $('.menu-container').toggle('show');
@@ -274,6 +284,25 @@
             }
         }
     });
+
+    $.ajax({
+        url: "{{ path('family_route') }}",
+        type: 'post',
+        dataType: "json",
+        cache: false,
+        success:function(data)
+        {
+            if(data != 0){
+                $(".familygr").css("display", "block");
+            }
+            else {
+                $(".familygr").css("display", "none");
+            }
+        }
+    });
+
+
+
 
     {% endif %}
 

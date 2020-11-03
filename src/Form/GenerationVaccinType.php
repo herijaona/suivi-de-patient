@@ -32,8 +32,6 @@ class GenerationVaccinType extends AbstractType
 
         $builder
 
-
-
              ->add('vaccin', EntityType::class, [
                 'class' => Vaccin::class,
 

@@ -42,6 +42,11 @@ class Family
      */
     private $groupFamily;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $Referent;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +73,18 @@ class Family
     public function setGroupFamily(?GroupFamily $groupFamily): self
     {
         $this->groupFamily = $groupFamily;
+
+        return $this;
+    }
+
+    public function getReferent(): ?bool
+    {
+        return $this->Referent;
+    }
+
+    public function setReferent(bool $Referent): self
+    {
+        $this->Referent = $Referent;
 
         return $this;
     }

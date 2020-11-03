@@ -34,7 +34,7 @@ class RdvType extends AbstractType
                         return $fonction ? strtoupper($fonction->getNomFonction()) : '';
                     },
                     'attr' => array('class' => 'form-control chosen-select'),
-                    'placeholder' => 'Votre Fonction'
+                    'placeholder' => 'Fonction'
                 ))
             ->add('dateRdv',null,[
                 'required'=> false

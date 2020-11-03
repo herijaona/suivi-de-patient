@@ -77,9 +77,9 @@
         <source>Appointment proposal</source>
         <target>Proposition rendez-vous</target>
       </trans-unit>
-      <trans-unit id="8NHHxQJ" resname="Family Group">
-        <source>Family Group</source>
-        <target>Groupe Famille</target>
+      <trans-unit id="X_Hw9Kx" resname="FAMILY GROUP">
+        <source>FAMILY GROUP</source>
+        <target>GROUPE FAMILLE</target>
       </trans-unit>
       <trans-unit id="4LEcWKD" resname="All Family Members">
         <source>All Family Members</source>
@@ -109,9 +109,9 @@
         <source>Choose new member</source>
         <target>Choisissez un nouveau membre</target>
       </trans-unit>
-      <trans-unit id="GXZu1sy" resname="Cancel">
-        <source>Cancel</source>
-        <target>Annuler</target>
+      <trans-unit id="rY1phXP" resname="CANCEL">
+        <source>CANCEL</source>
+        <target>ANNULER</target>
       </trans-unit>
       <trans-unit id="FQn1YfJ" resname="Save">
         <source>Save</source>
@@ -1116,6 +1116,42 @@
       <trans-unit id="HUN7fFv" resname="Generate vaccine pregnant">
         <source>Generate vaccine pregnant</source>
         <target>Generer vaccin femme enceinte</target>
+      </trans-unit>
+      <trans-unit id="COdC1xu" resname="Name of the group Family :">
+        <source>Name of the group Family :</source>
+        <target>Nom du groupe Famille :</target>
+      </trans-unit>
+      <trans-unit id="GXZu1sy" resname="Cancel">
+        <source>Cancel</source>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="8NHHxQJ" resname="Family Group">
+        <source>Family Group</source>
+        <target>Groupe Famille</target>
+      </trans-unit>
+      <trans-unit id="48SHdXb" resname="Create a group">
+        <source>Create a group</source>
+        <target>Créer un groupe</target>
+      </trans-unit>
+      <trans-unit id="agNvfvA" resname="My group">
+        <source>My group</source>
+        <target>Mon group</target>
+      </trans-unit>
+      <trans-unit id="PcygpxI" resname="Member Id">
+        <source>Member Id</source>
+        <target>ID Membre</target>
+      </trans-unit>
+      <trans-unit id="t0DENSX" resname="Membre ID">
+        <source>Membre ID</source>
+        <target>ID Membre</target>
+      </trans-unit>
+      <trans-unit id="1VM835x" resname="Referent">
+        <source>Referent</source>
+        <target>Référent</target>
+      </trans-unit>
+      <trans-unit id="yW3cXdV" resname="Patient ID :">
+        <source>Patient ID :</source>
+        <target>ID Patient :</target>
       </trans-unit>
     </body>
   </file>

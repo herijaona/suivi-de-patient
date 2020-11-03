@@ -19,6 +19,35 @@ class FamilyRepository extends ServiceEntityRepository
         parent::__construct($registry, Family::class);
     }
 
+    public function  searchj($groupe= null, $patient = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT p.id as patient, f.id , p.lastName, p.firstName
+            FROM App\Entity\Family f
+            INNER JOIN App\Entity\GroupFamily g with g.id = f.groupFamily
+            INNER JOIN App\Entity\Patient p with p.id= f.patientChild
+            LEFT JOIN App\Entity\User u with u.id = p.user
+            where f.Referent = 1 and g.id= :groupe  and p.id =:patient
+          ')
+            ->setParameter('groupe', $groupe)
+            ->setParameter('patient', $patient)
+        ;
+
+        return $query->getResult();
+    }
+
+
+    public function  searchFamily($groupe= null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT f.id,p.lastName,p.firstName,u.username,f.Referent
+            FROM App\Entity\Family f
+            INNER JOIN App\Entity\GroupFamily g with g.id = f.groupFamily
+            INNER JOIN App\Entity\Patient p with p.id= f.patientChild
+            LEFT JOIN App\Entity\User u with u.id = p.user
+            where g.id= :groupe
+          ')
+            ->setParameter('groupe', $groupe);
+        return $query->getResult();
+    }
     // /**
     //  * @return Family[] Returns an array of Family objects
     //  */

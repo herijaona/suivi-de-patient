@@ -278,6 +278,8 @@ class PatientController extends AbstractController
     }
 
 
+
+
     /**
      * @Route("/group_family", name="group_patient")
      */
@@ -293,22 +295,19 @@ class PatientController extends AbstractController
         if($mygroups && count($mygroups) > 0){
             foreach ($mygroups as $mygroup){
                 $groupFamily  = $mygroup->getGroupFamily();
+                $id= $groupFamily->getId();
                 $my_group[$m]["ID"] = $groupFamily->getId();
                 $my_group[$m]["Name"] = $groupFamily->getDesignation();
                 $m++;
             }
         }
-
-        if ($my_group && count($my_group) > 0){
-            for ($i = 0; $i < $m; $i++) {
-                $my_group[$i]["Membres"] = $this->familyRepository->findBy(['groupFamily' => $my_group[$i]["ID"]]);
-            }
-        }
-
+        $groupe = $this->groupFamilyRepository->find($id);
+        $family = $this->familyRepository->searchFamily($groupe);
         return $this->render('patient/group_patient.html.twig', [
             //'familly' => $family,
             'my_groups' => $my_group,
-            'mygroup' => $mygroups,
+            'family' =>$family,
+            'groupe'=>$groupe
         ]);
     }
 
@@ -432,6 +431,7 @@ class PatientController extends AbstractController
             $family = new Family();
             $family->setGroupFamily($group_family);
             $family->setPatientChild($patient);
+            $family->setReferent(true);
             $this->entityManager->persist($family);
             $this->entityManager->flush();
         }
@@ -443,16 +443,33 @@ class PatientController extends AbstractController
      */
     public function add_new_membres_group(Request $request)
     {
-        if ($request->request->get('group_id') != "" && $request->request->get('patient')){
-            $group_family = $this->groupFamilyRepository->find($request->request->get('group_id'));
-            $patient = $this->patientRepository->find($request->request->get('patient'));
-            $family = new Family();
-            $family->setGroupFamily($group_family);
-            $family->setPatientChild($patient);
-            $this->entityManager->persist($family);
-            $this->entityManager->flush();
+        $reque= $request->request->get('idP');
+        if ($reque){
+            $user = $this->userRepository->findOneBy(['username'=>$reque]);
+            $group_family = $this->groupFamilyRepository->find($request->request->get('group'));
+            $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+            if ($this->familyRepository->findOneBy(['patientChild'=>$patient]) != null){
+                return $this->redirectToRoute('group_patient');
+
+            }else {
+                $family = new Family();
+                $family->setGroupFamily($group_family);
+                $family->setReferent(false);
+                $family->setPatientChild($patient);
+                $this->entityManager->persist($family);
+                $this->entityManager->flush();
+                return $this->redirectToRoute('group_patient');
+            }
         }
-        return $this->redirectToRoute('see_my_group', array('group_id' => $request->request->get('group_id')));
+    }
+
+    /**
+     * @Route ("/family", name="family")
+     */
+    public function family()
+    {
+        return $this->render('patient/_family.html.twig');
+
     }
 
     /**
@@ -769,6 +786,35 @@ class PatientController extends AbstractController
         $data = 0;
         if($carnet != null) $data = 1;
         return new JsonResponse($data);
+    }
+
+    /**
+     * @Route ("/family/action", name="family_action")
+     */
+    public function family_action(Request  $request){
+        $user = $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+       $group= $request->request->get('id_group');
+       $groupe = $this->groupFamilyRepository->find($group);
+       $family = $this->familyRepository->searchj($groupe,$patient);
+       $data = 0;
+       if ($family != null) $data = 1;
+        return new JsonResponse($data);
+
+    }
+
+    /**
+     * @Route ("/family/route", name="family_route")
+     */
+    public function family_route(){
+        $user = $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $p = $this->patientRepository->sear($user);
+        $groupe = $this->groupFamilyRepository->searchGrouF($patient);
+        $data = 0;
+        if ($p != null && $groupe == null) $data = 1;
+        return new JsonResponse($data);
+
     }
     /**
      * @Route("/gener/vaccin", name="gener_vaccin")

@@ -6,7 +6,8 @@
         padding: .84rem 2.14rem !important;
     }
 </style>
-{% endblock %} {% block body %}
+{% endblock %}
+{% block body %}
 <div class="row head-table col-md-12">
     <div class="grid-title-table col-md-9 mt-4">
         <h4 class="h4-content">{% trans %}All Family Members {% endtrans %}</h4>
@@ -23,6 +24,9 @@
             <tr>
                 <th>{% trans %}Last Name{% endtrans %} </th>
                 <th>{% trans %}First Name{% endtrans %}</th>
+                <th>{% trans %}Member Id{% endtrans %}</th>
+                <th>Action</th>
+                <th>Referent</th>
                 {% if statsService.typePatient.typePatientName == "ADULTE" %}<th></th>{% endif %}
             </tr>
         </thead>

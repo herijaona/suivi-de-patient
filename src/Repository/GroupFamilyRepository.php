@@ -19,6 +19,18 @@ class GroupFamilyRepository extends ServiceEntityRepository
         parent::__construct($registry, GroupFamily::class);
     }
 
+    public function searchGrouF($patient = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery("SELECT  g.id,g.designation,p.lastName,p.firstName
+            FROM App\Entity\GroupFamily g 
+            INNER JOIN App\Entity\Patient p with p.id = g.patient
+       
+            WHERE p.id = :patient ")
+            ->setParameter('patient', $patient);
+        return $query->getResult();
+
+    }
+
     // /**
     //  * @return GroupFamily[] Returns an array of GroupFamily objects
     //  */

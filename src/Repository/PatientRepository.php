@@ -43,6 +43,19 @@ class PatientRepository extends ServiceEntityRepository
         return $query->getResult();
 
     }
+
+    public function sear($user = null){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery("SELECT  p.id,p.lastName
+            FROM App\Entity\Patient p 
+            INNER JOIN App\Entity\User u with u.id = p.user
+            LEFT JOIN App\Entity\TypePatient t with t.id= p.typePatient
+
+            WHERE t.typePatientName = 'ADULTE' and u.id = :user  ")
+            ->setParameter('user', $user);
+        return $query->getResult();
+
+    }
    /** public function searchTypePatient($patient = null){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT  p.id,t.typePatientName,p.sexe,p.isEnceinte
