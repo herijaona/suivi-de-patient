@@ -56,7 +56,7 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
             FROM App\Entity\InterventionVaccination i
             INNER JOIN App\Entity\Ordonnace o with o.id = i.ordonnace
             INNER JOIN App\Entity\Praticien p with p.id = o.praticien
-            WHERE i.etat = :etat AND p.id = :praticien
+            WHERE i.statusVaccin = :etat AND p.id = :praticien
         ')->setParameter('etat', 0)
           ->setParameter('praticien', $praticien);
         return $query->getResult();
@@ -69,7 +69,7 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
             FROM App\Entity\InterventionVaccination i
             INNER JOIN App\Entity\Ordonnace o with o.id = i.ordonnace
             INNER JOIN App\Entity\Praticien p with p.id = o.praticien
-            WHERE i.etat = :etat AND p.id = :praticien
+            WHERE i.statusVaccin = :etat AND p.id = :praticien
         ')->setParameter('etat', 1)
           ->setParameter('praticien', $praticien);
         return $query->getResult();

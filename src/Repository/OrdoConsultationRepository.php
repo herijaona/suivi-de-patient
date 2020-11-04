@@ -86,6 +86,19 @@ class OrdoConsultationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function countUnrealizedrdv($praticien){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            SELECT COUNT(o.id)
+            FROM App\Entity\OrdoConsultation o
+            INNER JOIN App\Entity\Ordonnace od with od.id = o.ordonnance
+            INNER JOIN App\Entity\Praticien p with p.id = od.praticien
+            WHERE o.statusConsultation = :etat AND p.id = :praticien
+        ')->setParameter('etat', 0)
+            ->setParameter('praticien', $praticien);
+        return $query->getResult();
+    }
+
 
 
 

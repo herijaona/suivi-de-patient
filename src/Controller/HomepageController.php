@@ -7,10 +7,15 @@ use App\Repository\OrdonnaceRepository;
 use App\Repository\UserRepository;
 use App\Service\FileUploadService;
 use Doctrine\ORM\EntityManagerInterface;
+
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Flex\Response;
 
 class HomepageController extends AbstractController
 {
@@ -63,7 +68,8 @@ class HomepageController extends AbstractController
 
     /**
      * @Route("/modification/photo", name="modif_photo")
-     * */
+     *
+     */
 
     public function ModifPhoto(Request $request, FileUploadService $fileUploadService)
     {
@@ -77,5 +83,57 @@ class HomepageController extends AbstractController
         }
         return new JsonResponse(array("data" => "OK"));
     }
+
+    /**
+     * @Route("/update/password", name="update_password")
+     */
+     public function update_password(Request $request,MailerInterface $mailer)
+     {
+         $mail = $request->request->get('email');
+
+         if ($mail != null){
+             $email = (new TemplatedEmail())
+                 ->from('hello@neitic.com')
+                 ->to($mail)
+                 ->subject('Confirmation code' )
+                 ->htmlTemplate('email/change.html.twig');
+             // On envoie le mail
+             $mailer->send($email);
+             $message = 'email envoyée';
+             $this->addFlash('success', $message);
+
+         }
+
+        return $this->render('security/email.html.twig');
+     }
+
+
+     /**
+      * @Route("/reset/pass", name="reset_pass")
+      */
+     public function reset_pass(Request $request,UserPasswordEncoderInterface $userPasswordEncoder){
+         $username = $request->request->get('username');
+         $passworde= $request->request->get('password');
+         if ($username!=null && $passworde != null){
+             $user = $this->userRepository->findOneBy(['username'=>$username]);
+             $password = $userPasswordEncoder->encodePassword($user, $passworde);
+             $user->setPassword($password);
+             $message ="Mot de passe reinitialiser";
+             $this->addFlash('success', $message);
+             $this->entityManager->persist($user);
+             $this->entityManager->flush();
+
+             return $this->redirectToRoute('app_login');
+         }
+
+
+         return $this->render('security/_forget_password.html.twig');
+
+     }
+
+
+
+
+
 
 }

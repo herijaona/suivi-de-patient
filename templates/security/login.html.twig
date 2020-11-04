@@ -17,7 +17,7 @@
                 <label for="input-id">
                     Identifiant
                 </label>
-                <input id="input-id" type='text' name="username" value="{{ last_username }}" class="form-control">
+                <input id="input-id" type='text' name="username"  value="{{ last_username }}" class="form-control user">
             </div>
             <div class="form-group">
                 <label for="input-id">
@@ -49,6 +49,7 @@
                     </div>
                 </div>
             </div>
+            <a href="{{ path('update_password') }}" >Mot de passe oublié ?</a>
         </form>
     </div>
 </div>
@@ -60,6 +61,16 @@
         Copyright © 2020 MATEAK
     </div>
 </footer>
+
+{% endblock %}
+{% block javascripts %}
+    <!-- DataTables -->
+    <script src="{{asset('vendor/datatables/jquery.dataTables.js')}}"></script>
+    <script src="{{asset('vendor/datatables-bs4/js/dataTables.bootstrap4.js')}}"></script>
+    <script>
+
+
+    </script>
 {% endblock %}
 
 

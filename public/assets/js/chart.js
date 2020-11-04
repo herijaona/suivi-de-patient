@@ -83,7 +83,7 @@ window.onload = function() {
         type: 'get',
         dataType: 'json',
         success: (data) => {
-            var ageRangeChart = new CanvasJS.Chart("chartContainerAgeRange",{
+            var chartContainerAgeRange = new CanvasJS.Chart("chartContainerAgeRange",{
                 animationEnabled : true,
                 title : {
                     text : "Age range",
@@ -104,7 +104,7 @@ window.onload = function() {
                     dataPoints : data
                 }]
             });
-            ageRangeChart.render();
+            chartContainerAgeRange.render();
         },
         error: (e) => {
 

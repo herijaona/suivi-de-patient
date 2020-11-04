@@ -824,27 +824,22 @@ class PraticienController extends AbstractController
         $patientCons = $this->ordoConsultationRepository->searchConsultation($praticien);
         $patient = $this->associerRepository->searchPatient($praticien);
         $realize = $this->ordoVaccinationRepository->countrealizedVacc($praticien);
-
-        $nbUnrealizedVacc = $this->interventionVaccinationRepository->countUnrealizedVacc($praticien);
-
         $nbRealizedVacc = $this->interventionVaccinationRepository->countRealizedVacc($praticien);
-         if($patient != null) {
-             foreach ($patient as $pat) {
-                 $patient = $pat[1];
-             }
-         }
+        $nbUnrealizedVacc = $this->interventionVaccinationRepository->countUnrealizedVacc($praticien);
+        $nbvacc = $nbRealizedVacc + $nbUnrealizedVacc;
 
-          foreach ($realize as $real){
-              $rea = $real[1];
-              $nbRealizedVacc = $rea;
-
-          }
+        $nbinterventionUnrealizedCons= $this->intervationConsultationRepository->countUnrealizedConsu($praticien);
+        $ordounrealized = $this->ordoConsultationRepository->countUnrealizedrdv($praticien);
+        $unrealized = $nbUnrealizedVacc + $nbinterventionUnrealizedCons + $ordounrealized;
 
         return $this->render('praticien/dashboard.html.twig', [
-            "nbPatient"=>$patient,
-            "nbUnrealizedVacc" => $nbUnrealizedVacc,
-            "nbRealizedVacc" => $nbRealizedVacc,
-            "nbConsultation" => $patientCons[0][1]
+            "nbPatient"=>$patient[0][1],
+            "nbRealizedVacc" => $nbvacc[0][1],
+            "nbConsultation" => $patientCons[0][1],
+            'unrealized'=>$unrealized[0][1],
+            'rdv'=>$ordounrealized[0][1],
+            'vaccination'=>$nbUnrealizedVacc[0][1],
+            'intervention'=> $nbinterventionUnrealizedCons[0][1]
         ]);
     }
 

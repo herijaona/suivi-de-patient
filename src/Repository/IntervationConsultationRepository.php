@@ -67,6 +67,19 @@ class IntervationConsultationRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function countUnrealizedConsu($praticien){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            SELECT COUNT(i.id)
+            FROM App\Entity\IntervationConsultation i
+            INNER JOIN App\Entity\Ordonnace o with o.id = i.ordonnace
+            INNER JOIN App\Entity\Praticien p with p.id = o.praticien
+            WHERE i.status = :etat AND p.id = :praticien
+        ')->setParameter('etat', 0)
+            ->setParameter('praticien', $praticien);
+        return $query->getResult();
+    }
+
 
     // /**
     //  * @return IntervationConsultation[] Returns an array of IntervationConsultation objects
