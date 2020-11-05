@@ -145,8 +145,7 @@ class RegistrationController extends AbstractController
             $patient->setUser($user);
             $entityManager->persist($patient);
             $entityManager->flush();
-            $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
-            // do anything else you need here, like send an email
+            //  mail
             $email = (new TemplatedEmail())
                 ->from('hello@neitic.com')
                 ->to($form->get('email')->getData())
@@ -277,7 +276,6 @@ class RegistrationController extends AbstractController
             $patient->setUser($user2);
             $entityManager->persist($patient);
             $entityManager->flush();
-            $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
             $email = (new TemplatedEmail())
                 ->from('hello@neitic.com')
                 ->to($email)
@@ -373,7 +371,7 @@ class RegistrationController extends AbstractController
                     $entityManager->persist($praticienUser);
                     $entityManager->flush();
                 }
-
+                $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
                 return $this->redirectToRoute('app_login');
             }else{
                 $this->addFlash('error', 'Code non valide');

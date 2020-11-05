@@ -74,6 +74,18 @@ class InterventionVaccinationRepository extends ServiceEntityRepository
           ->setParameter('praticien', $praticien);
         return $query->getResult();
     }
+    public function countPatient($praticien){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            SELECT COUNT(i.id)
+            FROM App\Entity\InterventionVaccination i
+            INNER JOIN App\Entity\Ordonnace o with o.id = i.ordonnace
+            INNER JOIN App\Entity\Praticien p with p.id = o.praticien
+            INNER JOIN App\Entity\Patient pa with pa.id = i.patient
+            WHERE p.id = :praticien
+        ')->setParameter('praticien', $praticien);
+        return $query->getResult();
+    }
 
     public function searchPatient($praticien = null){
         $entityManager = $this->getEntityManager();

@@ -1157,6 +1157,26 @@
         <source>Pending activity</source>
         <target>Activité en Attente</target>
       </trans-unit>
+      <trans-unit id="82hrsyj" resname="Successful">
+        <source>Successful</source>
+        <target>Réussie</target>
+      </trans-unit>
+      <trans-unit id="ejNGroc" resname="your e-mail does not correspond to any user">
+        <source>your e-mail does not correspond to any user</source>
+        <target>votre e-mail ne correspond à aucun utilisateur</target>
+      </trans-unit>
+      <trans-unit id="6p6UJmv" resname="The password reset link is sent to your email">
+        <source>The password reset link is sent to your email</source>
+        <target>Le lien de réinitialisation du mot de passe est envoyé à votre adresse e-mail</target>
+      </trans-unit>
+      <trans-unit id="1O_VIv5" resname="Password reset success">
+        <source>Password reset success</source>
+        <target>Succès du reinitialisation du mot de passe</target>
+      </trans-unit>
+      <trans-unit id="sHXdtNV" resname="List of pending activities">
+        <source>List of pending activities</source>
+        <target>Listes des activités en attente</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

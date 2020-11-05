@@ -37,6 +37,45 @@ window.onload = function() {
 
     });
 
+    // --------------------------------------------------------------------------------------
+    //Graphique Nombre de Patient par Type d’acte médical
+    // --------------------------------------------------------------------------------------
+    var colorPalette = ['#00b04f', '#ffbf00' ,'#DEB887'];
+
+    $.ajax({
+        url: "/praticien/chart/nb_patient",
+        type: 'get',
+        dataType: 'json',
+        success: (data) => {
+            var patientPraticiente = data;
+
+            var chartPatient = new CanvasJS.Chart("chartPatient", {
+                animationEnabled: true,
+                title: {
+                    text: "Patient",
+                    fontSize: 18,
+                },
+                data: [{
+                    type: "pie",
+                    startAngle: 240,
+                    yValueFormatString: "##",
+                    indexLabel: " {y} {label}",
+                    dataPoints: [
+                        { y: data.consultation, label: "Consultation",},
+                        { y: data.intervention, label: "Intervention" },
+                        { y: data.vaccination, label: "Vaccination" },
+                    ]
+                }],
+                color: colorPalette,
+            });
+            chartPatient.render();
+        },
+        error: (e) => {
+
+        }
+    }).done(() => {
+
+    });
 // ---------------------------------------------------------------------------------
 // Chart Nombre de Prise Par Type de Vaccin
 // ---------------------------------------------------------------------------------

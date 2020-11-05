@@ -11,6 +11,11 @@
                     {{ message }}
                 </div>
             {% endfor %}
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-danger">
+                    {{ message }}
+                </div>
+            {% endfor %}
             <h3 class="main-title">Activer votre compte </h3>
             {{ form_start(activationForm) }}
                 <div class="form-group">

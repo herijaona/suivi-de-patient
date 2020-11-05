@@ -62,34 +62,35 @@
     </div>
 
 </div>
-{#  <div class="row mt-2">
-    <div class="col-12 col-md-3" style="background-color:#00e25b;text-align: center; height: max-content;margin-left: 14px;margin-top: 24px; border: 1px solid blue;  border-radius: 12px; ">
+   <div class="row mt-2">
+    <div class="col-12 col-md-6" style="background-color:white;text-align: center; margin-top: 24px;  border-radius: 12px; ">
         <p style="margin-top: 8px">{% trans %}List of pending activities{% endtrans %}</p>
         <h4>Vaccination : {{ vaccination }}</h4>
         <h4>Intervention : {{ intervention }}</h4>
         <h4>{% trans %}Appointment{% endtrans%} : {{ rdv }}</h4>
 
     </div>
-    <div class="col-12 col-md-4" style="background-color:#00e25b;text-align: center; height: max-content;margin-left: 14px;margin-top: 24px; border: 1px solid blue;  border-radius: 12px; ">
-        <div id="chartNbPriseTypeVacc" ></div>
+       <div class="col-12 col-md-6">
+           <div id="chartPatient" style="height: 300px; max-width: 920px;margin-top: 23px;  border-radius: 12px;"></div>
+       </div>
+
+   </div>
+    <div class="row mt-2">
+        <div class="col-12 col-md-6">
+            <div id="chartContainerAgeRange"  style="height: 400px; width: 600px; margin-top: 23px;  border-radius: 12px;"></div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div id="chartVaccinStat" style="margin-top: 23px"  ></div>
+        </div>
+
     </div>
-    <div >
-        <div  id="chartContainerAgeRange"></div>
-    </div>
-
-</div>
 
 
 
 
-<div class="row">
-    <div id="chartVaccinStat" class="col-6" style="height: 370px; max-width: 1105px; margin: 0px auto;margin-top: 23px;margin-bottom: 24px;"></div>
-    <div class="col-6"></div>
-</div>
-#}
 
 
-<!-- End Content -->
 
 {% endblock %} {% block javascripts %}
 <!-- DataTables -->

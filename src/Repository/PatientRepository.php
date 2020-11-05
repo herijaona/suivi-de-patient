@@ -56,7 +56,7 @@ class PatientRepository extends ServiceEntityRepository
         return $query->getResult();
 
     }
-   /** public function searchTypePatient($patient = null){
+   /* public function searchTypePatient($patient = null){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT  p.id,t.typePatientName,p.sexe,p.isEnceinte
             FROM App\Entity\Patient p 
@@ -65,7 +65,7 @@ class PatientRepository extends ServiceEntityRepository
             ORDER BY p.id ASC')
             ->setParameter('patient', $patient);
         return $query->getResult();
-    } **/
+    } */
 
     // /**
     //  * @return Patient[] Returns an array of Patient objects

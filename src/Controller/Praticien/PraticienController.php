@@ -860,13 +860,39 @@ class PraticienController extends AbstractController
 
       return new JsonResponse($result);
     }
+    /**
+     * @Route("/chart/nb_patient", name="chart/nb_patient"), methods={"GET","POST"}, condition="request.isXmlHttpRequest()")
+     */
+    public function nb_patient(){
+        $user=$this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $consultation = $this->ordoConsultationRepository->countPatient($praticien);
+        $vaccination = $this->interventionVaccinationRepository->countPatient($praticien);
+        $intervention = $this->intervationConsultationRepository->searchPatient($praticien);
+        $data=[];
+
+        foreach ($intervention as $inter) {
+            foreach ($consultation as $cons) {
+            foreach ($vaccination as $vacc) {
+                $data['vaccination'] = $vacc[1];
+                $data['intervention']= $inter[1];
+                $data['consultation']= $cons[1];
+            }
+            }
+        }
+        return new JsonResponse($data);
+
+    }
+
+
 
     /**
     * @Route("/chart/age_range", name="age_range")
     */
     public function age_range(){
-      $userId = $this->getUser()->getId();
-      $patientsBirthday = $this->ordoVaccinationRepository->findPatientsBirthday($userId);
+      $userId = $this->getUser();
+      $praticien = $this->praticienRepository->findOneBy(['user'=>$userId]);
+      $patientsBirthday = $this->ordoVaccinationRepository->findPatientsBirthday($praticien);
       $patientsAgeRange = array();
       // Count each range of 10
       foreach($patientsBirthday as $birthday){
@@ -892,6 +918,7 @@ class PraticienController extends AbstractController
         $age["label"] = $key;
         $age["y"] = $value;
         array_push($result, $age);
+
       }
 
       return new JsonResponse($result);
@@ -901,11 +928,10 @@ class PraticienController extends AbstractController
     * @Route("/chart/vaccin_stat", name="/chart/vaccin_stat")
     */
     public function vaccin_stat(){
-        $userId = $this->getUser()->getId();
-
-        $queryResult = $this->carnetVaccinationRepository->findvaccin($userId);
+        $userId = $this->getUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$userId]);
+        $queryResult = $this->carnetVaccinationRepository->findvaccin($praticien);
         $result = [];
-
             foreach($queryResult as $res){
                 array_push($result, array(
                     "label" => $res["vaccin"],

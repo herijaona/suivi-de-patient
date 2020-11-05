@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 use Symfony\Flex\Response;
 
 class HomepageController extends AbstractController
@@ -87,21 +89,30 @@ class HomepageController extends AbstractController
     /**
      * @Route("/update/password", name="update_password")
      */
-     public function update_password(Request $request,MailerInterface $mailer)
+     public function update_password(Request $request,MailerInterface $mailer,TranslatorInterface $translator)
      {
          $mail = $request->request->get('email');
 
          if ($mail != null){
-             $email = (new TemplatedEmail())
-                 ->from('hello@neitic.com')
-                 ->to($mail)
-                 ->subject('Confirmation code' )
-                 ->htmlTemplate('email/change.html.twig');
-             // On envoie le mail
-             $mailer->send($email);
-             $message = 'email envoyée';
-             $this->addFlash('success', $message);
+             $user = $this->userRepository->findOneBy(['email'=>$mail]);
+            if ($user == null){
+                $message = $translator->trans('your e-mail does not correspond to any user');
+                $this->addFlash('error', $message);
 
+            }
+            else{
+                $email = (new TemplatedEmail())
+                    ->from('hello@neitic.com')
+                    ->to($mail)
+                    ->subject('Confirmation code' )
+                    ->htmlTemplate('email/change.html.twig');
+                // On envoie le mail
+                $mailer->send($email);
+                $message=$translator->trans('The password reset link is sent to your email');
+                $this->addFlash('success', $message.$mail);
+
+
+            }
          }
 
         return $this->render('security/email.html.twig');
@@ -111,14 +122,14 @@ class HomepageController extends AbstractController
      /**
       * @Route("/reset/pass", name="reset_pass")
       */
-     public function reset_pass(Request $request,UserPasswordEncoderInterface $userPasswordEncoder){
+     public function reset_pass(Request $request,UserPasswordEncoderInterface $userPasswordEncoder,TranslatorInterface $translator){
          $username = $request->request->get('username');
          $passworde= $request->request->get('password');
          if ($username!=null && $passworde != null){
              $user = $this->userRepository->findOneBy(['username'=>$username]);
              $password = $userPasswordEncoder->encodePassword($user, $passworde);
              $user->setPassword($password);
-             $message ="Mot de passe reinitialiser";
+             $message=$translator->trans('Password reset success');
              $this->addFlash('success', $message);
              $this->entityManager->persist($user);
              $this->entityManager->flush();

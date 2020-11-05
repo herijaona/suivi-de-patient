@@ -85,7 +85,16 @@
                     <!--Body-->
 
                     <div class="modal-body">
-
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
                       <input type="hidden" name="group" id="group" class="form-control" value={{ groupe.id }} >
                         <div style="margin-left: 0"  class="form-group row">
                             <label for="idP" style="background-color: #4682B4; color: #f0f0f0; font-size: 18px; padding: 15px;" class="col-md-4 ">{% trans %}Patient ID :{% endtrans %}</label>

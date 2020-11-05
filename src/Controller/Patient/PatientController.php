@@ -301,8 +301,9 @@ class PatientController extends AbstractController
                 $m++;
             }
         }
-        $groupe = $this->groupFamilyRepository->find($id);
-        $family = $this->familyRepository->searchFamily($groupe);
+        if ($id!=null)  {
+            $groupe = $this->groupFamilyRepository->find($id);  $family = $this->familyRepository->searchFamily($groupe);
+        }
         return $this->render('patient/group_patient.html.twig', [
             //'familly' => $family,
             'my_groups' => $my_group,
@@ -441,7 +442,7 @@ class PatientController extends AbstractController
     /**
      * @Route("/add-new-membres-group", name="add_new_membres_group")
      */
-    public function add_new_membres_group(Request $request)
+    public function add_new_membres_group(Request $request,TranslatorInterface $translator)
     {
         $reque= $request->request->get('idP');
         if ($reque){
@@ -449,8 +450,7 @@ class PatientController extends AbstractController
             $group_family = $this->groupFamilyRepository->find($request->request->get('group'));
             $patient = $this->patientRepository->findOneBy(['user'=>$user]);
             if ($this->familyRepository->findOneBy(['patientChild'=>$patient]) != null){
-                return $this->redirectToRoute('group_patient');
-
+                $this->addFlash('error', 'Cette patient est deja present dans une groupe famille');
             }else {
                 $family = new Family();
                 $family->setGroupFamily($group_family);
@@ -458,9 +458,13 @@ class PatientController extends AbstractController
                 $family->setPatientChild($patient);
                 $this->entityManager->persist($family);
                 $this->entityManager->flush();
-                return $this->redirectToRoute('group_patient');
+
+                $message=$translator->trans('Successful');
+                $this->addFlash('info', $message);
+
             }
         }
+        return $this->redirectToRoute('group_patient');
     }
 
     /**
@@ -844,13 +848,6 @@ class PatientController extends AbstractController
         return $this->render('patient/associer.html.twig', [
             'praticien'=>$assocer,
         ]);
-
-
     }
-
-
-
-
-
 
 }

@@ -58,8 +58,8 @@ class IntervationConsultationRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery('SELECT count(p.id)
             FROM App\Entity\IntervationConsultation i 
             INNER JOIN App\Entity\Patient p with p.id = i.patient
-            LEFT JOIN App\Entity\OrdoConsultation o with o.id = i.ordoConsulataion
-            LEFT JOIN App\Entity\Praticien pr with pr.id = i.praticienPrescripteur
+            INNER JOIN App\Entity\Ordonnace o with o.id = i.ordonnace
+            INNER JOIN App\Entity\Praticien pr with pr.id = o.praticien
             WHERE pr.id = :praticien
             ORDER BY i.dateConsultation ASC')
             ->setParameter('praticien', $praticien);

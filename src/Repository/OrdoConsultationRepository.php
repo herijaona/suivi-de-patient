@@ -98,6 +98,19 @@ class OrdoConsultationRepository extends ServiceEntityRepository
             ->setParameter('praticien', $praticien);
         return $query->getResult();
     }
+    public function countPatient($praticien){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('
+            SELECT COUNT(pa.id)
+            FROM App\Entity\OrdoConsultation o
+            INNER JOIN App\Entity\Ordonnace od with od.id = o.ordonnance
+            INNER JOIN App\Entity\Praticien p with p.id = od.praticien
+            INNER JOIN App\Entity\Patient pa with pa.id = o.patient
+            WHERE p.id = :praticien
+        ')
+            ->setParameter('praticien', $praticien);
+        return $query->getResult();
+    }
 
 
 
