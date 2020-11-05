@@ -124,9 +124,11 @@ class PatientController extends AbstractController
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $doctor = $this->praticienRepository->findAll();
         $rvc = $this->carnetVaccinationRepository->searchCarnet($patient);
+        $vac = $this->ordoVaccinationRepository->searchGe($patient);
 
         return $this->render('patient/vaccination.html.twig', [
             'vaccination'=>$rvc,
+            'vac'=>$vac,
             'Doctors'=>$doctor,
         ]);
     }
@@ -716,7 +718,7 @@ class PatientController extends AbstractController
         $message=$translator->trans('Your Vaccine Calendar request is waiting at the Praticien'.' '.$nom);
         $this->entityManager->flush();
         $this->addFlash('success', $message);
-        return $this->redirectToRoute('generate');
+        return $this->redirectToRoute('patient');
 
 
     }

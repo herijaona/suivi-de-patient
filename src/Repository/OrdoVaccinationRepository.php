@@ -20,16 +20,15 @@ class OrdoVaccinationRepository extends ServiceEntityRepository
     }
 
 
-    public function searchGe($patient = null, $status = 0){
+    public function searchGe($patient = null){
         $entityManager = $this->getEntityManager();
         $query = $entityManager->createQuery('SELECT o.id,o.etat,o.statusVaccin, pr.firstName, pr.lastName
         FROM App\Entity\OrdoVaccination o 
         INNER JOIN App\Entity\Patient p with p.id= o.patient
         LEFT JOIN App\Entity\Ordonnace d with d.id=o.ordonnance
         LEFT JOIN App\Entity\Praticien pr with pr.id=d.praticien
-         WHERE p.id= :patient AND o.statusVaccin= :status 
+         WHERE p.id= :patient AND o.statusVaccin = 0
          ')
-            ->setParameter('status', $status)
             ->setParameter('patient', $patient)
        ;
 
