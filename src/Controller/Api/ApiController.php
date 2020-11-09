@@ -139,6 +139,18 @@ class ApiController extends AbstractController
         return new JsonResponse("ok");
     }
 
+    /**
+     * @Route ("/api/register/activate" , name="api_register_activate" , methods={"POST"})
+     */
+    public function api_register_activate(Request $request, UserRepository $userRepository)
+    {
+        $code = json_decode($request->getContent(), true);
+        $user = $userRepository->findOneBy(['activatorId'=>$code]);
+        dd($user);
+
+
+    }
+
 
     /**
      * @Route("/apip/patient/profile", name="api_profile_patient", methods={"GET"})
@@ -246,6 +258,8 @@ class ApiController extends AbstractController
         return new JsonResponse($associer);
 
     }
+
+
 
 
 

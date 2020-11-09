@@ -79,7 +79,7 @@ class InscriptionUserController extends AbstractController
         $data->setActivatorId($code);
         $data->setUsername($username);
         $data->setRoles([$roles]);
-        $id = $data->getId();
+
         $sexe = $user["sexe"];
 
         $addresse = $user["address"];
@@ -100,13 +100,13 @@ class InscriptionUserController extends AbstractController
             ->from('hello@neitic.com')
             ->to($email)
             ->subject('Confirmation code' )
-            ->htmlTemplate('email/email.html.twig')
+            ->htmlTemplate('email/mobile.html.twig')
             ->context([
-                'code' => $code, 'name'=>$last_name,'first'=>$first_name, 'username'=>$username,'id'=>$id
+                'code' => $code, 'name'=>$last_name,'first'=>$first_name, 'username'=>$username
             ]);
         // On envoie le mail
         $mailer->send($email);
-   
+
         return new JsonResponse("ok");
     }
 
@@ -114,7 +114,7 @@ class InscriptionUserController extends AbstractController
         $userPatient = new User();
         $userPatient->setPassword($this->encoder->encodePassword($userPatient,$password));
         $userPatient->setEmail($user->getEmail());
-        $userPatient->setEtat(1);
+        $userPatient->setEtat(0);
         $userPatient->setFirstName($user->getFirstName());
         $userPatient->setLastName($user->getLastName());
         $userPatient->setUsername($user->getUsername().rand(1, 20));
