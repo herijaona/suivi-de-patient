@@ -294,6 +294,7 @@ class PatientController extends AbstractController
         $mygroups = $this->familyRepository->findBy(['patientChild' => $patient]);
 
         $m = 0;
+        $id = 0;
         if($mygroups && count($mygroups) > 0){
             foreach ($mygroups as $mygroup){
                 $groupFamily  = $mygroup->getGroupFamily();
@@ -303,9 +304,10 @@ class PatientController extends AbstractController
                 $m++;
             }
         }
-        if ($id!=null)  {
-            $groupe = $this->groupFamilyRepository->find($id);  $family = $this->familyRepository->searchFamily($groupe);
-        }
+
+         $groupe = $this->groupFamilyRepository->find($id);
+           $family = $this->familyRepository->searchFamily($groupe);
+
         return $this->render('patient/group_patient.html.twig', [
             //'familly' => $family,
             'my_groups' => $my_group,

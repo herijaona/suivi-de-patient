@@ -95,7 +95,9 @@
                                 {{ message }}
                             </div>
                         {% endfor %}
+                        {%  if groupe != null%}
                       <input type="hidden" name="group" id="group" class="form-control" value={{ groupe.id }} >
+                        {% endif %}
                         <div style="margin-left: 0"  class="form-group row">
                             <label for="idP" style="background-color: #4682B4; color: #f0f0f0; font-size: 18px; padding: 15px;" class="col-md-4 ">{% trans %}Patient ID :{% endtrans %}</label>
                             <div class="col-md-4">

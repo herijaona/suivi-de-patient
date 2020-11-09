@@ -281,22 +281,21 @@ class ApiController extends AbstractController
         $user = $tokenService->getCurrentUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $my_group = [];
-
         $mygroups = $familyRepository->findBy(['patientChild' => $patient]);
-
-        $m = 0;
-        if($mygroups && count($mygroups) > 0){
-            foreach ($mygroups as $mygroup){
-                $groupFamily  = $mygroup->getGroupFamily();
-                $id= $groupFamily->getId();
-                $my_group[$m]["ID"] = $groupFamily->getId();
-                $my_group[$m]["Name"] = $groupFamily->getDesignation();
-                $m++;
+            $m = 0;
+            $id = 0;
+            if($mygroups && count($mygroups) > 0){
+                foreach ($mygroups as $mygroup){
+                    $groupFamily  = $mygroup->getGroupFamily();
+                    $id= $groupFamily->getId();
+                    $my_group[$m]["ID"] = $groupFamily->getId();
+                    $my_group[$m]["Name"] = $groupFamily->getDesignation();
+                    $m++;
+                }
             }
-        }
-        if ($id!=null)  {
-            $groupe = $groupFamilyRepository->find($id);  $family = $familyRepository->searchFamily($groupe);
-        }
+        $groupe = $groupFamilyRepository->find($id);
+        $family = $familyRepository->searchFamily($groupe);
+
         $data = array_merge($my_group,$family);
         return new JsonResponse($data);
     }
