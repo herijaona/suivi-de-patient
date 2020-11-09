@@ -13,11 +13,15 @@ use App\Entity\User;
 use App\Repository\CityRepository;
 use App\Repository\StateRepository;
 use App\Repository\TypePatientRepository;
+use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\BooleanType;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Monolog\Handler\IFTTTHandler;
@@ -38,15 +42,23 @@ class InscriptionUserController extends AbstractController
      * @var UserPasswordEncoderInterface
      */
     protected $encoder;
+    /**
+     * @var UserRepository
+     */
+    protected $userRepository;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $userPasswordEncoderInterface)
+
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $userPasswordEncoderInterface, UserRepository $userRepository)
     {
         $this->em = $em;
         $this->encoder = $userPasswordEncoderInterface;
+        $this->userRepository = $userRepository;
+
     }
      
-    public function __invoke(User $data, Request $request, EntityManagerInterface $entityManager, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository)
+    public function __invoke(User $data, Request $request, EntityManagerInterface $entityManager, TypePatientRepository $typePatientRepository, CityRepository $cityRepository, StateRepository $stateRepository,MailerInterface $mailer)
     {
+        $code = $this->generate_code();
         $user = json_decode($request->getContent(), true);
 
         $email = $user["email"];
@@ -61,11 +73,13 @@ class InscriptionUserController extends AbstractController
         }
         $data->setPassword($this->encoder->encodePassword($data,$password));
         $data->setEmail($email);
-        $data->setEtat(1);
+        $data->setEtat(0);
         $data->setFirstName($first_name);
         $data->setLastName($last_name);
+        $data->setActivatorId($code);
         $data->setUsername($username);
         $data->setRoles([$roles]);
+        $id = $data->getId();
         $sexe = $user["sexe"];
 
         $addresse = $user["address"];
@@ -82,7 +96,18 @@ class InscriptionUserController extends AbstractController
             $this->add_patient($entityManager, $data, $type_patient,$city,$state, $addresse, $sexe, new DateTime($date_on_born),$phone);
 
         }
-        $this->addFlash('success', 'L\'utilisateur a été enregistré avec succès !');
+        $email = (new TemplatedEmail())
+            ->from('hello@neitic.com')
+            ->to($email)
+            ->subject('Confirmation code' )
+            ->htmlTemplate('email/email.html.twig')
+            ->context([
+                'code' => $code, 'name'=>$last_name,'first'=>$first_name, 'username'=>$username,'id'=>$id
+            ]);
+        // On envoie le mail
+        $mailer->send($email);
+   
+        return new JsonResponse("ok");
     }
 
     public function add_patient_praticient(EntityManager $entityManager, User $user, string $address, string $sexe, DateTime $naissance, $password,string $phone){
@@ -106,6 +131,7 @@ class InscriptionUserController extends AbstractController
         $patient->setSexe($sexe);
         $entityManager->persist($patient);
         $entityManager->flush();
+
 
     }
 
@@ -148,6 +174,29 @@ class InscriptionUserController extends AbstractController
         $entityManager->persist($praticien);
         $entityManager->flush();
 
+
+    }
+
+
+    /**
+     * @param int $length
+
+     * @return string
+     */
+    private function generate_code($length = 6) {
+        $dico[0] = Array("A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z");
+        $dico[1] = Array(1,2,3,4,5,6,7,8,9,0);
+        $text = "";
+        for($i = 0; $i<$length; $i++) {
+            $option = mt_rand(0, 1);
+            $case = mt_rand(0,count($dico[$option])-1);
+            $text .= $dico[$option][$case];
+        }
+        $user = $this->userRepository->findBy(['activatorId'=>$text]);
+        if($user) {
+            return $this->generate_code();
+        }
+        return $text;
     }
 
 
