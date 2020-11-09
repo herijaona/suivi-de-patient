@@ -29,6 +29,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\Json;
 
 
 class ApiController extends AbstractController
@@ -171,6 +172,34 @@ class ApiController extends AbstractController
 
 
     }
+
+    /**
+     * @Route("/api/check-etat",name="api_check_etat", methods={"POST"})
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return false|string|JsonResponse
+     */
+    public function api_check_etat(Request $request, UserRepository $userRepository)
+    {
+        $conexion = json_decode($request->getContent(), true);
+        $username = $conexion['username'];
+        $user = $userRepository->findOneBy(['username'=>$username]);
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        if ($patient){
+            $etat = $patient->getUser()->getEtat();
+            $mail = $patient->getUser()->getEmail();
+        }elseif ($praticien){
+            $etat = $praticien->getUser()->getEtat();
+            $mail = $praticien->getUser()->getEmail();
+        }
+        $myObj = array($etat, $mail);
+        return new JsonResponse($myObj);
+
+
+
+    }
+
 
 
     /**
@@ -399,5 +428,7 @@ class ApiController extends AbstractController
         }
         return new JsonResponse(['status' => $data]);
     }
+
+
 
 }
