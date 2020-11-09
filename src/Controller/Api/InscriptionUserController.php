@@ -79,9 +79,7 @@ class InscriptionUserController extends AbstractController
         $data->setActivatorId($code);
         $data->setUsername($username);
         $data->setRoles([$roles]);
-
         $sexe = $user["sexe"];
-
         $addresse = $user["address"];
         $phone = $user["phone"];
         $city = $user["city"];
@@ -141,6 +139,7 @@ class InscriptionUserController extends AbstractController
         $patient->setUser($user);
         $patient->setTypePatient($typePatient);
         $patient->setLastName($user->getLastName());
+        $patient->setEtat(false);
         $patient->setFirstName($user->getFirstName());
         $patient->setLastName($user->getLastName());
         $patient->setPhone($phone);
@@ -165,6 +164,7 @@ class InscriptionUserController extends AbstractController
         $praticien->setFirstName($user->getFirstName());
         $praticien->setLastName($user->getLastName());
         $praticien->setPhone($phone);
+        $praticien->setEtat(false);
         $praticien->setSexe($sexe);
         $praticien->setAddress($address);
         $praticien->setCountryFonction($state);

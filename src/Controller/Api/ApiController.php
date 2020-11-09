@@ -142,11 +142,32 @@ class ApiController extends AbstractController
     /**
      * @Route ("/api/register/activate" , name="api_register_activate" , methods={"POST"})
      */
-    public function api_register_activate(Request $request, UserRepository $userRepository)
+    public function api_register_activate(Request $request, UserRepository $userRepository, EntityManager $entityManager)
     {
         $code = json_decode($request->getContent(), true);
         $user = $userRepository->findOneBy(['activatorId'=>$code]);
-        dd($user);
+        if ($user){
+            $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+            $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+            if ($user->getEtat() != 1){
+                $user->setEtat('1');
+                $entityManager->persist($user);
+                $entityManager->flush();
+            }
+            if ($patient && $patient->getEtat() != 1)
+            {
+                $patient->setEtat(true);
+                $entityManager->persist($patient);
+                $entityManager->flush();
+            }
+            if ($praticien && $praticien->getEtat() != 1)
+            {
+                $praticien->setEtat(true);
+                $entityManager->persist($praticien);
+                $entityManager->flush();
+            }
+            return new JsonResponse("Activation de votre compte");
+        }
 
 
     }

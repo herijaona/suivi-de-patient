@@ -362,6 +362,7 @@ class RegistrationController extends AbstractController
                 }
                 if ($patientUser && $patientUser->getEtat() != 1 ){
                     $patientUser->setEtat(true);
+
                     $entityManager->persist($patientUser);
                     $entityManager->flush();
                 }
