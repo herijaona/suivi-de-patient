@@ -8,7 +8,9 @@ use App\Repository\AssocierRepository;
 use App\Repository\CarnetVaccinationRepository;
 use App\Repository\CentreHealthRepository;
 use App\Repository\CityRepository;
+use App\Repository\FamilyRepository;
 use App\Repository\FonctionRepository;
+use App\Repository\GroupFamilyRepository;
 use App\Repository\IntervationConsultationRepository;
 use App\Repository\InterventionVaccinationRepository;
 use App\Repository\OrdoConsultationRepository;
@@ -268,6 +270,35 @@ class ApiController extends AbstractController
         $data = array_merge($rce, $rve, $cons, $con, $intervention);
 
         return new JsonResponse(['results' => $data]);
+    }
+
+
+    /**
+     * @Route("/apip/patients/family", name="api_patients_family", methods={"GET"})
+     */
+    public function api_patients_family(TokenService $tokenService, GroupFamilyRepository $groupFamilyRepository, FamilyRepository $familyRepository)
+    {
+        $user = $tokenService->getCurrentUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $my_group = [];
+
+        $mygroups = $familyRepository->findBy(['patientChild' => $patient]);
+
+        $m = 0;
+        if($mygroups && count($mygroups) > 0){
+            foreach ($mygroups as $mygroup){
+                $groupFamily  = $mygroup->getGroupFamily();
+                $id= $groupFamily->getId();
+                $my_group[$m]["ID"] = $groupFamily->getId();
+                $my_group[$m]["Name"] = $groupFamily->getDesignation();
+                $m++;
+            }
+        }
+        if ($id!=null)  {
+            $groupe = $groupFamilyRepository->find($id);  $family = $familyRepository->searchFamily($groupe);
+        }
+        $data = array_merge($my_group,$family);
+        return new JsonResponse($data);
     }
 
     /**
