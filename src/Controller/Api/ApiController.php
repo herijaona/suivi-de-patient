@@ -151,7 +151,7 @@ class ApiController extends AbstractController
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function api_register_activate(Request $request, UserRepository $userRepository, EntityManager $entityManager)
+    public function api_register_activate(Request $request, UserRepository $userRepository, EntityManagerInterface $entityManager)
     {
         $code = json_decode($request->getContent(), true);
         $user = $userRepository->findOneBy(['activatorId'=>$code]);
