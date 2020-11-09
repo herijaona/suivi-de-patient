@@ -24,6 +24,8 @@ use App\Service\TokenService;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -142,6 +144,12 @@ class ApiController extends AbstractController
 
     /**
      * @Route ("/api/register/activate" , name="api_register_activate" , methods={"POST"})
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @param EntityManager $entityManager
+     * @return JsonResponse
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function api_register_activate(Request $request, UserRepository $userRepository, EntityManager $entityManager)
     {
