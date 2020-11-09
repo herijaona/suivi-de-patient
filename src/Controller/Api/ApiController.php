@@ -168,6 +168,8 @@ class ApiController extends AbstractController
                 $entityManager->flush();
             }
             return new JsonResponse("Activation de votre compte");
+        }else{
+            return new JsonResponse("Code non valide");
         }
 
 
