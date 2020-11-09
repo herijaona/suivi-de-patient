@@ -296,7 +296,7 @@ class ApiController extends AbstractController
         $groupe = $groupFamilyRepository->find($id);
         $family = $familyRepository->searchFamily($groupe);
 
-        $data = array_merge($my_group,$family);
+        $data = array($my_group,$family);
         return new JsonResponse($data);
     }
 
