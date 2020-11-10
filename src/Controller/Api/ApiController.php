@@ -196,25 +196,7 @@ class ApiController extends AbstractController
     }
 
 
-    /**
-     * @Route("/apip/delete/membre",name="apip_delete_membre", methods={"POST"})
-     * @param Request $request
-     * @param FamilyRepository $familyRepository
-     * @param EntityManagerInterface $entityManager
-     * @return JsonResponse
-     */
-    public function apip_delete_membre (Request $request, FamilyRepository $familyRepository,EntityManagerInterface $entityManager)
-    {
-        $family = json_decode($request->getContent(), true);
-        $id_group = $family['id_group'];
-        $id_membre = $family['id_membre'];
-        if ($id_group != "" && $id_membre != ""){
-            $groupe = $familyRepository->findOneBy(['patientChild'=>$id_membre, 'groupFamily'=>$id_group]);
-            $entityManager->remove($groupe);
-            $entityManager->flush();
-        }
-        return new JsonResponse("Suppression reussi");
-    }
+
 
     /**
      * @Route("/api/check-etat",name="api_check_etat", methods={"POST"})
