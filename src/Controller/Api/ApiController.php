@@ -349,13 +349,6 @@ class ApiController extends AbstractController
 
     }
 
-
-
-
-
-
-
-
     /**
      * @Route("/apip/patients/rdv/accepted", name="api_patients_rdv_accepted", methods={"GET"})
      * @param TokenService $tokenService
