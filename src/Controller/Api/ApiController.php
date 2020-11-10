@@ -103,6 +103,15 @@ class ApiController extends AbstractController
     }
 
     /**
+     * @Route ("/apip/intervention/accept", name="apip_intervention_accept", methods={"GET"})
+     */
+    public function apip_intervention_accept(Request $request)
+    {
+     $intervetion = json_decode($request->getContent(),true);
+     $date = $intervetion['date'];
+    }
+
+    /**
      * @Route("/apip/patient/profile/edit", name="api_profile_edit", methods={"POST"})
      * @param EntityManagerInterface $entityManager
      * @param Request $request
@@ -144,6 +153,7 @@ class ApiController extends AbstractController
         return new JsonResponse("ok");
     }
 
+
     /**
      * @Route ("/api/register/activate" , name="api_register_activate" , methods={"POST"})
      * @param Request $request
@@ -183,6 +193,27 @@ class ApiController extends AbstractController
         }
 
 
+    }
+
+
+    /**
+     * @Route("/apip/delete/membre",name="apip_delete_membre", methods={"POST"})
+     * @param Request $request
+     * @param FamilyRepository $familyRepository
+     * @param EntityManagerInterface $entityManager
+     * @return JsonResponse
+     */
+    public function apip_delete_membre (Request $request, FamilyRepository $familyRepository,EntityManagerInterface $entityManager)
+    {
+        $family = json_decode($request->getContent(), true);
+        $id_group = $family['id_group'];
+        $id_membre = $family['id_membre'];
+        if ($id_group != "" && $id_membre != ""){
+            $groupe = $familyRepository->findOneBy(['patientChild'=>$id_membre, 'groupFamily'=>$id_group]);
+            $entityManager->remove($groupe);
+            $entityManager->flush();
+        }
+        return new JsonResponse("Suppression reussi");
     }
 
     /**
@@ -390,6 +421,7 @@ class ApiController extends AbstractController
         }
         return new JsonResponse(['status' => 'OK']);
     }
+
     /**
      * @Route("/api/city", name="api_city" , methods={"GET"})
      */
