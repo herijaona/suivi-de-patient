@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\GroupFamily;
 use App\Entity\Praticien;
 use App\Entity\PropositionRdv;
 use App\Repository\AssocierRepository;
@@ -210,7 +211,24 @@ class ApiController extends AbstractController
 
     }
 
-
+    /**
+     * @Route("/apip/register/group", name="apip_register_group",methods={"POST"})
+     * @param TokenService $tokenService
+     * @param Request $request
+     * @return JsonResponse
+     */
+        public function apip_register_group(TokenService $tokenService,Request $request)
+        {
+            $CurrentUser = $tokenService->getCurrentUser();
+            $designation = json_decode($request->getContent(), true);
+            $patient = $this->patientRepository->findOneBy(['user'=>$CurrentUser]);
+            $groupe_family = new GroupFamily();
+            $groupe_family->setDesignation($designation);
+            $groupe_family->setPatient($patient);
+            $this->entityManager->persist($groupe_family);
+            $this->entityManager->flush();
+            return new JsonResponse("Succès de l'ajout de groupe de famille");
+        }
 
 
     /**
