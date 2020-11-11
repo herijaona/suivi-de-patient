@@ -15,12 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ApiResource(
  *    normalizationContext={"groups"={"read:Family"}},
  *    collectionOperations={"get"},
- *    itemOperations={"get",
- *      "delete"={
- *              "method"="DELETE",
- *              "path"="/family/{id}.{_format}",
- *          },
- *     },
+ *    itemOperations={"get"}
  * )
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "patientChild": "partial", "groupFamily": "partial"})
  */

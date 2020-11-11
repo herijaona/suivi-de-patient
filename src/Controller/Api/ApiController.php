@@ -41,12 +41,27 @@ class ApiController extends AbstractController
     protected $vaccinGenerate;
     protected $patientRepository;
     protected $praticienRepository;
+    /**
+     * @var FamilyRepository
+     */
+    protected $familyRepository;
+    /**
+     * @var GroupFamilyRepository
+     */
+    protected $groupFamilyRepository;
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $entityManager;
 
-    function __construct(VaccinGenerate $vaccinGenerate,PatientRepository $patientRepository,PraticienRepository $praticienRepository)
+    function __construct(VaccinGenerate $vaccinGenerate,PatientRepository $patientRepository,PraticienRepository $praticienRepository,FamilyRepository $familyRepository,GroupFamilyRepository $groupFamilyRepository,EntityManagerInterface $entityManager)
     {
         $this->vaccinGenerate = $vaccinGenerate;
         $this->patientRepository = $patientRepository;
         $this->praticienRepository = $praticienRepository;
+        $this->familyRepository= $familyRepository;
+        $this->groupFamilyRepository=$groupFamilyRepository;
+        $this->entityManager= $entityManager;
     }
 
     /**
@@ -474,6 +489,39 @@ class ApiController extends AbstractController
             if ($associate != null) $data = 'OK';
         }
         return new JsonResponse(['status' => $data]);
+    }
+
+
+    /**
+     * @Route(
+     *     "api/family/{id}",
+     *     name="delete_family",
+     *     methods={"DELETE"},
+     *     requirements={"id"="\d+"}
+     * )
+     * @param int $id
+     *
+     * @return JsonResponse
+     */
+    public function delete($id)
+    {
+        $family = $this->familyRepository->find($id);
+        if ($family->getReferent() == 1){
+            $id_groupe = $family->getGroupFamily()->getId();
+            $groupe =  $this->groupFamilyRepository->findOneBy(['id'=>$id_groupe]);
+
+            $this->entityManager->remove($family);
+            $this->entityManager->flush();
+            $this->entityManager->remove($groupe);
+            $this->entityManager->flush();
+        }
+        $this->entityManager->remove($family);
+        $this->entityManager->flush();
+
+        return new JsonResponse(
+            null,
+            JsonResponse::HTTP_NO_CONTENT
+        );
     }
 
 
