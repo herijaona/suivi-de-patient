@@ -170,6 +170,20 @@ class ApiController extends AbstractController
         return new JsonResponse($country);
 
     }
+    /**
+     * @Route ("/api/city/fonction", name="api_city_fonction", methods={"POST"})
+     */
+    public function api_city_fonction(Request $request,FonctionRepository $fonctionRepository,StateRepository $stateRepository)
+    {
+        $city = json_decode($request->getContent(),true);
+        $id_fonction = $city['id_fonction'];
+        $country = $city['id_country'];
+        $fonction = $fonctionRepository->find($id_fonction);
+        $country = $stateRepository->find($country);
+        $ci = $this->praticienRepository->searchcity($fonction, $country);
+        return new JsonResponse($ci);
+    }
+
 
 
     /**
