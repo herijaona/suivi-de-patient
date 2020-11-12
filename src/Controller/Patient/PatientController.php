@@ -488,7 +488,12 @@ class PatientController extends AbstractController
 
         if ($request->request->get('id_group') != "" && $request->request->get('id_membre')){
             $group_family = $this->familyRepository->findOneBy(['patientChild' => $request->request->get('id_membre'), 'groupFamily' => $request->request->get('id_group')]);
-            if($group_family){
+            if($group_family->getReferent() == 1){
+                $this->entityManager->remove($group_family);
+                $this->entityManager->flush();
+                $this->entityManager->remove($this->groupFamilyRepository->findOneBy(['id'=>$request->request->get('id_group')]));
+                $this->entityManager->flush();
+            }else{
                 $this->entityManager->remove($group_family);
                 $this->entityManager->flush();
             }

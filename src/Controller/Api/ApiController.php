@@ -2,7 +2,9 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Family;
 use App\Entity\GroupFamily;
+use App\Entity\InterventionVaccination;
 use App\Entity\Praticien;
 use App\Entity\PropositionRdv;
 use App\Repository\AssocierRepository;
@@ -23,6 +25,7 @@ use App\Repository\PropositionRdvRepository;
 use App\Repository\StateRepository;
 use App\Repository\TypePatientRepository;
 use App\Repository\UserRepository;
+use App\Repository\VaccinRepository;
 use App\Service\TokenService;
 use App\Service\VaccinGenerate;
 use Doctrine\ORM\EntityManager;
@@ -220,15 +223,53 @@ class ApiController extends AbstractController
         public function apip_register_group(TokenService $tokenService,Request $request)
         {
             $CurrentUser = $tokenService->getCurrentUser();
-            $designation = json_decode($request->getContent(), true);
+            $groupe = json_decode($request->getContent(), true);
+            $designation = $groupe['designation'];
             $patient = $this->patientRepository->findOneBy(['user'=>$CurrentUser]);
             $groupe_family = new GroupFamily();
             $groupe_family->setDesignation($designation);
             $groupe_family->setPatient($patient);
             $this->entityManager->persist($groupe_family);
+            $family = new Family();
+            $family->setGroupFamily($groupe_family);
+            $family->setPatientChild($patient);
+            $family->setReferent(true);
+            $this->entityManager->persist($family);
             $this->entityManager->flush();
             return new JsonResponse("Succès de l'ajout de groupe de famille");
         }
+
+    /**
+     * @Route("api/intervention", name="apip_intervention",methods={"POST"})
+     */
+    public function api_intervention(Request $request,OrdonnaceRepository $ordonnaceRepository,VaccinRepository $vaccinRepository,CarnetVaccinationRepository $carnetVaccinationRepository)
+    {
+        $intervention = json_decode($request->getContent(), true);
+        $patient = $intervention['patient'];
+        $date = $intervention['date_prise'];
+        $date_Rdv = new \DateTime($date);
+        $praticien = $intervention['praticien'];
+        $vaccin = $intervention['vaccin'];
+        $id_carnet = $intervention['id_carnet'];
+        $praticien = $this->praticienRepository->find($praticien);
+        $ordonance = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+        $patient = $this->patientRepository->find($patient);
+        $vaccin = $vaccinRepository->find($vaccin);
+        $carnet = $carnetVaccinationRepository->find($id_carnet);
+        $inter = new InterventionVaccination();
+        $inter->setEtat("0");
+        $inter->setCarnet($carnet);
+        $inter->setDatePriseVaccin($date_Rdv);
+        $inter->setOrdonnace($ordonance);
+        $inter->setPatient($patient);
+        $inter->setVaccin($vaccin);
+        $inter->setStatusVaccin("0");
+        $this->entityManager->persist($inter);
+        $this->entityManager->flush();
+        return new JsonResponse("Envoie demande intervention");
+        
+
+    }
 
 
     /**
