@@ -216,7 +216,7 @@ class ApiController extends AbstractController
                 $inter->setOrdonnace($ordonnance);
                 $this->entityManager->persist($inter);
                 $this->entityManager->flush();
-                if (isset($rdvRequest["Associer"])){
+                if (isset($rdv["Associer"])){
                     $assoc = new Associer();
                     $assoc->setPraticien($praticien);
                     $assoc->setPatient($patient);
