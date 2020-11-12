@@ -155,6 +155,7 @@ class ApiController extends AbstractController
 
     }
 
+
     /**
      * @Route ("/api/country/fonction", name="api_country_fonction", methods={"POST"})
      * @param Request $request
@@ -199,7 +200,7 @@ class ApiController extends AbstractController
         return new JsonResponse($pra);
     }
 
-  
+
 
 
 
