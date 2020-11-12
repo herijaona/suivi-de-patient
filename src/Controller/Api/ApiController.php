@@ -2,9 +2,12 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Associer;
 use App\Entity\Family;
 use App\Entity\GroupFamily;
+use App\Entity\IntervationConsultation;
 use App\Entity\InterventionVaccination;
+use App\Entity\OrdoConsultation;
 use App\Entity\Praticien;
 use App\Entity\PropositionRdv;
 use App\Repository\AssocierRepository;
@@ -121,14 +124,7 @@ class ApiController extends AbstractController
         return new JsonResponse(['results' => $data]);
     }
 
-    /**
-     * @Route ("/apip/intervention/accept", name="apip_intervention_accept", methods={"GET"})
-     */
-    public function apip_intervention_accept(Request $request)
-    {
-     $intervetion = json_decode($request->getContent(),true);
-     $date = $intervetion['date'];
-    }
+
 
     /**
      * @Route ("/api/add/membres", name="api_add_membres", methods={"POST"})
@@ -156,8 +152,67 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route ("/apip/
+     * @Route ("/apip/add/rdv", name="apip_add_rdv", methods={"POST"})
      */
+    public function apip_add_rdv(Request $request,IntervationConsultationRepository $intervationConsultationRepository,TokenService $tokenService,OrdonnaceRepository $ordonnaceRepository,OrdoConsultationRepository $ordoConsultationRepository)
+    {
+        $patient = $tokenService->getCurrentUser();
+        $rdv = json_decode($request->getContent(),true);
+        $praticien = $rdv['praticien'];
+        $type = $rdv['typeRdv'];
+        $description = $rdv['objet'];
+        $Id = $rdv['id'];
+        if ($praticien != null){
+            $praticien = $this->praticienRepository->find($praticien);
+            $ordonnance = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+        }
+        $patient = $this->patientRepository->find($patient);
+        switch ($type){
+            case 'consultation':
+                if ($Id != null)
+                {
+                    $ordoconsu = $ordoConsultationRepository->find($Id);
+                }else{
+                    $ordoconsu = new OrdoConsultation();
+                }
+                $ordoconsu->setObjetConsultation($description);
+                $ordoconsu->setStatusConsultation(0);
+                $ordoconsu->setEtat(0);
+                $ordoconsu->setPatient($patient);
+                $ordoconsu->setOrdonnance($ordonnance);
+                $this->entityManager->persist($ordoconsu);
+                $this->entityManager->flush();
+                if (isset($rdv["Associer"])){
+                    $assoc = new Associer();
+                    $assoc->setPraticien($praticien);
+                    $assoc->setPatient($patient);
+                    $this->entityManager->persist($assoc);
+                    $this->entityManager->flush();
+                }
+                break;
+            case 'intervention':
+                if ($Id != ''){
+                    $inter = $intervationConsultationRepository->find($Id);
+                }else{
+                    $inter = new IntervationConsultation();
+                }
+                $inter->setPatient($patient);
+                $inter->setStatus(0);
+                $inter->setEtat(0);
+                $inter->setObjetConsultation($description);
+                $inter->setOrdonnace($ordonnance);
+                $this->entityManager->persist($inter);
+                $this->entityManager->flush();
+                if (isset($rdvRequest["Associer"])){
+                    $assoc = new Associer();
+                    $assoc->setPraticien($praticien);
+                    $assoc->setPatient($patient);
+                    $this->entityManager->persist($assoc);
+                    $this->entityManager->flush();
+                }
+        }
+        return new JsonResponse("Enregistrement du rendez-vous réussi ");
+    }
 
     /**
      * @Route ("/api/country/fonction", name="api_country_fonction", methods={"POST"})
