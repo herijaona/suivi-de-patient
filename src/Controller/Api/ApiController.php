@@ -188,7 +188,7 @@ class ApiController extends AbstractController
             $praticien = $this->praticienRepository->find($praticien);
             $ordonnance = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
         }
-        $patient = $this->patientRepository->find($patient);
+        $patient = $this->patientRepository->findOneBy(['user'=>$patient]);
         switch ($type){
             case 'consultation':
                 $ordoconsu = new OrdoConsultation();
