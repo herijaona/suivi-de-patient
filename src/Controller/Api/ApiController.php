@@ -131,27 +131,28 @@ class ApiController extends AbstractController
     }
 
     /**
-     * @Route("/api/add/membres", name="api_add_membres", methods={"POST"})
+     * @Route ("/api/add/membres", name="api_add_membres", methods={"POST"})
+     * @param Request $request
+     * @param UserRepository $userRepository
+     * @return JsonResponse
      */
     public function api_add_membres(Request $request,UserRepository $userRepository)
     {
-     $family = $this->json($request->getContent(),true);
+     $family = json_decode($request->getContent(),true);
      $username = $family['username'];
      $group = $family['id_group'];
      $user = $userRepository->findOneBy(['username'=>$username]);
      $patient = $this->patientRepository->findOneBy(['user'=>$user]);
      $groupe = $this->groupFamilyRepository->find($group);
-     if ($this->familyRepository->findOneBy(['patientChild'=>$patient]) != null){
-         return new JsonResponse("Cette patient est deja present dans une groupe famille");
-     }else{
+     if ($this->familyRepository->findOneBy(['patientChild'=>$patient]) != null){return new JsonResponse("Cette patient est deja present dans une groupe famille");}
          $family = new Family();
          $family->setPatientChild($patient);
          $family->setGroupFamily($groupe);
          $family->setReferent(false);
          $this->entityManager->persist($family);
          $this->entityManager->flush();
-         return new JsonResponse("Succès de l'enregistrement du nouveau membre ");
-     }
+         return new JsonResponse("Success");
+
     }
 
     /**

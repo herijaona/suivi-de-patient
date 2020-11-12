@@ -23,7 +23,7 @@ class CarnetVaccinationRepository extends ServiceEntityRepository
 
     public function searchCarnet($patient = null){
         $entityManager = $this->getEntityManager();
-        $query = $entityManager->createQuery('SELECT c.id,c.date_prise, c.etat,v.vaccinName,c.identification,c.identifiant_vaccin,c.Lot,pr.lastName as vaccinateur_nom,pr.firstName as vaccinateur_prenom, pr.NumeroProfessionnel,c.status
+        $query = $entityManager->createQuery('SELECT c.id ,c.date_prise, c.etat,v.vaccinName,c.identification,c.identifiant_vaccin,c.Lot,pr.lastName as vaccinateur_nom,pr.firstName as vaccinateur_prenom, pr.NumeroProfessionnel,c.status,v.id as vaccin
             FROM App\Entity\CarnetVaccination c 
             INNER JOIN App\Entity\Patient p with p.id = c.patient
             INNER JOIN App\Entity\Vaccin v with v.id = c.vaccin
