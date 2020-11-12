@@ -151,9 +151,26 @@ class ApiController extends AbstractController
          $family->setReferent(false);
          $this->entityManager->persist($family);
          $this->entityManager->flush();
-         return new JsonResponse("Success");
+         return new JsonResponse("Success ");
 
     }
+
+    /**
+     * @Route ("/api/country/fonction", name="api_country_fonction", methods={"POST"})
+     * @param Request $request
+     * @param FonctionRepository $fonctionRepository
+     * @return JsonResponse
+     */
+    public function api_country_fonction(Request $request,FonctionRepository $fonctionRepository)
+    {
+        $praticien = json_decode($request->getContent(), true);
+        $id_fonction = $praticien['id_fonction'];
+        $fonction = $fonctionRepository->find($id_fonction);
+        $country = $this->praticienRepository->searchcount($fonction);
+        return new JsonResponse($country);
+
+    }
+
 
     /**
      * @Route("/apip/patient/profile/edit", name="api_profile_edit", methods={"POST"})
