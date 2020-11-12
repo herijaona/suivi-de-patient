@@ -150,6 +150,29 @@ class ApiController extends AbstractController
          return new JsonResponse("Success ");
 
     }
+    /**
+     * @Route ("/api/cancel/rdv", name="api_cancel_rdv",methods={"POST"})
+     */
+    public function api_cancel_rdv(Request $request, OrdoConsultationRepository $ordoConsultationRepository,IntervationConsultationRepository $intervationConsultationRepository)
+    {
+        $rdv = json_decode($request->getContent(),true);
+        $id = $rdv['id'];
+        $type = $rdv['typeRdv'];
+        if ($type == "consultation"){
+            $ordo = $ordoConsultationRepository->find($id);
+            $ordo->setStatusConsultation(2);
+            $this->entityManager->persist($ordo);
+            $this->entityManager->flush();
+        }elseif ($type == "intervention")
+        {
+            $inter = $intervationConsultationRepository->find($id);
+            $inter->setStatus(2);
+            $this->entityManager->persist($inter);
+            $this->entityManager->flush();
+        }
+        return new JsonResponse("Succès");
+
+    }
 
     /**
      * @Route ("/apip/add/rdv", name="apip_add_rdv", methods={"POST"})
@@ -161,7 +184,6 @@ class ApiController extends AbstractController
         $praticien = $rdv['praticien'];
         $type = $rdv['typeRdv'];
         $description = $rdv['objet'];
-        $Id = $rdv['id'];
         if ($praticien != null){
             $praticien = $this->praticienRepository->find($praticien);
             $ordonnance = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
@@ -169,12 +191,7 @@ class ApiController extends AbstractController
         $patient = $this->patientRepository->find($patient);
         switch ($type){
             case 'consultation':
-                if ($Id != null)
-                {
-                    $ordoconsu = $ordoConsultationRepository->find($Id);
-                }else{
-                    $ordoconsu = new OrdoConsultation();
-                }
+                $ordoconsu = new OrdoConsultation();
                 $ordoconsu->setObjetConsultation($description);
                 $ordoconsu->setStatusConsultation(0);
                 $ordoconsu->setEtat(0);
@@ -191,11 +208,7 @@ class ApiController extends AbstractController
                 }
                 break;
             case 'intervention':
-                if ($Id != ''){
-                    $inter = $intervationConsultationRepository->find($Id);
-                }else{
-                    $inter = new IntervationConsultation();
-                }
+                $inter = new IntervationConsultation();
                 $inter->setPatient($patient);
                 $inter->setStatus(0);
                 $inter->setEtat(0);
