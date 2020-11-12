@@ -131,6 +131,30 @@ class ApiController extends AbstractController
     }
 
     /**
+     * @Route("/api/add/membres", name="api_add_membres", methods={"POST"})
+     */
+    public function api_add_membres(Request $request,UserRepository $userRepository)
+    {
+     $family = $this->json($request->getContent(),true);
+     $username = $family['username'];
+     $group = $family['id_group'];
+     $user = $userRepository->findOneBy(['username'=>$username]);
+     $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+     $groupe = $this->groupFamilyRepository->find($group);
+     if ($this->familyRepository->findOneBy(['patientChild'=>$patient]) != null){
+         return new JsonResponse("Cette patient est deja present dans une groupe famille");
+     }else{
+         $family = new Family();
+         $family->setPatientChild($patient);
+         $family->setGroupFamily($groupe);
+         $family->setReferent(false);
+         $this->entityManager->persist($family);
+         $this->entityManager->flush();
+         return new JsonResponse("Succès de l'enregistrement du nouveau membre ");
+     }
+    }
+
+    /**
      * @Route("/apip/patient/profile/edit", name="api_profile_edit", methods={"POST"})
      * @param EntityManagerInterface $entityManager
      * @param Request $request
@@ -240,12 +264,12 @@ class ApiController extends AbstractController
         }
 
     /**
-     * @Route("api/intervention", name="apip_intervention",methods={"POST"})
+     * @Route("/api/intervention", name="apip_intervention",methods={"POST"})
      */
-    public function api_intervention(Request $request,OrdonnaceRepository $ordonnaceRepository,VaccinRepository $vaccinRepository,CarnetVaccinationRepository $carnetVaccinationRepository)
+    public function api_intervention(TokenService $tokenService,Request $request,OrdonnaceRepository $ordonnaceRepository,VaccinRepository $vaccinRepository,CarnetVaccinationRepository $carnetVaccinationRepository)
     {
         $intervention = json_decode($request->getContent(), true);
-        $patient = $intervention['patient'];
+        $patient = $tokenService->getCurrentUser();
         $date = $intervention['date_prise'];
         $date_Rdv = new \DateTime($date);
         $praticien = $intervention['praticien'];
@@ -386,6 +410,7 @@ class ApiController extends AbstractController
         $data = array($my_group,$family);
         return new JsonResponse($data);
     }
+
 
     /**
      * @Route("/apip/patients/vaccination", name="api_patients_vaccination", methods={"GET"})
