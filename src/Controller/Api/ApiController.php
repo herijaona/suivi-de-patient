@@ -142,6 +142,57 @@ class ApiController extends AbstractController
 
         return new JsonResponse(['results' => $data]);
     }
+    /**
+     * @Route("/generation", name="generation")
+     * @param Request $request
+     * @return Response
+     */
+    public function  generation(Request $request){
+        $Request = $request->request->get("generation");
+        $praticien = $request->request->get('praticien');
+
+        $praticien = $this->praticienRepository->find($praticien);
+        $nom = $praticien->getLastName().' '. $praticien->getFirstName();
+        $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
+        $user = $this->getUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+        $ordovaccination = new OrdoVaccination();
+        $ordovaccination->setOrdonnance($ordo);
+        $ordovaccination->setPatient($patient);
+        $ordovaccination->setStatusVaccin(0);
+        $ordovaccination->setEtat(0);
+        $this->entityManager->persist($ordovaccination);
+        $message=$translator->trans('Your Vaccine Calendar request is waiting at the Praticien'.' '.$nom);
+        $this->entityManager->flush();
+        $this->addFlash('success', $message);
+        return $this->redirectToRoute('patient');
+
+
+    }
+    /**
+     * @Route ("/apip/patient/generation", name="apip_patient_generation", methods={"POST"})
+     */
+    public function apip_patient_generation(TokenService $tokenService, Request $request, OrdonnaceRepository $ordonnaceRepository){
+        $user = $tokenService->getCurrentUser();
+        $patient = $this->patientRepository->find($user);
+        $generation = json_decode($request->getContent(),true);
+        $praticien = $generation['praticien'];
+        $praticien = $this->praticienRepository->find($praticien);
+        $nom = $praticien->getLastName().' '. $praticien->getFirstName();
+        $ordonnance = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+        $ordovaccination = new OrdoVaccination();
+        $ordovaccination->setOrdonnance($ordonnance);
+        $ordovaccination->setPatient($patient);
+        $ordovaccination->setStatusVaccin(0);
+        $ordovaccination->setEtat(0);
+        $this->entityManager->persist($ordovaccination);
+        $this->entityManager->flush();
+        return new JsonResponse("Votre demande de generation de vaccination est en attente dans le Praticien".$nom);
+
+
+
+
+    }
 
 
 

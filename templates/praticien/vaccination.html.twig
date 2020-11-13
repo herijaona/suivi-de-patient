@@ -40,7 +40,7 @@
                         {% endif %}
                     </td>
 
-                    <td >
+                    <td>
                         {% if vac.statusVaccin == 1 %}
                             <a href="{{ path('see_calendar', {'patient_id' : vac.patient}) }}" class="badge badge-success badge-style">{% trans %}See{% endtrans %}</a>
                         {% elseif vac.statusVaccin == 0 %}
