@@ -761,12 +761,32 @@ class ApiController extends AbstractController
         );
     }
 
+
+
+    /**
+     * @Route (
+     *     "/api/see/calendar/{patient_id}",
+     *     name="api_see_calendar",
+     *     methods={"GET"},
+     *     requirements={"patient_id"="\d+"}
+     *     )
+     * @param int $patient_id
+     * @return JsonResponse
+     */
+    public function api_see_calendar($patient_id,CarnetVaccinationRepository $carnetVaccinationRepository)
+    {
+        $patient = $this->patientRepository->find($patient_id);
+        $carnet = $carnetVaccinationRepository->findListVaccinsInCarnet($patient);
+        return new JsonResponse($carnet);
+    }
+
+
     /**
      * @Route(
-     *     "api/see/intervention/{carnet_id}",
+     *     "/api/see/intervention/{carnet_id}",
      *     name="api_see_intervention",
      *     methods={"GET"},
-     *     requirements={"id"="\d+"}
+     *     requirements={"carnet_id"="\d+"}
      * )
      * @param int $carnet_id
      *
@@ -778,7 +798,7 @@ class ApiController extends AbstractController
         $list = $interventionVaccinationRepository->searchInt($carnet);
         return new JsonResponse($list);
     }
-    
+
 
     /**
      * @Route ("/apip/patient/associer", name="apip_patient_associer", methods={"GET"})
