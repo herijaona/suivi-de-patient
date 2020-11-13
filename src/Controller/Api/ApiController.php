@@ -142,33 +142,7 @@ class ApiController extends AbstractController
 
         return new JsonResponse(['results' => $data]);
     }
-    /**
-     * @Route("/generation", name="generation")
-     * @param Request $request
-     * @return Response
-     */
-    public function  generation(Request $request){
-        $Request = $request->request->get("generation");
-        $praticien = $request->request->get('praticien');
 
-        $praticien = $this->praticienRepository->find($praticien);
-        $nom = $praticien->getLastName().' '. $praticien->getFirstName();
-        $ordo = $this->ordonnaceRepository->findOneBy(['praticien' => $praticien]);
-        $user = $this->getUser();
-        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
-        $ordovaccination = new OrdoVaccination();
-        $ordovaccination->setOrdonnance($ordo);
-        $ordovaccination->setPatient($patient);
-        $ordovaccination->setStatusVaccin(0);
-        $ordovaccination->setEtat(0);
-        $this->entityManager->persist($ordovaccination);
-        $message=$translator->trans('Your Vaccine Calendar request is waiting at the Praticien'.' '.$nom);
-        $this->entityManager->flush();
-        $this->addFlash('success', $message);
-        return $this->redirectToRoute('patient');
-
-
-    }
     /**
      * @Route ("/apip/patient/generation", name="apip_patient_generation", methods={"POST"})
      */
@@ -188,9 +162,6 @@ class ApiController extends AbstractController
         $this->entityManager->persist($ordovaccination);
         $this->entityManager->flush();
         return new JsonResponse("Votre demande de generation de vaccination est en attente dans le Praticien".$nom);
-
-
-
 
     }
 
@@ -340,6 +311,29 @@ class ApiController extends AbstractController
         $pra = $this->praticienRepository->searchpra($fonction, $country, $city);
         return new JsonResponse($pra);
     }
+
+    /**
+     * @Route ("/api/praticien/centre", name="api_praticien_centre", methods={"POST"})
+     */
+    public function api_praticien_centre(Request $request,CityRepository $cityRepository,CentreHealthRepository $centreHealthRepository){
+        $city = json_decode($request->getContent(),true);
+        $id= $city['id'];
+        $c = $cityRepository->find($id);
+        $centre = $centreHealthRepository->searchCentre($c);
+        return new JsonResponse($centre);
+    }
+
+    /**
+     * @Route ("/api/centre/praticien", name="api_centre_praticien", methods={"POST"})
+     */
+    public function api_centre_praticien(Request $request, CentreHealthRepository $centreHealthRepository, OrdonnaceRepository $ordonnaceRepository){
+        $centre = json_decode($request->getContent(),true);
+        $id = $centre['id'];
+        $centre = $centreHealthRepository->find($id);
+        $praticien = $ordonnaceRepository->searchPcent($centre);
+        return new JsonResponse($praticien);
+    }
+
 
 
 
@@ -608,6 +602,7 @@ class ApiController extends AbstractController
     {
         $user = $tokenService->getCurrentUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+
         $ordo = $ordoVaccinationRepository->searchStatusPraticien($praticien);
         $intervention = $interventionVaccinationRepository->searchIntCarnet($praticien);
         $data = array_merge($ordo, $intervention);
