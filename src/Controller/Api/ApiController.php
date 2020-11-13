@@ -8,6 +8,7 @@ use App\Entity\GroupFamily;
 use App\Entity\IntervationConsultation;
 use App\Entity\InterventionVaccination;
 use App\Entity\OrdoConsultation;
+use App\Entity\OrdoVaccination;
 use App\Entity\Praticien;
 use App\Entity\PropositionRdv;
 use App\Repository\AssocierRepository;
@@ -548,6 +549,19 @@ class ApiController extends AbstractController
 
         $data = array($my_group,$family);
         return new JsonResponse($data);
+    }
+    /**
+     * @Route ("/apip/praticien/vaccination", name="apip_praticien_vaccination", methods={"GET"})
+     */
+    public function apip_praticien_vaccination(TokenService $tokenService,OrdoVaccinationRepository $ordoVaccinationRepository, InterventionVaccinationRepository $interventionVaccinationRepository)
+    {
+        $user = $tokenService->getCurrentUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $ordo = $ordoVaccinationRepository->searchStatusPraticien($praticien);
+        $intervention = $interventionVaccinationRepository->searchIntCarnet($praticien);
+        $data = array_merge($ordo, $intervention);
+        return new JsonResponse($data);
+
     }
 
 
