@@ -761,6 +761,39 @@ class ApiController extends AbstractController
         );
     }
 
+    /**
+     * @Route(
+     *     "api/see/intervention/{carnet_id}",
+     *     name="api_see_intervention",
+     *     methods={"GET"},
+     *     requirements={"id"="\d+"}
+     * )
+     * @param int $carnet_id
+     *
+     * @return JsonResponse
+     */
+    public function api_see_intervention($carnet_id,CarnetVaccinationRepository $carnetVaccinationRepository,InterventionVaccinationRepository $interventionVaccinationRepository)
+    {
+        $carnet =$carnetVaccinationRepository->find($carnet_id);
+        $list = $interventionVaccinationRepository->searchInt($carnet);
+        return new JsonResponse($list);
+    }
+    
+
+    /**
+     * @Route ("/apip/patient/associer", name="apip_patient_associer", methods={"GET"})
+     * @param TokenService $tokenService
+     * @param AssocierRepository $associerRepository
+     * @return JsonResponse
+     */
+
+    public function apip_patient_associer(TokenService $tokenService, AssocierRepository $associerRepository)
+    {
+        $user = $tokenService->getCurrentUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $patient = $associerRepository->searcha($praticien);
+        return new JsonResponse($patient);
+    }
 
 
 }
