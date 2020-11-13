@@ -100,6 +100,24 @@ class ApiController extends AbstractController
         return new Response($this->get("serializer")->serialize($data, "json"));
     }
 
+
+    /**
+     * @Route ("/apip/praticien/rdv/in", name="apip_praticien_rdv_in", methods={"GET"})
+     * @param TokenService $tokenService
+     * @param OrdoConsultationRepository $ordoConsultationRepository
+     * @param IntervationConsultationRepository $intervationConsultationRepository
+     * @return JsonResponse
+     */
+    public function apip_praticien_rdv_in(TokenService $tokenService,OrdoConsultationRepository $ordoConsultationRepository, IntervationConsultationRepository $intervationConsultationRepository)
+    {
+        $user = $tokenService->getCurrentUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $ordo = $ordoConsultationRepository->searchStatusPraticien($praticien);
+        $intervention = $intervationConsultationRepository->searchIn($praticien);
+        $data = array_merge($ordo,$intervention);
+        return new JsonResponse($data);
+    }
+
     /**
      * @Route("/apip/patients/rdv/in", name="api_patients_rdv_in", methods={"GET"})
      * @param TokenService $tokenService
