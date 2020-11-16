@@ -95,7 +95,7 @@ class InscriptionUserController extends AbstractController
 
         }
         $email = (new TemplatedEmail())
-            ->from('hello@neitic.com')
+            ->from('digitalhealth@matipla.com')
             ->to($email)
             ->subject('Confirmation code' )
             ->htmlTemplate('email/mobile.html.twig')

@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *     collectionOperations={
  *          "get",
  *          "post"={
- *            "controller"=App\Controller\Api\InscriptionUserController::class
+     *            "controller"=App\Controller\Api\InscriptionUserController::class
  *         }
  *      },
  *     itemOperations={

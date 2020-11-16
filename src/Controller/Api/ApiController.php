@@ -148,7 +148,7 @@ class ApiController extends AbstractController
      */
     public function apip_patient_generation(TokenService $tokenService, Request $request, OrdonnaceRepository $ordonnaceRepository){
         $user = $tokenService->getCurrentUser();
-        $patient = $this->patientRepository->find($user);
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $generation = json_decode($request->getContent(),true);
         $praticien = $generation['praticien'];
         $praticien = $this->praticienRepository->find($praticien);

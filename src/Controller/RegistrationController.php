@@ -147,7 +147,7 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
             //  mail
             $email = (new TemplatedEmail())
-                ->from('hello@neitic.com')
+                ->from('digitalhealth@matipla.com')
                 ->to($form->get('email')->getData())
                 ->subject('Confirmation code' )
                 ->htmlTemplate('email/email.html.twig')
@@ -277,7 +277,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($patient);
             $entityManager->flush();
             $email = (new TemplatedEmail())
-                ->from('hello@neitic.com')
+                ->from('digitalhealth@matipla.com')
                 ->to($email)
                 ->subject('Confirmation code' )
                 ->htmlTemplate('email/email.html.twig')
