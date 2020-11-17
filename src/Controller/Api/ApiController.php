@@ -948,7 +948,7 @@ class ApiController extends AbstractController
     /**
      * @Route ("/apip/generate/praticien", name="apip_generate_praticien", methods={"POST"})
      */
-    public function apip_generate_praticien(TokenService $tokenService,Request $request,VaccinRepository $vaccinRepository)
+    public function apip_generate_praticien(TokenService $tokenService,Request $request,VaccinRepository $vaccinRepository, OrdonnaceRepository $ordonnaceRepository)
     {
         $user = $tokenService->getCurrentUser();
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
@@ -973,7 +973,7 @@ class ApiController extends AbstractController
         $intervention = new InterventionVaccination();
         $intervention->setCarnet($carnet);
         $intervention->setStatusVaccin("1");
-        $ordonance = $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+        $ordonance = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
         $intervention->setOrdonnace($ordonance);
         $intervention->setPatient($patient);
         $intervention->setVaccin($vaccin);
@@ -998,7 +998,7 @@ class ApiController extends AbstractController
         $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
         $intervention = $interventionVaccinationRepository->find($id);
         $intervention->setDatePriseVaccin($Date_Rdv);
-        $intervention->setStatusVaccin("1");
+        $intervention->setStatusVaccin(1);
         $this->entityManager->persist($intervention);
         $this->entityManager->flush();
         $carnetvaccination = $carnetVaccinationRepository->find($carnet);
@@ -1022,11 +1022,11 @@ class ApiController extends AbstractController
         $lot = $realize['lot'];
         $carnet = $realize['carnet'];
         $inter = $interventionVaccinationRepository->find($id);
-        $inter->setEtat("1");
+        $inter->setEtat(1);
         $this->entityManager->persist($inter);
         $this->entityManager->flush();
         $carnetvaccination = $carnetVaccinationRepository->find($carnet);
-        $carnetvaccination->setEtat("1");
+        $carnetvaccination->setEtat(1);
         $carnetvaccination->setPraticien($praticien);
         $carnetvaccination->setLot($lot);
         $this->entityManager->persist($carnetvaccination);
@@ -1092,14 +1092,14 @@ class ApiController extends AbstractController
         $type = $rdv['typeRdv'];
         if ($type == "consultation" && $id != '' ){
             $ordoconsultation = $ordoConsultationRepository->find($id);
-            $ordoconsultation->setStatusConsultation("1");
+            $ordoconsultation->setStatusConsultation(1);
             $ordoconsultation->setDateRdv($Date_Rdv);
             $this->entityManager->persist($ordoconsultation);
             $this->entityManager->flush();
         }elseif ($type == "intervention" && $id != '')
         {
             $inter = $intervationConsultationRepository->find($id);
-            $inter->setStatus("1");
+            $inter->setStatus(1);
             $inter->setDateConsultation($Date_Rdv);
             $this->entityManager->persist($inter);
             $this->entityManager->flush();
@@ -1118,7 +1118,7 @@ class ApiController extends AbstractController
         $type = $rdv['typeRdv'];
         if ($type == "consultation" && $id != '' ){
             $ordoconsultation = $ordoConsultationRepository->find($id);
-            $ordoconsultation->setEtat("1");
+            $ordoconsultation->setEtat(1);
             $this->entityManager->persist($ordoconsultation);
             $this->entityManager->flush();
         }elseif ($type == "intervention" && $id != '')
