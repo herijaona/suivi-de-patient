@@ -238,6 +238,8 @@ class ApiController extends AbstractController
             $this->entityManager->persist($ordoVacc);
             $this->entityManager->flush();
         }
+        return new JsonResponse("Succès");
+
 
     }
 
@@ -991,6 +993,7 @@ class ApiController extends AbstractController
         return new JsonResponse("Organiser");
 
     }
+
     /**
      * @Route ("/apip/realize/vaccination", name="apip_realize_vaccination", methods={"POST"})
      */
