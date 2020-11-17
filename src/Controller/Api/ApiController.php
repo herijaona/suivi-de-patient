@@ -168,6 +168,7 @@ class ApiController extends AbstractController
 
 
 
+
     /**
      * @Route ("/api/add/membres", name="api_add_membres", methods={"POST"})
      * @param Request $request
@@ -903,6 +904,17 @@ class ApiController extends AbstractController
         $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
         $patient = $associerRepository->searcha($praticien);
         return new JsonResponse($patient);
+    }
+    /**
+     * @Route("/apip/associer/patient", name="apip_associer_patient", methods={"GET"})
+     *
+     */
+    public function apip_associer_patient(TokenService $tokenService,AssocierRepository $associerRepository)
+    {
+        $user = $tokenService->getCurrentUser();
+        $pra= $this->praticienRepository->findOneBy(['user'=>$user]);
+        $associer = $associerRepository->searchAssocier($pra);
+        return new JsonResponse($associer);
     }
 
 
