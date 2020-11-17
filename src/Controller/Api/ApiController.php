@@ -259,6 +259,7 @@ class ApiController extends AbstractController
             $this->entityManager->persist($ordoVacc);
             $this->entityManager->flush();
         }
+        return new JsonResponse("cancel");
 
     }
 
