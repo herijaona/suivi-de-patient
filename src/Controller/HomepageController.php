@@ -102,14 +102,14 @@ class HomepageController extends AbstractController
             }
             else{
                 $email = (new TemplatedEmail())
-                    ->from('hello@neitic.com')
+                    ->from('digitalhealth@matipla.com')
                     ->to($mail)
                     ->subject('Confirmation code' )
                     ->htmlTemplate('email/change.html.twig');
                 // On envoie le mail
                 $mailer->send($email);
                 $message=$translator->trans('The password reset link is sent to your email');
-                $this->addFlash('success', $message.$mail);
+                $this->addFlash('success', $message.' '.$mail);
 
 
             }

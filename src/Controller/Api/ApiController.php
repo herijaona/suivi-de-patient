@@ -32,6 +32,7 @@ use App\Repository\UserRepository;
 use App\Repository\VaccinRepository;
 use App\Service\TokenService;
 use App\Service\VaccinGenerate;
+use DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;
@@ -214,6 +215,47 @@ class ApiController extends AbstractController
         return new JsonResponse("Succès");
 
     }
+
+    /**
+     * @Route ("/apip/generate/vaccination", name="apip_generate_vaccination", methods={"POST"})
+     * @param Request $request
+     * @param VaccinGenerate $vaccinGenerate
+     * @param OrdoVaccinationRepository $ordoVaccinationRepository
+     */
+    public function apip_generate_vaccination(Request $request, VaccinGenerate $vaccinGenerate, OrdoVaccinationRepository $ordoVaccinationRepository)
+    {
+        $vaccin = json_decode($request->getContent(),true);
+        $id = $vaccin['id'];
+        $patient = $vaccin['patient'];
+        $patient =  $this->patientRepository->find($patient);
+        $Date_Rdv= new DateTime('now');
+        $ordoVacc = $ordoVaccinationRepository->find($id);
+        if($ordoVacc != null){
+            $vaccinGenerate->generateCalendar($patient, $Date_Rdv);
+            $ordoVacc->setStatusVaccin(1);
+            $this->entityManager->persist($ordoVacc);
+            $this->entityManager->flush();
+        }
+
+    }
+
+
+    /**
+     * @Route ("/api/cancel/generation", name="api_cancel_generation",methods={"POST"})
+     */
+    public function api_cancel_generation(Request $request,OrdoVaccinationRepository $ordoVaccinationRepository){
+        $vaccin = json_decode($request->getContent(),true);
+        $id = $vaccin['id'];
+        $ordoVacc = $ordoVaccinationRepository->find($id);
+        if($ordoVacc != null)
+        {
+            $ordoVacc->setStatusVaccin(2);
+            $this->entityManager->persist($ordoVacc);
+            $this->entityManager->flush();
+        }
+        
+    }
+
 
     /**
      * @Route ("/apip/add/rdv", name="apip_add_rdv", methods={"POST"})

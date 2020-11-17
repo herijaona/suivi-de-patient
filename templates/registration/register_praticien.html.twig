@@ -41,7 +41,7 @@
                 </div>
                 <div class="row form-group">
                     <div class="col-lg-6">
-                        <select class="form-control" id="city" name="city" >
+                        <select class="form-control chosen-select" id="city" name="city" >
                             <option value="" selected>Ville de Fonction</option>
                         </select>
                     </div>
@@ -192,8 +192,10 @@
                 data: {id: idcountry},
                 success: function (response) {
                     $('#city').empty();
+                    $('#city').append('<option value="" >'+"Ville de Fonction" +' </option>');
+
                     $.each(response, function (index, element) {
-                        $('#city').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
+                        $('#city').append('<option value="' + element.id + '">' + element.nameCity + ' </option>');
                     });
                 }
             });

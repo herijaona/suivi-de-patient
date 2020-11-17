@@ -231,8 +231,9 @@
                     data: {id: idcountry},
                     success: function (response) {
                         $('#city').empty();
+                        $('#city').append('<option value="" >' + "Ville de Résidence" + ' </option>');
                         $.each(response, function (index, element) {
-                            $('#city').append('<option value="' + element.id + '" selected="selected">' + element.nameCity + ' </option>');
+                            $('#city').append('<option value="' + element.id + '">' + element.nameCity + ' </option>');
                         });
                     }
                 });

@@ -25,7 +25,7 @@ class CityRepository extends ServiceEntityRepository
             INNER JOIN App\Entity\Region r with r.id = c.region
             LEFT JOIN App\Entity\State s with s.id = r.state
             WHERE s.id = :state
-            ORDER BY c.nameCity ASC
+            ORDER BY c.nameCity 
             '
 
         )
