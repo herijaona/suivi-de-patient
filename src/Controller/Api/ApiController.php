@@ -1075,9 +1075,59 @@ class ApiController extends AbstractController
             $this->entityManager->persist($inter);
             $this->entityManager->flush();
         }
-
         return new JsonResponse("Succès le l'enregistrement de rendez-vous");
+    }
 
+    /**
+     * @Route ("/api/organize/rdv", name="api_organize_rdv", methods={"POST"})
+     */
+    public function api_organize_rdv(Request $request, OrdoConsultationRepository $ordoConsultationRepository,IntervationConsultationRepository $intervationConsultationRepository)
+    {
+        $rdv = json_decode($request->getContent(), true);
+        $date = $rdv['date'];
+        $id = $rdv['id'];
+        $heure = $rdv['heure'];
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $type = $rdv['typeRdv'];
+        if ($type == "consultation" && $id != '' ){
+            $ordoconsultation = $ordoConsultationRepository->find($id);
+            $ordoconsultation->setStatusConsultation("1");
+            $ordoconsultation->setDateRdv($Date_Rdv);
+            $this->entityManager->persist($ordoconsultation);
+            $this->entityManager->flush();
+        }elseif ($type == "intervention" && $id != '')
+        {
+            $inter = $intervationConsultationRepository->find($id);
+            $inter->setStatus("1");
+            $inter->setDateConsultation($Date_Rdv);
+            $this->entityManager->persist($inter);
+            $this->entityManager->flush();
+        }
+        return new JsonResponse("Succès");
+
+    }
+
+    /**
+     * @Route ("/api/realize/rdv", name="api_realize_rdv", methods={"POST"})
+     */
+    public function api_realize_rdv(Request $request, OrdoConsultationRepository $ordoConsultationRepository, IntervationConsultationRepository $intervationConsultationRepository)
+    {
+        $rdv = json_decode($request->getContent(), true);
+        $id = $rdv['id'];
+        $type = $rdv['typeRdv'];
+        if ($type == "consultation" && $id != '' ){
+            $ordoconsultation = $ordoConsultationRepository->find($id);
+            $ordoconsultation->setEtat("1");
+            $this->entityManager->persist($ordoconsultation);
+            $this->entityManager->flush();
+        }elseif ($type == "intervention" && $id != '')
+        {
+            $inter = $intervationConsultationRepository->find($id);
+            $inter->setEtat("1");
+            $this->entityManager->persist($inter);
+            $this->entityManager->flush();
+        }
     }
 
 
