@@ -516,8 +516,8 @@ class ApiController extends AbstractController
      */
     public function api_intervention(TokenService $tokenService,Request $request,OrdonnaceRepository $ordonnaceRepository,VaccinRepository $vaccinRepository,CarnetVaccinationRepository $carnetVaccinationRepository)
     {
-        $intervention = json_decode($request->getContent(), true);
         $user = $tokenService->getCurrentUser();
+        $intervention = json_decode($request->getContent(), true);
         $date = $intervention['date_prise'];
         $date_Rdv = new \DateTime($date);
         $praticien = $intervention['praticien'];
