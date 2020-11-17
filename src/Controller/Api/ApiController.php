@@ -242,6 +242,8 @@ class ApiController extends AbstractController
 
     /**
      * @Route ("/api/cancel/generation", name="api_cancel_generation",methods={"POST"})
+     * @param Request $request
+     * @param OrdoVaccinationRepository $ordoVaccinationRepository
      */
     public function api_cancel_generation(Request $request,OrdoVaccinationRepository $ordoVaccinationRepository){
         $vaccin = json_decode($request->getContent(),true);
@@ -253,7 +255,7 @@ class ApiController extends AbstractController
             $this->entityManager->persist($ordoVacc);
             $this->entityManager->flush();
         }
-        
+
     }
 
 
