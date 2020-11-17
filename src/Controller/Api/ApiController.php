@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Associer;
+use App\Entity\CarnetVaccination;
 use App\Entity\Family;
 use App\Entity\GroupFamily;
 use App\Entity\IntervationConsultation;
@@ -924,6 +925,94 @@ class ApiController extends AbstractController
     {
         $vaccin = $vaccinRepository->vaccinDemande();
         return new JsonResponse($vaccin);
+
+    }
+    /**
+     * @Route ("/apip/generate/praticien", name="apip_generate_praticien", methods={"POST"})
+     */
+    public function apip_generate_praticien(TokenService $tokenService,Request $request,VaccinRepository $vaccinRepository)
+    {
+        $user = $tokenService->getCurrentUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $gener = json_decode($request->getContent(), true);
+        $patient = $gener['patient'];
+        $patient = $this->patientRepository->find($patient);
+        $vaccin = $gener['vaccin'];
+        $vaccin = $vaccinRepository->find($vaccin);
+        $identification = $gener['identification'];
+        $date = $gener['date'];
+        $heure = $gener['heure'];
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $carnet = new CarnetVaccination();
+        $carnet->setStatus("1");
+        $carnet->setDatePrise($Date_Rdv);
+        $carnet->setVaccin($vaccin);
+        $carnet->setIdentification($identification);
+        $carnet->setPatient($patient);
+        $this->entityManager->persist($carnet);
+        $this->entityManager->flush();
+        $intervention = new InterventionVaccination();
+        $intervention->setCarnet($carnet);
+        $intervention->setStatusVaccin("1");
+        $ordonance = $this->ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+        $intervention->setOrdonnace($ordonance);
+        $intervention->setPatient($patient);
+        $intervention->setVaccin($vaccin);
+        $intervention->setDatePriseVaccin($Date_Rdv);
+        $intervention->setEtat("0");
+        $this->entityManager->persist($intervention);
+        $this->entityManager->flush();
+        return new JsonResponse("Succès de l'enregistrement");
+    }
+
+    /**
+     * @Route ("/api/organize/vaccination", name="api_organize_vaccination", methods={"POST"})
+     */
+    public function api_organize_vaccination(Request $request,InterventionVaccinationRepository $interventionVaccinationRepository, CarnetVaccinationRepository $carnetVaccinationRepository)
+    {
+        $organize = json_decode($request->getContent(), true);
+        $id = $organize['id'];
+        $date = $organize['date'];
+        $heure = $organize['heure'];
+        $carnet = $organize['carnet'];
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $intervention = $interventionVaccinationRepository->find($id);
+        $intervention->setDatePriseVaccin($Date_Rdv);
+        $intervention->setStatusVaccin("1");
+        $this->entityManager->persist($intervention);
+        $this->entityManager->flush();
+        $carnetvaccination = $carnetVaccinationRepository->find($carnet);
+        $carnetvaccination->setStatus(1);
+        $carnetvaccination->setDatePrise($Date_Rdv);
+        $this->entityManager->persist($carnetvaccination);
+        $this->entityManager->flush();
+        return new JsonResponse("Organiser");
+
+    }
+    /**
+     * @Route ("/apip/realize/vaccination", name="apip_realize_vaccination", methods={"POST"})
+     */
+    public function apip_realize_vaccination(TokenService $tokenService, Request $request,InterventionVaccinationRepository $interventionVaccinationRepository,CarnetVaccinationRepository $carnetVaccinationRepository)
+    {
+        $user= $tokenService->getCurrentUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $realize = json_decode($request->getContent(), true);
+        $id = $realize['id'];
+        $lot = $realize['lot'];
+        $carnet = $realize['carnet'];
+        $inter = $interventionVaccinationRepository->find($id);
+        $inter->setEtat("1");
+        $this->entityManager->persist($inter);
+        $this->entityManager->flush();
+        $carnetvaccination = $carnetVaccinationRepository->find($carnet);
+        $carnetvaccination->setEtat("1");
+        $carnetvaccination->setPraticien($praticien);
+        $carnetvaccination->setLot($lot);
+        $this->entityManager->persist($carnetvaccination);
+        $this->entityManager->flush();
+        return new JsonResponse("Réaliser");
 
     }
 
