@@ -259,8 +259,22 @@ class ApiController extends AbstractController
             $this->entityManager->persist($ordoVacc);
             $this->entityManager->flush();
         }
-        return new JsonResponse("cancel");
+        return new JsonResponse("Succés");
 
+    }
+    /**
+     * @Route ("/api/cancel/intervention", name="api_cancel_intervention", methods={"POST"})
+     */
+    public function api_cancel_intervention(Request $request, InterventionVaccinationRepository $interventionVaccinationRepository){
+        $inter = json_decode($request->getContent(),true);
+        $id = $inter['id'];
+        $intervention = $interventionVaccinationRepository->find($id);
+        if($intervention != null){
+            $intervention->setStatusVaccin(2);
+            $this->entityManager->persist($intervention);
+            $this->entityManager->flush();
+        }
+        return new JsonResponse("Succés");
     }
 
 
@@ -1017,6 +1031,51 @@ class ApiController extends AbstractController
         $this->entityManager->persist($carnetvaccination);
         $this->entityManager->flush();
         return new JsonResponse("Réaliser");
+
+    }
+
+    /**
+     * @Route ("/apip/register/rdv/praticien", name="apip_register_rdv_praticien", methods={"POST"})
+     */
+    public function apip_register_rdv_praticien(TokenService $tokenService, Request $request,OrdonnaceRepository $ordonnaceRepository)
+    {
+        $user = $tokenService->getCurrentUser();
+        $praticien = $this->praticienRepository->findOneBy(['user'=>$user]);
+        $ordonnace = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
+        $rdv = json_decode($request->getContent(), true);
+        $patient = $rdv['patient'];
+        $type = $rdv['typeRdv'];
+        $objet = $rdv['objet'];
+        $date = $rdv['date'];
+        $heure = $rdv['heure'];
+        $patient = $this->patientRepository->find($patient);
+        $rdv_date = str_replace("/", "-", $date);
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        if ($type == "consultation")
+        {
+            $ordo = new OrdoConsultation();
+            $ordo->setObjetConsultation($objet);
+            $ordo->setStatusConsultation(1);
+            $ordo->setEtat(0);
+            $ordo->setPatient($patient);
+            $ordo->setDateRdv($Date_Rdv);
+            $ordo->setOrdonnance($ordonnace);
+            $this->entityManager->persist($ordo);
+            $this->entityManager->flush();
+        }elseif ($type == "intervention")
+        {
+            $inter = new IntervationConsultation();
+            $inter->setPatient($patient);
+            $inter->setStatus(1);
+            $inter->setEtat(0);
+            $inter->setObjetConsultation($objet);
+            $inter->setDateConsultation($Date_Rdv);
+            $inter->setOrdonnace($ordonnace);
+            $this->entityManager->persist($inter);
+            $this->entityManager->flush();
+        }
+
+        return new JsonResponse("Succès le l'enregistrement de rendez-vous");
 
     }
 
