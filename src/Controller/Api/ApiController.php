@@ -514,7 +514,7 @@ class ApiController extends AbstractController
     /**
      * @Route("/apip/intervention", name="apip_intervention",methods={"POST"})
      */
-    public function apip_intervention(TokenService $tokenService,Request $request,OrdonnaceRepository $ordonnaceRepository,VaccinRepository $vaccinRepository,CarnetVaccinationRepository $carnetVaccinationRepository)
+    public function apip_intervention(TokenService $tokenService,Request $request,OrdonnaceRepository $ordonnaceRepository,VaccinRepository $vaccinRepository,CarnetVaccinationRepository $carnetVaccinationRepository,InterventionVaccinationRepository $interventionVaccinationRepository)
     {
         $user = $tokenService->getCurrentUser();
         $patient = $this->patientRepository->findOneBy(['user'=>$user]);
@@ -529,19 +529,26 @@ class ApiController extends AbstractController
         $ordonance = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
         $vaccin = $vaccinRepository->find($vaccin);
         $carnet = $carnetVaccinationRepository->find($id_carnet);
-        $inter = new InterventionVaccination();
-        $inter->setEtat("0");
-        $inter->setCarnet($carnet);
-        $inter->setDatePriseVaccin($date_Rdv);
-        $inter->setOrdonnace($ordonance);
-        $inter->setPatient($patient);
-        $inter->setVaccin($vaccin);
-        $inter->setStatusVaccin("0");
-        $this->entityManager->persist($inter);
-        $this->entityManager->flush();
-        return new JsonResponse("Envoie demande intervention");
-        
+        $or = $interventionVaccinationRepository->findOneBy(['ordonnace'=>$ordonance]);
+        $cr = $interventionVaccinationRepository->findOneBy(['carnet'=>$id_carnet]);
+        if($or != null && $cr != null)
+        {
+            return new JsonResponse("Une demande d'intervention est deja envoyée dans cette praticien");
 
+        }else{
+            $inter = new InterventionVaccination();
+            $inter->setEtat("0");
+            $inter->setCarnet($carnet);
+            $inter->setDatePriseVaccin($date_Rdv);
+            $inter->setOrdonnace($ordonance);
+            $inter->setPatient($patient);
+            $inter->setVaccin($vaccin);
+            $inter->setStatusVaccin("0");
+            $this->entityManager->persist($inter);
+            $this->entityManager->flush();
+            return new JsonResponse("Envoie demande intervention");
+        }
+        
     }
 
 
