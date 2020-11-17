@@ -19,6 +19,15 @@ class VaccinRepository extends ServiceEntityRepository
         parent::__construct($registry, Vaccin::class);
     }
 
+
+    public function vaccinDemande(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery('SELECT v.id, v.vaccinName, v.Statut
+            FROM App\Entity\Vaccin v
+          
+        ');
+        return $query->getResult();
+    }
     // /**
     //  * @return Vaccin[] Returns an array of Vaccin objects
     //  */

@@ -916,6 +916,16 @@ class ApiController extends AbstractController
         $associer = $associerRepository->searchAssocier($pra);
         return new JsonResponse($associer);
     }
+    /**
+     * @Route ("/api/vaccin", name="api_vaccin", methods={"GET"})
+     *
+     */
+    public function api_vaccin(VaccinRepository $vaccinRepository)
+    {
+        $vaccin = $vaccinRepository->vaccinDemande();
+        return new JsonResponse($vaccin);
+
+    }
 
 
 }
