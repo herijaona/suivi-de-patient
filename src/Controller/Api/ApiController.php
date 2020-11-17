@@ -512,11 +512,13 @@ class ApiController extends AbstractController
         }
 
     /**
-     * @Route("/api/intervention", name="apip_intervention",methods={"POST"})
+     * @Route("/apip/intervention", name="apip_intervention",methods={"POST"})
      */
-    public function api_intervention(TokenService $tokenService,Request $request,OrdonnaceRepository $ordonnaceRepository,VaccinRepository $vaccinRepository,CarnetVaccinationRepository $carnetVaccinationRepository)
+    public function apip_intervention(TokenService $tokenService,Request $request,OrdonnaceRepository $ordonnaceRepository,VaccinRepository $vaccinRepository,CarnetVaccinationRepository $carnetVaccinationRepository)
     {
         $user = $tokenService->getCurrentUser();
+        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
+
         $intervention = json_decode($request->getContent(), true);
         $date = $intervention['date_prise'];
         $date_Rdv = new \DateTime($date);
@@ -525,7 +527,6 @@ class ApiController extends AbstractController
         $id_carnet = $intervention['id_carnet'];
         $praticien = $this->praticienRepository->find($praticien);
         $ordonance = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
-        $patient = $this->patientRepository->findOneBy(['user'=>$user]);
         $vaccin = $vaccinRepository->find($vaccin);
         $carnet = $carnetVaccinationRepository->find($id_carnet);
         $inter = new InterventionVaccination();
