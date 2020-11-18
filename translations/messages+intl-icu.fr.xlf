@@ -1177,6 +1177,11 @@
         <source>List of pending activities</source>
         <target>Listes des activités en attente</target>
       </trans-unit>
+      <trans-unit id="s7lheiq" resname="A request for intervention has already been sent to this praticien">
+        <source>A request for intervention has already been sent to this praticien</source>
+        <target>Une demande d'intervention est deja envoyée dans cette praticien</target>
+      </trans-unit>
+
     </body>
   </file>
 </xliff>

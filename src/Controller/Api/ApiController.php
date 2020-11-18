@@ -537,13 +537,13 @@ class ApiController extends AbstractController
 
         }else{
             $inter = new InterventionVaccination();
-            $inter->setEtat("0");
+            $inter->setEtat(0);
             $inter->setCarnet($carnet);
             $inter->setDatePriseVaccin($date_Rdv);
             $inter->setOrdonnace($ordonance);
             $inter->setPatient($patient);
             $inter->setVaccin($vaccin);
-            $inter->setStatusVaccin("0");
+            $inter->setStatusVaccin(0);
             $this->entityManager->persist($inter);
             $this->entityManager->flush();
             return new JsonResponse("Envoie demande intervention");

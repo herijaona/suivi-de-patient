@@ -184,18 +184,28 @@ class PatientController extends AbstractController
         $patient= $this->patientRepository->find($patient);
         $Id = $carnetRequest['id'];
         $car = $this->carnetVaccinationRepository->find($Id);
-        $intervention = new InterventionVaccination();
-        $intervention->setEtat("0");
-        $intervention->setDatePriseVaccin($Date_Rdv);
-        $intervention->setVaccin($vaccin);
-        $intervention->setPatient($patient);
-        $intervention->setOrdonnace($ordonace);
-        $intervention->setStatusVaccin("0");
-        $intervention->setCarnet($car);
-        $this->entityManager->persist($intervention);
-        $this->entityManager->flush();
-         $message=$translator->trans('successful');
-        $this->addFlash('success', $message);
+        $or = $this->interventionVaccinationRepository->findOneBy(['ordonnace'=>$ordonace]);
+        $cr = $this->interventionVaccinationRepository->findOneBy(['carnet'=>$Id]);
+        if ($or != null && $cr != null)
+        {
+            $message= $translator->trans('A request for intervention has already been sent to this praticien');
+            $this->addFlash('success', $message);
+
+        }else{
+            $intervention = new InterventionVaccination();
+            $intervention->setEtat("0");
+            $intervention->setDatePriseVaccin($Date_Rdv);
+            $intervention->setVaccin($vaccin);
+            $intervention->setPatient($patient);
+            $intervention->setOrdonnace($ordonace);
+            $intervention->setStatusVaccin("0");
+            $intervention->setCarnet($car);
+            $this->entityManager->persist($intervention);
+            $this->entityManager->flush();
+            $message=$translator->trans('successful');
+            $this->addFlash('success', $message);
+        }
+
         return $this->redirectToRoute('patient');
 
 
