@@ -129,7 +129,7 @@ class StateController extends AbstractController
                     $this->entityManager->remove($State);
                     $this->entityManager->flush();
                     $delete = true;
-                    $message = $translator->trans('City has been successfully deleted!');
+                    $message = $translator->trans('State has been successfully deleted!');
                     $this->addFlash('error', $message);
 
                 }

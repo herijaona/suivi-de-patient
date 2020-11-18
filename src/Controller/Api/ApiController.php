@@ -786,11 +786,11 @@ class ApiController extends AbstractController
 
 
     /**
-     * @Route("/api/country", name="api_type_patient", methods={"GET"})
+     * @Route("/api/country", name="api_country", methods={"GET"})
      * @param TypePatientRepository $typePatientRepository
      * @return JsonResponse
      */
-    public function api_type_patient( StateRepository $stateRepository)
+    public function api_country( StateRepository $stateRepository)
     {
         $state = $stateRepository->searchstate();
         return new JsonResponse($state);

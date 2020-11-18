@@ -36,51 +36,22 @@
         {{ form_widget(form.TypeVaccin, {'attr': { 'class': 'form-control chosen-select' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">{% trans %}Initial take date{% endtrans %} </label>
-        {{ form_widget(form.datePriseInitiale, {'attr': { 'class': 'form-control' }}) }}
+        <label class="active" for="form1">{% trans %}ID Vaccine{% endtrans %} </label>
+        {{ form_widget(form.IdVaccin, {'attr': { 'class': 'form-control' }}) }}
     </div>
     <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 1{% endtrans %}</label>
-        {{ form_widget(form.rappel1, {'attr': { 'class': 'form-control' }}) }}
+        <label class="active" for="form1">{% trans %}Statut{% endtrans %} </label>
+        {{ form_widget(form.Statut, {'attr': { 'class': 'form-control' }}) }}
+
     </div>
+
     <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 2{% endtrans %}</label>
-        {{ form_widget(form.rappel2, {'attr': { 'class': 'form-control' }}) }}
+        <label class="active" for="form1">{% trans %}Date Taken{% endtrans %} </label>
+        {{ form_widget(form.datePrise, {'attr': { 'class': 'form-control' }}) }}
     </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 3{% endtrans %}</label>
-        {{ form_widget(form.rappel3, {'attr': { 'class': 'form-control' }}) }}
-    </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 4{% endtrans %} </label>
-        {{ form_widget(form.rappel4, {'attr': { 'class': 'form-control' }}) }}
-    </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 5{% endtrans %}</label>
-        {{ form_widget(form.rappel5, {'attr': { 'class': 'form-control' }}) }}
-    </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 6{% endtrans %}</label>
-        {{ form_widget(form.rappel6, {'attr': { 'class': 'form-control' }}) }}
-    </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 7{% endtrans %}</label>
-        {{ form_widget(form.rappel7, {'attr': { 'class': 'form-control' }}) }}
-    </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 8{% endtrans %}</label>
-        {{ form_widget(form.rappel8, {'attr': { 'class': 'form-control' }}) }}
-    </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 9{% endtrans %}</label>
-        {{ form_widget(form.rappel9, {'attr': { 'class': 'form-control' }}) }}
-    </div>
-    <div class="md-form">
-        <label class="active" for="form1">{% trans %}Reminder 10{% endtrans %}</label>
-        {{ form_widget(form.rappel10, {'attr': { 'class': 'form-control' }}) }}
-    </div>
+
     <div class="md-form row-check">
-        <label class="active" for="form1" style="margin-top: 9px">Status </label>
+        <label class="active" for="form1" style="margin-top: 9px">Etat </label>
         {{ form_widget(form.etat, {'attr': {'class': 'form-control'}})  }}
     </div>
 </div>

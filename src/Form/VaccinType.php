@@ -21,9 +21,14 @@ class VaccinType extends AbstractType
             ->add('vaccinName', null, [
                 'required'    => true
             ])
-            ->add('vaccinDescription')
+            ->add('vaccinDescription',null,[
+                'required' =>true
+            ])
             ->add('etat', null, [
-                'label'    => 'Status'
+                'label'    => 'Etat'
+            ])
+            ->add('IdVaccin',null,[
+                'required'=>true
             ])
             ->add('state', EntityType::class,[
                 'class' => State::class,
@@ -36,17 +41,13 @@ class VaccinType extends AbstractType
                 },
                 'placeholder' => 'Pays du Vaccin',
             ])
-            ->add('datePriseInitiale')
-            ->add('rappel1')
-            ->add('rappel2')
-            ->add('rappel3')
-            ->add('rappel4')
-            ->add('rappel5')
-            ->add('rappel6')
-            ->add('rappel7')
-            ->add('rappel8')
-            ->add('rappel9')
-            ->add('rappel10')
+            ->add('datePrise',null,[
+                'required'=> true
+            ])
+            ->add('Statut',null,[
+                'required'=> true
+            ])
+
             ->add('TypeVaccin', null, [
                 'required'    => true
             ])

@@ -108,8 +108,8 @@ class HomepageController extends AbstractController
                     ->htmlTemplate('email/change.html.twig');
                 // On envoie le mail
                 $mailer->send($email);
-                $message=$translator->trans('The password reset link is sent to your email');
-                $this->addFlash('success', $message.' '.$mail);
+
+                $this->addFlash('success', 'Le lien de réinitialisation du mot de passe est envoyé à votre adresse e-mail'.' '.$mail);
 
 
             }
@@ -129,8 +129,8 @@ class HomepageController extends AbstractController
              $user = $this->userRepository->findOneBy(['username'=>$username]);
              $password = $userPasswordEncoder->encodePassword($user, $passworde);
              $user->setPassword($password);
-             $message=$translator->trans('Password reset success');
-             $this->addFlash('success', $message);
+
+             $this->addFlash('success', 'Réinitialisation de mot de passe réussie');
              $this->entityManager->persist($user);
              $this->entityManager->flush();
 

@@ -1135,7 +1135,7 @@
       </trans-unit>
       <trans-unit id="agNvfvA" resname="My group">
         <source>My group</source>
-        <target>Mon group</target>
+        <target>Mon groupe</target>
       </trans-unit>
       <trans-unit id="PcygpxI" resname="Member Id">
         <source>Member Id</source>
@@ -1180,6 +1180,14 @@
       <trans-unit id="s7lheiq" resname="A request for intervention has already been sent to this praticien">
         <source>A request for intervention has already been sent to this praticien</source>
         <target>Une demande d'intervention est deja envoyée dans cette praticien</target>
+      </trans-unit>
+      <trans-unit id="MMFG_4K" resname="vaccine has been successfully deleted!">
+        <source>vaccine has been successfully deleted!</source>
+        <target>le vaccin a été supprimé avec succès!</target>
+      </trans-unit>
+      <trans-unit id="3uN3z9j" resname="Statut">
+        <source>Statut</source>
+        <target>Statut</target>
       </trans-unit>
 
     </body>

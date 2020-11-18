@@ -305,19 +305,12 @@ class AdminController extends AbstractController
         $VaccinName = $vaccinRequest['vaccinName'];
         $TypeVaccin = $vaccinRequest['TypeVaccin'];
         $vaccinDescription = $vaccinRequest['vaccinDescription'];
-        $datePriseInitiale = $vaccinRequest['datePriseInitiale'];
+        $datePriseInitiale = $vaccinRequest['datePrise'];
+        $statut = $vaccinRequest['Statut'];
+        $idVac = $vaccinRequest['IdVaccin'];
         $state = $vaccinRequest['state'];
         $state= $this->stateRepository->find($state);
-        $rappel1 = $vaccinRequest['rappel1'];
-        $rappel2 = $vaccinRequest['rappel2'];
-        $rappel3 = $vaccinRequest['rappel3'];
-        $rappel4 = $vaccinRequest['rappel4'];
-        $rappel5 = $vaccinRequest['rappel5'];
-        $rappel6 = $vaccinRequest['rappel6'];
-        $rappel7 = $vaccinRequest['rappel7'];
-        $rappel8 = $vaccinRequest['rappel8'];
-        $rappel9 = $vaccinRequest['rappel9'];
-        $rappel10 = $vaccinRequest['rappel10'];
+
         $Status = false;
         if (isset($vaccinRequest['etat'])) {
             $Status = true;
@@ -332,19 +325,11 @@ class AdminController extends AbstractController
             $Vaccin = $this->vaccinRepository->find($idVaccin);
             $Vaccin->setVaccinName($VaccinName);
             $Vaccin->setTypeVaccin($TpVaccin);
+            $Vaccin->setStatut($statut);
+            $Vaccin->setIdVaccin($idVac);
             $Vaccin->setVaccinDescription($vaccinDescription);
-            $Vaccin->setDatePriseInitiale($datePriseInitiale);
+            $Vaccin->setDatePrise($datePriseInitiale);
             $Vaccin->setState($state);
-            $Vaccin->setRappel1($rappel1);
-            $Vaccin->setRappel2($rappel2);
-            $Vaccin->setRappel3($rappel3);
-            $Vaccin->setRappel4($rappel4);
-            $Vaccin->setRappel5($rappel5);
-            $Vaccin->setRappel6($rappel6);
-            $Vaccin->setRappel7($rappel7);
-            $Vaccin->setRappel8($rappel8);
-            $Vaccin->setRappel9($rappel9);
-            $Vaccin->setRappel10($rappel10);
             $Vaccin->setEtat($Status);
             $this->entityManager->persist($Vaccin);
             $this->entityManager->flush();
@@ -354,19 +339,11 @@ class AdminController extends AbstractController
             $VaccinNew = new Vaccin();
             $VaccinNew->setVaccinName($VaccinName);
             $VaccinNew->setTypeVaccin($TpVaccin);
+            $VaccinNew->setStatut($statut);
+            $VaccinNew->setIdVaccin($idVac);
             $VaccinNew->setVaccinDescription($vaccinDescription);
-            $VaccinNew->setDatePriseInitiale($datePriseInitiale);
+            $VaccinNew->setDatePrise($datePriseInitiale);
             $VaccinNew->setState($state);
-            $VaccinNew->setRappel1($rappel1);
-            $VaccinNew->setRappel2($rappel2);
-            $VaccinNew->setRappel3($rappel3);
-            $VaccinNew->setRappel4($rappel4);
-            $VaccinNew->setRappel5($rappel5);
-            $VaccinNew->setRappel6($rappel6);
-            $VaccinNew->setRappel7($rappel7);
-            $VaccinNew->setRappel8($rappel8);
-            $VaccinNew->setRappel9($rappel9);
-            $VaccinNew->setRappel10($rappel10);
             $VaccinNew->setEtat($Status);
             $this->entityManager->persist($VaccinNew);
             $this->entityManager->flush();
@@ -471,29 +448,13 @@ class AdminController extends AbstractController
         if ($idVaccin != '' && $idVaccin != null) {
             $Vaccin = $this->vaccinRepository->find($idVaccin);
             if (null !=  $Vaccin) {
-                $VaccinCentreHealths = $Vaccin->getVaccinCentreHealths();
-                $OrdoVaccinations = $Vaccin->getOrdoVaccinations();
-                $InterventionVaccinations = $Vaccin->getInterventionVaccinations();
-                $CarnetVaccinations = $Vaccin->getCarnetVaccinations();
-                $VaccinPraticiens = $Vaccin->getVaccinPraticiens();
-                $PatientVaccins = $Vaccin->getPatientVaccins();
-                if (($VaccinCentreHealths && count($VaccinCentreHealths) > 0) ||
-                    ($OrdoVaccinations && count($OrdoVaccinations) > 0) ||
-                    ($InterventionVaccinations && count($InterventionVaccinations) > 0) ||
-                    ($CarnetVaccinations && count($CarnetVaccinations) > 0) ||
-                    ($VaccinPraticiens && count($VaccinPraticiens) > 0) ||
-                    ($PatientVaccins && count($PatientVaccins) > 0)
-                ) {
-                    $message = $translator->trans('Error deleting this element!');
-                    $delete = false;
-                    $this->addFlash('error', $message);
-                } else {
+
                     $this->entityManager->remove($Vaccin);
                     $this->entityManager->flush();
-                    $message = $translator->trans('city has been successfully deleted!');
+                    $message = $translator->trans('vaccine has been successfully deleted!');
                     $delete = true;
                     $this->addFlash('success', $message);
-                }
+
             }
         }
 
