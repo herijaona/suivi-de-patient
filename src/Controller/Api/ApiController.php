@@ -1094,8 +1094,7 @@ class ApiController extends AbstractController
         $date = $rdv['date'];
         $id = $rdv['id'];
         $heure = $rdv['heure'];
-        $rdv_date = str_replace("/", "-", $date);
-        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($date.' '.$heure)));
         $type = $rdv['typeRdv'];
         if ($type == "consultation" && $id != '' ){
             $ordoconsultation = $ordoConsultationRepository->find($id);
