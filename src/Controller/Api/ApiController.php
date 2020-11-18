@@ -1001,8 +1001,7 @@ class ApiController extends AbstractController
         $date = $organize['date'];
         $heure = $organize['heure'];
         $carnet = $organize['carnet'];
-        $rdv_date = str_replace("/", "-", $date);
-        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($date.' '.$heure)));
         $intervention = $interventionVaccinationRepository->find($id);
         $intervention->setDatePriseVaccin($Date_Rdv);
         $intervention->setStatusVaccin(1);
@@ -1057,8 +1056,7 @@ class ApiController extends AbstractController
         $date = $rdv['date'];
         $heure = $rdv['heure'];
         $patient = $this->patientRepository->find($patient);
-        $rdv_date = str_replace("/", "-", $date);
-        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($rdv_date.' '.$heure)));
+        $Date_Rdv = new \DateTime(date ("Y-m-d H:i:s", strtotime ($date.' '.$heure)));
         if ($type == "consultation")
         {
             $ordo = new OrdoConsultation();
