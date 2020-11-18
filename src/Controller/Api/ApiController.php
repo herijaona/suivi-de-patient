@@ -979,7 +979,7 @@ class ApiController extends AbstractController
         $this->entityManager->flush();
         $intervention = new InterventionVaccination();
         $intervention->setCarnet($carnet);
-        $intervention->setStatusVaccin("1");
+        $intervention->setStatusVaccin(1);
         $ordonance = $ordonnaceRepository->findOneBy(['praticien'=>$praticien]);
         $intervention->setOrdonnace($ordonance);
         $intervention->setPatient($patient);
